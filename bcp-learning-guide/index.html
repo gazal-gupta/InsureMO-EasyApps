@@ -1,0 +1,1457 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>InsureMO BCP Learning Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky top bar + left curriculum rail + one reading column; diagrams scroll inside their own frames.
+   Palette: ledger paper, ink, teal accent. Money-in green, money-out rust, internal indigo, cancel wine. */
+:root{
+  --bg:#F4F6F3; --surface:#FFFFFF; --surface-2:#EBEFEA; --ink:#16232A; --ink-2:#4B5B61; --line:#D3DAD5;
+  --accent:#0B6E69; --accent-soft:#D5EBE8; --accent-ink:#FFFFFF;
+  --in:#1D7A3E; --in-soft:#DCEFE2; --out:#AE5019; --out-soft:#F6E4D7; --int:#4A4EA6; --int-soft:#E2E3F5; --cancel:#8A2F3B; --cancel-soft:#F3DEE1;
+  --pa:#2D6BB3; --clm:#B03A48; --ri:#7649AD; --sc:#9A6A0C; --gl:#4B5B61; --sys:#0B6E69;
+  --lane-a:#F7F9F6; --lane-b:#EEF2EE; --warn:#9A6A0C; --warn-soft:#F7EDD6;
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --r:6px; --rail:252px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0E1618; --surface:#152023; --surface-2:#1B292D; --ink:#E2EAE7; --ink-2:#9DB0AD; --line:#2A3A3E;
+  --accent:#4FC0B7; --accent-soft:#143634; --accent-ink:#0E1618;
+  --in:#5CC27F; --in-soft:#16301F; --out:#E59157; --out-soft:#3A2416; --int:#9EA2F0; --int-soft:#23254A; --cancel:#E07A88; --cancel-soft:#3A1C21;
+  --pa:#73A8EA; --clm:#E77C89; --ri:#B593E8; --sc:#E2B04A; --gl:#9DB0AD; --sys:#4FC0B7;
+  --lane-a:#132023; --lane-b:#18262A; --warn:#E2B04A; --warn-soft:#33290F; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0E1618; --surface:#152023; --surface-2:#1B292D; --ink:#E2EAE7; --ink-2:#9DB0AD; --line:#2A3A3E;
+  --accent:#4FC0B7; --accent-soft:#143634; --accent-ink:#0E1618;
+  --in:#5CC27F; --in-soft:#16301F; --out:#E59157; --out-soft:#3A2416; --int:#9EA2F0; --int-soft:#23254A; --cancel:#E07A88; --cancel-soft:#3A1C21;
+  --pa:#73A8EA; --clm:#E77C89; --ri:#B593E8; --sc:#E2B04A; --gl:#9DB0AD; --sys:#4FC0B7;
+  --lane-a:#132023; --lane-b:#18262A; --warn:#E2B04A; --warn-soft:#33290F; color-scheme:dark }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,4vw,40px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:24px;font-weight:700;margin-top:8px}
+h3{font-size:18px;font-weight:700}
+h4{font-size:15px;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+code{background:var(--surface-2);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.muted{color:var(--ink-2)}
+.small{font-size:13px}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px}
+.top-in{display:flex;gap:14px;align-items:center;flex-wrap:wrap;max-width:1400px;margin:0 auto}
+.brand{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--ink)}
+.brand-mark{width:30px;height:30px;border-radius:5px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--f-mono);font-weight:500;font-size:12px}
+.brand b{font-family:var(--f-display);font-size:16px;font-weight:700}
+.brand span{display:block;font-size:11px;color:var(--ink-2);line-height:1.2}
+.search{flex:1 1 220px;min-width:0;position:relative;max-width:420px}
+.search input{width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);color:var(--ink);font:inherit;font-size:14px}
+.results{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 8px 24px rgba(0,0,0,.12);max-height:60vh;overflow:auto;z-index:40}
+.results button{display:block;width:100%;text-align:left;border:0;background:none;padding:8px 12px;border-bottom:1px solid var(--line);cursor:pointer}
+.results button:hover,.results button:focus-visible{background:var(--accent-soft)}
+.results .rk{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.roles{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 11px;font-size:13px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.theme-btn{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:5px 9px;cursor:pointer;font-size:13px}
+
+/* shell */
+.shell{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);gap:32px;max-width:1400px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 64px}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 74px);align-self:start;max-height:calc(100vh - 96px);overflow:auto}
+.rail nav{display:flex;flex-direction:column;gap:2px}
+.rail a{display:grid;grid-template-columns:26px 1fr 16px;gap:6px;align-items:center;padding:7px 8px;border-radius:var(--r);text-decoration:none;color:var(--ink);font-size:14px}
+.rail a .n{font-family:var(--f-mono);font-size:11px;color:var(--ink-2)}
+.rail a[aria-current="page"]{background:var(--accent-soft);color:var(--ink);font-weight:600}
+.rail a .done{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line)}
+.rail a .done.on{background:var(--in);border-color:var(--in)}
+.rail .grp{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);padding:14px 8px 4px}
+.progress{margin:6px 8px 12px;height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--in);width:0;transition:width .3s}
+.rolepath{margin:16px 8px 0;padding:12px;border:1px dashed var(--line);border-radius:var(--r);font-size:13px}
+main{min-width:0}
+.view{display:flex;flex-direction:column;gap:28px}
+.view>header{display:flex;flex-direction:column;gap:10px;max-width:78ch}
+.lede{font-size:17px;color:var(--ink-2);max-width:70ch}
+.prose{max-width:72ch;display:flex;flex-direction:column;gap:12px}
+section.block{display:flex;flex-direction:column;gap:14px}
+.block>h2+p{max-width:72ch}
+
+/* generic components */
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h3,.card h4{display:flex;gap:8px;align-items:baseline}
+.tag{display:inline-flex;align-items:center;gap:4px;font-family:var(--f-mono);font-size:11px;padding:1px 7px;border-radius:4px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.tag.in{background:var(--in-soft);color:var(--in)} .tag.out{background:var(--out-soft);color:var(--out)} .tag.int{background:var(--int-soft);color:var(--int)} .tag.cancel{background:var(--cancel-soft);color:var(--cancel)}
+.tag.pa{color:var(--pa)} .tag.clm{color:var(--clm)} .tag.ri{color:var(--ri)} .tag.sc{color:var(--sc)} .tag.gl{color:var(--gl)}
+.tag.src{background:none;border:1px solid var(--line)}
+.tag.inf{background:var(--warn-soft);color:var(--warn)}
+.card>.tag{align-self:flex-start}
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 14px;border-radius:0 var(--r) var(--r) 0;max-width:80ch}
+.callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+.callout b{font-weight:600}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);background:var(--surface-2);font-weight:500;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--f-mono);font-size:12.5px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:6px 14px;cursor:pointer;font-size:13.5px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.tabs button{border:0;background:none;padding:8px 12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-size:14px;color:var(--ink-2)}
+.tabs button[aria-selected="true"]{border-color:var(--accent);color:var(--ink);font-weight:600}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:var(--r);padding:7px 14px;cursor:pointer;font-size:14px}
+.btn.ghost{background:none;color:var(--accent)}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;font-size:14px}
+.kv dt{color:var(--ink-2)} .kv dd{margin:0}
+ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px}
+ul.clean{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.mark-done{display:flex;gap:10px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);max-width:520px}
+.mark-done input{width:18px;height:18px;accent-color:var(--in)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:center}
+.flowstrip{display:flex;flex-direction:column;gap:10px}
+.fs-row{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center}
+.fs-row .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.fs-steps{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.fs-steps span{padding:4px 9px;border-radius:4px;font-size:13px;background:var(--surface);border:1px solid var(--line)}
+.fs-steps i{font-style:normal;color:var(--ink-2)}
+.fs-row.in .lbl{color:var(--in)} .fs-row.in span{border-color:var(--in)}
+.fs-row.out .lbl{color:var(--out)} .fs-row.out span{border-color:var(--out)}
+.fs-row.int .lbl{color:var(--int)} .fs-row.int span{border-color:var(--int)}
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px}
+.path ol{margin:0;padding-left:20px;font-size:14px;display:flex;flex-direction:column;gap:3px}
+
+/* diagrams */
+.diagram{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:8px}
+.diagram svg{display:block}
+svg text{font-family:var(--f-body);fill:var(--ink)}
+svg .lane-a{fill:var(--lane-a)} svg .lane-b{fill:var(--lane-b)}
+svg .lane-lbl{font-family:var(--f-mono);font-size:10.5px;fill:var(--ink-2);letter-spacing:.04em}
+svg .lane-sep{stroke:var(--line);stroke-width:1}
+svg .edge{fill:none;stroke:var(--ink-2);stroke-width:1.4}
+svg .arrowhead{fill:var(--ink-2)}
+svg .node rect,svg .node path{stroke-width:1.5}
+svg .node .t{font-size:11.5px;fill:var(--ink)}
+svg .node .f{font-family:var(--f-mono);font-size:9.5px;fill:var(--ink-2)}
+svg .node .num{font-family:var(--f-mono);font-size:9.5px;fill:var(--surface);font-weight:500}
+svg .node .numbg{fill:var(--ink)}
+svg .k-ev rect{fill:var(--surface);stroke:var(--pa)}
+svg .k-ext rect{fill:var(--surface);stroke:var(--ink-2);stroke-dasharray:4 3}
+svg .k-op rect{fill:var(--accent-soft);stroke:var(--accent)}
+svg .k-sys rect{fill:var(--surface);stroke:var(--sys)}
+svg .k-gl rect{fill:var(--surface-2);stroke:var(--gl)}
+svg .k-end rect{fill:var(--in-soft);stroke:var(--in)}
+svg .k-rev rect{fill:var(--out-soft);stroke:var(--out)}
+svg .k-x rect{fill:var(--cancel-soft);stroke:var(--cancel)}
+svg .node{cursor:pointer}
+svg .node.hl rect{stroke-width:3}
+svg .st-node rect{fill:var(--surface);stroke:var(--ink-2);stroke-width:1.5}
+svg .st-node.final rect{stroke:var(--cancel);stroke-width:2.5}
+svg .st-node.good rect{stroke:var(--in)}
+svg .st-node.start rect{stroke:var(--accent)}
+svg .st-node text{font-size:12px;font-weight:600}
+svg .st-lbl{font-size:10.5px;fill:var(--ink-2)}
+svg .st-lblbg{fill:var(--surface)}
+.legend{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:12.5px;color:var(--ink-2)}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.legend i{width:14px;height:10px;border-radius:2px;border:1.5px solid;display:inline-block}
+
+/* scenario explorer */
+.explorer{display:grid;grid-template-columns:260px minmax(0,1fr);gap:22px;align-items:start}
+.sc-list{display:flex;flex-direction:column;gap:2px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 74px);max-height:calc(100vh - 96px);overflow:auto;padding-right:4px}
+.sc-list .grp{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:12px 8px 4px}
+.sc-list .grp.in{color:var(--in)} .sc-list .grp.out{color:var(--out)} .sc-list .grp.int{color:var(--int)} .sc-list .grp.cancel{color:var(--cancel)}
+.sc-list button{border:0;background:none;text-align:left;padding:6px 8px;border-radius:var(--r);cursor:pointer;font-size:13.5px;display:grid;grid-template-columns:34px 1fr;gap:4px}
+.sc-list button .id{font-family:var(--f-mono);font-size:11px;color:var(--ink-2);padding-top:2px}
+.sc-list button[aria-current="true"]{background:var(--accent-soft);font-weight:600}
+.sc-detail{display:flex;flex-direction:column;gap:18px;min-width:0}
+.sc-head{display:flex;flex-direction:column;gap:8px}
+.sc-head .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sc-select{display:none}
+.notes{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.note{border:1px solid var(--line);border-radius:var(--r);padding:12px;background:var(--surface);font-size:14px;display:flex;flex-direction:column;gap:6px}
+.note .who{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+body[data-role="ba"] .note:not([data-r="ba"]),body[data-role="qa"] .note:not([data-r="qa"]),body[data-role="dev"] .note:not([data-r="dev"]){display:none}
+tr.hl td{background:var(--accent-soft)}
+
+/* screens */
+.menu-tree{display:flex;flex-direction:column;gap:14px}
+.mt-grp h4{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-weight:500;margin-bottom:6px}
+.mt-grp .items{display:flex;flex-wrap:wrap;gap:6px}
+.mt-grp .items button{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:5px 10px;cursor:pointer;font-size:13.5px}
+.mt-grp .items button[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+
+/* integration hub */
+.hub-wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:22px;align-items:start}
+svg .hub-node{cursor:pointer}
+svg .hub-node rect{fill:var(--surface);stroke-width:2}
+svg .hub-node.sel rect{stroke-width:3.5}
+svg .hub-node text{font-size:12.5px;font-weight:600}
+svg .hub-node .sub{font-family:var(--f-mono);font-size:9.5px;font-weight:400;fill:var(--ink-2)}
+svg .hub-core rect{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2}
+svg .hub-edge{stroke-width:1.6;fill:none}
+
+/* calculator */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:18px}
+.calc input[type=number],.calc input[type=text],.calc select{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);font:inherit;font-size:13.5px}
+.calc td input{min-width:70px}
+.ok{color:var(--in)} .bad{color:var(--cancel)}
+
+/* quiz */
+.q{display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:var(--r);padding:8px 12px;cursor:pointer;font-size:14px}
+.q .opts button.right{border-color:var(--in);background:var(--in-soft)}
+.q .opts button.wrong{border-color:var(--cancel);background:var(--cancel-soft)}
+.q .why{font-size:14px;color:var(--ink-2)}
+.score{font-family:var(--f-display);font-size:22px;font-weight:700}
+
+.foot{border-top:1px solid var(--line);padding-top:16px;font-size:12.5px;color:var(--ink-2);max-width:80ch}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-row select,.filter-row input{padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink);font:inherit;font-size:13.5px}
+
+@media (max-width:980px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:18px}
+  .top{position:static}
+  .rail{position:static;max-height:none}
+  .rail nav{flex-direction:row;flex-wrap:wrap;gap:4px}
+  .rail a{grid-template-columns:auto auto;padding:5px 9px;border:1px solid var(--line);font-size:13px}
+  .rail a .done,.rail .grp,.rolepath,.progress{display:none}
+  .hero,.hub-wrap,.calc{grid-template-columns:minmax(0,1fr)}
+  .explorer{grid-template-columns:minmax(0,1fr)}
+  .sc-list{display:none}
+  .sc-select{display:block;width:100%;padding:8px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink);font:inherit}
+}
+@media (max-width:560px){ .brand span{display:none} .roles .eyebrow{display:none} body{font-size:14.5px} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
+</style>
+</head><body>
+<div class="top"><div class="top-in">
+  <a class="brand" href="#start"><div class="brand-mark">BCP</div><div><b>InsureMO BCP Learning Guide</b><span>Billing · Collection · Payment — Easy Apps</span></div></a>
+  <div class="search"><label for="q" class="eyebrow" hidden>Search</label><input id="q" type="search" placeholder="Search terms, screens, scenarios, fee codes…" autocomplete="off"><div class="results" id="results" hidden></div></div>
+  <div class="roles" role="group" aria-label="Role lens"><span class="eyebrow">Lens</span>
+    <button class="chip" data-role="all" aria-pressed="true">All</button>
+    <button class="chip" data-role="ba" aria-pressed="false">Business analyst</button>
+    <button class="chip" data-role="qa" aria-pressed="false">Tester</button>
+    <button class="chip" data-role="dev" aria-pressed="false">Developer</button>
+  </div>
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme">Theme</button>
+</div></div>
+
+<div class="shell">
+<aside class="rail">
+  <div class="progress" title="Levels marked complete"><i id="progBar"></i></div>
+  <nav id="railNav"></nav>
+  <div class="rolepath" id="rolePath"></div>
+</aside>
+<main id="main">
+
+<!-- START -->
+<section class="view" id="v-start" data-title="Start here">
+  <div class="hero">
+    <header>
+      <span class="eyebrow">Learning guide · basic to advanced</span>
+      <h1>Follow the money through InsureMO</h1>
+      <p class="lede">BCP (Billing, Collection and Payment) is the finance module of InsureMO. Every policy, endorsement, claim, reinsurance and commission transaction that has an amount ends up here as a receivable (AR), a payable (AP) or a fee. BCP collects the money, pays the money, settles the balances and feeds the General Ledger.</p>
+      <p class="muted small">Built from the InsureMO BCP module guide. Content marked <span class="tag inf">Domain context</span> is general insurance practice added to help you learn. It is not taken from the source guide, so confirm it with your project before you rely on it.</p>
+    </header>
+    <div class="card">
+      <span class="eyebrow">The three money movements in BCP</span>
+      <div class="flowstrip">
+        <div class="fs-row in"><span class="lbl">Money in</span><div class="fs-steps"><span>Bill (AR)</span><i>→</i><span>Collect</span><i>→</i><span>Suspense</span><i>→</i><span>Offset</span><i>→</i><span>Settled</span></div></div>
+        <div class="fs-row out"><span class="lbl">Money out</span><div class="fs-steps"><span>Bill (AP)</span><i>→</i><span>Approve</span><i>→</i><span>Confirm payment</span><i>→</i><span>Settled</span></div></div>
+        <div class="fs-row int"><span class="lbl">Internal</span><div class="fs-steps"><span>AR + AP</span><i>→</i><span>Net off / tolerance / write-off</span><i>→</i><span>Settled</span></div></div>
+      </div>
+      <p class="small muted">Every step creates fee records. Fees drive the GL posting. Every step except Cancel can be reversed.</p>
+    </div>
+  </div>
+
+  <section class="block">
+    <h2>Pick your learning path</h2>
+    <p class="muted">Use the <b>Lens</b> buttons at the top to show only the notes for your role. All roles should finish levels 1 to 3 first.</p>
+    <div class="paths" id="pathCards"></div>
+  </section>
+
+  <section class="block">
+    <h2>How the guide is organised</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Level</th><th>What you learn</th><th>You are ready to move on when you can…</th></tr></thead>
+      <tbody id="levelTable"></tbody>
+    </table></div>
+  </section>
+
+  <section class="block">
+    <h2>How to read the swimlane diagrams</h2>
+    <div class="legend">
+      <span><i style="border-color:var(--pa)"></i>Business event from another module</span>
+      <span><i style="border-color:var(--ink-2);border-style:dashed"></i>External party action</span>
+      <span><i style="border-color:var(--accent);background:var(--accent-soft)"></i>User action on a BCP screen</span>
+      <span><i style="border-color:var(--sys)"></i>BCP system action</span>
+      <span><i style="border-color:var(--gl);background:var(--surface-2)"></i>GL posting</span>
+      <span><i style="border-color:var(--in);background:var(--in-soft)"></i>End state</span>
+      <span><i style="border-color:var(--out);background:var(--out-soft)"></i>Reversal step</span>
+      <span><i style="border-color:var(--cancel);background:var(--cancel-soft)"></i>Irreversible step</span>
+    </div>
+    <p class="muted small">Each row (lane) is one actor. Read the numbered boxes left to right. Click a box to highlight its row in the step table under the diagram. The small grey text in a box shows the status change or fee code.</p>
+  </section>
+</section>
+
+<!-- L1 FOUNDATIONS -->
+<section class="view" id="v-basics" data-title="Foundations" hidden>
+  <header><span class="eyebrow">Level 1</span><h1>Foundations</h1>
+  <p class="lede">What BCP does, the words it uses, and where it sits in the InsureMO landscape.</p></header>
+
+  <section class="block">
+    <h2>What BCP does</h2>
+    <div class="grid g3">
+      <div class="card"><h3>1. Billing</h3><p>Receives financial data from PA, Claims, Reinsurance, Sales Channel and Printing through the billing API (<code>syncDataToBCP</code>). Each call creates a <b>bill</b> with one or more AR or AP records and a fee breakdown.</p></div>
+      <div class="card"><h3>2. Collection and payment</h3><p>Receives money (collection) and pays money (refund / payment). Settles AR and AP through <b>offset</b>. Supports reversal of every step except cancel.</p></div>
+      <div class="card"><h3>3. Query and GL feed</h3><p>Lets users search every financial record in any status and export to Excel. Produces fee records that become GL vouchers for the accounting system.</p></div>
+    </div>
+    <div class="callout"><b>Why it matters:</b> in most implementations BCP is a middle system. It records each money movement as a fee entry and passes it to a third-party accounting system for reconciliation and reporting. Errors in BCP become errors in the books.</div>
+  </section>
+
+  <section class="block">
+    <h2>Where BCP sits</h2>
+    <div class="diagram" id="ecoDiagram"></div>
+  </section>
+
+  <section class="block">
+    <h2>Core concepts</h2>
+    <div class="grid g3" id="conceptCards"></div>
+  </section>
+
+  <section class="block">
+    <h2>Reversal and cancel are different</h2>
+    <div class="tbl"><table>
+      <thead><tr><th></th><th>Reversal</th><th>Cancel</th></tr></thead>
+      <tbody>
+        <tr><td><b>Used when</b></td><td>A completed step was wrong (wrong amount, wrong policy, bounced cheque).</td><td>An outstanding AR, AP, commission or prepay order should never be settled (policy cancelled, claim withdrawn, admin error).</td></tr>
+        <tr><td><b>Effect</b></td><td>Restores the previous state. AR or AP goes back to Outstanding with its balance.</td><td>Closes the balance. Status becomes Canceled.</td></tr>
+        <tr><td><b>Can it be undone?</b></td><td>Yes. You can redo the step.</td><td><b>No. Final and irreversible.</b></td></tr>
+        <tr><td><b>Fees</b></td><td>Flips the sign of the original fee and marks <code>Is Reverse = Y</code>.</td><td>Cancel AR creates a negative fee. Cancel AP creates a positive fee.</td></tr>
+        <tr><td><b>Screens</b></td><td>Reverse Collection, Reverse Application &amp; Offset, Reverse Refund.</td><td>Internal &gt; ARAP Management (delete action, Outstanding records only).</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="block">
+    <h2>Two ways to collect money</h2>
+    <div class="grid g2">
+      <div class="card"><span class="tag in">One step</span><h3>Collect and offset together</h3><p>Premium Collection and Single Collection. The cashier picks the AR, records the receipt, and the system settles the AR at once.</p><p class="muted small">Typical for customer billing and personal lines.</p></div>
+      <div class="card"><span class="tag in">Two steps</span><h3>Collect to suspense, apply later</h3><p>Suspense Collection, then Application. Money is parked in a suspense account and later used to settle one or many ARs.</p><p class="muted small">Typical for agent billing, coinsurers and commercial lines. Gives flexibility when one remittance covers many policies.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Menu map</h2>
+    <p class="muted">The BCP menu has four groups plus Query. Level 4 explains each screen in detail.</p>
+    <div class="tbl"><table><thead><tr><th>Menu</th><th>Screen</th><th>Purpose</th></tr></thead><tbody id="menuMapBody"></tbody></table></div>
+    <p class="small muted">The source uses two names for some screens: "Policy Premium Collection" is also called "Premium Collection &amp; Application", and "Single Collection" is also called "Collection &amp; Application".</p>
+  </section>
+
+  <section class="block">
+    <h2>Payment methods by business</h2>
+    <div class="tbl"><table><thead><tr><th>Business</th><th>Record</th><th>Cash</th><th>Cheque</th><th>Direct debit / credit</th><th>Bank transfer</th><th>Credit card</th></tr></thead><tbody id="pmBody"></tbody></table></div>
+    <div class="tbl"><table><thead><tr><th>Method</th><th>Fields captured (mandatory in bold)</th></tr></thead><tbody>
+      <tr><td>Cash</td><td>Reference information</td></tr>
+      <tr><td>Cheque</td><td><b>Bank</b> (BcpBank), <b>Cheque No</b>, <b>Cheque Date</b></td></tr>
+      <tr><td>Direct debit / credit</td><td>Reference information</td></tr>
+      <tr><td>Bank transfer</td><td><b>Bank</b> (BcpBank), <b>Bank Account No</b></td></tr>
+      <tr><td>Credit card</td><td><b>Account Holder Name</b>, <b>Bank</b>, <b>Credit Card No</b>, Credit Card Type (BcpCreditCardType: Visa / Master Card), Apply Date, Reference information</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Reference numbers you will see</h2>
+    <div class="tbl"><table><thead><tr><th>Record</th><th>Example from the guide</th><th>Where it is created</th></tr></thead><tbody>
+      <tr><td>Debit / credit note (DN/CN)</td><td class="mono">DR20221100024686</td><td>Each AR or AP record</td></tr>
+      <tr><td>Receipt</td><td class="mono">RCE20221100000005</td><td>Any collection screen</td></tr>
+      <tr><td>Payment</td><td class="mono">PYMT20221000000036</td><td>Refund Approval, Receipt Refund, Statement Refund</td></tr>
+      <tr><td>Offset</td><td class="mono">OFS20260700000135</td><td>Application, ARAP Offset, Tolerance. Format: OFS + year-month (6 digits) + sequence (8 digits)</td></tr>
+      <tr><td>Statement</td><td class="mono">ST20240100000001</td><td>Statement batch or API</td></tr>
+      <tr><td>Policy / Producer</td><td class="mono">POPHC00000131 / PTY100000015880</td><td>Policy Admin / Sales Channel</td></tr>
+    </tbody></table></div>
+    <p class="small muted">All numbers come from numbering templates and can be changed by configuration (Level 7). The source describes the offset number as "8-digit year-month + 6-digit sequence", but the sample OFS20260700000135 has a 6-digit year-month and an 8-digit sequence.</p>
+  </section>
+  <label class="mark-done"><input type="checkbox" data-done="basics"> I can explain AR, AP, suspense, offset, reversal and cancel to a colleague.</label>
+</section>
+
+<!-- L2 LIFECYCLE -->
+<section class="view" id="v-lifecycle" data-title="Money lifecycles" hidden>
+  <header><span class="eyebrow">Level 2</span><h1>Money lifecycles and status models</h1>
+  <p class="lede">Every scenario in BCP is a variation of three patterns. Learn the patterns and the status changes, and the scenarios become easy.</p></header>
+
+  <section class="block">
+    <h2>The three patterns</h2>
+    <div class="grid g3">
+      <div class="card"><span class="tag in">Money in</span><h3>Collect → Suspense → Offset</h3><ol class="steps"><li>Source module bills BCP. AR is created as Outstanding.</li><li>Money is received. A receipt is created and held in suspense.</li><li>The receipt is offset against the AR. AR balance becomes 0 and status Settled.</li></ol><p class="small muted"><b>Reverse in the opposite order:</b> reverse the offset first, then reverse the collection.</p></div>
+      <div class="card"><span class="tag out">Money out</span><h3>Approve → Confirm</h3><ol class="steps"><li>Source module bills BCP. AP is created as Outstanding.</li><li>Finance approves. A payment record is created as Approved.</li><li>Payment is confirmed after the bank transfer. Payment becomes Paid and AP is settled.</li></ol><p class="small muted"><b>Reverse:</b> one step, Reverse Refund. AP returns to Outstanding.</p></div>
+      <div class="card"><span class="tag int">Internal</span><h3>Net, tolerate or write off</h3><ol class="steps"><li>ARAP Offset nets AR and AP of the same party. No money moves.</li><li>Tolerance Offset clears small differences.</li><li>Write-off closes bad debt.</li></ol><p class="small muted"><b>Reverse:</b> Reverse Application &amp; Offset.</p></div>
+    </div>
+    <div class="callout"><b>Why payments need approval and collections do not:</b> paying money out is the higher-risk direction. Finance staff decide which APs can be paid and which are in dispute before money leaves the company. The guide calls refund "a very sensitive process".</div>
+  </section>
+
+  <section class="block">
+    <h2>Status models</h2>
+    <p class="muted">Pick a record type to see its statuses and what moves it from one to the next. Testers: every arrow is at least one test case.</p>
+    <div class="tabs" role="tablist" id="stTabs"></div>
+    <div class="diagram" id="stDiagram"></div>
+    <div class="tbl"><table><thead><tr><th>From</th><th>To</th><th>Trigger</th><th>Screen / process</th></tr></thead><tbody id="stTable"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Partial and over payment</h2>
+    <div class="grid g2">
+      <div class="card"><span class="tag in">Over-collection</span><h3>Paid more than the AR</h3><ul class="clean"><li>AR is fully settled.</li><li>The excess stays in the suspense account.</li><li>The excess can be applied to another AR of the same payer, refunded with Receipt Refund, or kept for later.</li></ul></div>
+      <div class="card"><span class="tag in">Under-collection</span><h3>Paid less than the AR</h3><ul class="clean"><li>AR status does <b>not</b> change. It stays Outstanding.</li><li>Only the balance goes down by the amount offset.</li><li>More partial payments can follow. When the total offset equals the AR amount, the AR becomes Settled.</li></ul></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Installments, multiple payers and multiple payees</h2>
+    <p>The billing call decides how many AR or AP records are created. Every process then runs per record.</p>
+    <div class="tbl"><table><thead><tr><th>Combination</th><th>Installment</th><th>Payer / payee</th><th>AR / AP created</th></tr></thead><tbody>
+      <tr><td class="mono">①❶</td><td>Single</td><td>Single</td><td>One AR or AP</td></tr>
+      <tr><td class="mono">②❶</td><td>Installment</td><td>Single</td><td>One AR per period</td></tr>
+      <tr><td class="mono">①❷</td><td>Single</td><td>Multiple</td><td>AR split by payer / AP split by payee</td></tr>
+      <tr><td class="mono">②❷</td><td>Installment</td><td>Multiple</td><td>Periods × payers (or payees)</td></tr>
+    </tbody></table></div>
+    <p class="small muted">Exceptions: Reinsurance has no installments (TotalPeriods is always 1). Claim recovery generally has no installments and no multiple payers. Screens still show one row per transaction and display "Current Period" and "Total Periods".</p>
+  </section>
+  <label class="mark-done"><input type="checkbox" data-done="lifecycle"> I can draw the AR, receipt and payment status models from memory.</label>
+</section>
+
+<!-- L3 SCENARIOS -->
+<section class="view" id="v-scenarios" data-title="Business scenarios" hidden>
+  <header><span class="eyebrow">Level 3</span><h1>Business scenarios</h1>
+  <p class="lede">All scenarios in the source guide, as 22 flows. Each one shows a swimlane flow for the normal and reversal paths, the screens used, status changes, fee codes, business rules and notes for each role.</p></header>
+  <div class="explorer">
+    <div class="sc-list" id="scList"></div>
+    <div class="sc-detail">
+      <label for="scSelect" hidden>Scenario</label><select id="scSelect" class="sc-select"></select>
+      <div id="scDetail"></div>
+    </div>
+  </div>
+  <label class="mark-done"><input type="checkbox" data-done="scenarios"> I can walk through the normal and reversal flow for each scenario group.</label>
+</section>
+
+<!-- L4 SCREENS -->
+<section class="view" id="v-screens" data-title="Screens" hidden>
+  <header><span class="eyebrow">Level 4</span><h1>Screens and operations</h1>
+  <p class="lede">What each BCP screen is for, what must be true before you use it, the steps, the key fields, and the validation rules. Pick a screen.</p></header>
+  <div class="menu-tree" id="menuTree"></div>
+  <div id="screenDetail"></div>
+  <label class="mark-done"><input type="checkbox" data-done="screens"> I know which screen to use for each step and what it validates.</label>
+</section>
+
+<!-- L5 INTEGRATION -->
+<section class="view" id="v-integration" data-title="Cross-module integration" hidden>
+  <header><span class="eyebrow">Level 5</span><h1>Cross-module integration</h1>
+  <p class="lede">BCP does not create business. It reacts to Easy PA, Claims, Reinsurance and Sales Channel, and it sends results to the GL. Some BCP actions also send results back, for example a prepaid premium triggers policy issue in PA. Click a module.</p></header>
+  <div class="hub-wrap">
+    <div class="diagram" id="hubDiagram"></div>
+    <div id="hubPanel"></div>
+  </div>
+
+  <section class="block">
+    <h2>The billing contract: syncDataToBCP</h2>
+    <p>All business data enters BCP through one interface. The fields <code>BizModule</code>, <code>BizTransactionType</code>, <code>IsPrepay</code> and <code>ArapCate</code> decide what BCP creates.</p>
+    <div class="tbl"><table><thead><tr><th>BizModule</th><th>BizTransType</th><th>IsPrepay</th><th>Data created</th><th>ArapCate</th><th>Fee (GL)</th><th>ARAP fee type</th><th>Result</th></tr></thead><tbody id="syncBody"></tbody></table></div>
+    <p class="small muted">BizModule 50 (commission settlement, fee type 400100) is listed in the source's fee classification table but not in this entry matrix, because the settlement is created inside BCP and Sales Channel rather than sent by a source system.</p>
+  </section>
+
+  <section class="block">
+    <h2>End-to-end journeys across modules</h2>
+    <p class="muted">These journeys join several BCP scenarios into one business story. Use them for end-to-end and regression testing.</p>
+    <div class="tabs" role="tablist" id="jTabs"></div>
+    <div id="jDetail"></div>
+  </section>
+  <label class="mark-done"><input type="checkbox" data-done="integration"> I can explain what each module sends to BCP and what BCP sends back.</label>
+</section>
+
+<!-- L6 FEES -->
+<section class="view" id="v-fees" data-title="Fees, GL and offset logic" hidden>
+  <header><span class="eyebrow">Level 6 · Advanced</span><h1>Fees, GL and offset logic</h1>
+  <p class="lede">ARAP drives collection and payment. Fees drive accounting. Every time an AR or AP amount changes, BCP writes fee records that the GL turns into journal entries.</p></header>
+
+  <section class="block">
+    <h2>ARAP and fee: two different records</h2>
+    <div class="grid g2">
+      <div class="card"><h3>ARAP</h3><p>The amount actually owed to or by an external party. Drives collection and payment. <code>ArapCate = 1</code> is AR, <code>ArapCate = 2</code> is AP.</p></div>
+      <div class="card"><h3>Fee</h3><p>A detailed record of each money movement, used for GL posting. Every billing call creates fees, but not every fee has an ARAP. Example: a claim reserve creates a fee only (200201), with no collection or payment.</p></div>
+    </div>
+    <div class="tbl"><table><thead><tr><th>Fee attribute</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td>Transaction Type</td><td>What produced the fee: NEWBIZ, ENDORSEMENT, COLLECTION, COLLECTION_CONFIRM, OFFSET, PAYMENT, PAYMENT_CONFIRMATION, SALESCHANNEL, COMMISSION.</td></tr>
+      <tr><td>Amount sign</td><td><b>+</b> money-in or receivable side. <b>−</b> money-out or payable side.</td></tr>
+      <tr><td>Is Reverse</td><td>N = normal fee. Y = reversal fee. A reversal always flips the sign of the original fee.</td></tr>
+      <tr><td>Fee Type</td><td>GL fee type code, for example 100501 Premium. Mapped to journal accounts in the <code>GLIntegrationMappingRule</code> data table.</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>The three "generate" actions</h2>
+    <div class="tbl"><table><thead><tr><th>Action</th><th>Produces</th><th>Used for</th></tr></thead><tbody>
+      <tr><td>Generate AR</td><td>A receivable: money owed to the company</td><td>Premium on a new policy or an increase endorsement</td></tr>
+      <tr><td>Generate AP</td><td>A payable: money owed by the company</td><td>Premium refund on a decrease or cancellation endorsement</td></tr>
+      <tr><td>Generate Fee</td><td>A neutral fee: neither AR nor AP until settled</td><td>Commission from a policy or endorsement</td></tr>
+    </tbody></table></div>
+    <div class="callout"><b>Key point:</b> commission is created as a fee (100600), not as an AR or AP. It becomes an AP or AR only when Commission Settlement summarises the commission fees into a settlement (400100). When the settlement is cleared, 100600 and 400100 are settled together.</div>
+  </section>
+
+  <section class="block">
+    <h2>Sign rules</h2>
+    <div class="tbl"><table><thead><tr><th>Record</th><th>Created</th><th>Settled</th><th>Restored (reversal)</th><th>Cancelled</th></tr></thead><tbody>
+      <tr><td>AR (ArapCate = 1)</td><td class="num">+</td><td class="num">−</td><td class="num">+</td><td class="num">−</td></tr>
+      <tr><td>AP (ArapCate = 2)</td><td class="num">−</td><td class="num">+</td><td class="num">−</td><td class="num">+</td></tr>
+    </tbody></table></div>
+    <p class="small muted">Payment approval (401100) creates a positive entry at approval only. There is no negative entry when the AP is settled. This is the rule in the Business Scenario chapter. The Fee Flow chapter shows the opposite sign; see "Source gaps".</p>
+  </section>
+
+  <section class="block">
+    <h2>Fee flow by scenario</h2>
+    <p class="muted">These tables come from the Transaction Fee Flow chapter. They show every fee written at each step.</p>
+    <div class="tabs" role="tablist" id="ffTabs"></div>
+    <div id="ffDetail"></div>
+  </section>
+
+  <section class="block">
+    <h2>Fee type reference</h2>
+    <div class="tbl"><table><thead><tr><th>Fee type</th><th>Name</th><th>Module / context</th></tr></thead><tbody id="feeRefBody"></tbody></table></div>
+    <div class="tbl"><table><thead><tr><th>Transaction type</th><th>Meaning</th></tr></thead><tbody id="txRefBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Partial payment: how fees are offset</h2>
+    <p class="prose">When an installment is paid in part, BCP must decide which fees inside the AR (premium, tax, each coverage) the payment settles. Two methods exist. <b>Priority offset</b> uses the <code>FeeTypePriority</code> data table and settles fees in priority order. <b>Proportional offset</b> splits the payment by each fee's share. Priority wins. If only some fee types have a priority, those are settled first and the rest of the payment is split proportionally (mixed mode). The installment (ARAP) offset fee always equals the amount paid.</p>
+    <div class="calc">
+      <div class="card">
+        <h3>Set up the AR</h3>
+        <div class="tbl"><table><thead><tr><th>Fee type</th><th class="num">Amount</th><th class="num">Priority</th></tr></thead><tbody id="calcFees"></tbody></table></div>
+        <div class="filter-row"><button class="btn ghost" type="button" id="calcAddFee">Add fee</button>
+          <label class="small" for="calcPreset">Example</label>
+          <select id="calcPreset"><option value="mixed">Mixed (A has priority 1)</option><option value="prio">Priority (A=1, B=2, C=3)</option><option value="prop">Proportional (premium + tax)</option></select></div>
+        <label class="small" for="calcPays">Payments in order, separated by commas</label>
+        <input id="calcPays" type="text" value="120, 100, 80.5">
+        <button class="btn" type="button" id="calcRun">Calculate</button>
+      </div>
+      <div class="card"><h3>Result</h3><div id="calcOut"></div></div>
+    </div>
+  </section>
+  <label class="mark-done"><input type="checkbox" data-done="fees"> I can predict the fee codes and signs for a collection, a refund and a reversal.</label>
+</section>
+
+<!-- L7 CONFIG -->
+<section class="view" id="v-config" data-title="Configuration and APIs" hidden>
+  <header><span class="eyebrow">Level 7 · Advanced</span><h1>Configuration, APIs and extension</h1>
+  <p class="lede">What you can change with configuration, what the platform API already does, and what each implementation must build in the iComposer layer.</p></header>
+
+  <section class="block">
+    <h2>Platform API or iComposer?</h2>
+    <p class="prose">The BCP core API already handles the common, multi-tenant flows: ARAP, collection, payment, offset, fee, status changes and reversals. Client needs beyond that differ by market and are built in an <b>iComposer</b> layer, on the client's tech stack or on the InsureMO app framework.</p>
+    <div class="tbl"><table><thead><tr><th>Area</th><th>Typical client need</th><th>Where it is built</th></tr></thead><tbody>
+      <tr><td>Payment methods</td><td>Payment gateway integration</td><td>iComposer (can be a common service per market)</td></tr>
+      <tr><td>Integration</td><td>Connecting to the PA or claim system</td><td>iComposer</td></tr>
+      <tr><td>Batch jobs</td><td>Premium notice, premium deduction batch</td><td>iComposer</td></tr>
+      <tr><td>Letters</td><td>Receipt, reminder letter, email, SMS</td><td>iComposer</td></tr>
+      <tr><td>Reports</td><td>Operational and reconciliation reports</td><td>iComposer</td></tr>
+      <tr><td>Authority</td><td>Payment or tolerance approval limits</td><td>iComposer</td></tr>
+      <tr><td>Upload</td><td>Bulk collection upload through Excel</td><td>iComposer</td></tr>
+    </tbody></table></div>
+    <div class="callout warn"><b>Fit-gap tip:</b> tolerance thresholds and payment authority limits are not listed as configuration. Plan them as build items unless the platform team confirms otherwise.</div>
+  </section>
+
+  <section class="block">
+    <h2>What you can configure</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Data model</h3><p>All objects and fields are in the Data Dictionary (Module = BCP, Group = BCP_Core, Context = Common), covering BizTransaction, ARAP, Commission, Invoice, Prepaid Order, Collection and Offset. Tenants can add fields, for example <code>ARAPSequence</code> or <code>AccountHolderIdNo</code> on BcpArap. Fields added to the DD and passed in the API appear in the query detail view without code changes. Changes must be deployed. Export and import work only between environments on the same platform version.</p></div>
+      <div class="card"><h3>Code and data tables</h3><p>Drive drop-down lists and validate API payloads. Some tables are fixed by the platform: ask the platform team before changing BcpArapType, BcpOffsetType or BcpCollectionStatus.</p></div>
+      <div class="card"><h3>Numbering</h3><p>Receipt, payment, offset and statement numbers come from numbering templates and can be changed.</p></div>
+      <div class="card"><h3>Search index</h3><p>Index Management controls which fields are searchable, exact-match only, or displayed. ARAP index: schema <code>bcp_arap</code>, read alias <code>bcp_arap_r_alias</code>, write alias <code>bcp_arap_w_alias5</code>, rebuild batch <code>arapIndexRebuildBatch</code>. Number and date fields must have the correct type, or range search and sorting will fail.</p></div>
+      <div class="card"><h3>Messages</h3><p>Validation messages are configured per language.</p></div>
+      <div class="card"><h3>BCPConfig parameters</h3><p><code>arapFieldAllowUpdate</code>: which ARAP fields users can edit in ARAP Management.<br><code>bcp.export.gl.columns</code>: columns and order of the GL export, for example <code>GLVoucherNo,PolicyNo,GLDate,Amount,GLStatus,Branch</code>.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Data and code tables</h2>
+    <div class="filter-row"><label for="dtFilter" class="small">Filter</label><input id="dtFilter" type="search" placeholder="e.g. status, payment, branch"></div>
+    <div class="tbl"><table><thead><tr><th>Name</th><th>Source</th><th>Options / notes</th><th>Used on</th></tr></thead><tbody id="dtBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>APIs named in the guide</h2>
+    <div class="tbl"><table><thead><tr><th>Endpoint</th><th>Purpose</th></tr></thead><tbody id="apiBody"></tbody></table></div>
+    <h3>Export API options</h3>
+    <div class="grid g2">
+      <div class="card"><ul class="clean"><li><code>columnList</code>: columns to export</li><li><code>label</code>: rename a column header</li><li><code>codeTable</code>: turn codes into descriptions</li><li><code>datePattern</code>: date format</li><li>Header <code>x-mo-lang-id</code>: output language (en_US, es, ja_JP, pt, th_TH, vi_VN, zh_CN, zh_HK, zh_TW)</li><li>Filters: <code>conditions</code>, <code>fromRangeConditions</code>, <code>toRangeConditions</code>, <code>fuzzyConditions</code></li></ul></div>
+      <div class="card"><pre class="mono small" style="margin:0;white-space:pre-wrap;overflow-x:auto">{
+  "columnList": ["ArapNo","BranchCode","BranchName",
+    {"name":"ArapType","label":"Arap Type Test","codeTable":"BcpArapType"},
+    {"name":"InsertTime","label":"Time Test","datePattern":"yyyy-MM-dd"}],
+  "conditions": {"ArapType":"-1001"},
+  "fromRangeConditions": {"InsertTime":"2023-07-17"},
+  "toRangeConditions": {"InsertTime":"2023-07-17"},
+  "fuzzyConditions": {}
+}</pre><p class="small muted">The source shows the date pattern as "yyy-MM-dd". It is corrected here to "yyyy-MM-dd".</p></div>
+    </div>
+    <h3>Query through the skill</h3>
+    <p>The <code>insuremo-gi-bcp-query</code> skill gives API access to: suspense, BizTransaction, collection, payment, offset, GL voucher, ARAP, commission and settlement, GL mapping rules and fee types.</p>
+  </section>
+
+  <section class="block">
+    <h2>Query and statistics screens</h2>
+    <div class="grid g2">
+      <div class="card"><h3>BCP Statistics</h3><p>Tabs for ARAP, Collection and Payment. Filters: ARAP Type, Product, Branch (with subordinates), Entry Date (default: the full current year). 32 extra filter fields can be added.</p><p>KPI cards: Total Number of Transactions, Total ARAP Amount, Total ARAP Balance, by day or month, as bar or line chart, split by Outstanding, Settled and Canceled.</p><p><b>Daily balance check:</b> previous day outstanding + today's new ARAP = today's outstanding + today's settled + today's canceled.</p><p>Custom report: Group Type (text fields) with Average and Sum (number fields).</p></div>
+      <div class="card"><h3>Query screens</h3><ul class="clean"><li><b>Query ARAP</b>: expand, Fee, Commission, linked transactions, notes, export</li><li><b>Query Receipt</b>: status Collected / Confirmed / Reversed / Refund</li><li><b>Query Payment</b>: status Requested (Approved) / Paid / Reversed</li><li><b>Query Application &amp; Offset</b>: type Arap / Application / Tolerance / Write Off / Commission</li><li><b>Query GL</b>: GL vouchers; rules in GLIntegrationMappingRule</li><li><b>Query Statement</b>: ARAP list per statement</li><li><b>Query BizTransaction</b>: everything received through the API, with or without ARAP</li></ul><p class="small muted">The gear icon adds or removes columns and filters for your login only. Export with no results gives an empty Excel file.</p></div>
+    </div>
+  </section>
+  <label class="mark-done"><input type="checkbox" data-done="config"> I know what is configuration, what is platform API, and what is iComposer build.</label>
+</section>
+
+<!-- L8 TOOLKIT -->
+<section class="view" id="v-toolkit" data-title="Role toolkits" hidden>
+  <header><span class="eyebrow">Level 8 · Apply</span><h1>Role toolkits</h1>
+  <p class="lede">Ready-to-use material for workshops, test design and build. All of it comes from the source rules.</p></header>
+  <div class="tabs" role="tablist" id="tkTabs">
+    <button role="tab" aria-selected="true" data-tk="ba">Business analyst</button>
+    <button role="tab" aria-selected="false" data-tk="qa">Tester</button>
+    <button role="tab" aria-selected="false" data-tk="dev">Developer</button>
+  </div>
+  <div id="tkDetail"></div>
+  <label class="mark-done"><input type="checkbox" data-done="toolkit"> I have used the toolkit for my role on a real requirement or test.</label>
+</section>
+
+<!-- GAPS -->
+<section class="view" id="v-gaps" data-title="Source gaps" hidden>
+  <header><span class="eyebrow">Consultant review</span><h1>Source gaps to resolve</h1>
+  <p class="lede">While building this guide I found places where the source guide contradicts itself or is incomplete. Close these with the InsureMO platform team before you sign off requirements or lock expected test results.</p></header>
+  <div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What the source says</th><th>Recommended action</th></tr></thead><tbody id="gapBody"></tbody></table></div>
+</section>
+
+<!-- QUIZ -->
+<section class="view" id="v-quiz" data-title="Knowledge check" hidden>
+  <header><span class="eyebrow">Check yourself</span><h1>Knowledge check</h1>
+  <p class="lede">Each answer explains why. Your score is kept only in this browser.</p>
+  <div class="score" id="quizScore"></div></header>
+  <div class="grid" id="quizBody" style="max-width:820px"></div>
+  <div><button class="btn ghost" type="button" id="quizReset">Reset answers</button></div>
+</section>
+
+<!-- GLOSSARY -->
+<section class="view" id="v-glossary" data-title="Glossary" hidden>
+  <header><span class="eyebrow">Reference</span><h1>Glossary</h1></header>
+  <div class="filter-row"><label for="glFilter" class="small">Filter</label><input id="glFilter" type="search" placeholder="Type a term"></div>
+  <div class="tbl"><table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody id="glBody"></tbody></table></div>
+</section>
+
+<p class="foot">Source: InsureMO BCP module guide (Business Flow Guide, Payment Method, Collection, Refund, Internal Transaction, Statement, Commission, Transaction Fee Flow, Query, API Overview, Business Scenario chapters). Items marked Domain context are general insurance practice. Confirm project-specific behaviour with the platform team.</p>
+</main>
+</div>
+<script>
+/* ===================== DATA ===================== */
+const LEVELS=[
+ {id:'start',n:'0',name:'Start here',grp:'Begin'},
+ {id:'basics',n:'1',name:'Foundations',grp:'Basic',learn:'What BCP does, core terms, menu map, payment methods, reference numbers',ready:'Explain AR, AP, suspense, offset, reversal and cancel'},
+ {id:'lifecycle',n:'2',name:'Money lifecycles',grp:'Basic',learn:'Money-in, money-out and internal patterns; status models; partial payment; installments',ready:'Draw the AR, receipt, payment and commission status models'},
+ {id:'scenarios',n:'3',name:'Business scenarios',grp:'Intermediate',learn:'21 scenarios with swimlanes, normal and reversal flows, rules and role notes',ready:'Walk any scenario end to end, including its reversal'},
+ {id:'screens',n:'4',name:'Screens',grp:'Intermediate',learn:'Purpose, prerequisites, steps, key fields and validations for each screen',ready:'Pick the right screen and predict its validation errors'},
+ {id:'integration',n:'5',name:'Cross-module',grp:'Intermediate',learn:'How Easy PA, Claims, Reinsurance, Sales Channel and GL connect to BCP',ready:'Explain what each module sends and receives'},
+ {id:'fees',n:'6',name:'Fees, GL, offset logic',grp:'Advanced',learn:'Fee records, signs, fee types, fee flow per scenario, partial-payment offset calculator',ready:'Predict the fee codes and signs for any step'},
+ {id:'config',n:'7',name:'Configuration & APIs',grp:'Advanced',learn:'Data tables, BCPConfig, index, data dictionary, APIs, iComposer extensions',ready:'Separate configuration, platform API and custom build'},
+ {id:'toolkit',n:'8',name:'Role toolkits',grp:'Apply',learn:'BA questions, test matrix and validation rules, developer checklist',ready:'Use it on a live requirement or test cycle'},
+ {id:'gaps',n:'!',name:'Source gaps',grp:'Reference'},
+ {id:'quiz',n:'?',name:'Knowledge check',grp:'Reference'},
+ {id:'glossary',n:'A',name:'Glossary',grp:'Reference'}
+];
+const PATHS={
+ ba:{t:'Business analyst',d:'Run workshops, write requirements, own fit-gap.',steps:['Foundations','Money lifecycles','Business scenarios (all groups)','Cross-module integration','Screens (skim)','Configuration: platform vs iComposer','Toolkit: BA questions','Source gaps']},
+ qa:{t:'Tester',d:'Design scenario, reversal and negative tests; verify status and fee results.',steps:['Foundations','Money lifecycles (every status arrow)','Business scenarios (normal + reversal)','Screens and validation rules','Fees, GL and offset logic','Toolkit: test matrix','Source gaps (fix expected results)']},
+ dev:{t:'Developer',d:'Build integrations, iComposer extensions and configuration.',steps:['Foundations','Cross-module integration (syncDataToBCP)','Fees, GL and offset logic','Configuration and APIs','Business scenarios (system steps)','Toolkit: developer checklist','Source gaps']}
+};
+const CONCEPTS=[
+ ['Collection','Receiving money from an external party. Money flows into the company.','in'],
+ ['Payment / Refund','Paying money to an external party. Money flows out. The menu calls all payments "Refund".','out'],
+ ['Receivable (AR)','Amount an external party owes the company, for example premium due. ArapCate = 1.','in'],
+ ['Payable (AP)','Amount the company owes an external party, for example a refund or a claim. ArapCate = 2.','out'],
+ ['Suspense account','Temporary holding account for money received before it is matched to an AR.','in'],
+ ['Offset / Application','Matching money or an opposite balance against an AR or AP so the balance becomes 0.','int'],
+ ['Reversal','Undoing a completed step to restore the previous state. Can be redone.','out'],
+ ['Cancel','Closing an outstanding AR, AP, commission or prepay order. Irreversible.','cancel'],
+ ['Installment','An AR split into periodic payments. Each period is its own AR.',''],
+ ['Settlement (commission)','Periodic process that turns commission fees into one AP or AR per producer.',''],
+ ['Fee','Detailed record of each money movement, used for GL posting.',''],
+ ['Statement','Groups many AR and AP of one party (producer or coinsurer) so they can be settled as one net amount.','int']
+];
+const MENU=[
+ ['Collection','Premium Pre-Paid','Collect premium before the policy is issued (Cash Before Cover)'],
+ ['Collection','Policy Premium Collection','Collect premium after policy or endorsement issue, and settle the AR in one step'],
+ ['Collection','Single Collection','Collect anything other than premium or producer remittance, such as salvage or subrogation recovery'],
+ ['Collection','Suspense Collection','Collect from a producer or coinsurer into suspense'],
+ ['Collection','Application','Use a suspense receipt to settle policy AR'],
+ ['Collection','Reverse Collection','Reverse a receipt that has not been applied'],
+ ['Collection','Reverse Application & Offset','Reverse an application, ARAP offset, tolerance, write-off or commission offset'],
+ ['Refund','Refund Approval','Approve AP for payment'],
+ ['Refund','Single Refund','Confirm payment by individual payment number'],
+ ['Refund','Massive Refund','Confirm payments by payment method and date range'],
+ ['Refund','Receipt Refund','Refund the remaining balance of a receipt'],
+ ['Refund','Statement Refund','Approve payment of a statement from its ARAP'],
+ ['Refund','Reverse Refund','Reverse an approved or paid payment'],
+ ['Internal','ARAP Offset','Net AR against AP of the same party'],
+ ['Internal','Tolerance Offset','Write off small differences and bad debt'],
+ ['Internal','Statement Management','Query statements and remove ARAP from them'],
+ ['Internal','ARAP Management','Edit allowed fields or cancel Outstanding ARAP'],
+ ['Commission','Single Commission Settlement','Settle commission for one producer or policy'],
+ ['Commission','Massive Commission Settlement','Settle commission by producer and date range'],
+ ['Commission','Query Commission / Query Settlement','Track commission and settlement status'],
+ ['Query','Statistics, ARAP, Receipt, Payment, Application & Offset, GL, Statement, BizTransaction','Search and export all financial records']
+];
+const PM=[['Policy Admin','New business AR',1,1,1,1,1],['Policy Admin','Endorsement AR',1,1,1,1,1],['Policy Admin','Renewal AR',1,1,1,1,1],['Policy Admin','Endorsement AP',1,1,1,1,1],['Claims','Claim payment AP',0,1,1,1,0],['Claims','Claim recovery AR',0,1,1,1,0],['Commission','Sales channel AP',0,1,1,1,0],['Commission','Sales channel AR',0,1,1,1,0]];
+
+/* ---------- status models ---------- */
+const STATES={
+ arap:{name:'AR / AP',nodes:[{id:'O',t:'Outstanding',x:60,y:90,c:'start'},{id:'P',t:'Outstanding (part paid)',x:300,y:20},{id:'S',t:'Settled',x:540,y:90,c:'good'},{id:'C',t:'Canceled',x:300,y:170,c:'final'}],
+  edges:[['O','P','Partial offset'],['P','S','Remaining offset'],['O','S','Full offset'],['S','O','Reverse offset'],['O','C','Cancel (final)']],
+  rows:[['Outstanding','Settled','Offset of the full balance (application, ARAP offset, tolerance, write-off, payment confirmation)','Application, Policy Premium Collection, Single Refund, ARAP Offset, Tolerance Offset'],['Outstanding','Outstanding, lower balance','Partial offset. Status does not change','Any collection or application'],['Settled','Outstanding','Reversal restores the original balance','Reverse Application & Offset, Reverse Refund'],['Outstanding','Canceled','Cancel. Irreversible','ARAP Management (delete)']]},
+ receipt:{name:'Receipt (collection)',nodes:[{id:'Co',t:'Collected',x:60,y:90,c:'start'},{id:'Cf',t:'Confirmed',x:300,y:20,c:'good'},{id:'R',t:'Reversed',x:540,y:90,c:'final'},{id:'Rf',t:'Refund',x:300,y:170}],
+  edges:[['Co','Cf','Funds verified'],['Co','R','Reverse (balance = amount)'],['Co','Rf','Receipt Refund'],['Cf','Rf','Receipt Refund']],
+  rows:[['Collected','Confirmed','Funds clear (cheque, bank transfer, e-payment)','Same collection screen, confirmation step'],['Collected','Reversed','Receipt never applied: receipt balance equals receipt amount','Reverse Collection'],['Collected / Confirmed','Refund','Remaining balance refunded to payer','Receipt Refund'],['Applied receipt','(blocked)','Reverse the application first, then the collection','Reverse Application & Offset → Reverse Collection']]},
+ payment:{name:'Payment',nodes:[{id:'A',t:'Approved',x:60,y:90,c:'start'},{id:'Pd',t:'Paid',x:300,y:90,c:'good'},{id:'Rv',t:'Reversed',x:540,y:90,c:'final'}],
+  edges:[['A','Pd','Confirm payment'],['Pd','Rv','Reverse Refund'],['A','Rv','Reverse Refund']],
+  rows:[['(AP Outstanding)','Approved','Refund Approval, Statement Refund, or Receipt Refund (already approved)','Refund Approval / Statement Refund / Receipt Refund'],['Approved','Paid','Payment date and company bank account entered','Single Refund / Massive Refund'],['Approved or Paid','Reversed','Mistake in refund; AP goes back to Outstanding','Reverse Refund']]},
+ commission:{name:'Commission',nodes:[{id:'1',t:'1 Pending',x:40,y:90,c:'start'},{id:'2',t:'2 Waiting for Issue',x:230,y:90},{id:'4',t:'4 Offset',x:230,y:180,c:'good'},{id:'3',t:'3 Settled',x:420,y:90},{id:'5',t:'5 Paid',x:600,y:90,c:'good'}],
+  edges:[['1','2','Premium collected'],['1','4','Collected with Use Commission'],['2','3','Single / Massive Settlement'],['3','5','Approved and paid']],
+  rows:[['1 Pending','2 Waiting for Issue','Premium for the policy is collected in BCP','Any premium collection'],['1 Pending','4 Offset','Collection ticks "Use Commission", so commission is netted from premium','Policy Premium Collection / Application'],['2 Waiting for Issue','3 Settled','Commission settled and sent to BCP as AP or AR','Commission > Single / Massive Settlement'],['3 Settled','5 Paid','Settlement AP approved and paid','Refund Approval → Single / Massive Refund']]},
+ offset:{name:'Offset record',nodes:[{id:'Of',t:'Offset',x:150,y:90,c:'start'},{id:'Rv',t:'Reversed',x:450,y:90,c:'final'}],
+  edges:[['Of','Rv','Reverse Application & Offset']],
+  rows:[['Offset','Reversed','Reverse by type: ARAP, Application, Tolerance Offset, Write Off, Commission. Reversal date and user are stored','Reverse Application & Offset']]},
+ proposal:{name:'Proposal (CBC)',nodes:[{id:'B',t:'Bound',x:40,y:90,c:'start'},{id:'W',t:'Waiting For Payment',x:250,y:90},{id:'I',t:'Issued',x:480,y:90,c:'good'},{id:'X',t:'Prepay cancelled',x:250,y:180,c:'final'}],
+  edges:[['B','W','Send To BCP'],['W','I','Premium Pre-Paid submitted'],['W','X','Cancel prepay order']],
+  rows:[['Bound (PA)','Waiting For Payment','User clicks Send To BCP in PA. A prepay order is created in BCP','Easy PA'],['Waiting For Payment','Issued','Premium Pre-Paid submitted; integration issues the policy, creates AR and settles it','Collection > Premium Pre-Paid'],['Waiting For Payment','Prepay cancelled','Unused prepay order is cancelled. Irreversible','ARAP Management (cancel)']]}
+};
+
+/* ---------- lanes ---------- */
+const LANES={cust:'Customer / payer',prod:'Producer / agent',coin:'Coinsurer',rein:'Reinsurer',tp:'Third party',clmt:'Claimant / payee',bank:'Bank',pa:'Easy PA',clm:'Claims',ri:'Reinsurance',sc:'Sales Channel',fin:'BCP finance user',appr:'BCP approver',sys:'BCP system',gl:'GL'};
+const LANE_ORDER=['cust','prod','coin','rein','tp','clmt','bank','pa','clm','ri','sc','fin','appr','sys','gl'];
+function S(l,k,t,o){return Object.assign({l,k,t},o||{})}
+
+/* ---------- scenarios ---------- */
+const REV_COLL=[
+ S('fin','rev','Reverse Application & Offset',{m:'Collection > Reverse Application & Offset'}),
+ S('sys','rev','AR restored to Outstanding',{s:'AR Outstanding, balance restored',f:'ARAP fees (+)'}),
+ S('fin','rev','Reverse Collection',{m:'Collection > Reverse Collection',r:'Only when receipt balance = receipt amount'}),
+ S('sys','rev','Receipt reversed, suspense deactivated',{s:'Receipt Reversed',f:'700009 (−)'}),
+ S('gl','gl','Reversal fees posted',{f:'Is Reverse = Y'})];
+const REV_PAY=[
+ S('fin','rev','Reverse Refund',{m:'Refund > Reverse Refund',r:'Payment status Approved or Paid'}),
+ S('sys','rev','Payment reversed, AP restored',{s:'Payment Reversed; AP Outstanding',f:'402000 (−); ARAP fees (−)'}),
+ S('gl','gl','Reversal fees posted',{f:'Is Reverse = Y'})];
+
+const SCEN=[
+{id:'C1',grp:'in',name:'New business / renewal premium collection',mods:['pa'],src:'Business Flow: Customer Billing 1 · Scenario: Collection 1 (NCBC)',
+ desc:'A new policy is issued or renewed. PA bills BCP and an AR is created. The customer pays; the money goes to suspense and is offset against the AR in the same screen.',
+ normal:[S('pa','ev','Policy issued or renewed',{f:'BizModule 10, NEWBIZ'}),S('sys','sys','syncDataToBCP creates AR',{s:'AR Outstanding',f:'100501, 100101 (+)'}),S('cust','ext','Customer pays premium'),S('fin','op','Policy Premium Collection: find AR, enter receipt, Submit',{m:'Collection > Policy Premium Collection'}),S('sys','sys','Receipt created into suspense',{s:'Receipt Collected',f:'700009 (+)'}),S('sys','sys','Receipt offsets AR',{s:'AR Settled, balance 0',f:'100501, 100101 (−)'}),S('gl','gl','Fees become GL vouchers'),S('sys','end','Premium settled')],
+ reversal:REV_COLL,
+ rules:['ARAP Type is fixed to Policy Premium on this screen.','Policy No and Currency are mandatory search fields.','Collect by Single Policy or Multiple Policies.','Receipt Amount = Collection Amount − Bank Charge (and − Commission if Use Commission is ticked).'],
+ ba:'Confirm which payment methods each channel accepts, and whether bank charges are absorbed or passed to the customer.',qa:'Test single-policy and multiple-policy collection, foreign currency, and reversal in the wrong order (collection before offset must fail).',dev:'PA sends BizModule 10, NEWBIZ, ArapCate 1. Renewal uses NEWBIZ too. Offset happens in the same transaction as the receipt.'},
+{id:'C2',grp:'in',name:'Pre-paid premium (Cash Before Cover)',mods:['pa'],src:'Business Flow: Customer Billing 2 · Collection UI: Premium Pre-Paid · Scenario: Collection 2',
+ desc:'Payment is required before cover starts. PA sends a prepay order. When the premium is collected, BCP triggers PA to issue the policy, then creates the AR and settles it with the receipt.',
+ normal:[S('pa','ev','Proposal bound; user clicks Send To BCP',{s:'Proposal Waiting For Payment'}),S('sys','sys','Prepay order created',{f:'IsPrepay = Y; no fee, no ARAP'}),S('cust','ext','Customer prepays'),S('fin','op','Premium Pre-Paid: search Proposal No, Submit, confirm Yes',{m:'Collection > Premium Pre-Paid'}),S('sys','sys','Receipt created',{s:'Receipt Collected',f:'700009 (+)'}),S('pa','ev','Integration issues policy automatically',{s:'Proposal Issued'}),S('sys','sys','AR created and settled by the prepayment',{s:'AR Settled',f:'100501, 100101 (+) then (−)'}),S('gl','gl','Fees posted')],
+ reversal:REV_COLL,
+ rules:['Search only by Proposal No.','Payer Name is fixed from PA data.','If collection currency is foreign, the system converts using the rate for the collection date.','The proposal is issued only when the receipt collection succeeds.','An unused prepay order can be cancelled. Cancel is irreversible.'],
+ ba:'Decide which products and channels need CBC (online sales, some regulators). Agree what happens if payment never arrives: who cancels the prepay order and when.',qa:'Verify the proposal becomes Issued only after a successful receipt. Test a failed submit and confirm no policy is issued. Test prepay order cancel.',dev:'This flow has the heaviest integration: BCP calls back into PA to issue the policy. Make the callback idempotent and handle a PA issue failure after the receipt is saved.'},
+{id:'C3',grp:'in',name:'Endorsement premium collection (increase)',mods:['pa'],src:'Business Flow: Customer Billing 3 · Scenario: Collection 3',
+ desc:'An endorsement adds cover or raises the sum insured. PA sends an incremental AR, collected the same way as new business.',
+ normal:[S('pa','ev','Endorsement issued (premium up)',{f:'ENDORSEMENT, ArapCate 1'}),S('sys','sys','Incremental AR created',{s:'AR Outstanding',f:'100501, 100101 (+)'}),S('cust','ext','Customer pays extra premium'),S('fin','op','Policy Premium Collection',{m:'Collection > Policy Premium Collection'}),S('sys','sys','Receipt to suspense and offset',{s:'AR Settled',f:'700009 (+); 100501, 100101 (−)'}),S('gl','gl','Fees posted')],
+ reversal:REV_COLL,
+ rules:['An endorsement can create an AR (increase) or an AP (decrease). This scenario covers the AR only; see P2 for the AP.'],
+ ba:'List the endorsement types that change premium and confirm each one sends the right ArapCate.',qa:'Collect an endorsement AR on a policy whose original AR is still open; confirm each AR settles separately.',dev:'Same contract as new business with BizTransactionType ENDORSEMENT.'},
+{id:'C4',grp:'in',name:'Commercial lines producer collection',mods:['pa','sc'],src:'Business Flow: Agent Billing 1 · Scenario: Collection 4 · Fee Flow: Agent Suspense Collection',
+ desc:'A broker or agent collects premium from clients and remits it. The money goes to suspense first, then is applied to policy ARs. Commission can be netted during application, and AR/AP of the producer can be offset.',
+ normal:[S('pa','ev','Policy issued',{f:'NEWBIZ'}),S('sys','sys','AR created',{s:'AR Outstanding',f:'100501, 100101 (+)'}),S('sc','ev','Commission fee recorded',{s:'Commission 1 Pending',f:'100600'}),S('prod','ext','Producer remits funds'),S('fin','op','Suspense Collection: producer, amount, bank account',{m:'Collection > Suspense Collection'}),S('sys','sys','Suspense receipt created',{s:'Receipt Collected',f:'700009 (+)'}),S('fin','op','Application: pick receipt, tick ARs, optional Use Commission',{m:'Collection > Application'}),S('sys','sys','AR settled; commission offset if ticked',{s:'AR Settled; commission 4 Offset',f:'100501, 100101 (−); 100600 (−)'}),S('fin','op','Optional: ARAP Offset of producer AR and AP',{m:'Internal > ARAP Offset'}),S('gl','gl','Fees posted')],
+ reversal:[S('fin','rev','Reverse Application & Offset',{m:'Collection > Reverse Application & Offset'}),S('sys','rev','AR and commission restored',{s:'AR Outstanding',f:'100501, 100101, 100600 (+)'}),S('fin','rev','Reverse Collection',{m:'Collection > Reverse Collection'}),S('sys','rev','Suspense receipt reversed',{s:'Receipt Reversed',f:'700009 (−)'}),S('gl','gl','Reversal fees posted')],
+ variants:[['No','No','Suspense collection → Application → AR settled','700009 (+); 100501, 100101 (−)'],['Yes','No','Application includes commission offset → AR and commission settled','700009 (+); 100501, 100101, 100600 (−)'],['No','Yes','Application → ARAP Offset → settled','700009 (+); 100501, 100101 (−); ARAP offset fees'],['Yes','Yes','Application with commission → ARAP Offset → all settled','700009 (+); 100501, 100101, 100600 (−); ARAP offset fees']],
+ rules:['Selected ARAP balance cannot exceed the Remaining Receipt Balance.','The screen shows one row per transaction even for installment premiums.','Use Commission nets the producer commission from the AR.'],
+ ba:'Agree with the business whether producers remit gross or net of commission. This decides if "Use Commission" is standard practice.',qa:'Run all four variants (commission offset Y/N × ARAP offset Y/N). Check commission status moves to 4 Offset when netted.',dev:'Commission is a fee (100600), not an ARAP. The source shows fee 700009 for the suspense receipt in one chapter and 403000 in another; confirm before building GL mapping.'},
+{id:'C5',grp:'in',name:'Reinsurance receivable collection',mods:['ri'],src:'Business Flow: Reinsurance Billing 1 · Scenario: Collection 5',
+ desc:'Under facultative outward reinsurance or a settlement, the reinsurer owes the company money. The company collects it as one lump sum.',
+ normal:[S('ri','ev','RI fac-out or settlement calculated',{f:'BizModule 30, ArapCate 1'}),S('sys','sys','RI AR created (one period)',{s:'AR Outstanding'}),S('rein','ext','Reinsurer pays'),S('fin','op','Suspense Collection',{m:'Collection > Suspense Collection'}),S('sys','sys','Receipt created',{s:'Receipt Collected',f:'700009 (+)'}),S('fin','op','Application against RI AR',{m:'Collection > Application'}),S('sys','sys','RI AR settled',{s:'AR Settled'}),S('gl','gl','Fees posted')],
+ reversal:REV_COLL,
+ rules:['RI has no installments: TotalPeriods is always 1.','The source does not list RI fee type codes.'],
+ ba:'Confirm the source of truth for RI balances (treaty statements vs per-claim recoveries) and the settlement frequency.',qa:'Verify TotalPeriods = 1 for every RI AR.',dev:'Fee and ARAP fee type codes for RI are not in the source; get them from the BcpFeeType configuration.'},
+{id:'C6',grp:'in',name:'Claim recovery collection (salvage / subrogation)',mods:['clm'],src:'Business Flow: Customer Billing 4 · Scenario: Collection 6',
+ desc:'After paying a claim, the company recovers money by selling salvage or by claiming from the party at fault. The recovery is an AR that reduces the net claim cost.',
+ normal:[S('clm','ev','Recovery registered (salvage or subrogation)',{f:'BizModule 20'}),S('sys','sys','Recovery AR created',{s:'AR Outstanding',f:'200312, 200100 (+)'}),S('tp','ext','Third party pays'),S('fin','op','Single Collection: ARAP Type Claim Recovery, Submit',{m:'Collection > Single Collection'}),S('sys','sys','Receipt created and offset',{s:'AR Settled',f:'700009 (+); 200312, 200100 (−)'}),S('gl','gl','Fees posted')],
+ reversal:REV_COLL,
+ rules:['Usually no installments and no multiple payers.','Single Collection is the general-purpose screen for any party and ARAP type.'],
+ ba:'Confirm who in the business records recoveries and whether recovery affects the claim reserve in the Claims module.',qa:'Check the default ARAP Type on Single Collection and that recovery AR uses 200312/200100.',dev:'Claims sends BizModule 20 with ArapCate 1 for recovery and ArapCate 2 for indemnity.'},
+{id:'C7',grp:'in',name:'Batch collection',mods:['pa','sc'],src:'Business Flow: Agent Billing 4 · Scenario: Collection 7',
+ desc:'Many ARs are collected together, for example auto-collection on due dates or month-end agent remittances. Each AR is offset on its own and can be reversed on its own.',
+ normal:[S('pa','ev','Many ARs billed'),S('sys','sys','Multiple ARs created',{s:'AR Outstanding (each)'}),S('cust','ext','Payers pay'),S('fin','op','Collect individually or merged',{m:'Policy Premium / Suspense / Single Collection'}),S('sys','sys','Each AR offset independently',{s:'All AR Settled'}),S('gl','gl','Fees posted')],
+ reversal:[S('fin','rev','Reverse each offset on its own',{m:'Collection > Reverse Application & Offset'}),S('fin','rev','Reverse each collection on its own',{m:'Collection > Reverse Collection'}),S('sys','rev','Each AR restored individually',{s:'AR Outstanding'})],
+ rules:['Batch scenarios always have many payers or ARs.','Each reversal is independent.'],
+ ba:'Premium deduction batches are an iComposer build item, not standard platform.',qa:'Reverse one item in a batch and confirm the others stay settled.',dev:'Batch jobs (premium notice, deduction) are listed as iComposer extensions.'},
+{id:'C8',grp:'in',name:'Collection confirmation (two-step)',mods:['pa'],src:'Business Flow: Common 1 · Scenario: Collection 8',
+ desc:'For cheques, bank transfers or e-payments, the collection is recorded when the instrument arrives and confirmed when the funds clear. This stops settlement against money that may bounce.',
+ normal:[S('sys','sys','AR exists',{s:'AR Outstanding',f:'100501, 100101 (+)'}),S('cust','ext','Customer hands in cheque'),S('fin','op','Record collection',{m:'Relevant collection screen'}),S('sys','sys','Collection recorded, not yet confirmed',{s:'Receipt Collected',f:'700009 (+)'}),S('bank','ext','Funds clear'),S('fin','op','Confirm receipt',{m:'Same screen, confirmation step'}),S('sys','sys','Receipt confirmed',{s:'Receipt Confirmed',f:'Status only, or COLLECTION_CONFIRM fee (see gaps)'}),S('sys','sys','Offset against AR',{s:'AR Settled',f:'100501, 100101 (−)'})],
+ reversal:[S('fin','rev','Before confirmation: Reverse Collection',{m:'Collection > Reverse Collection',f:'700009 (−)'}),S('fin','rev','After confirmation: Reverse Application & Offset, then Reverse Collection',{m:'Collection > Reverse Application & Offset'}),S('sys','rev','AR restored, receipt reversed',{s:'AR Outstanding; Receipt Reversed'})],
+ rules:['Before confirmation, reversal has no settlement impact.','After confirmation, follow the reversal of the related collection scenario.'],
+ ba:'Agree the clearing period per payment method and who confirms. Define the bounced-cheque procedure.',qa:'Test offset attempts before confirmation, and a bounced cheque after confirmation.',dev:'The source is inconsistent on whether confirmation writes a fee and whether offset happens before or after confirmation. Confirm before building.'},
+{id:'C9',grp:'in',name:'Intermediary commission collection',mods:['sc'],src:'Business Flow: Agent Billing 2 · Scenario: Collection 9',
+ desc:'An agent or broker owes the company money, for example management fees or commission clawed back. Commission fees are settled into a collectible AR, then collected.',
+ normal:[S('sc','ev','Commission fee recorded',{f:'100600 (+)'}),S('fin','op','Single or Massive Commission Settlement',{m:'Commission > Single / Massive Settlement'}),S('sys','sys','Settlement AR created',{s:'Commission 3 Settled',f:'400100 (+)'}),S('prod','ext','Agent pays'),S('fin','op','Suspense Collection, then Application',{m:'Collection > Suspense Collection / Application'}),S('sys','sys','AR settled; 100600 and 400100 cleared together',{s:'AR Settled',f:'700009 (+); 100600, 400100 (−)'}),S('gl','gl','Fees posted')],
+ reversal:REV_COLL,
+ rules:['Commission has no ARAP of its own; settlement creates 400100 and binds it to 100600.'],
+ ba:'Clarify which charges agents pay the company and how often settlement runs.',qa:'Check that both 100600 and 400100 settle together.',dev:'The Fee Flow chapter shows the settlement AR with a negative sign; the Business Scenario chapter shows positive. Confirm.'},
+{id:'C10',grp:'in',name:'Over-collection (paid more than AR)',mods:['pa'],src:'Business Flow: Common 2 · Scenario: Collection 10',
+ desc:'The payer pays more than the AR, for example a duplicate payment. The AR is fully settled and the extra stays in suspense.',
+ normal:[S('sys','sys','AR exists',{s:'AR Outstanding',f:'100501, 100101 (+)'}),S('cust','ext','Customer pays more than due'),S('fin','op','Collect full amount',{m:'Relevant collection screen'}),S('sys','sys','Receipt to suspense',{f:'700009 (+)'}),S('sys','sys','Offset full AR amount',{s:'AR Settled',f:'100501, 100101 (−)'}),S('sys','end','Excess remains in suspense',{s:'Receipt balance > 0'}),S('fin','op','Later: apply to another AR or Receipt Refund',{m:'Application / Receipt Refund'})],
+ reversal:REV_COLL,
+ rules:['AR becomes Settled.','Excess can be applied to another AR of the same payer, refunded, or kept.'],
+ ba:'Set a policy for unclaimed excess (how long it stays in suspense, when it is refunded).',qa:'Check receipt balance = collected − AR after the offset.',dev:'Suspense ageing reports are a likely custom report.'},
+{id:'C11',grp:'in',name:'Under-collection (paid less than AR)',mods:['pa'],src:'Business Flow: Common 2 · Scenario: Collection 10',
+ desc:'The payer pays less than the AR. The AR stays Outstanding and its balance goes down. More payments can follow until it is settled.',
+ normal:[S('sys','sys','AR exists',{s:'AR Outstanding',f:'100501, 100101 (+)'}),S('cust','ext','Customer pays part'),S('fin','op','Collect partial amount',{m:'Relevant collection screen'}),S('sys','sys','Partial offset',{s:'AR Outstanding, balance reduced',f:'Fees offset by priority / proportion'}),S('cust','ext','Customer pays the rest'),S('sys','sys','Final offset',{s:'AR Settled'}),S('gl','gl','Fees posted')],
+ reversal:[S('fin','rev','Reverse partial offset',{m:'Collection > Reverse Application & Offset'}),S('sys','rev','AR balance restored',{f:'(+)'}),S('fin','rev','Reverse partial collection',{m:'Collection > Reverse Collection'}),S('sys','rev','Suspense deactivated',{f:'700009 (−)'})],
+ rules:['AR status does not change on a partial offset.','Multiple partial offsets are allowed.','Fee split follows FeeTypePriority first, then proportion (Level 6 calculator).'],
+ ba:'Decide whether a small shortfall should go to Tolerance Offset instead of staying open.',qa:'Verify the fee split for each partial payment with the Level 6 calculator.',dev:'Fee offset logic is platform behaviour, driven by the FeeTypePriority data table.'},
+{id:'P1',grp:'out',name:'Claim indemnity payment',mods:['clm'],src:'Business Flow: Customer Billing 5 · Scenario: Payment 1',
+ desc:'A claim is approved. Claims sends an AP. Finance approves it, the payment is made, and the AP is settled.',
+ normal:[S('clm','ev','Claim settlement approved',{f:'BizModule 20, ArapCate 2'}),S('sys','sys','Claim AP created',{s:'AP Outstanding',f:'200312, 200100 (−)'}),S('appr','op','Refund Approval: date range ≤ 30 days, export, exclusion list, Submit',{m:'Refund > Refund Approval'}),S('sys','sys','Payment record created',{s:'Payment Approved',f:'401100 (+)'}),S('fin','op','Single or Massive Refund: payment date, company bank account',{m:'Refund > Single / Massive Refund'}),S('sys','sys','Payment confirmed',{s:'Payment Paid; AP Settled',f:'402000 (+); 200312, 200100 (+)'}),S('clmt','ext','Claimant receives funds'),S('gl','gl','Fees posted')],
+ reversal:REV_PAY,
+ rules:['Claim payments allow cheque, direct debit/credit and bank transfer only.','Refund Approval shows only negative-amount AP records.'],
+ ba:'Confirm approval limits by amount and role. Authority rules are an iComposer build item.',qa:'Test the exclusion list: excluded APs stay Outstanding, all others become Approved.',dev:'Bank file or payment gateway integration for disbursement is an iComposer item.'},
+{id:'P2',grp:'out',name:'Endorsement refund',mods:['pa','sc'],src:'Business Flow: Customer Billing 6 · Scenario: Payment 2 · Fee Flow: Endorsement Refund',
+ desc:'An endorsement reduces premium or cancels cover. PA sends a refund AP, which goes through approval and payment. Commission paid on the original premium may be clawed back.',
+ normal:[S('pa','ev','Endorsement issued (premium down or cancel)',{f:'ENDORSEMENT, ArapCate 2'}),S('sys','sys','Refund AP created',{s:'AP Outstanding',f:'100501, 100101 (−)'}),S('appr','op','Refund Approval',{m:'Refund > Refund Approval'}),S('sys','sys','Payment approved',{s:'Payment Approved',f:'401100'}),S('fin','op','Single or Massive Refund',{m:'Refund > Single / Massive Refund'}),S('sys','sys','Refund paid, AP settled',{s:'Payment Paid; AP Settled',f:'402000; 100501, 100101 (+)'}),S('cust','ext','Customer receives refund'),S('gl','gl','Fees posted')],
+ reversal:[S('fin','rev','Reverse Refund',{m:'Refund > Reverse Refund'}),S('sys','rev','Payment reversed, AP restored',{s:'Payment Reversed; AP Outstanding',f:'402000 (−); 100501, 100101 (−)'}),S('sc','rev','Commission clawback restored if applicable',{f:'100600 (−)'}),S('gl','gl','Reversal fees posted')],
+ rules:['A customer who cancels at the counter can be refunded at once with Single Refund.','If the AP should never be paid, cancel it in ARAP Management (irreversible).'],
+ ba:'Decide when to net the refund against other open ARs of the same customer (ARAP Offset) instead of paying it out.',qa:'Check commission clawback on reversal.',dev:'The endorsement refund fee flow also writes an OFFSET fee (100501) on settlement.'},
+{id:'P3',grp:'out',name:'Reinsurance payable payment',mods:['ri'],src:'Business Flow: Reinsurance Billing 2 · Scenario: Payment 3',
+ desc:'The company owes the reinsurer, for example ceded premium under a treaty or fac placement. The AP is approved and paid as one payment.',
+ normal:[S('ri','ev','RI settlement calculated',{f:'BizModule 30, ArapCate 2'}),S('sys','sys','RI AP created',{s:'AP Outstanding'}),S('appr','op','Refund Approval',{m:'Refund > Refund Approval'}),S('fin','op','Single or Massive Refund',{m:'Refund > Single / Massive Refund'}),S('sys','sys','AP settled',{s:'Payment Paid; AP Settled',f:'401100; 402000'}),S('rein','ext','Reinsurer receives funds'),S('gl','gl','Fees posted')],
+ reversal:REV_PAY,
+ rules:['No installments for RI.'],
+ ba:'Confirm whether RI payables and receivables with the same reinsurer should be netted (ARAP Offset or Statement).',qa:'Verify one AP per settlement, TotalPeriods = 1.',dev:'RI fee type codes are not in the source.'},
+{id:'P4',grp:'out',name:'Statement payment',mods:['sc','pa'],src:'Business Flow: Agent Billing 6 · Statement UI · Scenario: Payment 4',
+ desc:'Many ARs and APs with one producer or coinsurer are grouped into a statement. The net payable is approved and paid once.',
+ normal:[S('sys','sys','Statement batch or API groups ARAP',{s:'ARAP get StatementNo, NeedStatement = Y'}),S('fin','op','Statement Management: review ARAP list, remove items if needed',{m:'Internal > Statement Management'}),S('appr','op','Statement Refund: select AR + AP, total < 0, same payer',{m:'Refund > Statement Refund'}),S('sys','sys','AR and AP netted; payment created for the remaining payable',{s:'Payment Approved',f:'401100 (+)'}),S('fin','op','Single or Massive Refund',{m:'Refund > Single / Massive Refund'}),S('sys','sys','All statement items settled',{s:'Payment Paid',f:'402000 (+); original fees (+)'}),S('prod','ext','Producer receives net amount')],
+ reversal:[S('fin','rev','Reverse Refund',{m:'Refund > Reverse Refund'}),S('sys','rev','All statement ARAP restored',{f:'402000 (−); original fees (−)'})],
+ rules:['Selected total must be less than 0.','Payer/Payee Category and Name must be the same for all selected items.','Removing ARAP from a statement recalculates the statement total.'],
+ ba:'Agree statement frequency and cut-off with brokers and coinsurers.',qa:'Try mixing two payees in one Statement Refund; it must be rejected.',dev:'Statement APIs: getStatementNo, updateArapList, statement create.'},
+{id:'P5',grp:'out',name:'Intermediary commission payment',mods:['sc'],src:'Business Flow: Agent Billing 3 · Commission UI · Scenario: Payment 5',
+ desc:'The company owes commission to agents or brokers. Commission fees are settled per producer into an AP, which is approved and paid.',
+ normal:[S('sc','ev','Commission fee generated with policy',{s:'Commission 1 Pending',f:'100600 (−)'}),S('sys','sys','Premium collected',{s:'Commission 2 Waiting for Issue'}),S('fin','op','Single or Massive Settlement',{m:'Commission > Single / Massive Settlement'}),S('sys','sys','Settlement AP created',{s:'Commission 3 Settled',f:'400100 (−)'}),S('appr','op','Refund Approval',{m:'Refund > Refund Approval',f:'401100 (+)'}),S('fin','op','Single or Massive Refund',{m:'Refund > Single / Massive Refund'}),S('sys','sys','AP settled; 100600 and 400100 cleared',{s:'Commission 5 Paid',f:'402000 (+); 100600, 400100 (+)'}),S('prod','ext','Producer receives commission')],
+ reversal:REV_PAY,
+ rules:['Settlement needs commission status Waiting for Issue.','Single Settlement: Producer and Currency mandatory.','Payment Amount = Commission Amount × Exchange Rate.'],
+ ba:'Confirm whether commission is payable only after premium is collected (the status model says yes).',qa:'Settle commission whose premium is not yet collected; it must not appear.',dev:'A clearing batch offsets the settlement AP against the detail commission fees.'},
+{id:'P6',grp:'out',name:'Receipt refund',mods:[],src:'Business Flow: Common 3 · Refund UI: Receipt Refund · Scenario: Payment 6',
+ desc:'Money sits in suspense with no AR to match, for example an over-payment or a cancelled transaction. It is paid back from the receipt balance.',
+ normal:[S('sys','sys','Receipt has remaining balance',{s:'e.g. paid 1000, applied 900, balance 100'}),S('fin','op','Receipt Refund: tick receipt, payer and amount auto-filled, Submit',{m:'Refund > Receipt Refund'}),S('sys','sys','Payment created already Approved',{s:'Payment Approved; Receipt Refund',f:'700009 (−)'}),S('fin','op','Single or Massive Refund',{m:'Refund > Single / Massive Refund'}),S('sys','sys','Payment confirmed',{s:'Payment Paid',f:'402000'}),S('cust','ext','Payer receives money')],
+ reversal:[S('fin','rev','Reverse Refund',{m:'Refund > Reverse Refund'}),S('sys','rev','Suspense balance restored')],
+ rules:['Payer Name and Payment Amount come from the receipt and cannot be changed.','No Refund Approval step: the payment is created as Approved.'],
+ ba:'This skips approval. Decide whether that is acceptable or needs a custom authority check.',qa:'Confirm the receipt-refund payment never shows in Refund Approval.',dev:'Fee type differs by chapter: 700009 (−) vs 401200. Confirm.'},
+{id:'P7',grp:'out',name:'Batch payment',mods:['clm','sc'],src:'Business Flow: Agent Billing 5 · Scenario: Payment 7',
+ desc:'Many APs are approved and paid together, for example a day of claim payments or monthly commission. Each can be reversed on its own.',
+ normal:[S('clm','ev','Many APs generated'),S('appr','op','Refund Approval in bulk with exclusion list',{m:'Refund > Refund Approval'}),S('sys','sys','Payments approved',{s:'Payment Approved (each)'}),S('fin','op','Massive Refund: method, date range, currency, bank account',{m:'Refund > Massive Refund'}),S('sys','sys','All APs settled',{s:'Payment Paid'}),S('bank','ext','Bank transfers made')],
+ reversal:[S('fin','rev','Reverse Refund per payment',{m:'Refund > Reverse Refund'}),S('sys','rev','Each AP restored individually')],
+ rules:['Massive Refund mandatory fields: Payment Method, Transaction Date From/To, Payment Currency, Company Bank Account.','Failed items from a massive run can be paid with Single Refund.'],
+ ba:'Agree payment-run calendar with Treasury.',qa:'Fail one item in a massive run and pay it via Single Refund.',dev:'Bank file generation and response upload are iComposer items.'},
+{id:'O1',grp:'int',name:'AR / AP offset (netting)',mods:['pa','sc'],src:'Business Flow: Common 4 · Internal UI: ARAP Offset · Scenario: Offset 1',
+ desc:'One party both owes and is owed money, for example a broker with premium due and commission payable. The two are netted without moving money.',
+ normal:[S('sys','sys','AR and AP exist for the same party or policy',{s:'Both Outstanding'}),S('fin','op','ARAP Offset: search, Add To List, enter offset amounts',{m:'Internal > ARAP Offset'}),S('sys','sys','Check running total = 0',{r:'AR offset total = AP offset total'}),S('sys','sys','Both sides settled',{s:'AR and AP Settled',f:'OFFSET 100501 (+) and (−)'}),S('gl','gl','Fees posted')],
+ reversal:[S('fin','rev','Reverse Application & Offset (type ARAP)',{m:'Collection > Reverse Application & Offset'}),S('sys','rev','AR and AP restored',{s:'Both Outstanding'})],
+ rules:['Total Running ARAP Offset Amount must be 0 to submit.','Only the net amount then needs collection or payment.'],
+ ba:'Agree when netting is allowed (same policyholder, same channel, same currency).',qa:'Submit with a non-zero running total; it must fail.',dev:'Netting writes one OFFSET fee per side.'},
+{id:'O2',grp:'int',name:'Tolerance offset',mods:['pa'],src:'Business Flow: Common 5 · Internal UI: Tolerance Offset · Scenario: Offset 2',
+ desc:'Small differences from rounding, bank charges or currency are written off within a tolerance, for example a premium of 100.01 when the customer paid 100.',
+ normal:[S('sys','sys','Small balance left on AR',{s:'AR Outstanding, balance > 0'}),S('fin','op','Tolerance Offset: Transaction Type, write-off amount',{m:'Internal > Tolerance Offset'}),S('sys','sys','AR settled',{s:'AR Settled',f:'OFFSET 100501 (+); tolerance leg (−)'}),S('gl','gl','Fees posted')],
+ reversal:[S('fin','rev','Reverse Application & Offset (type Tolerance Offset)',{m:'Collection > Reverse Application & Offset'}),S('sys','rev','AR restored',{s:'AR Outstanding'})],
+ rules:['Transaction Type is mandatory.','AR balance must be greater than 0.'],
+ ba:'The tolerance limit and who may approve it are not standard configuration. Specify them.',qa:'Check that the offset record has no source application number.',dev:'Tolerance authority is an iComposer item.'},
+{id:'O3',grp:'int',name:'Bad debt write-off',mods:['pa'],src:'Business Flow: Common 6 · Scenario: Offset 3',
+ desc:'An AR cannot be collected, for example after repeated attempts or bankruptcy. It is written off as a bad debt expense.',
+ normal:[S('fin','op','Bad debt confirmed'),S('fin','op','Tolerance Offset with Transaction Type Write Off',{m:'Internal > Tolerance Offset'}),S('sys','sys','AR settled; loss recorded',{s:'AR Settled'}),S('gl','gl','Bad debt fees posted')],
+ reversal:[S('fin','rev','Reverse Application & Offset (type Write Off)',{m:'Collection > Reverse Application & Offset'}),S('sys','rev','AR restored',{s:'AR Outstanding'})],
+ rules:['Uses the same screen as tolerance, with a different Transaction Type.'],
+ ba:'Write-off rules (age, amount, approval) come from finance policy; capture them as requirements.',qa:'Verify write-off appears with type Write Off in Query Application & Offset.',dev:'Fee mapping for write-off is not in the source.'},
+{id:'X1',grp:'cancel',name:'Cancel outstanding ARAP',mods:['pa','clm','sc'],src:'Business Flow: Common 7 · Internal UI: ARAP Management · Scenario: Cancel',
+ desc:'An AR, AP, commission or prepay order that is still fully outstanding should never be settled. Cancel closes it for good.',
+ normal:[S('fin','op','Find Outstanding record',{m:'Internal > ARAP Management'}),S('fin','x','Delete action (cancel)',{r:'Only status Outstanding'}),S('sys','x','Record cancelled',{s:'Canceled (final)',f:'AR: fees (−); AP: fees (+)'}),S('gl','gl','Fees posted')],
+ reversal:[S('sys','x','No reversal possible',{s:'Cancel is irreversible'})],
+ cancels:[['Premium AR (PA)','100501 (−), 100101 (−)'],['Refund AP (PA endorsement)','100501 (+), 100101 (+)'],['Claim AP','200312 (+), 200100 (+)'],['Commission','100600 (+), 400100 (+)'],['Prepay order','No fee']],
+ rules:['Only Outstanding records can be edited or cancelled.','Cancel is used before any partial or full settlement.'],
+ ba:'Because cancel is final, define who can cancel and whether a second approval is needed.',qa:'Try to cancel a part-paid AR; it must be blocked.',dev:'Editable fields come from arapFieldAllowUpdate in BCPConfig.'}
+];
+
+/* ---------- screens ---------- */
+const SCREENS=[
+{id:'prepaid',g:'Collection',n:'Premium Pre-Paid',p:'Collect premium before the policy is issued (CBC).',pre:'In Easy PA the proposal is bound and the user clicked Send To BCP. Proposal status is Waiting For Payment.',
+ steps:['Search by Proposal No.','Fill mandatory fields and Submit.','Confirm Yes. The receipt number is shown.','Integration issues the policy, creates the AR and settles it (balance 0, status Settled).'],
+ fields:[['Proposal No.','Search key, mandatory'],['Branch','Default: user branch'],['Collection Date','Default: today'],['Collection Currency','Default from PA'],['Exchange Rate','Read-only, auto for the collection date'],['Collection Amount','Default from PA, editable'],['Receipt Amount','Collection Amount − Bank Charge'],['Payer Name','Fixed from PA'],['Reference Person','Actual payer if different; for reference only'],['Payer Type','Individual / Organization (BcpTaxPayerType)'],['Company Bank Account','From BcpBranchAccount, by branch and currency'],['Payment Method','Default from PA']],
+ rules:['Proposal is issued only after the receipt succeeds.','Error message shown if submit fails.'],sc:['C2']},
+{id:'premcoll',g:'Collection',n:'Policy Premium Collection',p:'Collect PA premium and settle the AR in one step. Also called Premium Collection & Application.',pre:'Policy issued in Easy PA.',
+ steps:['Search AR (Single Policy or Multiple Policies).','Tick AR rows; optionally tick Use Commission.','Enter collection info and payment method, Submit, confirm Yes.','Receipt created and AR settled.'],
+ fields:[['Collected By','Single Policy / Multiple Policies'],['ARAP Type','Fixed: Policy Premium'],['Policy No','Mandatory'],['Currency','Mandatory'],['Use Commission','Nets producer commission'],['Receipt Amount','Collection Amount − Bank Charge − Commission (if ticked)'],['Current / Total Periods','Installment view']],
+ rules:['Only PA receivables can be collected here.'],sc:['C1','C3','C10','C11']},
+{id:'singlecoll',g:'Collection',n:'Single Collection',p:'All-purpose collection from any party for any ARAP type. Also called Collection & Application.',pre:'An AR exists, for example a claim recovery or a commission settlement AR.',
+ steps:['Pick ARAP Type and search.','Add DN/CN to the list.','Enter collection info, Submit, confirm Yes.','Receipt created and AR settled.'],
+ fields:[['ARAP Type','Default: Claim Recovery-Fac (BcpArapType)'],['Currency','Mandatory'],['Buttons','Add To List, Clear List, Show All']],
+ rules:['Receipt is used to offset AR straight away.'],sc:['C6']},
+{id:'suspense',g:'Collection',n:'Suspense Collection',p:'Record money from a producer, coinsurer or reinsurer into suspense.',pre:'None. No AR is needed at this point.',
+ steps:['Find producer by code or name (or coinsurer).','Enter amount, date, currency, bank account and payment method.','Submit. Receipt number is shown.'],
+ fields:[['Producer','Producer Master search'],['Coinsurer','CoinsurerName table'],['Collection Amount','Mandatory'],['Company Bank Account','Mandatory']],
+ rules:['Money stays in suspense until Application.'],sc:['C4','C5','C9']},
+{id:'application',g:'Collection',n:'Application',p:'Use a suspense receipt to settle one or many ARs.',pre:'A receipt with balance and ARs with outstanding balance.',
+ steps:['Enter Receipt No or search in the Receipt dialog.','Search ARAP (policy, endorsement, renewal, statement).','Tick ARs, enter offset amount, optional Use Commission.','Submit. Offset number shown. AR balance 0, status Settled.'],
+ fields:[['Remaining Receipt Balance','Read-only; limit for the selection'],['Offset Amount','Per AR'],['Statement No','Filter for statement items']],
+ rules:['Total selected balance cannot exceed the Remaining Receipt Balance (local currency).','One row per transaction even for installments.'],sc:['C4','C5','C9']},
+{id:'revcoll',g:'Collection',n:'Reverse Collection',p:'Recall a receipt that was never applied.',pre:'Receipt status Collected and not applied to any AR.',
+ steps:['Search receipts (only Collected status appears).','Tick one or many, add a note.','Submit.'],
+ fields:[['Receipt Balance','Must equal Receipt Amount']],
+ rules:['If balance ≠ amount: error "Receipt xxx cannot be reserved, and receipt amount is not equal to balance". Reverse the application first.','Receipt status becomes Reversed.'],sc:['C1','C2','C8']},
+{id:'revapp',g:'Collection',n:'Reverse Application & Offset',p:'Undo an application, ARAP offset, tolerance offset, write-off or commission offset.',pre:'An offset transaction exists.',
+ steps:['Search by transaction type: ARAP, Application, Tolerance Offset, Write Off, Commission.','Tick one or many, add a note.','Submit.','AR returns to Outstanding with original balance; reversal date and user are stored.'],
+ fields:[['Transaction Type','BcpOffsetType'],['Receipt No','Related receipt']],
+ rules:['Always reverse the offset before reversing the collection.'],sc:['C1','C4','O1','O2','O3']},
+{id:'refappr',g:'Refund',n:'Refund Approval',p:'Approve APs so they become payment records.',pre:'AP records exist.',
+ steps:['Enter Transaction Date From and To (max 30 days).','Export To Excel to review.','Click Approve. The Exclusion List appears.','Add DN/CNs that must not be approved.','Submit. All others become Approved payments.'],
+ fields:[['Transaction Date From / To','Mandatory, max 30 days apart'],['Transaction Type','Commission, claim settlement, policy premium'],['Payment Method','Filter'],['Exclusion List','DN/CN must exist']],
+ rules:['Only negative-amount AP records are shown.','Cancel discards the approval.'],sc:['P1','P2','P3','P5','P7']},
+{id:'singleref',g:'Refund',n:'Single Refund',p:'Confirm payment of chosen payment records.',pre:'Payment records are Approved.',
+ steps:['Search (Payment Method mandatory, default Bank Transfer).','Tick rows; enter Payment Date and Company Bank Account.','Submit. Status Approved → Paid.'],
+ fields:[['Payment Method','Mandatory'],['Policy No / Claim No','Filters']],
+ rules:['Use for urgent refunds and for items that failed in a massive run.'],sc:['P1','P2','P6']},
+{id:'massref',g:'Refund',n:'Massive Refund',p:'Confirm many payments at once, usually monthly commission or claims.',pre:'Payment records are Approved.',
+ steps:['Enter Payment Method, Date From/To, Payment Currency.','Export To Excel to check.','Select Company Bank Account.','Submit. Status Approved → Paid.'],
+ fields:[['Payment Method','Mandatory'],['Transaction Date From / To','Mandatory'],['Payment Currency','Mandatory'],['Company Bank Account','Mandatory']],
+ rules:['Export asks "Do you confirm to export to the Excel?".'],sc:['P7','P5']},
+{id:'rcptref',g:'Refund',n:'Receipt Refund',p:'Pay back the remaining balance of a receipt.',pre:'Receipt has a remaining balance.',
+ steps:['Search receipts.','Tick a receipt. Payer and amount fill automatically.','Enter Branch and Payment Method.','Submit. Payment number is shown, status Approved.','Pay with Single or Massive Refund.'],
+ fields:[['Balance','Refundable amount'],['Payer Name / Payment Amount','Read-only from receipt']],
+ rules:['No Refund Approval needed.'],sc:['P6','C10']},
+{id:'stmtref',g:'Refund',n:'Statement Refund',p:'Approve the net payable of a statement.',pre:'A statement with ARAP exists.',
+ steps:['Query the statement; both AR and AP appear.','Tick items; total must be below 0.','Submit. System nets AR and AP and creates a payment for the remaining payable.','Pay with Single or Massive Refund.'],
+ fields:[['Payer/Payee Category and Name','Must be the same for all items']],
+ rules:['Total < 0.','Same payer category and name.'],sc:['P4']},
+{id:'revref',g:'Refund',n:'Reverse Refund',p:'Reverse a wrong payment.',pre:'Payment status Approved or Paid.',
+ steps:['Search by payment, policy, claim, statement, payee, account, method or approval date.','Tick rows, Submit.','Status becomes Reversed and AP is Outstanding again.'],
+ fields:[['Payment No','Filter']],rules:['Reverses approval, confirmation and offset fees.'],sc:['P1','P2','P3','P4','P5','P6','P7']},
+{id:'arapoff',g:'Internal',n:'ARAP Offset',p:'Net AR against AP of the same policyholder or policy.',pre:'AR and AP exist under one policyholder or policy.',
+ steps:['Search ARAP.','Tick and Add To List; Show All.','Enter Offset Amount per row.','Submit when the running total is 0. All become Settled.'],
+ fields:[['Offset Amount','User input'],['Total Running ARAP Offset Amount','Must be 0']],rules:['AR offset total must equal AP offset total.'],sc:['O1','C4']},
+{id:'tolerance',g:'Internal',n:'Tolerance Offset',p:'Write off small or long-outstanding balances, and bad debt.',pre:'AR balance greater than 0.',
+ steps:['Choose Transaction Type (mandatory).','Search AR.','Tick and enter Write-off Amount.','Submit. AR Settled, balance 0.'],
+ fields:[['Transaction Type','Mandatory (BcpOffsetType)'],['Write-off Amount','User input']],rules:['Same screen covers tolerance and write-off.'],sc:['O2','O3']},
+{id:'arapmgmt',g:'Internal',n:'ARAP Management',p:'Correct allowed fields on, or cancel, Outstanding ARAP.',pre:'ARAP status Outstanding.',
+ steps:['Search ARAP.','Use Edit to change allowed fields, then Update.','Or use the delete icon to cancel the ARAP.'],
+ fields:[['Editable fields','Payment Method, Payer/Payee Category, Code, Name (plus others if configured, e.g. Bank Account, Due Date, GL Account)']],
+ rules:['Only Outstanding records can be edited or cancelled.','Editable fields are set in arapFieldAllowUpdate (BCPConfig).','Cancel is irreversible.'],sc:['X1']},
+{id:'stmtmgmt',g:'Internal',n:'Statement Management',p:'Find statements, view their ARAP, remove items.',pre:'Statement generated by batch or API.',
+ steps:['Search statements.','Click ARAP List.','Remove ARAP if needed; the statement total updates.'],
+ fields:[['Statement No','Search']],rules:['Statement batch picks coinsurance ARAP that is Outstanding, due before the batch date, and whose policy or claim ARAP is paid. Groups by coinsurer.','If the batch due date is not set, the current time is used.'],sc:['P4']},
+{id:'stmtcoll',g:'Internal',n:'Statement Collection',p:'Collect a statement receivable.',pre:'Suspense Collection done for the statement payer.',
+ steps:['In Application, query the receipt.','Query the statement; AR and AP both appear.','Tick items; total must be above 0 and below the receipt balance.','Submit. System nets AR and AP, then uses the receipt for the rest.'],
+ fields:[],rules:['0 < selected total < receipt balance.'],sc:['P4']},
+{id:'singlesettle',g:'Commission',n:'Single Commission Settlement',p:'Settle commission for one producer or policy, usually urgent cases.',pre:'Commission status Waiting for Issue.',
+ steps:['Search (Producer and Currency mandatory).','Tick records; enter payee, payment method, payment currency, exchange rate.','Settle. Status → Settled.'],
+ fields:[['Payment Amount','Commission Amount × Exchange Rate'],['Commission Type','SalesCommissionType']],rules:['Submenu under Sales Channel.'],sc:['P5','C9']},
+{id:'masssettle',g:'Commission',n:'Massive Commission Settlement',p:'Settle commission by producer and date range.',pre:'Commission status Waiting for Issue.',
+ steps:['Search (Currency mandatory).','Export To Excel, view Details per producer.','Settle. Status → Settled.'],
+ fields:[['Result','One row per producer with commission and payment amount']],rules:[],sc:['P5','C9']}
+];
+
+/* ---------- modules ---------- */
+const MODS={
+ pa:{n:'Easy PA',code:'BizModule 10',col:'var(--pa)',x:110,y:70,
+  sends:['NEWBIZ (incl. renewal): premium AR · 100501 + 100101','NEWBIZ with IsPrepay = Y: prepay order (no fee, no ARAP)','ENDORSEMENT increase: incremental AR','ENDORSEMENT decrease / cancel: refund AP'],
+  gets:['Prepaid premium submitted → policy issued automatically (proposal Waiting For Payment → Issued)','Query screens show policy, endorsement and quote numbers from PA'],
+  screens:'Premium Pre-Paid, Policy Premium Collection, Refund Approval, Single/Massive Refund, ARAP Offset, ARAP Management',
+  sc:['C1','C2','C3','C4','C8','C10','C11','P2','O1','O2','X1'],
+  ba:'For each PA transaction (issue, renew, endorse, cancel, reinstate) confirm whether it creates AR, AP, or nothing, and the installment plan.',qa:'Run the policy money journey end to end and check AR count = installments × payers.',dev:'Map PA payment plan to TotalPeriods and payer split. Handle the CBC callback.'},
+ clm:{n:'Claims',code:'BizModule 20',col:'var(--clm)',x:110,y:250,
+  sends:['Indemnity: claim AP · 200312 + 200100 (−)','Reserve: fee only · 200201 (GL booking, no payment)','Recovery (salvage / subrogation): AR · 200312 + 200100 (+)'],
+  gets:['Payment status for the claim (Approved / Paid / Reversed) visible by Claim No in refund and query screens'],
+  screens:'Single Collection (recovery), Refund Approval, Single/Massive Refund, Reverse Refund, ARAP Management',
+  sc:['C6','P1','P7','X1'],
+  ba:'Confirm whether a reversed claim payment must reopen anything in Claims. The source does not describe a callback.',qa:'Search refunds by Claim No; check reserve creates a fee but no ARAP.',dev:'Reserve is fee-only. Do not expect an ARAP for it.'},
+ ri:{n:'Reinsurance',code:'BizModule 30',col:'var(--ri)',x:590,y:250,
+  sends:['RI fac-out or settlement: AR (reinsurer owes) or AP (company owes)','RI fee: fee only (GL booking)'],
+  gets:['Collection or payment status by Reinsurance Policy No in query detail'],
+  screens:'Suspense Collection, Application, Refund Approval, Single/Massive Refund',
+  sc:['C5','P3'],
+  ba:'Define netting with each reinsurer: statement, ARAP offset, or gross settlement.',qa:'TotalPeriods = 1 always.',dev:'RI fee codes are not in the source. Get them from BcpFeeType.'},
+ sc:{n:'Sales Channel',code:'BizModule 40 / 50',col:'var(--sc)',x:590,y:70,
+  sends:['Commission fee per policy / endorsement · 100600 (fee, not ARAP)','Settlement (Single / Massive) → 400100 AP or AR'],
+  gets:['Commission status: 1 Pending → 2 Waiting for Issue (premium collected) → 3 Settled → 5 Paid, or 4 Offset when netted'],
+  screens:'Suspense Collection, Application (Use Commission), Single/Massive Commission Settlement, Statement, Refund screens',
+  sc:['C4','C9','P4','P5','O1'],
+  ba:'Agree whether commission is paid gross, netted at collection, or netted by statement.',qa:'Track every commission status change from the Sales Channel query screens.',dev:'Commission settlement clearing batch offsets 400100 against 100600.'},
+ gl:{n:'GL / Accounting',code:'Downstream',col:'var(--gl)',x:350,y:330,
+  sends:[],gets:['Every BCP fee becomes a GL voucher using GLIntegrationMappingRule (debit / credit accounts by fee type)','Export columns set by bcp.export.gl.columns'],
+  screens:'Query GL',sc:[],
+  ba:'Agree with Finance the chart-of-accounts mapping per fee type and whether the GL needs single or double entries.',qa:'For each scenario, reconcile fees in Query BizTransaction with vouchers in Query GL.',dev:'Some GL systems need a single fee entry, others a double entry per BCP fee.'}
+};
+
+/* ---------- journeys ---------- */
+const JOURNEYS=[
+ {id:'policy',n:'Policy money journey',d:'One policy from proposal to cancellation. Joins C2, C3, P2 and X1 with commission.',
+  steps:[S('pa','ev','Proposal bound, Send To BCP'),S('fin','op','Premium Pre-Paid',{m:'C2'}),S('pa','ev','Policy issued (auto)'),S('sys','sys','AR settled; commission 2 Waiting',{s:'AR Settled'}),S('pa','ev','Endorsement: add cover'),S('fin','op','Collect endorsement AR',{m:'C3'}),S('pa','ev','Endorsement: cancel policy'),S('sys','sys','Refund AP created',{s:'AP Outstanding'}),S('appr','op','Refund Approval',{m:'P2'}),S('fin','op','Single Refund'),S('sc','ev','Commission clawback fee',{f:'100600 (+)'}),S('gl','gl','All fees to GL')]},
+ {id:'claim',n:'Claim money journey',d:'A claim from reserve to recovery, with the reinsurer share. Joins P1, C6 and C5.',
+  steps:[S('clm','ev','Claim registered, reserve set',{f:'200201 fee only'}),S('gl','gl','Reserve booked'),S('clm','ev','Claim approved'),S('sys','sys','Claim AP',{f:'200312, 200100 (−)'}),S('appr','op','Refund Approval',{m:'P1'}),S('fin','op','Single / Massive Refund'),S('clmt','ext','Claimant paid'),S('clm','ev','Salvage sold'),S('fin','op','Single Collection of recovery',{m:'C6'}),S('ri','ev','RI share of loss due',{tag:'inf'}),S('fin','op','Collect RI receivable',{m:'C5'}),S('gl','gl','All fees to GL')],
+  note:'The link from a paid claim to an RI receivable is domain context: in most insurers the reinsurer reimburses its share of a paid claim. The source only says RI settlements create AR or AP in BCP.'},
+ {id:'channel',n:'Producer and commission journey',d:'A broker remits premium for many policies, nets commission, and receives the balance by statement. Joins C4, P5, O1 and P4.',
+  steps:[S('pa','ev','Policies issued'),S('sc','ev','Commission fees',{f:'100600'}),S('prod','ext','Broker remits premium'),S('fin','op','Suspense Collection',{m:'C4'}),S('fin','op','Application, Use Commission'),S('sys','sys','AR settled; commission 4 Offset'),S('fin','op','Settle remaining commission',{m:'P5'}),S('sys','sys','Statement groups AR and AP',{m:'P4'}),S('appr','op','Statement Refund (net payable)'),S('fin','op','Massive Refund'),S('prod','ext','Broker paid net')]},
+ {id:'coins',n:'Coinsurance statement journey',d:'The statement batch groups coinsurance ARAP by coinsurer once the related policy or claim is paid.',
+  steps:[S('pa','ev','Coinsured policy issued'),S('sys','sys','Coinsurer share ARAP created',{s:'Outstanding'}),S('cust','ext','Customer pays policy'),S('sys','sys','Statement batch: due date ≤ batch date, policy ARAP paid',{s:'StatementNo assigned'}),S('fin','op','Statement Management review'),S('coin','ext','Coinsurer pays (if net AR)'),S('fin','op','Suspense Collection + statement Application'),S('appr','op','Or Statement Refund (if net AP)'),S('gl','gl','Fees to GL')]}
+];
+
+/* ---------- fee flows (Transaction Fee Flow chapter) ---------- */
+const FEEFLOWS=[
+ {n:'Policy collection',rows:[['PA → BCP','Generate AR','NEWBIZ','+','N','100501'],['Policy / Single Premium Collection','Normal Receipt','COLLECTION','+','N','700009'],['Application','Offset','OFFSET','+','N','100501'],['Collection Confirmation','Receipt Confirmation','COLLECTION_CONFIRM','+','N','700009'],['Reverse Application & Offset','Offset Reversal','OFFSET','−','Y','100501'],['Reverse Collection','Receipt Reversal','COLLECTION','−','Y','700009']]},
+ {n:'Endorsement refund',rows:[['PA → BCP','Generate AP','ENDORSEMENT','−','N','100501'],['Refund Approval','Refund Approval','PAYMENT','−','N','401100'],['Refund Confirm (Single & Massive)','Refund Confirm','PAYMENT_CONFIRMATION','−','N','402000'],['Application','Offset','OFFSET','−','N','100501'],['Reverse Refund','Refund Reversal','PAYMENT','+','Y','401100'],['Reverse Refund','Refund Confirm Reversal','PAYMENT_CONFIRMATION','+','Y','402000'],['Reverse Refund','Offset Reversal','OFFSET','+','Y','100501']]},
+ {n:'Agent suspense',rows:[['Suspense Collection','Suspense Receipt','COLLECTION','+','N','403000'],['Application','Offset','OFFSET','+','N','100501'],['Collection Confirmation','Receipt Confirmation','COLLECTION_CONFIRM','+','N','403000'],['Reverse Application & Offset','Offset Reversal','OFFSET','−','Y','100501'],['Receipt Refund','Receipt Refund','PAYMENT','−','N','401200'],['Refund Confirm','Refund Confirm','PAYMENT_CONFIRMATION','−','N','402000'],['Reverse Refund','Receipt Refund Reversal','PAYMENT','+','Y','401200'],['Reverse Refund','Refund Confirm Reversal','PAYMENT_CONFIRMATION','+','Y','402000']]},
+ {n:'ARAP offset',rows:[['ARAP Offset','Offset: existing AR','OFFSET','+','N','100501'],['ARAP Offset','Offset: existing AP','OFFSET','−','N','100501']]},
+ {n:'Tolerance offset',rows:[['Tolerance Offset','Offset: existing AR','OFFSET','+','N','100501'],['Tolerance Offset','Tolerance write-off','—','−','N','not mapped in source']]},
+ {n:'Commission payment',rows:[['Policy issued: commission paid out','Generate Fee','SALESCHANNEL','−','N','100600'],['Endorsement refund: commission recovered','Generate Fee','SALESCHANNEL','+','N','100600'],['Commission Settlement Generation','Generate AP','COMMISSION','−','N','400100'],['Refund Approve','Refund Approval','PAYMENT','−','N','401100'],['Refund (Single & Massive)','Refund Confirm','PAYMENT_CONFIRMATION','−','N','402000'],['Application','Offset','OFFSET','−','N','400100'],['Settlement Clearing Batch','Offset (policy commission)','OFFSET','−','N','100600'],['Settlement Clearing Batch','Offset (endorsement recovery)','OFFSET','+','N','100600']]},
+ {n:'Commission collection',rows:[['Policy issued: commission paid out','Generate Fee','SALESCHANNEL','−','N','100600'],['Endorsement refund: commission recovered','Generate Fee','SALESCHANNEL','+','N','100600'],['Commission Settlement Generation','Generate AR','COMMISSION','− (see gaps)','N','400100'],['Application','Offset','OFFSET','−','N','400100'],['Settlement Clearing Batch','Offset (policy commission)','OFFSET','−','N','100600'],['Settlement Clearing Batch','Offset (endorsement recovery)','OFFSET','+','N','100600']]}
+];
+const FEEREF=[['100101','Policy ARAP','PA: the receivable / payable record itself (ARAP fee type)'],['100501','Premium, direct business (premium income)','PA premium AR / AP and their offsets'],['100600','Commission of the transaction','Sales Channel commission fee. A fee, not an AR or AP'],['200100','Claim ARAP','Claims: the receivable / payable record'],['200201','Claim reserve','Claims: fee only, no ARAP'],['200312','Claim settlement','Claims: indemnity and recovery'],['400100','Commission settlement','Settlement that turns commission fees into AP or AR'],['401100','Refund / payment approval','Finance: approval against an AP (confirm in BcpFeeType)'],['401200','Receipt refund','Finance: refund from suspense (confirm in BcpFeeType)'],['402000','Payment confirmation','Finance: money paid out, and its reversal'],['403000','Suspense receipt','Finance: producer collection into suspense (confirm in BcpFeeType)'],['700009','Receipt to suspense account','Finance: normal collection receipt, and its reversal']];
+const TXREF=[['NEWBIZ','AR created when a policy is issued or renewed'],['ENDORSEMENT','AR or AP from an endorsement'],['COLLECTION','Receipt created when money arrives in suspense'],['COLLECTION_CONFIRM','Receipt confirmed (cheque or transfer cleared)'],['OFFSET','Receipt or AR matched against AR or AP'],['PAYMENT','Payment approval against an AP, and its reversal'],['PAYMENT_CONFIRMATION','Money paid out, and its reversal'],['SALESCHANNEL','Commission fee from a policy or endorsement'],['COMMISSION','Commission settlement into AP or AR']];
+const SYNC=[['10 PA','NEWBIZ','N','ARAP & Fee','1 AR','100501 (+)','100101 (+)','Premium receivable (incl. renewal)'],['10 PA','NEWBIZ','Y','Prepay order','—','—','—','Prepay order receivable'],['10 PA','ENDORSEMENT','N','ARAP & Fee','1 AR','100501 (+)','100101 (+)','Incremental receivable'],['10 PA','ENDORSEMENT','N','ARAP & Fee','2 AP','100501 (−)','100101 (−)','Refund payable'],['20 Claim','Indemnity','N','ARAP & Fee','2 AP','200312 (−)','200100 (−)','Claim payable'],['20 Claim','Reserve','N','Fee only','—','200201 (+)','—','Reserve fee (GL booking)'],['20 Claim','Recovery','N','ARAP & Fee','1 AR','200312 (+)','200100 (+)','Recovery receivable'],['30 RI','Fac out / settlement','N','ARAP & Fee','1 or 2','not in source','not in source','RI receivable or payable'],['30 RI','RI fee','N','Fee only','—','not in source','—','RI fee (GL booking)'],['40 Channel','Commission','N','ARAP & Fee','1 or 2','100600','—','Commission receivable / payable']];
+
+const DTABLES=[['Branch Master','Master data','Maintained in Branch menu (URP > Branch)','All screens'],['Exchange Rate Master','Master data','Maintained in Exchange Rate menu','Collection'],['Producer Master','Master data','Maintained in Sales Channel menu','Collection, Internal, Commission, Query'],['Product Master','Master data','Product maintenance; confirm table name','ARAP Management, Query'],['CurrencySetting','Data table','Currency options','All screens'],['BcpPaymentMethod','Data table','Cash, Cheque, Direct Debit/Credit, Bank Transfer, Credit Card','Collection, Refund, ARAP Management'],['BcpBank','Data table','Bank options','Payment method fields'],['BcpCreditCardType','Data table','Visa / Master Card','Credit card fields'],['BcpBranchAccount','Data table','Company bank accounts by branch and currency','Collection, Refund'],['BcpTaxPayerType','Data table','Individual / Organization','Premium Pre-Paid'],['PayerOrPayeeCategory','Data table','Organization / individual / intermediary','Application, ARAP Management, Statement'],['CoinsurerName','Data table','Coinsurer names','Suspense Collection'],['BcpArapType','Data table (platform)','Policy Premium / Claim Settlement / Subrogation Salvage / RI Statement / Commission','Most screens'],['BcpArapStatus','Data table','Outstanding / Settled / Canceled','Query'],['BcpArapCate','Data table','Receivable / Payable','Query'],['BcpOffsetType','Data table (platform)','Arap / Application / Tolerance / Write Off / Commission','Reverse Application, Tolerance, Query'],['BcpOffsetStatus','Data table','Offset / Reversed','Query'],['BcpCollectionStatus','Data table (platform)','Collected / Confirmed / Reversed / Refund','Query Receipt'],['BcpPaymentStatus','Data table','Approved (Requested) / Paid / Reversed','Refund, Query Payment'],['ProductLine','Data table','Product category; maintained in product factory','ARAP Management, Query'],['SalesCommissionType','Data table','Commission types','Commission settlement'],['SalesChannelAPI','Data table','Sales channel code translation','Index mapping'],['FeeTypePriority','Data table','Priority per fee type for partial payment offset','Offset engine'],['GLIntegrationMappingRule','Data table','Fee type → GL debit / credit accounts','GL'],['BcpFeeType','Configuration','Fee type definitions','Fee engine'],['arapFieldAllowUpdate','BCPConfig table','Fields editable in ARAP Management','ARAP Management'],['bcp.export.gl.columns','BCPConfig parameter','GL export columns and order','Query GL export']];
+const APIS=[['syncDataToBCP','Billing entry point for all modules: creates bill, ARAP and fees'],['/bcp-core/statement/v1/getStatementNo','Get a new statement number (no parameters)'],['/bcp-core/arap/v1/updateArapList','Set StatementNo and NeedStatement = Y on ARAP'],['/bcp-core/statement/v1/create','Create the statement (amount, branch, payer/payee, number, version)'],['/bcp-core/core/export/v1/exportArap','Export ARAP'],['/bcp-core/core/export/v1/exportPayment','Export payments'],['/bcp-core/core/export/v1/exportReceipt','Export receipts'],['/bcp-core/core/export/v1/exportAppOffset','Export application and offset records'],['/bcp-core/core/export/v1/paymentApproveExport','Export the refund approval list'],['/bcp-core/core/export/v1/asyncExport','Asynchronous export for large data']];
+
+const GAPS=[
+ ['High','Suspense receipt fee type','Fee Flow chapter: producer suspense receipt is 403000. Business Scenario chapter: 700009.','Confirm the fee type per collection screen before building GL mapping or writing expected results.'],
+ ['High','Payment approval sign','Fee Flow chapter: Refund Approval 401100 is negative. Business Scenario chapter: 401100 is positive only.','Confirm the sign convention. It decides the debit / credit side in GL.'],
+ ['High','Collection confirmation','Fee Flow: COLLECTION_CONFIRM writes a 700009/403000 fee. Business Scenario: status change only, no fee. The order of offset and confirmation also differs.','Confirm whether a fee is written and whether offset is allowed before confirmation.'],
+ ['High','Commission settlement AR sign','Fee Flow "Commission Settlement — Collection" shows Generate AR with a negative sign. AR is positive everywhere else.','Treat as a likely error; confirm with the platform team.'],
+ ['Medium','Priority offset example','Business Scenario table shows the 2nd payment of 100 split 30 / 30.5 / 0, which only adds up to 60.5. The BCPFee chapter shows 30 / 30.5 / 39.5.','Use 39.5 for Coverage C. The calculator in Level 6 follows this.'],
+ ['Medium','Proportional offset example','Shows 270.5 × 0.3993 = 107.81. The correct result is 108.01, and the second offset should be 162.49, not 162.69.','Do not copy the source figures into expected results. Use the calculator.'],
+ ['Medium','Claim payment reversal fees','Business Scenario reverses 402000 and the AP only. Fee Flow for endorsement refund also reverses 401100 and the offset fee.','Confirm which fees a Reverse Refund writes for each AP type.'],
+ ['Medium','Status names','AR status: "Outstanding / Paid / Cancelled" in API Overview vs "Outstanding / Settled / Canceled" in code tables. Payment status: "Approved" vs "Requested".','Use code-table values in test scripts. Ask for one naming standard.'],
+ ['Medium','RI fee codes','No fee or ARAP fee type codes are given for Reinsurance.','Get RI codes from BcpFeeType before designing RI tests or GL mapping.'],
+ ['Medium','Tolerance leg fee','The tolerance write-off leg has no fee type ("no GL fee type mapped in this sample").','Define the GL account for tolerance and write-off.'],
+ ['Low','Screen names','"Policy Premium Collection" vs "Premium Collection & Application"; "Single Collection" vs "Collection & Application".','Use one name in training and test scripts.'],
+ ['Low','Offset number format','Text says 8-digit year-month + 6-digit sequence; the sample OFS20260700000135 is the reverse.','Check numbering template.'],
+ ['Low','Error message typo','"Receipt xxx cannot be reserved" should read "reversed".','Raise with platform team; testers should match the actual text.'],
+ ['Low','Statement scope','Statement batch is described for coinsurers; Statement Payment is described for producers.','Confirm whether the batch also covers producers, or only the API does.'],
+ ['Info','Cross-module callbacks','Only the CBC flow describes BCP calling back to PA. No callback to Claims or RI is described for payment or reversal.','Ask whether Claims and RI need payment status back, and design it in iComposer if so.']
+];
+
+const TESTS_EXTRA=[
+ ['VR-01','Reverse Collection','Try to reverse a receipt that has been applied','Blocked with "receipt amount is not equal to balance"'],
+ ['VR-02','Reverse Collection','Search for a Confirmed or Reversed receipt','Only Collected receipts are listed'],
+ ['VR-03','Application','Select ARs whose total exceeds the remaining receipt balance','Submit blocked'],
+ ['VR-04','ARAP Offset','Submit with running total ≠ 0','Submit blocked'],
+ ['VR-05','Refund Approval','Enter a date range longer than 30 days','Blocked'],
+ ['VR-06','Refund Approval','Search with a positive-amount ARAP type','Only negative-amount AP shown'],
+ ['VR-07','Refund Approval','Add an unknown DN/CN to the Exclusion List','Error: record does not exist'],
+ ['VR-08','Refund Approval','Exclude 1 of 5 APs and Submit','4 Approved, 1 still Outstanding'],
+ ['VR-09','Receipt Refund','Try to edit Payer Name or Payment Amount','Fields are read-only'],
+ ['VR-10','Receipt Refund','Look for the created payment in Refund Approval','Not listed; already Approved'],
+ ['VR-11','Reverse Refund','Reverse an already Reversed payment','Not available (only Approved or Paid) *'],
+ ['VR-12','ARAP Management','Edit or delete a Settled or part-paid ARAP','Actions disabled'],
+ ['VR-13','ARAP Management','Edit a field not in arapFieldAllowUpdate','Field not shown in Edit dialog'],
+ ['VR-14','Cancel','Try to reverse a cancelled ARAP','No reversal option'],
+ ['VR-15','Tolerance Offset','Search without Transaction Type','Blocked: mandatory'],
+ ['VR-16','Statement Collection','Select items totalling more than the receipt balance','Blocked'],
+ ['VR-17','Statement Refund','Select items with total ≥ 0','Blocked'],
+ ['VR-18','Statement Refund','Select items with two different payees','Blocked'],
+ ['VR-19','Premium Pre-Paid','Search a proposal not in Waiting For Payment','Not found (prerequisite not met) *'],
+ ['VR-20','Policy Premium Collection','Change ARAP Type','Locked to Policy Premium'],
+ ['VR-21','Policy Premium Collection','Tick Use Commission','Receipt Amount = Collection − Bank Charge − Commission'],
+ ['VR-22','Any collection','Use a foreign collection currency','Rate auto-filled for collection date; local amount = receipt × rate'],
+ ['VR-23','Single Settlement','Search without Producer or Currency','Blocked: mandatory'],
+ ['VR-24','Single Settlement','Search commission still Pending (premium unpaid)','Not listed; needs Waiting for Issue *'],
+ ['VR-25','Massive Refund','Submit without Company Bank Account','Blocked: mandatory'],
+ ['VR-26','Under-collection','Pay 40% of an AR','AR stays Outstanding, balance reduced'],
+ ['VR-27','Over-collection','Pay 110% of an AR','AR Settled, receipt balance = 10%'],
+ ['VR-28','RI billing','Send an RI AR with 2 periods','TotalPeriods must be 1; confirm whether the API rejects or ignores *'],
+ ['VR-29','Statement batch','Run batch with no due date set','Current time used as cut-off'],
+ ['VR-30','Query export','Export with no results','Empty Excel file']
+];
+
+const BAQ=[
+ ['Collection','Which payment methods does each channel and product accept? Who bears bank charges?','Which products need Cash Before Cover?','How long can unapplied money stay in suspense? Who follows it up?','Do producers remit gross or net of commission?'],
+ ['Payment','What are the approval limits by amount and role?','What is the payment-run calendar (daily claims, monthly commission)?','Which bank file formats and gateways are needed? (iComposer)','Can a refund be netted against other open AR of the same customer first?'],
+ ['Internal','What is the tolerance threshold and who approves it?','What is the bad-debt write-off policy (age, amount, approval)?','Who may cancel ARAP, and is a second approval needed?','Which ARAP fields may users correct (arapFieldAllowUpdate)?'],
+ ['Cross-module','For each PA, Claims and RI transaction: does it create AR, AP, fee only, or nothing?','Do Claims or RI need payment status back from BCP?','How are installments and multiple payers defined in PA?','What statements are needed (producer, coinsurer, reinsurer) and how often?'],
+ ['Finance / GL','What is the GL account for each fee type, including tolerance and write-off?','Does the GL need single or double entries?','Which reconciliation and ageing reports are required? (iComposer)','Which columns must the GL export contain?']
+];
+
+const QUIZ=[
+ {q:'A customer paid by cheque and the cheque has not cleared. What should happen to the AR?',o:['Settle it now; reverse if the cheque bounces','Record the collection, confirm when funds clear, then offset','Cancel the AR and create a new one later'],a:1,w:'Collection confirmation exists to stop settlement against funds that may not arrive.'},
+ {q:'You want to reverse a receipt that has already been applied to an AR. What do you do first?',o:['Reverse Collection','Reverse Application & Offset','ARAP Management > delete'],a:1,w:'Reverse Collection only works when receipt balance equals receipt amount. Reverse the offset first.'},
+ {q:'Which action cannot be undone?',o:['Reverse Refund','Tolerance Offset','Cancel in ARAP Management'],a:2,w:'Cancel is final. Tolerance and refunds can both be reversed.'},
+ {q:'A customer pays 150 against an AR of 200. What is the AR status after the offset?',o:['Settled','Outstanding, balance 50','Canceled'],a:1,w:'Under-collection reduces the balance but does not change the status.'},
+ {q:'Commission 100600 is created as…',o:['An AP','An AR','A fee, which becomes AP or AR at settlement'],a:2,w:'Commission is a neutral fee. Settlement creates 400100 as AP or AR.'},
+ {q:'Which refund does not go through Refund Approval?',o:['Claim indemnity','Receipt Refund','Endorsement refund'],a:1,w:'Receipt Refund creates the payment as Approved, so you go straight to Single or Massive Refund.'},
+ {q:'What must be true to submit an ARAP Offset?',o:['Total Running ARAP Offset Amount is 0','AR is larger than AP','Both records are Settled'],a:0,w:'AR offset total must equal AP offset total.'},
+ {q:'What does a claim reserve create in BCP?',o:['An AP','A fee only, for GL','Nothing'],a:1,w:'Reserve is fee-only (200201). No collection or payment follows.'},
+ {q:'Which module sends BizModule 30?',o:['Claims','Reinsurance','Sales Channel'],a:1,w:'10 PA, 20 Claims, 30 RI, 40 Channel.'},
+ {q:'In CBC, when is the policy issued?',o:['When the proposal is bound','When the Premium Pre-Paid receipt is submitted successfully','At month-end batch'],a:1,w:'BCP triggers PA to issue the policy after a successful prepayment.'},
+ {q:'Refund Approval date range can be at most…',o:['7 days','30 days','90 days'],a:1,w:'Transaction Date From and To are mandatory and at most 30 days apart.'},
+ {q:'Fees with a priority in FeeTypePriority and fees without one are on the same AR. How is a partial payment split?',o:['All proportionally','Priority fees first, rest proportionally','Largest fee first'],a:1,w:'Mixed mode: priority first, then proportional for the rest.'},
+ {q:'What is a reversal fee?',o:['A new fee with the same sign and Is Reverse = N','A fee with the opposite sign and Is Reverse = Y','A bank charge'],a:1,w:'A reversal always flips the sign and marks Is Reverse = Y.'},
+ {q:'Who decides which ARAP fields users can edit in ARAP Management?',o:['Each user in preferences','The arapFieldAllowUpdate table in BCPConfig','The BcpArapType table'],a:1,w:'Field-level edit permission is configured in arapFieldAllowUpdate.'},
+ {q:'A payment gateway integration is…',o:['Standard platform API','Data table configuration','An iComposer build item'],a:2,w:'Payment methods, integration, batches, letters, reports, authority and upload are iComposer areas.'}
+];
+
+const GLOSS=[
+ ['AR','Accounts receivable: money owed to the company. ArapCate = 1.'],['AP','Accounts payable: money the company owes. ArapCate = 2.'],['ARAP','Common name for AR and AP records.'],['Application','Using a receipt to settle AR.'],['BCP','Billing, Collection and Payment.'],['Bill','Record created by syncDataToBCP, holding AR/AP and fees.'],['BizModule','Source module code: 10 PA, 20 Claim, 30 RI, 40 Channel, 50 Commission settlement.'],['BizTransactionType','Type of source transaction: NEWBIZ, ENDORSEMENT, CLAIM, COMMISSION, etc.'],['CBC','Cash Before Cover: premium must be paid before the policy is issued.'],['NCBC','Normal (non-CBC) collection after issue.'],['Coinsurance','Several insurers share one risk; each coinsurer\'s share is settled by statement.'],['Collection confirmation','Second step that confirms a receipt once funds clear.'],['DN / CN','Debit note / credit note number of an ARAP record.'],['Exclusion List','APs held back from a Refund Approval batch.'],['Fac out (facultative outward)','Reinsurance placed risk by risk.'],['Fee','Record of a money movement for GL posting.'],['FeeTypePriority','Data table that sets the order fees are settled in a partial payment.'],['GL voucher','Accounting entry produced from BCP fees.'],['iComposer','Implementation layer for client-specific BCP features.'],['Installment','One period of a split premium; each is a separate AR.'],['Is Reverse','Flag on a fee: Y for reversal fees.'],['Massive Refund','Bulk payment confirmation.'],['NeedStatement','ARAP flag that marks statement business.'],['Offset','Settling AR/AP by matching amounts.'],['Payment confirmation','Step that records money as paid out.'],['Prepay order','Record created for CBC before policy issue.'],['Producer','Agent or broker.'],['Receipt','Record of money received.'],['Reversal','Undo of a completed step.'],['Salvage','Money recovered by selling damaged property after a claim.'],['Settlement (commission)','Turning commission fees into AP/AR per producer.'],['Statement','Group of ARAP for one party settled as a net amount.'],['Subrogation','Recovering claim cost from the party at fault.'],['Suspense','Holding account for unapplied receipts.'],['syncDataToBCP','The billing API every module uses to send data to BCP.'],['Tolerance','Small difference written off without collection.'],['Write-off','Closing bad debt as an expense.']
+];
+/* ===================== APP ===================== */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k,d){try{const v=localStorage.getItem('bcpguide:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('bcpguide:'+k,JSON.stringify(v))}catch(e){}}};
+const SVGNS='http://www.w3.org/2000/svg';
+const GRP={in:['Money in','in'],out:['Money out','out'],int:['Internal settlement','int'],cancel:['Cancel','cancel']};
+const MODTAG={pa:'Easy PA',clm:'Claims',ri:'Reinsurance',sc:'Sales Channel'};
+
+function wrap(t,n){const w=String(t).split(/\s+/),out=[];let line='';for(const x of w){if((line+' '+x).trim().length>n&&line){out.push(line);line=x}else line=(line+' '+x).trim()}if(line)out.push(line);return out}
+
+/* ---------- swimlane renderer ---------- */
+function swimlane(steps,opts={}){
+  const used=new Set(steps.map(s=>s.l));(opts.extraLanes||[]).forEach(l=>used.add(l));
+  const lanes=LANE_ORDER.filter(l=>used.has(l));
+  const COL=158,BW=136,BH=66,LH=90,LW=112,PAD=14;
+  const W=LW+steps.length*COL+PAD,H=lanes.length*LH;
+  const li=Object.fromEntries(lanes.map((l,i)=>[l,i]));
+  let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label||'Swimlane diagram')}"><defs><marker id="ah${opts.uid||''}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
+  lanes.forEach((l,i)=>{s+=`<rect class="${i%2?'lane-b':'lane-a'}" x="0" y="${i*LH}" width="${W}" height="${LH}"/>`;
+    const lbl=wrap(LANES[l],14);lbl.forEach((t,j)=>{s+=`<text class="lane-lbl" x="10" y="${i*LH+LH/2-(lbl.length-1)*6+j*12+4}">${esc(t.toUpperCase())}</text>`});
+    s+=`<line class="lane-sep" x1="0" y1="${(i+1)*LH}" x2="${W}" y2="${(i+1)*LH}"/>`});
+  s+=`<line class="lane-sep" x1="${LW-6}" y1="0" x2="${LW-6}" y2="${H}"/>`;
+  const pos=steps.map((st,i)=>({x:LW+i*COL+(COL-BW)/2,y:li[st.l]*LH+(LH-BH)/2}));
+  for(let i=0;i<steps.length-1;i++){const a=pos[i],b=pos[i+1];const y1=a.y+BH/2,y2=b.y+BH/2,x1=a.x+BW,x2=b.x;
+    if(Math.abs(y1-y2)<1)s+=`<path class="edge" d="M${x1},${y1} H${x2-2}" marker-end="url(#ah${opts.uid||''})"/>`;
+    else{const mx=x1+(x2-x1)/2;s+=`<path class="edge" d="M${x1},${y1} H${mx} V${y2} H${x2-2}" marker-end="url(#ah${opts.uid||''})"/>`}}
+  steps.forEach((st,i)=>{const p=pos[i];const tl=wrap(st.t,21).slice(0,3);const sub=st.s||st.f||st.m||'';
+    s+=`<g class="node k-${st.k}" data-i="${i}" tabindex="0"><rect x="${p.x}" y="${p.y}" width="${BW}" height="${BH}" rx="${st.k==='ev'||st.k==='end'?14:4}"/>`;
+    s+=`<circle class="numbg" cx="${p.x+2}" cy="${p.y+2}" r="8"/><text class="num" x="${p.x+2}" y="${p.y+5.5}" text-anchor="middle">${i+1}</text>`;
+    const ty=p.y+(sub?14:BH/2-(tl.length-1)*6.5+4);
+    tl.forEach((t,j)=>{s+=`<text class="t" x="${p.x+BW/2}" y="${ty+j*13}" text-anchor="middle">${esc(t)}</text>`});
+    if(sub){const sl=wrap(sub,27)[0]+(wrap(sub,27).length>1?'…':'');s+=`<text class="f" x="${p.x+BW/2}" y="${p.y+BH-7}" text-anchor="middle">${esc(sl)}</text>`}
+    s+=`<title>${esc(st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:''))}</title></g>`});
+  return s+'</svg>';
+}
+function stepTable(steps,id){
+  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Screen / menu</th><th>Status after</th><th>Fee / note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}${s.tag==='inf'?' <span class="tag inf">Domain context</span>':''}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function linkDiagram(root){
+  $$('.node',root).forEach(n=>{const go=()=>{const i=n.dataset.i;$$('.node',root).forEach(x=>x.classList.toggle('hl',x===n));$$('tbody tr',root).forEach(r=>r.classList.toggle('hl',r.dataset.i===i));const r=$(`tbody tr[data-i="${i}"]`,root);if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})};n.addEventListener('click',go);n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
+}
+
+/* ---------- state diagram ---------- */
+function stateSvg(m){
+  const NW=150,NH=38,W=Math.max(...m.nodes.map(n=>n.x))+NW+30,H=Math.max(...m.nodes.map(n=>n.y))+NH+30;
+  const N=Object.fromEntries(m.nodes.map(n=>[n.id,n]));
+  let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(m.name)} status model"><defs><marker id="sah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
+  const seen={};
+  m.edges.forEach(([a,b,l])=>{const A=N[a],B=N[b];const ax=A.x+NW/2,ay=A.y+NH/2+5,bx=B.x+NW/2,by=B.y+NH/2+5;
+    const key=[a,b].sort().join();const back=seen[key];seen[key]=1;
+    const dx=bx-ax,dy=by-ay,len=Math.hypot(dx,dy)||1;const nx=-dy/len,ny=dx/len;const off=back?-34:(m.edges.some(e=>e[0]===b&&e[1]===a)?34:0);
+    const cx=(ax+bx)/2+nx*off,cy=(ay+by)/2+ny*off;
+    const clip=(px,py,tx,ty)=>{const ddx=tx-px,ddy=ty-py;const tX=Math.abs(ddx)>0?(NW/2)/Math.abs(ddx):1e9,tY=Math.abs(ddy)>0?(NH/2)/Math.abs(ddy):1e9;const t=Math.min(tX,tY);return[px+ddx*t,py+ddy*t]};
+    const [sx,sy]=clip(ax,ay,cx,cy),[ex,ey]=clip(bx,by,cx,cy);
+    s+=`<path class="edge" d="M${sx},${sy} Q${cx},${cy} ${ex},${ey}" marker-end="url(#sah)"/>`;
+    const lx=(sx+2*cx+ex)/4,ly=(sy+2*cy+ey)/4;const tw=l.length*5.6+8;
+    s+=`<rect class="st-lblbg" x="${lx-tw/2}" y="${ly-8}" width="${tw}" height="15" rx="3"/><text class="st-lbl" x="${lx}" y="${ly+3}" text-anchor="middle">${esc(l)}</text>`});
+  m.nodes.forEach(n=>{s+=`<g class="st-node ${n.c||''}"><rect x="${n.x}" y="${n.y+5}" width="${NW}" height="${NH}" rx="19"/><text x="${n.x+NW/2}" y="${n.y+5+NH/2+4}" text-anchor="middle">${esc(n.t)}</text></g>`});
+  return s+'</svg>';
+}
+
+/* ---------- ecosystem diagram ---------- */
+function ecoSvg(){
+  const W=860,H=300;let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="BCP in the InsureMO landscape"><defs><marker id="eah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
+  const src=[['Easy PA','premium AR / AP, prepay','var(--pa)'],['Claims','indemnity AP, recovery AR, reserve fee','var(--clm)'],['Reinsurance','RI AR / AP, RI fee','var(--ri)'],['Sales Channel','commission fee','var(--sc)'],['Printing Mgmt','billing documents','var(--gl)']];
+  src.forEach((m,i)=>{const y=12+i*56;s+=`<rect x="10" y="${y}" width="170" height="46" rx="6" fill="var(--surface)" stroke="${m[2]}" stroke-width="2"/><text x="22" y="${y+19}" font-size="13" font-weight="600">${m[0]}</text><text x="22" y="${y+35}" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)">${m[1]}</text><path class="edge" d="M180,${y+23} C 215,${y+23} 215,150 248,150" marker-end="url(#eah)"/>`});
+  s+=`<text x="196" y="140" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)" text-anchor="middle" transform="rotate(-90 205 150)">syncDataToBCP</text>`;
+  s+=`<rect x="250" y="20" width="400" height="260" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text x="266" y="44" font-size="15" font-weight="700" font-family="var(--f-display)">BCP</text>`;
+  const box=(x,y,w,t,sub,c)=>`<rect x="${x}" y="${y}" width="${w}" height="44" rx="5" fill="var(--surface)" stroke="${c}" stroke-width="1.5"/><text x="${x+w/2}" y="${y+19}" font-size="12.5" font-weight="600" text-anchor="middle">${t}</text><text x="${x+w/2}" y="${y+34}" font-size="10" fill="var(--ink-2)" text-anchor="middle">${sub}</text>`;
+  s+=box(266,58,368,'Billing','Bill → AR / AP / Fee','var(--accent)');
+  s+=box(266,124,116,'Collection','receipt · suspense','var(--in)')+box(392,124,116,'Payment','approve · confirm','var(--out)')+box(518,124,116,'Offset','apply · net · write-off','var(--int)');
+  s+=box(266,190,180,'Statement & Commission','grouping · settlement','var(--sc)')+box(454,190,180,'Fee engine','every movement → fee','var(--gl)');
+  s+=`<text x="450" y="268" font-size="10.5" fill="var(--ink-2)" text-anchor="middle">Query · Statistics · Export across all records</text>`;
+  s+=`<path class="edge" d="M650,212 H690" marker-end="url(#eah)"/><rect x="692" y="186" width="158" height="52" rx="6" fill="var(--surface-2)" stroke="var(--gl)" stroke-width="2"/><text x="771" y="207" font-size="13" font-weight="600" text-anchor="middle">GL / Accounting</text><text x="771" y="224" font-size="10" fill="var(--ink-2)" text-anchor="middle" font-family="var(--f-mono)">GLIntegrationMappingRule</text>`;
+  s+=`<path class="edge" d="M650,146 H690" marker-end="url(#eah)"/><rect x="692" y="120" width="158" height="52" rx="6" fill="var(--surface)" stroke="var(--ink-2)" stroke-dasharray="4 3" stroke-width="1.5"/><text x="771" y="141" font-size="13" font-weight="600" text-anchor="middle">Bank / gateway</text><text x="771" y="158" font-size="10" fill="var(--ink-2)" text-anchor="middle">iComposer extension</text>`;
+  s+=`<path class="edge" d="M450,58 C450,30 120,10 95,12" marker-end="url(#eah)" stroke-dasharray="4 3"/><text x="300" y="16" font-size="10" fill="var(--ink-2)">CBC: prepayment triggers policy issue</text>`;
+  return s+'</svg>';
+}
+
+/* ---------- hub ---------- */
+let hubSel='pa';
+function hubSvg(){
+  const W=740,H=400;let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Module integration map">`;
+  const C={x:290,y:160,w:160,h:70};
+  Object.entries(MODS).forEach(([k,m])=>{const mx=m.x+70,my=m.y+28;const cx=C.x+C.w/2,cy=C.y+C.h/2;s+=`<path class="hub-edge" d="M${mx},${my} L${cx},${cy}" stroke="${m.col}" ${k==='gl'?'stroke-dasharray="5 4"':''}/>`});
+  s+=`<g class="hub-core"><rect x="${C.x}" y="${C.y}" width="${C.w}" height="${C.h}" rx="8"/><text x="${C.x+C.w/2}" y="${C.y+30}" text-anchor="middle" font-size="16" font-weight="700" font-family="var(--f-display)">BCP</text><text x="${C.x+C.w/2}" y="${C.y+50}" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)">syncDataToBCP</text></g>`;
+  Object.entries(MODS).forEach(([k,m])=>{s+=`<g class="hub-node ${k===hubSel?'sel':''}" data-k="${k}" tabindex="0" role="button" aria-label="${esc(m.n)}"><rect x="${m.x}" y="${m.y}" width="140" height="56" rx="8" stroke="${m.col}"/><text x="${m.x+70}" y="${m.y+24}" text-anchor="middle">${esc(m.n)}</text><text class="sub" x="${m.x+70}" y="${m.y+42}" text-anchor="middle">${esc(m.code)}</text></g>`});
+  return s+'</svg>';
+}
+function renderHub(){
+  $('#hubDiagram').innerHTML=hubSvg();
+  $$('#hubDiagram .hub-node').forEach(g=>{const go=()=>{hubSel=g.dataset.k;renderHub()};g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
+  const m=MODS[hubSel];
+  $('#hubPanel').innerHTML=`<div class="card"><span class="eyebrow">${esc(m.code)}</span><h2 style="margin:0">${esc(m.n)}</h2>
+  ${m.sends.length?`<h4>Sends to BCP</h4><ul class="clean">${m.sends.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
+  <h4>${hubSel==='gl'?'Receives from BCP':'Gets back / visible from BCP'}</h4><ul class="clean">${m.gets.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+  <h4>BCP screens involved</h4><p class="small">${esc(m.screens)}</p>
+  ${m.sc.length?`<h4>Scenarios</h4><div class="filter-row">${m.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id} · ${esc(SCEN.find(x=>x.id===id).name)}</a>`).join('')}</div>`:''}
+  <div class="notes"><div class="note" data-r="ba"><span class="who">Business analyst</span>${esc(m.ba)}</div><div class="note" data-r="qa"><span class="who">Tester</span>${esc(m.qa)}</div><div class="note" data-r="dev"><span class="who">Developer</span>${esc(m.dev)}</div></div></div>`;
+}
+
+/* ---------- scenarios ---------- */
+let curSc=SCEN[0].id,curMode='normal';
+function renderScList(){
+  let h='',opt='';Object.entries(GRP).forEach(([g,[lbl,c]])=>{const items=SCEN.filter(s=>s.grp===g);h+=`<div class="grp ${c}">${lbl}</div>`;opt+=`<optgroup label="${lbl}">`;
+    items.forEach(s=>{h+=`<button type="button" data-id="${s.id}" aria-current="${s.id===curSc}"><span class="id">${s.id}</span><span>${esc(s.name)}</span></button>`;opt+=`<option value="${s.id}" ${s.id===curSc?'selected':''}>${s.id} · ${esc(s.name)}</option>`});opt+='</optgroup>'});
+  $('#scList').innerHTML=h;$('#scSelect').innerHTML=opt;
+  $$('#scList button').forEach(b=>b.addEventListener('click',()=>{location.hash='sc-'+b.dataset.id}));
+}
+function renderSc(){
+  const s=SCEN.find(x=>x.id===curSc)||SCEN[0];const steps=s[curMode];const [gl,gc]=GRP[s.grp];
+  const allSteps=s.normal.concat(s.reversal);const lanesExtra=[...new Set(allSteps.map(x=>x.l))];
+  $('#scDetail').innerHTML=`<div class="sc-head"><div class="row"><span class="tag ${gc}">${gl}</span>${s.mods.map(m=>`<span class="tag ${m}">${MODTAG[m]}</span>`).join('')}<span class="tag src">${s.id}</span></div>
+   <h2 style="margin:0">${esc(s.name)}</h2><p style="max-width:75ch">${esc(s.desc)}</p>
+   <div class="row"><div class="seg" role="group" aria-label="Flow"><button type="button" data-m="normal" aria-pressed="${curMode==='normal'}">Normal flow</button><button type="button" data-m="reversal" aria-pressed="${curMode==='reversal'}">${s.grp==='cancel'?'Reversal (none)':'Reversal flow'}</button></div><span class="small muted">Source: ${esc(s.src)}</span></div></div>
+   <div id="scDia"><div class="diagram">${swimlane(steps,{extraLanes:lanesExtra,uid:'sc',label:s.name})}</div>${stepTable(steps,'scTbl')}</div>
+   ${s.variants?`<h3>Producer collection variants</h3><div class="tbl"><table><thead><tr><th>Commission offset</th><th>ARAP offset</th><th>Flow</th><th>Fees</th></tr></thead><tbody>${s.variants.map(v=>`<tr><td>${v[0]}</td><td>${v[1]}</td><td>${esc(v[2])}</td><td class="mono small">${esc(v[3])}</td></tr>`).join('')}</tbody></table></div>`:''}
+   ${s.cancels?`<h3>What can be cancelled</h3><div class="tbl"><table><thead><tr><th>Record</th><th>Cancel fees</th><th>Reversible</th></tr></thead><tbody>${s.cancels.map(v=>`<tr><td>${esc(v[0])}</td><td class="mono small">${esc(v[1])}</td><td>No</td></tr>`).join('')}</tbody></table></div>`:''}
+   <div class="grid g2"><div class="card"><h4>Business rules</h4><ul class="clean">${s.rules.map(r=>`<li>${esc(r)}</li>`).join('')}</ul></div>
+   <div class="notes" style="grid-template-columns:1fr"><div class="note" data-r="ba"><span class="who">Business analyst</span>${esc(s.ba)}</div><div class="note" data-r="qa"><span class="who">Tester</span>${esc(s.qa)}</div><div class="note" data-r="dev"><span class="who">Developer</span>${esc(s.dev)}</div></div></div>`;
+  $$('#scDetail .seg button').forEach(b=>b.addEventListener('click',()=>{curMode=b.dataset.m;renderSc()}));
+  linkDiagram($('#scDia'));
+  $$('#scList button').forEach(b=>b.setAttribute('aria-current',b.dataset.id===curSc));$('#scSelect').value=curSc;
+}
+
+/* ---------- screens ---------- */
+let curScr=SCREENS[0].id;
+function renderScreens(){
+  const groups=[...new Set(SCREENS.map(s=>s.g))];
+  $('#menuTree').innerHTML=groups.map(g=>`<div class="mt-grp"><h4>${g}</h4><div class="items">${SCREENS.filter(s=>s.g===g).map(s=>`<button type="button" data-id="${s.id}" aria-current="${s.id===curScr}">${esc(s.n)}</button>`).join('')}</div></div>`).join('');
+  $$('#menuTree button').forEach(b=>b.addEventListener('click',()=>{location.hash='scr-'+b.dataset.id}));
+  const s=SCREENS.find(x=>x.id===curScr);
+  $('#screenDetail').innerHTML=`<div class="card" style="gap:14px"><span class="eyebrow">${esc(s.g)} menu</span><h2 style="margin:0">${esc(s.n)}</h2><p>${esc(s.p)}</p>
+   <dl class="kv"><dt>Before you start</dt><dd>${esc(s.pre)}</dd></dl>
+   <div class="grid g2"><div><h4>Steps</h4><ol class="steps">${s.steps.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div>
+   <div><h4>Validation and rules</h4>${s.rules.length?`<ul class="clean">${s.rules.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="muted small">No extra rules in the source.</p>'}</div></div>
+   ${s.fields.length?`<h4>Key fields</h4><div class="tbl"><table><thead><tr><th>Field</th><th>Behaviour</th></tr></thead><tbody>${s.fields.map(f=>`<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td></tr>`).join('')}</tbody></table></div>`:''}
+   <h4>Used in scenarios</h4><div class="filter-row">${s.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id} · ${esc(SCEN.find(x=>x.id===id).name)}</a>`).join('')}</div></div>`;
+}
+
+/* ---------- lifecycle ---------- */
+let curSt='arap';
+function renderStates(){
+  $('#stTabs').innerHTML=Object.entries(STATES).map(([k,m])=>`<button role="tab" type="button" data-k="${k}" aria-selected="${k===curSt}">${esc(m.name)}</button>`).join('');
+  $$('#stTabs button').forEach(b=>b.addEventListener('click',()=>{curSt=b.dataset.k;renderStates()}));
+  const m=STATES[curSt];$('#stDiagram').innerHTML=stateSvg(m);
+  $('#stTable').innerHTML=m.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('');
+}
+
+/* ---------- journeys ---------- */
+let curJ=JOURNEYS[0].id;
+function renderJourneys(){
+  $('#jTabs').innerHTML=JOURNEYS.map(j=>`<button role="tab" type="button" data-k="${j.id}" aria-selected="${j.id===curJ}">${esc(j.n)}</button>`).join('');
+  $$('#jTabs button').forEach(b=>b.addEventListener('click',()=>{curJ=b.dataset.k;renderJourneys()}));
+  const j=JOURNEYS.find(x=>x.id===curJ);
+  $('#jDetail').innerHTML=`<p>${esc(j.d)}</p><div id="jDia" style="display:flex;flex-direction:column;gap:12px"><div class="diagram">${swimlane(j.steps,{uid:'j',label:j.n})}</div>${stepTable(j.steps,'jTbl')}</div>${j.note?`<div class="callout warn">${esc(j.note)}</div>`:''}`;
+  linkDiagram($('#jDia'));
+}
+
+/* ---------- fee flows ---------- */
+let curFF=0;
+function renderFF(){
+  $('#ffTabs').innerHTML=FEEFLOWS.map((f,i)=>`<button role="tab" type="button" data-i="${i}" aria-selected="${i===curFF}">${esc(f.n)}</button>`).join('');
+  $$('#ffTabs button').forEach(b=>b.addEventListener('click',()=>{curFF=+b.dataset.i;renderFF()}));
+  const f=FEEFLOWS[curFF];
+  $('#ffDetail').innerHTML=`<div class="tbl"><table><thead><tr><th>#</th><th>Operation</th><th>Fee record</th><th>Transaction type</th><th class="num">Sign</th><th>Reverse</th><th>Fee type</th></tr></thead><tbody>${f.rows.map((r,i)=>`<tr><td class="num">${i+1}</td><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td class="mono small">${esc(r[2])}</td><td class="num">${esc(r[3])}</td><td>${r[4]==='Y'?'<span class="tag out">Y</span>':'N'}</td><td class="mono small">${esc(r[5])}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+/* ---------- calculator ---------- */
+const PRESETS={mixed:[['Coverage A premium',150,1],['Coverage B premium',30.5,''],['Coverage C premium',120,'']],prio:[['Coverage A premium',150,1],['Coverage B premium',30.5,2],['Coverage C premium',120,3]],prop:[['Premium, direct business',270.5,''],['Tax',30,'']]};
+const PRESET_PAYS={mixed:'120, 100, 80.5',prio:'120, 100, 80.5',prop:'120, 180.5'};
+let calcFees=PRESETS.mixed.map(x=>x.slice());
+const r2=x=>Math.round(x*100)/100;
+function drawCalcFees(){
+  $('#calcFees').innerHTML=calcFees.map((f,i)=>`<tr><td><input type="text" id="cf-n-${i}" value="${esc(f[0])}" aria-label="Fee name"></td><td><input type="number" step="0.01" id="cf-a-${i}" value="${f[1]}" aria-label="Amount"></td><td><input type="number" min="1" step="1" id="cf-p-${i}" value="${f[2]}" placeholder="none" aria-label="Priority"></td></tr>`).join('');
+  calcFees.forEach((f,i)=>{['n','a','p'].forEach((k,j)=>{$('#cf-'+k+'-'+i).addEventListener('input',e=>{calcFees[i][j]=k==='n'?e.target.value:(e.target.value===''?'':+e.target.value)})})});
+}
+function allocate(fees,pays){
+  const rem=fees.map(f=>+f[1]||0),out=[];
+  for(const pay of pays){let left=r2(pay);const alloc=fees.map(()=>0);
+    const pr=fees.map((f,i)=>i).filter(i=>fees[i][2]!==''&&fees[i][2]!=null).sort((a,b)=>fees[a][2]-fees[b][2]);
+    for(const i of pr){if(left<=0)break;const x=r2(Math.min(left,rem[i]));alloc[i]=x;rem[i]=r2(rem[i]-x);left=r2(left-x)}
+    const np=fees.map((f,i)=>i).filter(i=>!(fees[i][2]!==''&&fees[i][2]!=null)&&rem[i]>0);
+    const tot=np.reduce((a,i)=>a+rem[i],0);
+    if(left>0&&tot>0){const take=Math.min(left,r2(tot));let used=0;np.forEach((i,k)=>{let x=k===np.length-1?r2(take-used):r2(take*rem[i]/tot);x=Math.min(x,rem[i]);alloc[i]=r2(alloc[i]+x);rem[i]=r2(rem[i]-x);used=r2(used+x)});left=r2(left-take)}
+    out.push({pay,alloc,left,rem:rem.slice()})}
+  return out;
+}
+function runCalc(){
+  const pays=$('#calcPays').value.split(/[,;\s]+/).map(Number).filter(x=>x>0);const total=r2(calcFees.reduce((a,f)=>a+(+f[1]||0),0));
+  const res=allocate(calcFees,pays);const paid=r2(pays.reduce((a,b)=>a+b,0));
+  const mode=calcFees.every(f=>f[2]===''||f[2]==null)?'Proportional':calcFees.every(f=>f[2]!==''&&f[2]!=null)?'Priority':'Mixed (priority, then proportional)';
+  $('#calcOut').innerHTML=`<p class="small">Method: <b>${mode}</b> · AR total <span class="mono">${total.toFixed(2)}</span> · paid <span class="mono">${paid.toFixed(2)}</span> · AR status after: <b class="${paid>=total?'ok':''}">${paid>=total?'Settled':'Outstanding'}</b></p>
+  <div class="tbl"><table><thead><tr><th>Fee type</th><th class="num">Original</th>${res.map((r,i)=>`<th class="num">Pay ${i+1} (${r.pay})</th>`).join('')}<th class="num">Left</th></tr></thead><tbody>
+  <tr><td><b>Installment (ARAP)</b></td><td class="num">${total.toFixed(2)}</td>${res.map(r=>`<td class="num">${(r.pay-r.left).toFixed(2)}</td>`).join('')}<td class="num">${Math.max(0,r2(total-paid)).toFixed(2)}</td></tr>
+  ${calcFees.map((f,i)=>`<tr><td>${esc(f[0])}${f[2]!==''&&f[2]!=null?` <span class="tag">P${f[2]}</span>`:''}</td><td class="num">${(+f[1]).toFixed(2)}</td>${res.map(r=>`<td class="num">${r.alloc[i].toFixed(2)}</td>`).join('')}<td class="num">${(res.length?res[res.length-1].rem[i]:+f[1]).toFixed(2)}</td></tr>`).join('')}
+  </tbody></table></div>${res.some(r=>r.left>0)?`<p class="small bad">Payment exceeds the AR. The excess stays in suspense (over-collection).</p>`:''}
+  <p class="small muted">Rounded to 2 decimals. In proportional mode the last fee takes the rounding remainder so each payment adds up exactly.</p>`;
+}
+
+/* ---------- toolkit ---------- */
+let curTk='ba';
+function renderToolkit(){
+  $$('#tkTabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tk===curTk));
+  let h='';
+  if(curTk==='ba'){
+    h=`<p class="prose">Use these questions in requirement workshops. Each one maps to a decision the platform does not make for you.</p><div class="grid g2">${BAQ.map(g=>`<div class="card"><h3>${esc(g[0])}</h3><ol class="steps">${g.slice(1).map(q=>`<li>${esc(q)}</li>`).join('')}</ol></div>`).join('')}</div>
+    <h3>Fit-gap starter</h3><div class="tbl"><table><thead><tr><th>Need</th><th>Standard (platform)</th><th>Configure</th><th>Build (iComposer)</th></tr></thead><tbody>
+    <tr><td>Collect, pay, offset, reverse, cancel</td><td>Yes</td><td>—</td><td>—</td></tr>
+    <tr><td>Drop-down values, numbering, messages</td><td>—</td><td>Yes</td><td>—</td></tr>
+    <tr><td>Extra ARAP fields and search filters</td><td>—</td><td>Data Dictionary, Index Management</td><td>—</td></tr>
+    <tr><td>Editable ARAP fields, GL export columns</td><td>—</td><td>BCPConfig</td><td>—</td></tr>
+    <tr><td>Partial payment fee priority</td><td>Engine</td><td>FeeTypePriority</td><td>—</td></tr>
+    <tr><td>Payment gateway, bank files</td><td>—</td><td>—</td><td>Yes</td></tr>
+    <tr><td>Premium notice / deduction batches</td><td>—</td><td>—</td><td>Yes</td></tr>
+    <tr><td>Receipts, reminders (letter, email, SMS)</td><td>—</td><td>—</td><td>Yes</td></tr>
+    <tr><td>Approval authority, tolerance limits</td><td>—</td><td>—</td><td>Yes</td></tr>
+    <tr><td>Reconciliation and ageing reports</td><td>Statistics only</td><td>—</td><td>Yes</td></tr>
+    <tr><td>Excel upload of collections</td><td>—</td><td>—</td><td>Yes</td></tr></tbody></table></div>`;
+  } else if(curTk==='qa'){
+    const rows=[];SCEN.forEach(s=>{rows.push([s.id+'-N',s.id,s.name,'Normal',s.normal.filter(x=>x.k==='op').map(x=>x.t).join(' → ')||'—',s.normal.filter(x=>x.s).map(x=>x.s).slice(-1)[0]||'',s.normal.map(x=>x.f).filter(Boolean).join('; ')]);
+      if(s.grp!=='cancel')rows.push([s.id+'-R',s.id,s.name,'Reversal',s.reversal.filter(x=>x.k==='rev'&&x.m).map(x=>x.t).join(' → '),s.reversal.filter(x=>x.s).map(x=>x.s).slice(-1)[0]||'',s.reversal.map(x=>x.f).filter(Boolean).join('; ')])});
+    h=`<p class="prose">Every scenario needs at least a normal and a reversal test. Add the validation tests below. Check fee records in Query BizTransaction and GL vouchers in Query GL for each case. Before you lock expected fee results, read "Source gaps": several fee codes and signs conflict in the source.</p>
+    <div class="filter-row"><label for="tFilter" class="small">Filter</label><input id="tFilter" type="search" placeholder="e.g. C4, reversal, refund"><select id="tType" aria-label="Test type"><option value="">All types</option><option>Normal</option><option>Reversal</option></select></div>
+    <div class="tbl"><table><thead><tr><th>Test ID</th><th>Scenario</th><th>Type</th><th>User steps</th><th>Expected end status</th><th>Expected fees</th></tr></thead><tbody id="tBody">${rows.map(r=>`<tr data-t="${esc((r.join(' ')).toLowerCase())}" data-type="${r[3]}"><td class="mono small">${r[0]}</td><td><a href="#sc-${r[1]}">${esc(r[2])}</a></td><td>${r[3]==='Reversal'?'<span class="tag out">Reversal</span>':'<span class="tag in">Normal</span>'}</td><td class="small">${esc(r[4])}</td><td class="small">${esc(r[5])}</td><td class="mono small">${esc(r[6])}</td></tr>`).join('')}</tbody></table></div>
+    <h3>Validation and negative tests</h3><div class="tbl"><table><thead><tr><th>ID</th><th>Screen</th><th>Test</th><th>Expected</th></tr></thead><tbody>${TESTS_EXTRA.map(r=>`<tr><td class="mono small">${r[0]}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>
+    <p class="small muted">Expected results marked * are derived from a stated prerequisite. The source does not give the exact system response, so confirm the message text in the system.</p>
+    <h3>Test data checklist</h3><ul class="clean"><li>Single and installment policies; single and multiple payers.</li><li>Local and foreign collection currency.</li><li>Each payment method allowed for the business (Level 1 matrix).</li><li>A producer with both AR and AP, for ARAP Offset and statements.</li><li>A coinsured policy, for the statement batch.</li><li>Commission in each status 1 to 5.</li><li>Users in more than one branch, to test "With Subordinates" in queries.</li></ul>`;
+  } else {
+    h=`<div class="grid g2"><div class="card"><h3>Billing integration checklist</h3><ol class="steps"><li>Map each source transaction to BizModule, BizTransactionType, IsPrepay and ArapCate (Level 5 matrix).</li><li>Send the fee breakdown with the right fee type codes. Get missing codes (RI) from BcpFeeType.</li><li>Send installments as TotalPeriods; split payers or payees as separate shares.</li><li>Remember fee-only cases (claim reserve, RI fee): no ARAP is expected.</li><li>Commission is a fee (100600). Do not send it as ARAP.</li><li>For CBC, handle the BCP → PA issue callback and its failure path.</li></ol></div>
+    <div class="card"><h3>Configuration checklist</h3><ol class="steps"><li>Data tables: BcpPaymentMethod, BcpBank, BcpBranchAccount, CurrencySetting, PayerOrPayeeCategory, CoinsurerName.</li><li>FeeTypePriority for partial payment.</li><li>GLIntegrationMappingRule for every fee type, including tolerance and write-off.</li><li>BCPConfig: arapFieldAllowUpdate, bcp.export.gl.columns.</li><li>Index Management: add search fields with correct types; rebuild with arapIndexRebuildBatch.</li><li>Data Dictionary: tenant fields on BcpArap and others; deploy across environments of the same version.</li><li>Numbering templates for receipt, payment, offset, statement.</li></ol></div></div>
+    <div class="card"><h3>Statement API sequence</h3><ol class="steps"><li><code>GET /bcp-core/statement/v1/getStatementNo</code> → statement number.</li><li><code>/bcp-core/arap/v1/updateArapList</code> with each ArapId, StatementNo and <code>NeedStatement: "Y"</code>.</li><li><code>/bcp-core/statement/v1/create</code> with Amount, BranchCode, PayerPayeeCode, PayerPayeeType, PayerPayeeName, StatementNo, VersionSeq.</li></ol><p class="small muted">The HTTP method for these endpoints is not given in the source.</p></div>
+    <div class="card"><h3>iComposer build list</h3><p>Payment gateway, PA / Claims integration, batch jobs, letters and notifications, reports, authority rules, Excel upload. Build these on the client stack or the InsureMO app framework.</p></div>`;
+  }
+  $('#tkDetail').innerHTML=h;
+  if(curTk==='qa'){const f=()=>{const q=$('#tFilter').value.toLowerCase(),t=$('#tType').value;$$('#tBody tr').forEach(r=>{r.hidden=!(r.dataset.t.includes(q)&&(!t||r.dataset.type===t))})};$('#tFilter').addEventListener('input',f);$('#tType').addEventListener('change',f)}
+}
+
+/* ---------- quiz ---------- */
+function renderQuiz(){
+  const ans=store.get('quiz',{});
+  $('#quizBody').innerHTML=QUIZ.map((q,i)=>`<div class="q"><b>${i+1}. ${esc(q.q)}</b><div class="opts">${q.o.map((o,j)=>{const a=ans[i];let c='';if(a!=null){if(j===q.a)c='right';else if(j===a)c='wrong'}return`<button type="button" data-q="${i}" data-o="${j}" class="${c}" ${a!=null?'disabled':''}>${esc(o)}</button>`}).join('')}</div>${ans[i]!=null?`<p class="why">${ans[i]===q.a?'<b class="ok">Correct.</b> ':'<b class="bad">Not quite.</b> '}${esc(q.w)}</p>`:''}</div>`).join('');
+  const done=Object.keys(ans).length,right=Object.entries(ans).filter(([i,a])=>QUIZ[i].a===a).length;
+  $('#quizScore').textContent=done?`${right} of ${done} correct · ${QUIZ.length-done} left`:`${QUIZ.length} questions`;
+  $$('#quizBody button').forEach(b=>b.addEventListener('click',()=>{const a=store.get('quiz',{});a[b.dataset.q]=+b.dataset.o;store.set('quiz',a);renderQuiz()}));
+}
+
+/* ---------- static tables ---------- */
+function renderStatic(){
+  $('#pathCards').innerHTML=Object.entries(PATHS).map(([k,p])=>`<div class="card path"><span class="eyebrow">${k==='ba'?'Business':k==='qa'?'Testing':'Development'}</span><h3>${p.t}</h3><p class="small muted">${p.d}</p><ol>${p.steps.map(x=>`<li>${esc(x)}</li>`).join('')}</ol><button class="btn ghost" type="button" data-role="${k}">Use this lens</button></div>`).join('');
+  $$('#pathCards button').forEach(b=>b.addEventListener('click',()=>setRole(b.dataset.role)));
+  $('#levelTable').innerHTML=LEVELS.filter(l=>l.learn).map(l=>`<tr><td><a href="#${l.id}">${l.n} · ${esc(l.name)}</a></td><td>${esc(l.learn)}</td><td>${esc(l.ready)}</td></tr>`).join('');
+  $('#conceptCards').innerHTML=CONCEPTS.map(c=>`<div class="card">${c[2]?`<span class="tag ${c[2]}" style="align-self:flex-start">${c[2]==='in'?'Money in':c[2]==='out'?'Money out':c[2]==='int'?'Internal':'Final'}</span>`:''}<h4>${esc(c[0])}</h4><p class="small">${esc(c[1])}</p></div>`).join('');
+  let last='';$('#menuMapBody').innerHTML=MENU.map(m=>{const r=`<tr><td>${m[0]!==last?`<b>${m[0]}</b>`:''}</td><td>${esc(m[1])}</td><td>${esc(m[2])}</td></tr>`;last=m[0];return r}).join('');
+  $('#pmBody').innerHTML=PM.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td>${r.slice(2).map(x=>`<td>${x?'<span class="ok">Yes</span>':'<span class="muted">—</span>'}</td>`).join('')}</tr>`).join('');
+  $('#ecoDiagram').innerHTML=ecoSvg();
+  $('#syncBody').innerHTML=SYNC.map(r=>`<tr>${r.map((c,i)=>`<td class="${i>=5&&i<=6?'mono small':''}">${esc(c)}</td>`).join('')}</tr>`).join('');
+  $('#feeRefBody').innerHTML=FEEREF.map(r=>`<tr><td class="mono">${r[0]}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('');
+  $('#txRefBody').innerHTML=TXREF.map(r=>`<tr><td class="mono">${r[0]}</td><td>${esc(r[1])}</td></tr>`).join('');
+  const dt=()=>{const q=($('#dtFilter').value||'').toLowerCase();$('#dtBody').innerHTML=DTABLES.filter(r=>r.join(' ').toLowerCase().includes(q)).map(r=>`<tr><td class="mono small">${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td class="small">${esc(r[3])}</td></tr>`).join('')};dt();$('#dtFilter').addEventListener('input',dt);
+  $('#apiBody').innerHTML=APIS.map(r=>`<tr><td class="mono small">${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('');
+  $('#gapBody').innerHTML=GAPS.map((g,i)=>`<tr><td class="num">${i+1}</td><td><span class="tag ${g[0]==='High'?'cancel':g[0]==='Medium'?'inf':''}">${g[0]}</span></td><td><b>${esc(g[1])}</b></td><td>${esc(g[2])}</td><td>${esc(g[3])}</td></tr>`).join('');
+  const gl=()=>{const q=($('#glFilter').value||'').toLowerCase();$('#glBody').innerHTML=GLOSS.filter(r=>r.join(' ').toLowerCase().includes(q)).map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td></tr>`).join('')};gl();$('#glFilter').addEventListener('input',gl);
+}
+
+/* ---------- nav, progress, role, routing ---------- */
+function renderRail(){
+  const done=store.get('done',{});let h='',g='';
+  LEVELS.forEach(l=>{if(l.grp!==g){h+=`<div class="grp">${l.grp}</div>`;g=l.grp}h+=`<a href="#${l.id}" data-v="${l.id}"><span class="n">${l.n}</span><span>${esc(l.name)}</span>${l.learn?`<span class="done ${done[l.id]?'on':''}" title="${done[l.id]?'Completed':'Not completed'}"></span>`:'<span></span>'}</a>`});
+  $('#railNav').innerHTML=h;const total=LEVELS.filter(l=>l.learn).length,n=LEVELS.filter(l=>l.learn&&done[l.id]).length;$('#progBar').style.width=(n/total*100)+'%';
+  $$('[data-done]').forEach(c=>{c.checked=!!done[c.dataset.done]});
+  const role=document.body.dataset.role;$('#rolePath').innerHTML=role&&PATHS[role]?`<b>${PATHS[role].t} path</b><ol style="margin:6px 0 0;padding-left:18px">${PATHS[role].steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>`:'<span class="muted">Choose a lens at the top to see your learning path here.</span>';
+  markCurrent();
+}
+function setRole(r){if(r==='all')delete document.body.dataset.role;else document.body.dataset.role=r;store.set('role',r);$$('.roles .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.role===r));renderRail()}
+let curView='start';
+function markCurrent(){$$('#railNav a').forEach(a=>a.setAttribute('aria-current',a.dataset.v===curView?'page':'false'))}
+function route(){
+  let h=(location.hash||'#start').slice(1);let v=h;
+  if(h.startsWith('sc-')){const id=h.slice(3);if(SCEN.some(s=>s.id===id)){if(curSc!==id)curMode='normal';curSc=id}v='scenarios'}
+  else if(h.startsWith('scr-')){const id=h.slice(4);if(SCREENS.some(s=>s.id===id))curScr=id;v='screens'}
+  if(!$('#v-'+v))v='start';
+  const changed=v!==curView;curView=v;
+  $$('.view').forEach(s=>{s.hidden=s.id!=='v-'+v});
+  if(v==='scenarios'){renderScList();renderSc()}
+  if(v==='screens')renderScreens();
+  markCurrent();if(changed)window.scrollTo({top:0});
+}
+
+/* ---------- search ---------- */
+let INDEX=[];
+function buildIndex(){
+  INDEX=[];
+  SCEN.forEach(s=>INDEX.push({k:'Scenario',t:s.id+' · '+s.name,x:(s.desc+' '+s.rules.join(' ')+' '+s.normal.concat(s.reversal).map(x=>[x.t,x.m,x.s,x.f].join(' ')).join(' ')).toLowerCase(),h:'sc-'+s.id}));
+  SCREENS.forEach(s=>INDEX.push({k:'Screen',t:s.g+' > '+s.n,x:(s.p+' '+s.pre+' '+s.steps.join(' ')+' '+s.rules.join(' ')+' '+s.fields.map(f=>f.join(' ')).join(' ')).toLowerCase(),h:'scr-'+s.id}));
+  GLOSS.forEach(g=>INDEX.push({k:'Glossary',t:g[0],x:(g[0]+' '+g[1]).toLowerCase(),h:'glossary'}));
+  FEEREF.forEach(f=>INDEX.push({k:'Fee type',t:f[0]+' · '+f[1],x:(f.join(' ')).toLowerCase(),h:'fees'}));
+  DTABLES.forEach(d=>INDEX.push({k:'Config',t:d[0],x:d.join(' ').toLowerCase(),h:'config'}));
+  Object.values(MODS).forEach(m=>INDEX.push({k:'Module',t:m.n,x:(m.n+' '+m.sends.join(' ')+' '+m.gets.join(' ')).toLowerCase(),h:'integration'}));
+  LEVELS.forEach(l=>INDEX.push({k:'Level',t:l.n+' · '+l.name,x:(l.name+' '+(l.learn||'')).toLowerCase(),h:l.id}));
+}
+function doSearch(){
+  const q=$('#q').value.trim().toLowerCase(),box=$('#results');if(q.length<2){box.hidden=true;return}
+  const terms=q.split(/\s+/);const hits=INDEX.map(it=>({it,sc:terms.every(t=>it.x.includes(t)||it.t.toLowerCase().includes(t))?(it.t.toLowerCase().includes(q)?3:1):0})).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc).slice(0,14);
+  box.innerHTML=hits.length?hits.map(r=>`<button type="button" data-h="${r.it.h}"><span class="rk">${r.it.k}</span><br>${esc(r.it.t)}</button>`).join(''):'<p class="small muted" style="padding:10px 12px">No match. Try a fee code like 700009 or a screen name.</p>';
+  box.hidden=false;$$('button',box).forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.h;box.hidden=true;$('#q').value=''}));
+}
+
+/* ---------- init ---------- */
+function init(){
+  renderStatic();renderStates();renderHub();renderJourneys();renderFF();drawCalcFees();runCalc();renderToolkit();renderQuiz();buildIndex();
+  setRole(store.get('role','all'));
+  $$('.roles .chip').forEach(c=>c.addEventListener('click',()=>setRole(c.dataset.role)));
+  $$('[data-done]').forEach(c=>c.addEventListener('change',()=>{const d=store.get('done',{});d[c.dataset.done]=c.checked;store.set('done',d);renderRail()}));
+  $('#scSelect').addEventListener('change',e=>{location.hash='sc-'+e.target.value});
+  $$('#tkTabs button').forEach(b=>b.addEventListener('click',()=>{curTk=b.dataset.tk;renderToolkit()}));
+  $('#calcRun').addEventListener('click',runCalc);
+  $('#calcAddFee').addEventListener('click',()=>{calcFees.push(['New fee',0,'']);drawCalcFees()});
+  $('#calcPreset').addEventListener('change',e=>{calcFees=PRESETS[e.target.value].map(x=>x.slice());$('#calcPays').value=PRESET_PAYS[e.target.value];drawCalcFees();runCalc()});
+  $('#quizReset').addEventListener('click',()=>{store.set('quiz',{});renderQuiz()});
+  $('#q').addEventListener('input',doSearch);
+  $('#q').addEventListener('keydown',e=>{if(e.key==='Escape'){$('#results').hidden=true}if(e.key==='Enter'){const b=$('#results button');if(b)b.click()}});
+  document.addEventListener('click',e=>{if(!e.target.closest('.search'))$('#results').hidden=true});
+  $('#themeBtn').addEventListener('click',()=>{const r=document.documentElement;const cur=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.theme=cur==='dark'?'light':'dark';store.set('theme',r.dataset.theme)});
+  const th=store.get('theme',null);if(th)document.documentElement.dataset.theme=th;
+  window.addEventListener('hashchange',route);route();
+}
+init();
+</script>
+</body></html>
