@@ -28,3 +28,11 @@ In the BCP source: two fee codes for the same step (700009 vs 403000), opposite 
 - `rm` with a relative glob after `cd` is blocked. Overwrite with `cp -f` or use an exact absolute path.
 - A force-push or history rewrite is blocked. To create a base branch when the repo has only the feature branch: make an empty commit with `git commit-tree $(git hash-object -t tree /dev/null) -m "Initialize repository"`, push it to `main`, then `git merge --allow-unrelated-histories` it into the feature branch and push normally.
 - The first branch pushed becomes the GitHub default branch. Tell the user to switch the default to `main`.
+
+## From the Reinsurance (XRI) build
+- **Fork the engine when the module money model differs.** BCP code hard-codes the landscape, hub label, calculator and toolkit. For XRI these were rewritten in `reinsurance-learning-guide/src/`; data files alone were not enough.
+- **Show source process and industry process separately.** Each scenario has `xri` and `ind` step lists; steps with `tag:'inf'` get an IND badge, others an XRI badge.
+- **State diagram bidirectional edges:** the normal flips with edge direction, so both curves of an A→B / B→A pair need the same offset sign, or they land on one side and labels overlap.
+- **Grid columns must be `minmax(0,1fr)`**, not `1fr`, or wide tables inside push the page sideways at 390 px.
+- **Money flow pairs:** stagger the two labels along the line (26% and 74%, measured in a canonical direction), not only sideways.
+- **Swimlane boxes:** allow 3 text lines plus a sub line and add an ellipsis; the full text lives in the step table and tooltip.

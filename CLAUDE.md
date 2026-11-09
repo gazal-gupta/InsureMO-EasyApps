@@ -5,6 +5,7 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 
 - `bcp-learning-guide/index.html`: the finished BCP guide. A single self-contained file (about 5.5 MB, 58 screenshots embedded) that works offline when downloaded.
 - `bcp-learning-guide/img/`: the original screenshots from the source BCP guide, at full resolution.
+- `reinsurance-learning-guide/index.html`: the finished Reinsurance (XRI) guide, about 2.9 MB, 64 screenshots embedded. Source in `reinsurance-learning-guide/src/` (a fork of the engine adapted for reinsurance: XRI vs industry process toggle, RI calculators, RI money flow). Images in `reinsurance-learning-guide/img/`.
 - `.claude/skills/insuremo-learning-guide/`: the product-manager skill and the build engine. Use it to update the BCP guide or build guides for other modules.
 
 ## How to work on it
@@ -22,10 +23,13 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 - Added insurance knowledge is labelled "Domain context"; market rules carry a confidence tag; example amounts are illustrative.
 - `main` was created from an empty initial commit and merged into the feature branch (force-push was blocked).
 
+## Rebuild the Reinsurance guide
+`cd reinsurance-learning-guide/src && python3 -I build.py --img ../img --out ../index.html`, then run `node qa.js <abs path>` on a copy in an empty folder.
+
 ## Open items
 - PR: https://github.com/gazal-gupta/InsureMO-EasyApps/pull/2 (draft). The user should mark it ready and switch the GitHub default branch to `main`.
 - Source gaps in the BCP guide (fee codes 700009 vs 403000, sign of 401100, collection confirmation fee, arithmetic errors in the offset examples, no RI fee codes) need confirmation from the InsureMO platform team before requirements or test expectations are locked.
-- Next candidates: Claims, Easy PA and Reinsurance guides from the same engine.
+- Reinsurance guide: 18 source gaps logged (no API specs, no GL rules, no calculation formulas, Cancel vs Terminate undefined). Next candidates: Easy PA guide; a shared index page linking BCP, Claims and Reinsurance guides.
 
 ## Working with the user (Gazal)
 - Act as a senior insurance consultant and advisor, not an assistant. Challenge assumptions first, and give a recommendation rather than a list of options.
