@@ -293,6 +293,36 @@ details.more>div{padding:0 14px 14px;display:flex;flex-direction:column;gap:12px
 svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
 .out{display:flex;flex-direction:column;gap:8px}
 @media (max-width:980px){.sim{grid-template-columns:minmax(0,1fr)}}
+
+/* ---- v2: full-width flows, lightbox, tracker ---- */
+.explorer{grid-template-columns:minmax(0,1fr)!important}
+.sc-list{position:static!important;max-height:none!important;overflow:visible!important;flex-direction:row!important;flex-wrap:wrap;gap:4px 6px;padding:0!important}
+.sc-list .grp{width:100%;padding:8px 2px 2px!important}
+.sc-list button{display:inline-flex!important;gap:6px;align-items:baseline;border:1px solid var(--line)!important;background:var(--surface)!important;border-radius:999px!important;padding:4px 11px!important;font-size:13px!important}
+.sc-list button .id{padding-top:0!important}
+.sc-list button[aria-current="true"]{background:var(--accent-soft)!important;border-color:var(--accent)!important}
+.diagram.swim{overflow-x:auto;padding:8px}
+body.wide .rail{display:none}
+body.wide .shell{grid-template-columns:minmax(0,1fr)}
+#wideBtn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.shot-open{display:block;width:100%;padding:0;border:0;background:#fff;cursor:zoom-in;max-height:520px;overflow:hidden}
+figure.shot.tall .shot-open{max-height:640px}
+.shot-open img{display:block;width:100%;height:auto}
+#lightbox{position:fixed;inset:0;z-index:100;background:rgba(10,16,18,.9);display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 10px) max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 10px) max(12px,env(safe-area-inset-left,0px));gap:8px}
+#lightbox .lb-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#fff;font-size:14px}
+#lightbox .lb-body{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center}
+#lightbox img{max-width:100%;height:auto;background:#fff;border-radius:4px}
+.chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:6px}
+.chain-step{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);text-decoration:none;color:var(--ink);min-width:140px}
+.chain-step:hover{border-color:var(--accent)}
+.chain-arrow{color:var(--ink-2)}
+#partyDiagram .st-node{cursor:pointer}
+#partyDiagram .st-node.sel rect{stroke:var(--accent);stroke-width:3;fill:var(--accent-soft)}
+.bar{height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden;width:100%;max-width:160px;margin-bottom:3px}
+.bar i{display:block;height:100%;background:var(--in)}
+.q .opts button.picked{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.cp-block{border-top:2px solid var(--accent);padding-top:14px}
+.termlink{cursor:pointer}
 </style>
 </head><body>
 <div class="top"><div class="top-in">
@@ -304,6 +334,7 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
     <button class="chip" data-role="qa" aria-pressed="false">Tester</button>
     <button class="chip" data-role="dev" aria-pressed="false">Developer</button>
   </div>
+  <button class="theme-btn" id="wideBtn" type="button" aria-pressed="false" title="Hide the side menu to give diagrams the full width">Wide view</button>
   <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme">Theme</button>
 </div></div>
 
@@ -320,8 +351,9 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
   <div class="hero">
     <header>
       <span class="eyebrow">Learning guide · basic to advanced</span>
-      <h1>Follow a claim from first notice to final payment</h1>
-      <p class="lede">Easy Claim is the InsureMO claims application. It runs a claim as a chain of <b>tasks</b>: report the loss, register it, investigate, assess the loss, collect documents, calculate, and settle. Each task has a page, a set of buttons and a rule that decides the next task. Approval tasks appear when an amount is above the user's authority.</p>
+      <h1>Learn insurance, then follow a claim from first notice to final payment</h1>
+      <p class="lede">Levels 1 and 2 teach how insurance works across the whole policy lifecycle: parties, principles, underwriting, binding, issuance, endorsement, renewal, cancellation, billing and reinsurance. Levels 3 to 10 go deep into Easy Claim, the InsureMO claims application.</p>
+      <p class="lede">Easy Claim It runs a claim as a chain of <b>tasks</b>: report the loss, register it, investigate, assess the loss, collect documents, calculate, and settle. Each task has a page, a set of buttons and a rule that decides the next task. Approval tasks appear when an amount is above the user's authority.</p>
       <p class="muted small">Built from the InsureMO Easy Claim Function User Guide, including all of its screens, rules, screenshots and Q&amp;A. Labels used in this guide:</p>
       <div class="basis"><span><span class="tag src">Source</span> stated in the Claims guide</span><span><span class="tag shot">Screenshot</span> visible in a source screenshot, not described in its text</span><span><span class="tag bcp">BCP guide</span> taken from the InsureMO BCP guide</span><span><span class="tag inf">Domain context</span> general insurance practice, confirm with your project</span></div>
     </header>
@@ -338,7 +370,7 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
 
   <section class="block">
     <h2>Pick your learning path</h2>
-    <p class="muted">Use the <b>Lens</b> buttons at the top to show only the notes for your role. All roles should finish levels 1 to 3 first.</p>
+    <p class="muted">Use the <b>Lens</b> buttons at the top to show only the notes for your role. All roles should finish levels 1 to 4 first. Each module ends with a checkpoint; the tracker and the final assessment are at the bottom of the menu.</p>
     <div class="paths" id="pathCards"></div>
   </section>
 
@@ -369,9 +401,202 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
   </section>
 </section>
 
+
+<!-- INSURANCE BASICS -->
+<section class="view" id="v-insure" data-title="Insurance basics" hidden>
+  <header><span class="eyebrow">Level 1</span><h1>Insurance basics</h1>
+  <p class="lede">Who the parties are, how an insurer makes money, the legal principles every claim is judged by, and the parts of a policy. Each idea has a real example and shows where it sits in InsureMO.</p></header>
+
+  <section class="block">
+    <h2>The parties in insurance</h2>
+    <p class="muted">Click a party to see who they are, who they act for, how they are paid and where they appear in InsureMO. Arrows show the main flows of money and cover.</p>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="diagram" id="partyDiagram"></div>
+      <div id="partyPanel"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Who's who</h2>
+    <div class="filter-row"><label for="ptFilter" class="small">Filter</label><input id="ptFilter" type="search" placeholder="e.g. broker, TPA, regulator"></div>
+    <div class="tbl"><table><thead><tr><th>Party</th><th>Who they are</th><th>Acts for</th><th>Paid by</th><th>Real example</th><th>In InsureMO</th></tr></thead><tbody id="partyBody"></tbody></table></div>
+    <div class="callout"><b>Agent or broker?</b> An <b>agent</b> represents the insurer and sells its products; the insurer pays the agent commission. A <b>broker</b> represents the client, compares several insurers and negotiates terms; brokerage is usually paid by the insurer out of the premium, and sometimes as a fee by the client. This difference matters in law: a mistake by an agent is usually treated as a mistake by the insurer. <span class="tag inf">Domain context</span></div>
+  </section>
+
+  <section class="block">
+    <h2>How an insurer makes money</h2>
+    <div class="grid g2">
+      <div class="card"><h3>The pool</h3><p>Many people pay a small, certain amount (premium) so that the few who suffer a loss get a large, uncertain amount (claim). The insurer manages the pool, predicts the losses with statistics, and invests the money until claims are paid.</p>
+        <div class="tbl"><table><tbody>
+        <tr><td>Car owners in the pool</td><td class="num">1,000</td></tr>
+        <tr><td>Premium each</td><td class="num">10,000</td></tr>
+        <tr><td><b>Premium pool</b></td><td class="num"><b>10,000,000</b></td></tr>
+        <tr><td>Accidents in the year (4%)</td><td class="num">40</td></tr>
+        <tr><td>Average claim</td><td class="num">160,000</td></tr>
+        <tr><td><b>Claims cost</b></td><td class="num"><b>6,400,000</b></td></tr>
+        <tr><td>Expenses (commission, staff, IT)</td><td class="num">2,800,000</td></tr>
+        <tr><td><b>Underwriting profit</b></td><td class="num"><b>800,000</b></td></tr></tbody></table></div>
+        <p class="small muted">Illustrative numbers. Loss ratio 64%, expense ratio 28%, combined ratio 92%.</p></div>
+      <div class="card"><h3>Two sources of profit</h3><ul class="clean"><li><b>Underwriting result</b> — premium earned minus claims and expenses. A combined ratio below 100% means an underwriting profit.</li><li><b>Investment income</b> — premium is collected before claims are paid. The insurer invests that money (the "float"). Long-tail lines such as liability hold claims money for years.</li></ul>
+        <p class="small">Why this matters for claims staff: every claim paid and every reserve set moves the loss ratio. Accurate reserves let management price the next year correctly; reserves that are too low make the book look profitable until the claims arrive.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Key metrics calculator</h2>
+    <p class="muted">Change the numbers to see how the ratios move.</p>
+    <div class="calc">
+      <div class="card" style="gap:10px">
+        <label class="small">Gross written premium (GWP)<input type="number" id="kmGwp" value="12000000"></label>
+        <label class="small">Unearned premium at year end<input type="number" id="kmUpr" value="2000000"></label>
+        <label class="small">Claims paid in the year<input type="number" id="kmPaid" value="5200000"></label>
+        <label class="small">Increase in claim reserves (case + IBNR)<input type="number" id="kmRes" value="1200000"></label>
+        <label class="small">Expenses (commission + operations)<input type="number" id="kmExp" value="2800000"></label>
+      </div>
+      <div id="kmOut"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>The six principles of insurance</h2>
+    <p class="muted">Courts and claim handlers use these to decide every disputed claim.</p>
+    <div class="tbl"><table><thead><tr><th>Principle</th><th>Meaning</th><th>Real example</th><th>Where you see it in Claims</th></tr></thead><tbody id="prinBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Anatomy of a policy</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Parts of the contract</h3><div class="tbl"><table><tbody id="anatBody"></tbody></table></div></div>
+      <div class="card"><h3>Example schedule: private car policy</h3><div class="tbl"><table><tbody>
+        <tr><td>Policy No.</td><td class="mono small">PMC-2026-0012345</td></tr>
+        <tr><td>Policyholder / insured</td><td>Priya Sharma</td></tr>
+        <tr><td>Period of insurance</td><td>01 Apr 2026 to 31 Mar 2027 (365 days)</td></tr>
+        <tr><td>Vehicle</td><td>Hatchback, 1,197 cc, 2024 model</td></tr>
+        <tr><td>Insured declared value (sum insured)</td><td class="num">600,000</td></tr>
+        <tr><td>Covers</td><td>Own damage; third-party liability; personal accident for owner-driver</td></tr>
+        <tr><td>Compulsory deductible</td><td class="num">1,000</td></tr>
+        <tr><td>No-claim bonus applied</td><td>20% on own-damage premium</td></tr>
+        <tr><td>Premium before tax</td><td class="num">14,200</td></tr>
+        <tr><td>Intermediary</td><td>Agent code AG-4471</td></tr></tbody></table></div><p class="small muted">Illustrative policy. The schedule holds the facts; the wording holds the rules.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Money words on a claim</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Terms that reduce a claim payment</h3><div class="tbl"><table><thead><tr><th>Term</th><th>How it works</th><th>Example</th></tr></thead><tbody id="redBody"></tbody></table></div></div>
+      <div class="card"><h3>Claim payment calculator</h3>
+        <div class="calc" style="grid-template-columns:minmax(0,1fr)">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+            <label class="small">Assessed loss<input type="number" id="cpLoss" value="200000"></label>
+            <label class="small">Sum insured<input type="number" id="cpSi" value="600000"></label>
+            <label class="small">Value at risk (true value)<input type="number" id="cpVal" value="800000"></label>
+            <label class="small">Deductible<input type="number" id="cpDed" value="5000"></label>
+            <label class="small">Co-pay %<input type="number" id="cpCo" value="0"></label>
+            <label class="small">Sub-limit (0 = none)<input type="number" id="cpSub" value="0"></label>
+            <label class="small">Already paid (prepay)<input type="number" id="cpPre" value="0"></label>
+          </div>
+          <div id="cpOut"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Lines of business</h2>
+    <div class="tbl"><table><thead><tr><th>Line</th><th>Covers</th><th>Typical claim</th><th>Claims notes</th></tr></thead><tbody id="lobBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>The insurer value chain and InsureMO</h2>
+    <p class="muted">Every insurer runs the same chain of functions. InsureMO splits them into modules. Click a function to jump to where it is covered.</p>
+    <div class="diagram" id="chainDiagram"></div>
+    <div class="tbl"><table><thead><tr><th>Function</th><th>What it does</th><th>InsureMO module</th><th>Learn it here</th></tr></thead><tbody id="chainBody"></tbody></table></div>
+  </section>
+</section>
+
+<!-- POLICY LIFECYCLE -->
+<section class="view" id="v-industry" data-title="Policy lifecycle" hidden>
+  <header><span class="eyebrow">Level 2</span><h1>Policy lifecycle</h1>
+  <p class="lede">The industry-wide processes every insurer runs, from a broker's submission to a reinsurance recovery. Each process shows every actor and step, a real example, and the InsureMO module that does the work.</p></header>
+  <section class="block">
+    <h2>The lifecycle at a glance</h2>
+    <div class="diagram" id="lifeDiagram"></div>
+    <p class="small muted">Policy status words: <b>Quoted</b> (price offered) → <b>Bound</b> (insurer committed, cover starts) → <b>Issued / In force</b> (documents produced) → <b>Endorsed</b> (changed mid-term) → <b>Renewed</b>, <b>Expired</b>, <b>Lapsed</b> (premium not paid) or <b>Cancelled</b> (ended early). <b>Reinstated</b> brings a lapsed or cancelled policy back.</p>
+  </section>
+  <section class="block">
+    <h2>Industry processes</h2>
+    <select class="sc-select" id="ipSelect" aria-label="Choose a process"></select>
+    <div class="explorer">
+      <nav class="sc-list" id="ipList" aria-label="Processes"></nav>
+      <div class="sc-detail" id="ipDetail"></div>
+    </div>
+  </section>
+  <section class="block">
+    <h2>Cancellation refund calculator</h2>
+    <p class="muted">Compare the three ways an insurer returns premium when a policy ends early.</p>
+    <div class="calc">
+      <div class="card" style="gap:10px">
+        <label class="small">Annual premium<input type="number" id="cxPrem" value="12000"></label>
+        <label class="small">Days the policy was in force<input type="number" id="cxDays" value="73"></label>
+        <label class="small">Policy term (days)<input type="number" id="cxTerm" value="365"></label>
+        <label class="small">Claim already paid on this policy?<select id="cxClaim"><option value="no">No</option><option value="yes">Yes</option></select></label>
+      </div>
+      <div id="cxOut"></div>
+    </div>
+  </section>
+  <section class="block">
+    <h2>Reinsurance recovery calculator</h2>
+    <div class="calc">
+      <div class="card" style="gap:10px">
+        <label class="small">Gross claim<input type="number" id="riLoss" value="45000000"></label>
+        <label class="small">Quota share ceded %<input type="number" id="riQs" value="30"></label>
+        <label class="small">Excess of loss: retention (applies to the net after quota share)<input type="number" id="riRet" value="20000000"></label>
+        <label class="small">Excess of loss: limit<input type="number" id="riLim" value="50000000"></label>
+      </div>
+      <div id="riOut"></div>
+    </div>
+  </section>
+</section>
+
+<!-- TRACKER -->
+<section class="view" id="v-tracker" data-title="Learning tracker" hidden>
+  <header><span class="eyebrow">Your progress</span><h1>Learning tracker</h1>
+  <p class="lede">What you have opened, how you scored on each module checkpoint and on the final assessment, and which learning objectives are proven. Saved only in this browser.</p></header>
+  <div class="grid g3" id="trkTiles"></div>
+  <section class="block">
+    <h2>Modules</h2>
+    <div class="tbl"><table><thead><tr><th>Module</th><th>Opened</th><th>Content covered</th><th>Checkpoint</th><th>Status</th></tr></thead><tbody id="trkBody"></tbody></table></div>
+  </section>
+  <section class="block">
+    <h2>Traceability: objective to evidence</h2>
+    <p class="muted">Each learning objective is taught in a module and tested by named questions. An objective is <b>proven</b> when every question linked to it was answered correctly in a checkpoint or the final assessment.</p>
+    <div class="filter-row"><label for="trkFilter" class="small">Show</label><select id="trkFilter"><option value="">All objectives</option><option value="proven">Proven</option><option value="partial">Partly proven</option><option value="open">Not yet tested or wrong</option></select></div>
+    <div class="tbl"><table><thead><tr><th>ID</th><th>Objective</th><th>Taught in</th><th>Questions</th><th>Result</th></tr></thead><tbody id="trcBody"></tbody></table></div>
+  </section>
+  <section class="block">
+    <h2>Report</h2>
+    <div class="grid g2">
+      <div class="card" style="gap:10px"><label class="small" for="lrnName">Your name (for the report)</label><input id="lrnName" type="text" placeholder="Name" style="padding:7px 8px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);font:inherit">
+        <div class="btnrow"><button class="btn" type="button" id="trkCopy">Copy report</button><button class="btn ghost" type="button" id="trkReset">Reset all progress</button></div>
+        <p class="small muted" id="trkMsg" aria-live="polite">Copy the report and paste it into an email or chat to share your results.</p></div>
+      <pre id="trkReport" class="card small mono" style="white-space:pre-wrap;margin:0;max-height:320px;overflow:auto"></pre>
+    </div>
+  </section>
+</section>
+
+<!-- FINAL ASSESSMENT -->
+<section class="view" id="v-assess" data-title="Final assessment" hidden>
+  <header><span class="eyebrow">Your progress</span><h1>Final assessment</h1>
+  <p class="lede">Twenty scenario questions across all modules. Answer all, then submit to see your score, the pass result (70%) and a review of each answer. Your best score and every attempt are kept in the tracker.</p></header>
+  <div id="asBody" style="display:flex;flex-direction:column;gap:12px"></div>
+  <div class="btnrow"><button class="btn" type="button" id="asSubmit">Submit assessment</button><button class="btn ghost" type="button" id="asRetry">Start a new attempt</button></div>
+  <div id="asResult"></div>
+</section>
+
 <!-- L1 FOUNDATIONS -->
 <section class="view" id="v-basics" data-title="Foundations" hidden>
-  <header><span class="eyebrow">Level 1</span><h1>Foundations</h1>
+  <header><span class="eyebrow">Level 3</span><h1>Claims foundations</h1>
   <p class="lede">What a claim is, the tasks that move it, the two claim modes, reserves, and the words and icons you will see on every screen.</p></header>
 
   <section class="block">
@@ -432,7 +657,7 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
       <div class="card"><h3>On a working task</h3><p>When you submit Appraisal, Calculation, Settlement, Prepay, Subrogation or Salvage, the system compares the amount with <b>your authority</b>.</p><ul class="clean"><li>Within authority → the next task is created (or the task closes).</li><li>Above authority → an approval task is created.</li></ul></div>
       <div class="card"><h3>On an approval task</h3><p>The approver reads the same page in read-only mode and records a decision.</p><ul class="clean"><li><b>Reject</b> → the original task comes back for rework.</li><li><b>Approve</b>, within approver authority → the next task.</li><li><b>Approve</b>, above approver authority → a new approval task for the next level.</li></ul></div>
     </div>
-    <p class="small muted">This gives multi-level approval without extra screens. Authority amounts are set in claim authority configuration (InsureMO Claim API). See Level 2 for the simulator.</p>
+    <p class="small muted">This gives multi-level approval without extra screens. Authority amounts are set in claim authority configuration (InsureMO Claim API). See Level 4 for the simulator.</p>
   </section>
 
   <section class="block">
@@ -461,7 +686,7 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
 
 <!-- L2 LIFECYCLE -->
 <section class="view" id="v-lifecycle" data-title="Lifecycle and task engine" hidden>
-  <header><span class="eyebrow">Level 2</span><h1>Lifecycle and task engine</h1>
+  <header><span class="eyebrow">Level 4</span><h1>Lifecycle and task engine</h1>
   <p class="lede">Every claim moves by one rule: submitting a task creates the next one. Learn the routing map, the status models, and test the rule in the simulator.</p></header>
 
   <section class="block">
@@ -507,8 +732,8 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
 
 <!-- L3 FLOWS -->
 <section class="view" id="v-flows" data-title="Process flows" hidden>
-  <header><span class="eyebrow">Level 3</span><h1>Process flows</h1>
-  <p class="lede">Each flow is a business situation drawn as a swimlane, with its alternate paths, the screens used, business rules and notes per role. Module tags show where Easy PA, BCP or Reinsurance take part.</p></header>
+  <header><span class="eyebrow">Level 5</span><h1>Claims process flows</h1>
+  <p class="lede">Each flow is a business situation drawn as a swimlane that fits the page width, with its alternate paths, a step-by-step explanation of every actor, a real example, the screens used, business rules and notes per role. Module tags show where Easy PA, BCP or Reinsurance take part.</p></header>
   <select class="sc-select" id="scSelect" aria-label="Choose a flow"></select>
   <div class="explorer">
     <nav class="sc-list" id="scList" aria-label="Flows"></nav>
@@ -519,7 +744,7 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
 
 <!-- L4 SCREENS -->
 <section class="view" id="v-screens" data-title="Screens" hidden>
-  <header><span class="eyebrow">Level 4</span><h1>Screens</h1>
+  <header><span class="eyebrow">Level 6</span><h1>Screens</h1>
   <p class="lede">Every screen in the source guide: how to open it, its sections, its buttons and what each button does, key fields, rules, and the original screenshots. Click a screenshot to open it full size.</p></header>
   <div class="menu-tree" id="menuTree"></div>
   <div id="screenDetail"></div>
@@ -528,7 +753,7 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
 
 <!-- L5 CALC -->
 <section class="view" id="v-calc" data-title="Calculation and reserve logic" hidden>
-  <header><span class="eyebrow">Level 5</span><h1>Calculation and reserve logic</h1>
+  <header><span class="eyebrow">Level 7</span><h1>Calculation and reserve logic</h1>
   <p class="lede">The most technical part of Easy Claim. Two calculation engines exist side by side, and the choice changes how repeat calculations, settlement and reserve closing behave.</p></header>
 
   <section class="block">
@@ -563,7 +788,7 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
       <div class="card"><h3>GIMO rating calculation (V1)</h3><p class="small">Columns: Reserve Type, Coverage Name, Requested Amount, Recognized Amount, Previous Recognized Amount, Total Recognized Amount, Previous Adjusted Amount, Calculated Amount, Adjusted Amount, Total. Buttons: Add, Calculate. Footer: Sum Of Adjusted Amount. <span class="tag shot">Screenshot</span></p><p class="small">Formula shown under each row: <code>Calculated Amount = Total Recognized Amount − Previous Adjusted Amount</code>. <span class="tag shot">Screenshot</span></p></div>
       <div class="card"><h3>New calculation tool (V2)</h3><p class="small">Columns: Order, Reserve Type, Coverage Name, Bill Amount, Parameter (for example Medical Fee, Admission Days), Calculated Amount, Adjusted Amount. Buttons: Add, Calculate. Footer: Sum Of Adjusted Amount. <span class="tag shot">Screenshot</span></p><p class="small">Example: Medical Treatment bill 60,000 → calculated 50,000; Hospitalization Allowance 8 days → 8,000; sum 58,000. The cap and daily rate come from the configured formula. <span class="tag shot">Screenshot</span></p></div>
     </div>
-    <div class="shots"><figure class="shot"><a href="img/s36.png" target="_blank" rel="noopener"><img loading="lazy" src="img/s36.png" alt="GIMO rating calculation page"></a><figcaption>GIMO rating calculation page (V1)</figcaption></figure><figure class="shot"><a href="img/s37.png" target="_blank" rel="noopener"><img loading="lazy" src="img/s37.png" alt="New calculation tool page"></a><figcaption>New calculation tool, calculation page (V2)</figcaption></figure></div>
+    <div class="shots"><figure class="shot"><button type="button" class="shot-open" data-n="36" data-cap="GIMO rating calculation page (V1)" aria-label="Enlarge: GIMO rating calculation page (V1)"><img loading="lazy" src="img/s36.png" alt="GIMO rating calculation page"></button><figcaption>GIMO rating calculation page (V1)</figcaption></figure><figure class="shot"><button type="button" class="shot-open" data-n="37" data-cap="New calculation tool, calculation page (V2)" aria-label="Enlarge: New calculation tool, calculation page (V2)"><img loading="lazy" src="img/s37.png" alt="New calculation tool page"></button><figcaption>New calculation tool, calculation page (V2)</figcaption></figure></div>
   </section>
 
   <section class="block">
@@ -598,7 +823,7 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
 
 <!-- L6 INTEGRATION -->
 <section class="view" id="v-integration" data-title="Cross-module" hidden>
-  <header><span class="eyebrow">Level 6</span><h1>Cross-module links</h1>
+  <header><span class="eyebrow">Level 8</span><h1>Cross-module links</h1>
   <p class="lede">Claims depends on Easy PA for the policy, sends money movements to BCP, and drives reinsurance recoveries. Click a module to see what it sends, what it gets back, and where to read more.</p></header>
   <div class="callout warn">The Claims source describes the Easy PA link (policy docking) and the finance link (payment, cancel payment, recovery) only briefly. It says nothing about Reinsurance. Items tagged <span class="tag bcp">BCP guide</span> come from the BCP module guide; items tagged <span class="tag inf">Domain context</span> are standard insurance practice. Confirm both before you write requirements or expected results.</div>
   <div class="hub-wrap">
@@ -637,7 +862,7 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
 
 <!-- L7 CONFIG -->
 <section class="view" id="v-config" data-title="Configuration and APIs" hidden>
-  <header><span class="eyebrow">Level 7</span><h1>Configuration and APIs</h1>
+  <header><span class="eyebrow">Level 9</span><h1>Configuration and APIs</h1>
   <p class="lede">What you can change by configuration, what is a platform API, and what is left to build. Use this to scope a project.</p></header>
   <section class="block">
     <h2>Configurable items</h2>
@@ -667,7 +892,7 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
 
 <!-- L8 TOOLKIT -->
 <section class="view" id="v-toolkit" data-title="Role toolkits" hidden>
-  <header><span class="eyebrow">Level 8</span><h1>Role toolkits</h1>
+  <header><span class="eyebrow">Level 10</span><h1>Role toolkits</h1>
   <p class="lede">Ready-to-use material for workshops, test cycles and builds.</p></header>
   <div class="tabs" role="tablist" id="tkTabs">
     <button role="tab" type="button" data-tk="ba" aria-selected="true">Business analyst</button>
@@ -692,45 +917,41 @@ svg .st-node.appr rect{stroke:var(--appr);fill:var(--appr-soft)}
   <div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What the source says</th><th>Action</th></tr></thead><tbody id="gapBody"></tbody></table></div>
 </section>
 
-<!-- QUIZ -->
-<section class="view" id="v-quiz" data-title="Knowledge check" hidden>
-  <header><span class="eyebrow">Reference</span><h1>Knowledge check</h1>
-  <p class="lede">Answers are saved in this browser. <span class="score" id="quizScore"></span></p>
-  <div><button class="btn ghost" type="button" id="quizReset">Reset answers</button></div></header>
-  <div id="quizBody" style="display:flex;flex-direction:column;gap:12px"></div>
-</section>
-
 <!-- GLOSSARY -->
 <section class="view" id="v-glossary" data-title="Glossary" hidden>
-  <header><span class="eyebrow">Reference</span><h1>Glossary</h1></header>
-  <div class="filter-row"><label for="glFilter" class="small">Filter</label><input id="glFilter" type="search" placeholder="Type a term"></div>
-  <div class="tbl"><table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody id="glBody"></tbody></table></div>
+  <header><span class="eyebrow">Reference</span><h1>Insurance glossary</h1><p class="lede">Insurance terms across the whole policy lifecycle, plus the InsureMO and Easy Claim words used in this guide. Filter by word or by category.</p></header>
+  <div class="filter-row"><label for="glFilter" class="small">Filter</label><input id="glFilter" type="search" placeholder="Type a term or a word in its meaning"><label for="glCat" class="small">Category</label><select id="glCat"></select><span class="small muted" id="glCount"></span></div>
+  <div class="tbl"><table><thead><tr><th>Term</th><th>Meaning</th><th>Category</th></tr></thead><tbody id="glBody"></tbody></table></div>
 </section>
 
 <p class="foot">Source: InsureMO Easy Claim Function User Guide (all sections, screenshots and Q&amp;A). Companion guide: <a href="../bcp-learning-guide/index.html">InsureMO BCP Learning Guide</a>. Progress, quiz answers and the role lens are stored only in this browser.</p>
 </main>
 </div>
+<div id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Screenshot"><div class="lb-bar"><span id="lbCap"></span><button type="button" class="btn" id="lbClose">Close</button></div><div class="lb-body"><img id="lbImg" alt=""></div></div>
 <script>
 /* ===================== DATA ===================== */
 const LEVELS=[
  {id:'start',n:'0',name:'Start here',grp:'Begin'},
- {id:'basics',n:'1',name:'Foundations',grp:'Basic',learn:'What a claim is, the seven tasks, claim modes, reserves, auxiliary tasks, authority rule, menu map, icons',ready:'Explain each task, the two claim modes, reserve types and the authority rule'},
- {id:'lifecycle',n:'2',name:'Lifecycle & task engine',grp:'Basic',learn:'Process flowchart, routing rules, router simulator, status models, section reuse matrix',ready:'Predict the next task for any submit, including approval and reject'},
- {id:'flows',n:'3',name:'Process flows',grp:'Intermediate',learn:'24 swimlane flows with alternate paths, rules, screens and role notes',ready:'Walk any flow end to end with its alternate paths'},
- {id:'screens',n:'4',name:'Screens',grp:'Intermediate',learn:'41 screens with sections, buttons, fields, rules and all source screenshots',ready:'Pick the right screen and predict each button result'},
- {id:'calc',n:'5',name:'Calculation & reserve logic',grp:'Advanced',learn:'GIMO rating vs new tool, Claim Matrix V1/V2, full-scale calculation, reserve close rule',ready:'Explain full-scale calculation and its effect on settlement and reserve close'},
- {id:'integration',n:'6',name:'Cross-module',grp:'Advanced',learn:'Easy PA policy docking, BCP money flows, Reinsurance recoveries, iDocs, notification, journeys',ready:'Explain what Claims gets from PA and sends to BCP and RI'},
- {id:'config',n:'7',name:'Configuration & APIs',grp:'Advanced',learn:'Parameters, authority, workflow, Claim Matrix, code lists, APIs, configure vs build',ready:'Scope a requirement as configuration, API or build'},
- {id:'toolkit',n:'8',name:'Role toolkits',grp:'Apply',learn:'BA questions and fit-gap, test matrix and boundary tests, developer checklist',ready:'Use it on a live requirement or test cycle'},
+ {id:'insure',n:'1',name:'Insurance basics',grp:'Insurance',learn:'Parties, how insurers make money, the six principles, policy anatomy, claim money terms, lines of business, value chain',ready:'Explain who does what in insurance and calculate a claim payment'},
+ {id:'industry',n:'2',name:'Policy lifecycle',grp:'Insurance',learn:'10 industry processes: submission to issue, endorsement, renewal, cancellation, lapse, billing, commission, claims, reinsurance',ready:'Walk any policy event with its actors, money and InsureMO module'},
+ {id:'basics',n:'3',name:'Claims foundations',grp:'Claims: basic',learn:'What a claim is, the seven tasks, claim modes, reserves, auxiliary tasks, authority rule, menu map, icons',ready:'Explain each task, the two claim modes, reserve types and the authority rule'},
+ {id:'lifecycle',n:'4',name:'Lifecycle & task engine',grp:'Claims: basic',learn:'Process flowchart, routing rules, router simulator, status models, section reuse matrix',ready:'Predict the next task for any submit, including approval and reject'},
+ {id:'flows',n:'5',name:'Claims process flows',grp:'Claims: intermediate',learn:'24 swimlane flows with alternate paths, step explanations, real examples, rules and role notes',ready:'Walk any flow end to end with its alternate paths'},
+ {id:'screens',n:'6',name:'Screens',grp:'Claims: intermediate',learn:'41 screens with sections, buttons, fields, rules and all source screenshots',ready:'Pick the right screen and predict each button result'},
+ {id:'calc',n:'7',name:'Calculation & reserve logic',grp:'Claims: advanced',learn:'GIMO rating vs new tool, Claim Matrix V1/V2, full-scale calculation, reserve close rule',ready:'Explain full-scale calculation and its effect on settlement and reserve close'},
+ {id:'integration',n:'8',name:'Cross-module',grp:'Claims: advanced',learn:'Easy PA policy docking, BCP money flows, Reinsurance recoveries, iDocs, notification, journeys',ready:'Explain what Claims gets from PA and sends to BCP and RI'},
+ {id:'config',n:'9',name:'Configuration & APIs',grp:'Claims: advanced',learn:'Parameters, authority, workflow, Claim Matrix, code lists, APIs, configure vs build',ready:'Scope a requirement as configuration, API or build'},
+ {id:'toolkit',n:'10',name:'Role toolkits',grp:'Apply',learn:'BA questions and fit-gap, test matrix and boundary tests, developer checklist',ready:'Use it on a live requirement or test cycle'},
  {id:'faq',n:'Q',name:'Source Q&A',grp:'Reference'},
  {id:'gaps',n:'!',name:'Source gaps',grp:'Reference'},
- {id:'quiz',n:'?',name:'Knowledge check',grp:'Reference'},
- {id:'glossary',n:'A',name:'Glossary',grp:'Reference'}
+ {id:'glossary',n:'A',name:'Insurance glossary',grp:'Reference'},
+ {id:'tracker',n:'T',name:'Learning tracker',grp:'Progress'},
+ {id:'assess',n:'F',name:'Final assessment',grp:'Progress'}
 ];
 const PATHS={
- ba:{t:'Business analyst',d:'Run workshops, write requirements, own fit-gap.',steps:['Foundations','Lifecycle: flowchart and routing rules','Process flows (all groups)','Cross-module links','Configuration and APIs','Toolkit: BA questions and fit-gap','Source gaps']},
- qa:{t:'Tester',d:'Design flow, authority-boundary and negative tests; verify task routing and read-only rules.',steps:['Foundations','Lifecycle: router simulator and section matrix','Process flows (every path)','Screens: buttons and rules','Calculation and reserve logic','Toolkit: test matrix','Source gaps (fix expected results)']},
- dev:{t:'Developer',d:'Integrate APIs, configure products, connect PA, BCP and RI.',steps:['Foundations','Cross-module links (policy docking, BCP mapping)','Configuration and APIs','Calculation and reserve logic','Process flows (system steps)','Toolkit: developer checklist','Source gaps']}
+ ba:{t:'Business analyst',d:'Run workshops, write requirements, own fit-gap.',steps:['Insurance basics','Policy lifecycle','Claims foundations','Lifecycle: flowchart and routing rules','Claims process flows (all groups)','Cross-module links','Configuration and APIs','Toolkit: BA questions and fit-gap','Source gaps','Checkpoints and final assessment']},
+ qa:{t:'Tester',d:'Design flow, authority-boundary and negative tests; verify routing, read-only rules and money results.',steps:['Insurance basics (calculators)','Policy lifecycle','Claims foundations','Lifecycle: router simulator and section matrix','Claims process flows (every path)','Screens: buttons and rules','Calculation and reserve logic','Toolkit: test matrix','Source gaps (fix expected results)','Checkpoints and final assessment']},
+ dev:{t:'Developer',d:'Integrate APIs, configure products, connect PA, BCP and RI.',steps:['Insurance basics','Policy lifecycle (module mapping)','Claims foundations','Cross-module links (policy docking, BCP mapping)','Configuration and APIs','Calculation and reserve logic','Claims process flows (system steps)','Toolkit: developer checklist','Source gaps','Checkpoints and final assessment']}
 };
 const TASKS=[
  ['FNOL','First Notice of Loss. The customer reports the loss for the first time and the system creates the claim case.','No','First contact. Speed and data quality here drive fraud checks, reserving and customer experience.'],
@@ -1068,7 +1289,7 @@ const FLOWS=[
  rules:['Existing rules stay unchanged; parameters control the new behaviour.','Decline is available on the Calculation page.','Calculation Approval page is the Calculation page, read-only, plus Approval Decision.'],
  scr:['calc','calcAp'],
  ba:'Choose V1 or V2 per product. V2 is needed for formula-based benefits (health, per-day allowances) and full-scale recalculation.',
- qa:'Run repeat calculations in both models: V1 expects the increment, V2 expects the total. See Level 5 calculator.',
+ qa:'Run repeat calculations in both models: V1 expects the increment, V2 expects the total. See Level 7 calculator.',
  dev:'Configure formulas in the new calculation tool and link the product in Claim Matrix V2.'},
 
 {id:'M8',grp:'main',name:'Settlement and payment',mods:['bcp','ri'],src:'Business Function: Settlement, Settlement Approval; Q16',
@@ -1164,7 +1385,7 @@ const FLOWS=[
  rules:['With GIMO rating, the close-reserve validation stays as before.','With the new tool: if paid amount is not 0 AND settled amount differs from calculation amount, a validation message appears.'],
  scr:['rsvCl','inv'],
  ba:'Closing reserves releases liability. Agree who may close and when (after final payment, after recovery period).',
- qa:'Use the Level 5 checker to build the four combinations of paid = 0 / ≠ 0 and settled = / ≠ calculation.',
+ qa:'Use the Level 7 checker to build the four combinations of paid = 0 / ≠ 0 and settled = / ≠ calculation.',
  dev:'The rule is controlled by the calculation configuration in Claim Matrix V2.'},
 
 {id:'R3',grp:'rsv',name:'Reserve reopen',mods:[],src:'Reserve Reopen Approval',
@@ -1849,26 +2070,6 @@ const GAPS=[
  ['Low','Health product changes','Health pages are shown as screenshots without field descriptions.','Get the health baseline data dictionary.'],
  ['Low','Claim status list','No list of claim status values is given; the Claim Task screenshot shows stage names.','Get the status code list for reports and integration.']
 ];
-const QUIZ=[
- {q:'What does Submit on FNOL create?',o:['Investigation task','Registration task','Calculation task'],a:1,w:'FNOL closes, Registration is created and Task Transfer opens.'},
- {q:'An appraisal is above the handler’s authority. What happens on Submit?',o:['Document task','Appraisal Approval task','The claim closes'],a:1,w:'Above authority always creates the approval task for that step.'},
- {q:'An approver approves an amount above their own authority. What happens?',o:['Next task is created','A new approval task for the next level','The task is rejected'],a:1,w:'Approval re-creates itself until an approver with enough authority approves.'},
- {q:'Is Qualified = No on the Document task. What next?',o:['Calculation task','A new Document task and a notice to the contact','The claim is declined'],a:1,w:'The Document task loops until documents are qualified.'},
- {q:'Where can a claim be cancelled?',o:['FNOL or Registration','Calculation or Settlement','Any task'],a:0,w:'Cancel is on FNOL and Registration. Decline is on Calculation and Settlement.'},
- {q:'With the new calculation tool, the first calculation was 1,000 and the total is now 1,500. What do you enter?',o:['500','1,500','2,500'],a:1,w:'Full-scale calculation: enter the new total. The system treats it as final.'},
- {q:'Which product set-up goes with the new calculation tool?',o:['Claim Matrix V1','Claim Matrix V2','No matrix'],a:1,w:'V2 supports the new calculation rules; V1 keeps GIMO rating.'},
- {q:'What does a reserve create in BCP?',o:['A payable','A fee only, for GL','A receivable'],a:1,w:'Reserve is fee-only (200201) per the BCP guide.'},
- {q:'Which auxiliary task has no approval task in the source?',o:['Salvage','Recovery','Prepay'],a:1,w:'Recovery has no approval task described.'},
- {q:'How do you add a Prepay task?',o:['Claim Task > New Accident Report','New and Reopen > New Task','Settlement > Add'],a:1,w:'Auxiliary tasks are created with New Task.'},
- {q:'Which tasks can be reopened without parallel task configuration?',o:['All tasks','Investigation, Appraisal, Document, Calculation','Settlement only'],a:1,w:'Settlement is not in the list; to pay more, reopen via reserve or Calculation.'},
- {q:'PA Docking = 02-PA, Manual Policy Docking = 03, Is Manual Policy = No. Where does the policy come from?',o:['Manual Policy','PA','Mock Data'],a:1,w:'With 03, the user choice decides: No uses the PA docking source.'},
- {q:'A reserve close is requested with the new tool. Paid = 600, settled = 600, calculation = 1,000. Result?',o:['Reserve closes','Validation message','Approval skipped'],a:1,w:'Paid ≠ 0 and settled ≠ calculation, so the validation message appears.'},
- {q:'Who can see subordinate users’ tasks?',o:['My Claim','Task Monitor','Diary Task'],a:1,w:'Task Monitor shows tasks of the user and subordinates.'},
- {q:'Finance has already paid a wrong settlement. What do you use?',o:['Cancel payment','Recovery, then a new payment','Reserve close'],a:1,w:'Cancel works only before payment. After payment, recover the money.'},
- {q:'On the Settlement task, which part of Sub-Claim Information can you change?',o:['Everything','Only the claimant','Nothing'],a:1,w:'Only the claimant is editable; calculation is read-only.'},
- {q:'In which claim mode can one main case hold several sub-cases?',o:['Claim mode','Sub-claim mode','Both'],a:1,w:'Sub-claim mode, typical for health insurance.'},
- {q:'Who decides if the Update, Close and Reopen reserve buttons appear?',o:['Workflow configuration','Claim authority configuration (Claim API)','The product'],a:1,w:'Buttons follow the user’s reserve permissions in claim authority configuration.'}
-];
 const GLOSS=[
  ['Advance menu','Menu on the claim summary with Attachment, Notes, Prior Claims, Task Transfer, Diary Task, Print, Litigation, Task Process, Payment Info and Medical Bill (health).'],
  ['Appraisal','Loss assessment: deciding the loss amount with loss items.'],
@@ -1915,6 +2116,667 @@ const GLOSS=[
  ['Upload Monitor','Screen to track Batch FNOL uploads by Upload No.']
 ];
 
+/* ===================== INSURANCE KNOWLEDGE ===================== */
+Object.assign(LANES,{cust:'Client / policyholder',agent:'Agent',broker:'Broker',tpa:'TPA / surveyor / provider',uw:'Underwriter',ops:'Policy operations',bank:'Bank / gateway',reg:'Regulator',sc:'Sales Channel'});
+LANE_ORDER.splice(0,LANE_ORDER.length,'cust','clmt','tp','agent','broker','tpa','pa','uw','ops','hdl','appr','mgr','sys','docs','bcp','sc','bank','ri','reg','gl');
+
+const PARTIES=[
+ {id:'client',n:'Client / policyholder',who:'The person or company that buys the policy, owns it and pays the premium.',acts:'Itself',paid:'Pays premium',ex:'Priya buys a car policy; ABC Logistics buys a warehouse policy.',imo:'Customer / policyholder in Easy PA; payer in BCP'},
+ {id:'insured',n:'Insured',who:'The person or entity whose life, health, property or liability is covered. Often the same as the policyholder, but not always.',acts:'—',paid:'—',ex:'In group health, the employer is the policyholder and each employee is an insured.',imo:'Insured on the policy; Is Insured flag on New Policy'},
+ {id:'benef',n:'Beneficiary / nominee',who:'The person who receives the benefit, mainly in life and personal accident cover.',acts:'—',paid:'Receives claim',ex:'The spouse named as nominee on a term life policy.',imo:'Payee on Settlement'},
+ {id:'claimant',n:'Claimant',who:'Anyone who makes a claim. Can be the insured or a third party.',acts:'Itself',paid:'Receives claim',ex:'A pedestrian injured by an insured car claims under the car’s third-party cover.',imo:'Claimant Information on FNOL'},
+ {id:'third',n:'Third party',who:'Someone outside the contract who suffers loss caused by the insured.',acts:'Itself',paid:'Receives liability payment',ex:'The owner of the car hit by Priya.',imo:'Claimant or Recovery From party'},
+ {id:'agent',n:'Agent',who:'Sells the products of one or more insurers on their behalf. Tied agents sell for one insurer; corporate agents (for example banks) may sell for a few.',acts:'Insurer',paid:'Commission from insurer',ex:'A tied agent sells a family health policy; a bank sells life policies (bancassurance).',imo:'Sales Channel producer; commission in BCP'},
+ {id:'broker',n:'Broker',who:'Advises the client, compares insurers, negotiates terms and places the risk. Often handles claims advocacy for the client.',acts:'Client',paid:'Brokerage, usually from insurer; sometimes a fee from client',ex:'A broker places a factory fire policy with three co-insurers.',imo:'Sales Channel producer; statements and net settlement in BCP'},
+ {id:'mga',n:'MGA / coverholder',who:'A managing general agent holds delegated authority to quote, bind and sometimes settle claims for an insurer.',acts:'Insurer (under contract)',paid:'Commission and profit share',ex:'A specialist MGA binds cyber policies for a Lloyd’s syndicate.',imo:'Producer with binding authority (configuration)'},
+ {id:'aggr',n:'Aggregator / digital partner',who:'Comparison websites and embedded partners that show quotes from several insurers.',acts:'Mostly the client',paid:'Fee or commission',ex:'A comparison site lists motor quotes from ten insurers.',imo:'API-based quote and issue (Easy PA APIs)'},
+ {id:'insurer',n:'Insurer (carrier)',who:'The licensed company that carries the risk, issues the policy, collects premium and pays claims. Departments: distribution, underwriting, operations, finance, claims, reinsurance, actuarial, compliance.',acts:'Itself',paid:'Premium',ex:'A general insurer writes motor, health and property business.',imo:'The tenant running InsureMO'},
+ {id:'coins',n:'Co-insurer',who:'Takes a direct share of a large risk alongside the lead insurer. Each co-insurer is liable for its own share only.',acts:'Itself',paid:'Its share of premium',ex:'Lead insurer 50%, two followers 25% each on a refinery.',imo:'Coinsurance ARAP and statements in BCP'},
+ {id:'reins',n:'Reinsurer',who:'Insures the insurer. Takes part of its risks in exchange for part of the premium, and pays its share of claims.',acts:'Itself',paid:'Ceded premium',ex:'Swiss Re, Munich Re, GIC Re take shares of an insurer’s property treaty.',imo:'Reinsurance module; RI AR / AP in BCP'},
+ {id:'tpa',n:'TPA',who:'A third-party administrator that runs claims (mainly health) for the insurer: cashless approvals, bill checks, hospital networks.',acts:'Insurer',paid:'Fee from insurer',ex:'A TPA approves a cashless hospital admission at a network hospital.',imo:'External party; health claim integration'},
+ {id:'surveyor',n:'Surveyor / loss adjuster',who:'An independent expert who inspects the loss, checks the cause and recommends the amount payable.',acts:'Insurer (independent opinion)',paid:'Fee from insurer',ex:'A surveyor inspects a fire-damaged warehouse and reports the loss and the underinsurance.',imo:'Investigator on Investigation; party in Party Management'},
+ {id:'provider',n:'Service provider',who:'Garages, hospitals, labs, repairers and assistance companies that serve claimants, often in a network with agreed rates.',acts:'Itself',paid:'Paid directly by insurer (cashless) or by claimant',ex:'A network garage repairs a car and bills the insurer directly.',imo:'Party Management; payee on Settlement'},
+ {id:'bank',n:'Bank / payment gateway',who:'Moves money: premium collection, claim payment, refunds.',acts:'Its client',paid:'Fees',ex:'A UPI or card payment for an online motor policy.',imo:'Payment methods and gateways in BCP (built with iComposer)'},
+ {id:'actuary',n:'Actuary',who:'Prices products and sets reserves, including IBNR, using statistics.',acts:'Insurer',paid:'Salary or fee',ex:'Calculates that 3% of this year’s motor claims are not yet reported.',imo:'Rates in product configuration; reserves feed finance'},
+ {id:'reg',n:'Regulator',who:'Licenses insurers and intermediaries, approves products, sets solvency and customer-protection rules.',acts:'Public',paid:'Fees and levies',ex:'IRDAI (India), FCA and PRA (UK), state insurance departments with NAIC (US), MAS (Singapore).',imo:'Compliance rules and reports'}
+];
+const PMAP={W:780,H:430,nodes:[
+ {id:'client',x:20,y:185,t:'Client / insured'},{id:'agent',x:230,y:60,t:'Agent'},{id:'broker',x:230,y:310,t:'Broker'},{id:'insurer',x:440,y:185,t:'Insurer'},
+ {id:'reins',x:630,y:95,t:'Reinsurer',w:130},{id:'reg',x:440,y:20,t:'Regulator'},{id:'tpa',x:440,y:350,t:'TPA / surveyor / provider',w:170},{id:'bank',x:20,y:350,t:'Bank'}],
+ edges:[['client','agent','Buys via'],['client','broker','Appoints'],['agent','insurer','Sells for',{bend:30}],['broker','insurer','Places risk'],['insurer','client','Policy + claims',{bend:-60}],
+ ['insurer','reins','Ceded premium'],['reins','insurer','Recoveries',{bend:30}],['reg','insurer','Licenses, rules'],['insurer','tpa','Services claims'],['client','bank','Pays'],['insurer','agent','Commission',{bend:30}]]};
+const PRIN=[
+ ['Utmost good faith','Both sides must disclose all material facts honestly. A fact is material if it would change the underwriter’s decision or price.','A proposer hides a heart condition; the insurer can avoid the policy when it finds out at claim time.','Investigation checks disclosures; non-disclosure is a decline reason.'],
+ ['Insurable interest','The policyholder must suffer a financial loss if the insured thing is damaged.','You cannot insure your neighbour’s house; a bank can insure a car it financed.','Payee may include the financier (hypothecation).'],
+ ['Indemnity','The insured is put back in the same financial position as before the loss, no better. Applies to general insurance, not to life cover.','A 5-year-old car part is replaced with a new one; a depreciation deduction stops the insured gaining.','Calculation applies depreciation, deductibles, salvage.'],
+ ['Contribution','If two policies cover the same loss, each insurer pays its fair share; the insured cannot collect twice.','A house insured with two insurers for 50 each, loss 40: each pays 20.','FNOL asks “Are there any other policies covering you for this accident?”'],
+ ['Subrogation','After paying, the insurer takes over the insured’s right to recover from the party that caused the loss.','Insurer pays Priya’s repair, then claims from the at-fault driver’s insurer.','Subrogation task and recovery AR in BCP.'],
+ ['Proximate cause','The dominant, effective cause of the loss decides whether it is covered.','A storm (covered) breaks a window and rain damages stock: the storm is the proximate cause.','Cause of Loss on FNOL drives coverage checks.']
+];
+const ANAT=[
+ ['Schedule / declarations','The facts: policy number, period, insured, sum insured, premium, deductibles, intermediary.'],
+ ['Insuring clause','The promise: what the insurer will pay for.'],
+ ['Definitions','The meaning of key words, such as “accident”, “hospitalisation”, “flood”.'],
+ ['Exclusions','What is not covered, such as war, wear and tear, drunk driving, pre-existing disease in the waiting period.'],
+ ['Conditions','Duties of the insured: notify claims promptly, pay premium, prevent further loss, allow inspection.'],
+ ['Endorsements','Changes added to the policy, such as a new vehicle, an extra cover or an address change.'],
+ ['Limits, sub-limits, deductibles','The money boundaries of each cover.']
+];
+const RED=[
+ ['Deductible / excess','The first part of each claim the insured pays.','Repair 25,000, deductible 1,000 → pay 24,000.'],
+ ['Co-pay','A percentage of each claim the insured pays (common in health).','Bill 100,000, co-pay 10% → pay 90,000.'],
+ ['Sub-limit','A cap inside the sum insured for one item.','Room rent limited to 1% of sum insured per day.'],
+ ['Average (underinsurance)','If the sum insured is less than the true value, the claim is cut in the same proportion.','Value 800,000, insured for 600,000, loss 200,000 → pay 150,000.'],
+ ['Depreciation','Wear deducted from the cost of new parts.','Plastic parts at 50% depreciation on a motor claim.'],
+ ['Salvage','Value of the damaged item the insurer keeps or deducts.','Total-loss car sold for 90,000 at auction.'],
+ ['Waiting period','Time after start when some claims are not paid.','30 days for illness in many health policies, except accidents.']
+];
+const LOB=[
+ ['Motor','Own damage to the vehicle; third-party liability (compulsory in most countries); personal accident','Collision repair; injury to a pedestrian','Surveyor, depreciation, network garages, subrogation between insurers, total loss and salvage'],
+ ['Health','Hospital and medical costs; fixed benefits such as hospital cash; critical illness','Hospital admission; daily allowance','Cashless via TPA, pre-authorisation, co-pay, sub-limits, waiting periods'],
+ ['Property / fire','Buildings, plant, stock against fire, flood, storm, burglary','Factory fire','Surveyor, average clause, catastrophe codes, reinsurance recovery'],
+ ['Marine','Cargo in transit; ship hulls','Goods damaged at sea','Survey at destination, recovery from carrier (subrogation)'],
+ ['Liability','Legal liability to others: public, product, professional (E&O), directors (D&O)','Customer slips in a shop','Long-tail, legal expense reserves, litigation'],
+ ['Travel','Medical emergencies abroad, trip delay, baggage loss','Flight delay compensation','Assistance company, many small claims (the source screenshots use an overseas travel product)'],
+ ['Personal accident','Death or disability from accident','Permanent total disability','Fixed benefit by disability table'],
+ ['Life','Death benefit; savings (endowment, unit-linked); annuities','Death claim to nominee','Nominee checks, early-claim investigation; usually a separate life system']
+];
+const CHAIN=[
+ ['Distribution','Agents, brokers, digital partners bring business','Sales Channel','#industry'],
+ ['Underwriting','Assess, price, accept or decline risk','Easy PA (rules, rating)','#industry'],
+ ['Policy administration','Issue, endorse, renew, cancel','Easy PA','#industry'],
+ ['Billing and collection','Invoice, collect, refund, commission','BCP','#bcp'],
+ ['Claims','FNOL to settlement and recovery','Easy Claim','#basics'],
+ ['Reinsurance','Cede risk, recover claims','Reinsurance module','#integration'],
+ ['Finance and actuarial','GL, reserves, reports, solvency','BCP to GL; actuarial outside','#integration']
+];
+const LIFEMAP={name:'Policy lifecycle',W:1060,H:340,nodes:[
+ {id:'sub',x:10,y:30,t:'Submission',c:'start',w:130},{id:'q',x:175,y:30,t:'Quoted',w:120},{id:'b',x:330,y:30,t:'Bound',w:120},{id:'i',x:485,y:30,t:'Issued / in force',c:'good',w:160},{id:'r',x:700,y:30,t:'Renewed',c:'good',w:130},{id:'ex',x:900,y:30,t:'Expired',c:'final',w:130},
+ {id:'dec',x:175,y:160,t:'Declined',c:'final',w:120},{id:'en',x:310,y:160,t:'Endorsed',c:'appr',w:140},{id:'cl',x:700,y:160,t:'Claim',c:'appr',w:130},{id:'ca',x:900,y:160,t:'Cancelled',c:'final',w:130},
+ {id:'la',x:485,y:280,t:'Lapsed',c:'final',w:160},{id:'re',x:700,y:280,t:'Reinstated',w:130}],
+ edges:[['sub','q','Underwrite'],['sub','dec','Decline'],['q','b','Client accepts'],['b','i','Issue'],['i','r','Renew'],['r','i','New period',{bend:-40}],['i','ex','Not renewed',{bend:-70}],['i','en','Change',{bend:30}],['en','i','Updated',{bend:30}],['i','cl','Loss'],['i','ca','Cancel'],['i','la','Premium unpaid'],['la','re','Revival'],['re','i','Back in force',{bend:-40}]]};
+
+/* industry process flows */
+const IGRP={acq:['Getting business','main'],serv:['Policy servicing','maint'],money:['Money','aux'],risk:['Claims and reinsurance','appr']};
+const IMOD={pa:'Easy PA',bcp:'BCP',clm:'Easy Claim',ri:'Reinsurance',sc:'Sales Channel'};
+const IFLOWS=[
+{id:'I1',grp:'acq',name:'Commercial new business via a broker',mods:['sc','pa','bcp','ri'],
+ desc:'A company insures its warehouse through a broker. The broker sends a submission, insurers quote, the client chooses, the insurer binds and issues the policy, and the premium is billed.',
+ paths:[{n:'Accepted',steps:[
+  S('cust','ext','Client asks broker for warehouse cover',{d:'The client explains its business, assets and cover needed. The broker collects values, five years of loss history and the expiring policy.'}),
+  S('broker','ext','Broker sends the submission',{f:'Proposal, values, loss history, survey',d:'A submission is the risk information pack. A complete submission gets faster and better quotes.'}),
+  S('uw','op','Underwriter triages and assesses the risk',{d:'Checks appetite (does the insurer write this trade?), construction, fire protection, flood zone and loss history.'}),
+  S('uw','dec','Within underwriting authority?',{r:'Above the underwriter’s limit → refer to a senior underwriter',d:'Underwriters have authority limits by sum insured and line, the same idea as claims authority.'}),
+  S('pa','sys','Rating engine prices the risk',{f:'Rate × sum insured ± loadings',d:'Example: 0.08% on 50,000,000 = 40,000; +15% loading for a timber roof; −10% discount for sprinklers.'}),
+  S('uw','op','Quote issued with terms',{s:'Quoted',d:'The quote states premium, deductibles, conditions and subjectivities, such as “install CCTV within 30 days”, and a validity date.'}),
+  S('broker','ext','Broker compares quotes; client chooses',{d:'The broker presents a comparison. The client picks on price, cover and insurer strength.'}),
+  S('broker','ext','Firm order to bind',{d:'The written instruction to put cover in place from a given date.'}),
+  S('uw','op','Insurer binds cover',{s:'Bound',d:'From this moment the insurer is on risk. A binder or cover note proves cover until the policy is issued.'}),
+  S('ops','op','Policy documents issued',{s:'Issued / in force',m:'Easy PA',d:'Schedule, wording and certificate are produced and sent to the broker and client.'}),
+  S('bcp','bcp','Premium receivable and commission booked',{f:'AR + commission fee',tag:'bcp',d:'Finance records what the client owes and what the insurer owes the broker.'}),
+  S('cust','ext','Client pays the premium',{d:'Often through the broker, who passes it on net of brokerage.'}),
+  S('ri','ri','Share ceded to reinsurance',{tag:'inf',d:'The policy is added to the property treaty; if it is too large for the treaty, the underwriter buys facultative reinsurance.'})]},
+ {n:'Referred and declined',steps:[
+  S('broker','ext','Broker sends the submission'),
+  S('uw','op','Underwriter triages the risk'),
+  S('uw','dec','Above authority → referral',{d:'The case goes to a senior underwriter with a referral note.'}),
+  S('uw','op','Senior underwriter reviews loss history',{d:'Three fires in five years shows poor risk management.'}),
+  S('uw','x','Declines, or quotes with a high deductible',{s:'Declined',d:'Declining is a business decision. Many insurers must still record the reason for audit and regulation.'}),
+  S('broker','ext','Broker approaches another insurer')]}],
+ ex:{t:'Real-world example',b:'ABC Logistics insures a warehouse and stock worth 50,000,000. The broker gets three quotes: 46,000, 41,000 and 39,500. The client picks the 41,000 quote because that insurer offers a lower deductible and a stronger claims service. Cover is bound by email on 31 March for 1 April; the policy is issued on 3 April. If the warehouse burns on 2 April, it is covered, because cover was bound.'},
+ biz:['Bind before issue: the bind date decides when cover starts, not the date the documents are printed.','Underwriting authority works like claims authority: limits per person, referrals above them.','Brokers are the client’s agent; agents are the insurer’s agent.','Large commercial risks are often split between co-insurers and reinsurers.'],
+ imo:[['Sales Channel','Broker set-up and commission rates'],['Easy PA','Quote, underwriting rules, bind, issue, documents'],['BCP','Premium AR, collection, commission, statements'],['Reinsurance','Cession to treaty or facultative']],
+ terms:['Submission','Quote','Binder','Subjectivity','Underwriting authority','Referral','Facultative reinsurance']},
+
+{id:'I2',grp:'acq',name:'Personal lines: buy motor cover online',mods:['pa','bcp'],
+ desc:'A car owner buys a motor policy in minutes through a website or an agent’s app. Rules accept the risk automatically, the premium is paid first, and the policy is issued at once.',
+ paths:[{n:'Straight-through',steps:[
+  S('cust','ext','Enters vehicle and driver details',{d:'Registration number, model, year, city, previous insurer and claims history.'}),
+  S('pa','sys','Rates the policy instantly',{f:'Vehicle value, zone, NCB, add-ons',d:'Example: own-damage premium 9,000 less 20% no-claim bonus = 7,200; plus third-party premium set by regulation.'}),
+  S('cust','ext','Accepts the quote and completes KYC',{d:'Identity and address checks required by anti-money-laundering rules.'}),
+  S('pa','dec','Auto-accept rules pass?',{r:'Fail → refer to underwriter or ask for inspection',d:'Rules check vehicle age, claims history, previous policy gap.'}),
+  S('cust','ext','Pays online'),
+  S('bank','ext','Gateway confirms payment'),
+  S('bcp','bcp','Premium collected before cover',{tag:'bcp',f:'Cash Before Cover',d:'In India, Section 64VB of the Insurance Act 1938 says no risk may be assumed until the premium is received.'}),
+  S('pa','end','Policy issued and emailed',{s:'Issued / in force',d:'The policy and certificate reach the customer in seconds.'})]},
+ {n:'Break-in: inspection needed',steps:[
+  S('cust','ext','Previous policy expired 20 days ago'),
+  S('pa','dec','Break in cover detected',{r:'Inspection required before issue'}),
+  S('tpa','ext','Surveyor or self-inspection app checks the car',{d:'Photos and video prove there is no existing damage.'}),
+  S('uw','op','Underwriter approves inspection'),
+  S('cust','ext','Pays premium'),
+  S('pa','end','Policy issued from payment date',{s:'Issued',d:'No cover for the days in between; damage from the gap is not covered.'})]}],
+ ex:{t:'Real-world example',b:'Priya renews her car cover online. Her old insurer’s certificate shows two claim-free years, so she gets a 25% no-claim bonus. She adds zero-depreciation cover for 1,800. She pays by card and receives the policy by email within two minutes. Third-party cover is compulsory for any car on a public road in India under the Motor Vehicles Act 1988.'},
+ biz:['Personal lines are high volume and low value, so automation matters most.','No-claim bonus in Indian motor own-damage cover is commonly 20%, 25%, 35%, 45% and 50% after one to five claim-free years.','A gap in cover usually triggers a pre-inspection.'],
+ imo:[['Easy PA','Quote and issue APIs, rules'],['BCP','Cash Before Cover collection (BCP guide C2)']],
+ terms:['No-claim bonus','KYC','Cash before cover','Third-party liability','Add-on cover']},
+
+{id:'I3',grp:'serv',name:'Endorsement (mid-term change)',mods:['pa','bcp','ri'],
+ desc:'The client changes the policy during its term. The change can add premium, return premium or change no money at all.',
+ paths:[{n:'Additional premium',steps:[
+  S('cust','ext','Asks to raise the sum insured',{d:'Priya fits accessories; the car is now worth more.'}),
+  S('agent','ext','Agent submits the change'),
+  S('uw','op','Underwriter checks the change',{d:'Some changes need re-underwriting, such as a new driver with convictions.'}),
+  S('pa','sys','Pro-rata extra premium calculated',{f:'Annual difference × days left / 365',d:'Sum insured 600,000 → 750,000 on day 200; rate 2% → 3,000 a year; × 165/365 = 1,356.'}),
+  S('ops','op','Endorsement issued',{s:'Endorsed',d:'An endorsement schedule shows the change and its effective date.'}),
+  S('bcp','bcp','Additional premium receivable',{f:'Endorsement AR',tag:'bcp'}),
+  S('cust','ext','Pays the extra premium'),
+  S('ri','ri','Cession adjusted',{tag:'inf'})]},
+ {n:'Return premium',steps:[
+  S('cust','ext','Removes a vehicle from a fleet policy'),
+  S('pa','sys','Pro-rata return premium calculated'),
+  S('ops','op','Endorsement issued',{s:'Endorsed'}),
+  S('bcp','bcp','Refund payable (AP)',{tag:'bcp',f:'Endorsement AP (BCP guide P2)'}),
+  S('cust','end','Refund received')]},
+ {n:'No premium change',steps:[
+  S('cust','ext','Changes address or bank details'),
+  S('ops','op','Non-financial endorsement',{s:'Endorsed'}),
+  S('pa','end','Policy record updated')]}],
+ ex:{t:'Real-world example',b:'A courier firm adds 5 vans to its fleet policy on day 120. Each van costs 18,000 a year to insure, so the extra premium is 5 × 18,000 × 245/365 = 60,411. Three months later it sells 2 old vans and gets a return premium for the unexpired days.'},
+ biz:['Endorsement types: financial (additional or return premium) and non-financial.','Backdated endorsements need care: a change dated before a known loss can be fraud.','Claims always check the policy version in force on the date of loss.'],
+ imo:[['Easy PA','Endorsement, pro-rata calculation, versioning'],['BCP','Endorsement AR or refund AP']],
+ terms:['Endorsement','Additional premium','Return premium','Pro-rata']},
+
+{id:'I4',grp:'serv',name:'Renewal',mods:['pa','bcp'],
+ desc:'Before expiry the insurer invites renewal, re-prices based on the year’s experience and issues a new policy period once paid.',
+ paths:[{n:'Renewed',steps:[
+  S('pa','sys','Renewal list produced before expiry',{d:'Typically 30 to 60 days ahead.'}),
+  S('uw','op','Re-underwrites using claims experience',{d:'A claim-free year earns a no-claim bonus; claims may add a loading.'}),
+  S('pa','sys','Renewal notice and quote sent'),
+  S('cust','ext','Accepts and pays'),
+  S('bcp','bcp','Renewal premium collected',{tag:'bcp'}),
+  S('pa','end','New policy period issued',{s:'Renewed'})]},
+ {n:'Not renewed by insurer',steps:[
+  S('uw','op','Reviews poor loss experience',{d:'Loss ratio of 180% over three years.'}),
+  S('uw','x','Decides not to renew',{s:'Non-renewal'}),
+  S('ops','op','Non-renewal notice sent',{d:'Many markets require advance written notice.'}),
+  S('pa','x','Policy expires',{s:'Expired'})]},
+ {n:'Client does not pay',steps:[
+  S('pa','sys','Renewal notice sent'),
+  S('cust','ext','Does not respond'),
+  S('pa','x','Policy expires at end of period',{s:'Expired',d:'No cover after expiry; a later purchase may need inspection.'})]}],
+ ex:{t:'Real-world example',b:'Priya made no claim last year, so her no-claim bonus rises from 25% to 35% and her own-damage premium falls from 7,200 to 6,240. Her neighbour claimed 40,000 for a dent and loses his bonus entirely, so his premium rises.'},
+ biz:['Renewal retention is a key sales KPI.','Claims history drives renewal pricing, so reserve and claim accuracy affect renewal terms.','Health renewals in India cannot be refused on the ground of claims made, except for fraud or misrepresentation.'],
+ imo:[['Easy PA','Renewal batch, quote, issue'],['BCP','Renewal AR and collection (BCP guide C1)']],
+ terms:['Renewal','No-claim bonus','Loss ratio','Non-renewal','Expiry']},
+
+{id:'I5',grp:'serv',name:'Cancellation',mods:['pa','bcp','sc','ri'],
+ desc:'The policy ends before its expiry date. Who cancels and why decides how much premium is returned.',
+ paths:[{n:'Client cancels',steps:[
+  S('cust','ext','Requests cancellation in writing',{d:'For example, the car was sold.'}),
+  S('ops','op','Checks claims on the policy',{r:'If a claim was paid, usually no refund',d:'The insurer has already paid out on the cover.'}),
+  S('pa','sys','Refund calculated',{f:'Pro-rata or short-rate per wording',d:'Short-rate keeps more premium for the insurer when the client cancels early, to cover set-up costs.'}),
+  S('ops','op','Cancellation endorsement issued',{s:'Cancelled'}),
+  S('bcp','bcp','Refund payable',{tag:'bcp'}),
+  S('sc','ev','Commission clawed back',{d:'The intermediary returns commission on the refunded premium.'}),
+  S('ri','ri','Ceded premium returned',{tag:'inf'}),
+  S('cust','end','Refund received')]},
+ {n:'Insurer cancels for non-payment',steps:[
+  S('bcp','bcp','Instalment overdue',{tag:'bcp'}),
+  S('bcp','bcp','Reminders sent (dunning)',{d:'Letters, SMS and email at set days after the due date.'}),
+  S('ops','op','Notice of cancellation sent',{d:'The notice period is set by law or the wording; cover continues during it.'}),
+  S('cust','ext','Still does not pay'),
+  S('ops','x','Policy cancelled at end of notice',{s:'Cancelled'}),
+  S('bcp','bcp','Earned premium due; unpaid balance written off or chased',{tag:'bcp'})]},
+ {n:'Flat cancellation',steps:[
+  S('cust','ext','Duplicate policy or cheque bounced before start'),
+  S('ops','op','Cancelled from inception',{s:'Cancelled flat',d:'Treated as if the policy never existed: full refund, no cover ever.'}),
+  S('bcp','end','Full premium reversed or refunded',{tag:'bcp'})]}],
+ ex:{t:'Real-world example',b:'Annual premium 12,000. The client sells the car after 73 days. Pro-rata refund = 12,000 × 292/365 = 9,600. Under an illustrative short-rate scale that keeps 40% for cancellation within three months, the refund is 7,200. If the car had been a total loss and the insurer had paid the claim, the policy would end with no refund.'},
+ biz:['Pro-rata: refund in exact proportion to unused days. Short-rate: insurer keeps an extra charge. Flat: from inception.','Insurer-initiated cancellation usually needs written notice and a valid reason.','Every cancellation reverses commission and reinsurance cession.'],
+ imo:[['Easy PA','Cancellation endorsement and refund calculation'],['BCP','Refund AP or cancel outstanding AR (BCP guide X1)'],['Sales Channel','Commission clawback']],
+ terms:['Cancellation','Pro-rata','Short-rate','Flat cancellation','Dunning','Earned premium']},
+
+{id:'I6',grp:'serv',name:'Lapse and reinstatement',mods:['pa','bcp'],
+ desc:'Premium is not paid by the end of the grace period, so the policy lapses. Within the revival period, the client can reinstate it.',
+ paths:[{n:'Lapse then revival',steps:[
+  S('pa','sys','Premium due date passes'),
+  S('pa','sys','Grace period runs',{d:'In India, life policies usually allow 30 days, or 15 days for monthly premiums.'}),
+  S('cust','ext','Does not pay within grace'),
+  S('pa','x','Policy lapses',{s:'Lapsed'}),
+  S('cust','ext','Applies to revive the policy',{d:'Within the revival period stated in the policy.'}),
+  S('uw','op','Reviews health declaration',{d:'Medical tests may be needed if the gap is long.'}),
+  S('cust','ext','Pays arrears and interest'),
+  S('pa','end','Policy reinstated',{s:'In force'})]}],
+ ex:{t:'Real-world example',b:'A term life policy has an annual premium of 15,000 due on 1 June. The grace period ends on 1 July. The policyholder pays on 20 September with interest and signs a health declaration; the insurer reinstates the policy. A death on 15 August (lapsed period) would not have been covered.'},
+ biz:['Lapse is common in life and health; reinstatement rules protect the insurer from people who only pay after falling ill.','Claims in the grace period are a classic test case.'],
+ imo:[['Easy PA','Lapse batch, reinstatement'],['BCP','Overdue AR, collection']],
+ terms:['Grace period','Lapse','Reinstatement','Revival period']},
+
+{id:'I7',grp:'money',name:'Billing and collection',mods:['bcp','pa'],
+ desc:'Premium becomes a receivable, the client pays, the money is matched to the receivable, and the books are updated.',
+ paths:[{n:'Paid on time',steps:[
+  S('pa','ev','Policy issued; premium billed',{f:'syncDataToBCP',tag:'bcp'}),
+  S('bcp','bcp','Receivable created (AR)',{tag:'bcp'}),
+  S('cust','ext','Pays by card, bank transfer or cheque'),
+  S('bcp','bcp','Money into suspense, then matched',{tag:'bcp',d:'Money is held in suspense until it is applied to the right receivable.'}),
+  S('bcp','bcp','AR settled',{tag:'bcp'}),
+  S('gl','gl','Premium posted to GL')]},
+ {n:'Instalments, one missed',steps:[
+  S('bcp','bcp','Four quarterly instalments billed',{tag:'bcp'}),
+  S('cust','ext','Pays instalments 1 and 2'),
+  S('bcp','bcp','Instalment 3 overdue',{tag:'bcp'}),
+  S('bcp','bcp','Reminder sent'),
+  S('cust','ext','Pays late'),
+  S('bcp','end','AR settled',{tag:'bcp'})]}],
+ ex:{t:'Real-world example',b:'A shop owner pays 20,000 a year in four instalments of 5,000. The bank transfer for instalment 3 arrives without a reference, so finance holds it in suspense. Two days later a clerk matches it by amount and payer name and settles the receivable.'},
+ biz:['Direct billing: insurer bills the client. Agency billing: intermediary collects and remits.','Premium receivable ageing is a key finance KPI; regulators may require old receivables to be provided for.','Unallocated cash in suspense must be cleared quickly.'],
+ imo:[['BCP','Billing, collection, suspense, offset (BCP guide C1, C7, C11)'],['Easy PA','Instalment plans sent to BCP']],
+ terms:['Receivable','Suspense','Instalment','Direct billing','Agency billing','Premium ageing']},
+
+{id:'I8',grp:'money',name:'Commission and intermediary settlement',mods:['sc','bcp'],
+ desc:'The intermediary earns commission on premium. Brokers often collect gross premium, keep their brokerage and pay the insurer the net.',
+ paths:[{n:'Net settlement by broker',steps:[
+  S('pa','ev','Policy issued, premium 100,000'),
+  S('sc','ev','Commission calculated: 12.5%',{f:'Commission fee',d:'Commission rates depend on the line and on local caps.'}),
+  S('broker','ext','Collects 100,000 from client'),
+  S('bcp','bcp','Statement to broker',{tag:'bcp',d:'Lists premiums due and commission earned for the period.'}),
+  S('broker','ext','Pays net 87,500'),
+  S('bcp','bcp','AR and commission offset',{tag:'bcp',f:'ARAP offset'}),
+  S('gl','gl','Premium and commission expense posted')]},
+ {n:'Agent paid after collection',steps:[
+  S('cust','ext','Pays premium to insurer'),
+  S('bcp','bcp','Premium collected',{tag:'bcp'}),
+  S('sc','ev','Commission becomes payable'),
+  S('bcp','bcp','Commission paid in monthly run',{tag:'bcp',f:'BCP guide P5'}),
+  S('agent','end','Agent receives commission')]}],
+ ex:{t:'Real-world example',b:'A broker places 40 policies in March worth 2,000,000 of premium at 12.5% brokerage. The April statement shows 2,000,000 due less 250,000 brokerage. The broker remits 1,750,000. One policy is later cancelled, so 6,000 of brokerage is clawed back on the May statement.'},
+ biz:['Commission is paid only on premium actually collected, in most markets.','Cancellations and refunds claw commission back.','Commission is an expense that drives the expense ratio.'],
+ imo:[['Sales Channel','Producer and commission set-up'],['BCP','Commission fee, statements, ARAP offset, payment (BCP guide C4, P4, P5)']],
+ terms:['Commission','Brokerage','Net settlement','Statement','Clawback']},
+
+{id:'I9',grp:'risk',name:'Claims lifecycle (industry view)',mods:['clm','bcp','ri'],
+ desc:'How any insurer handles a claim, mapped to the Easy Claim tasks covered in levels 3 to 6.',
+ paths:[{n:'Motor own damage',steps:[
+  S('clmt','ext','Accident; reports claim',{d:'By phone, app or agent within the time the policy requires.'}),
+  S('hdl','op','FNOL: check policy in force and cover',{m:'FNOL',d:'Was the policy in force on the date of loss? Is the driver licensed?'}),
+  S('hdl','op','Set reserve',{m:'Registration',d:'First estimate of cost, for example 60,000.'}),
+  S('tpa','ext','Surveyor inspects at the garage',{m:'Investigation / Appraisal',d:'Confirms cause, lists damaged parts, approves repair estimate.'}),
+  S('hdl','op','Assess: depreciation and deductible',{m:'Appraisal / Calculation',d:'Parts 40,000 less 50% depreciation on plastic parts, labour 12,000, minus deductible 1,000.'}),
+  S('hdl','op','Settle with garage (cashless)',{m:'Settlement'}),
+  S('bcp','bcp','Payment to garage',{tag:'bcp'}),
+  S('hdl','op','Recover from at-fault party’s insurer',{m:'Subrogation'}),
+  S('hdl','end','Claim closed',{s:'Closed'})]},
+ {n:'Health cashless',steps:[
+  S('clmt','ext','Admitted to a network hospital'),
+  S('tpa','ext','Hospital sends pre-authorisation to TPA',{d:'Diagnosis, estimated cost, room type.'}),
+  S('tpa','dec','TPA approves cashless amount',{d:'IRDAI’s 2024 health master circular asks for a cashless decision within one hour of request.'}),
+  S('clmt','ext','Treatment and discharge'),
+  S('tpa','dec','Final bill approved',{d:'Within three hours of the discharge request under the same circular.'}),
+  S('hdl','op','Calculation: sub-limits, co-pay, non-payables',{m:'Calculation'}),
+  S('bcp','bcp','Payment to hospital',{tag:'bcp'}),
+  S('hdl','end','Claim closed',{s:'Closed'})]},
+ {n:'Third-party injury',steps:[
+  S('tp','ext','Injured pedestrian files a claim'),
+  S('hdl','op','Register liability claim; legal reserve',{m:'Registration'}),
+  S('tp','ext','Case goes to tribunal or court',{d:'In India, the Motor Accident Claims Tribunal hears third-party injury claims.'}),
+  S('hdl','op','Defend or negotiate settlement'),
+  S('hdl','op','Pay award or settlement',{m:'Settlement'}),
+  S('ri','ri','Large claim: recover from excess-of-loss treaty',{tag:'inf'}),
+  S('hdl','end','Claim closed',{s:'Closed'})]}],
+ ex:{t:'Real-world example',b:'Priya’s car is hit in a car park. The surveyor approves parts 40,000 and labour 12,000. Plastic parts worth 16,000 carry 50% depreciation (−8,000). With a 1,000 deductible she gets 43,000 paid to the network garage. Had she bought zero-depreciation cover, she would get 51,000. The insurer then claims back from the at-fault driver’s insurer.'},
+ biz:['Claims are where the insurer keeps its promise: speed and fairness drive renewal and reputation.','Regulators measure claim settlement ratios and turnaround times.','Fraud indicators: late reporting, a policy bought just before the loss, inconsistent stories.'],
+ imo:[['Easy Claim','FNOL → Settlement tasks, approvals, recoveries'],['BCP','Claim payment AP, recovery AR'],['Reinsurance','Recoveries on large losses']],
+ terms:['FNOL','Reserve','Surveyor','Depreciation','Cashless','Pre-authorisation','Subrogation']},
+
+{id:'I10',grp:'risk',name:'Reinsurance cession and recovery',mods:['ri','bcp','clm'],
+ desc:'The insurer shares its risks with reinsurers under treaties, reports what it ceded, and recovers the reinsurers’ share of claims.',
+ paths:[{n:'Treaty cession and claim recovery',steps:[
+  S('ri','ri','Annual treaty agreed',{d:'Many treaties renew on 1 January or 1 April. Example: 30% quota share plus a catastrophe excess-of-loss cover.'}),
+  S('pa','ev','Policies issued'),
+  S('ri','ri','Each policy ceded per treaty',{d:'30% of premium goes to the reinsurer; the reinsurer pays a ceding commission back.'}),
+  S('ri','ri','Quarterly accounts / bordereaux sent',{d:'Lists of ceded premium and claims.'}),
+  S('hdl','op','Large claim paid',{m:'Settlement'}),
+  S('ri','ri','Recovery calculated: 30% of claim'),
+  S('bcp','bcp','RI receivable (AR)',{tag:'bcp',f:'BCP guide C5'}),
+  S('ri','end','Reinsurer pays share')]},
+ {n:'Catastrophe event',steps:[
+  S('clmt','ext','Cyclone: 2,000 claims in a week'),
+  S('hdl','op','Claims tagged with a Catastrophe Code',{m:'FNOL Claim Information'}),
+  S('ri','ri','Event losses aggregated',{d:'Cat excess-of-loss responds to the total of one event.'}),
+  S('ri','ri','Cash call to reinsurers',{d:'For a very large loss the insurer asks for money before the quarterly account.'}),
+  S('bcp','bcp','RI receivable collected',{tag:'bcp'}),
+  S('gl','gl','Net loss posted')]}],
+ ex:{t:'Real-world example',b:'A cyclone causes 45,000,000 of gross claims for one insurer. Its 30% quota share recovers 13,500,000, leaving 31,500,000 net. Its catastrophe cover of 50,000,000 excess of 20,000,000 then pays 11,500,000. The insurer keeps 20,000,000. This is why the Catastrophe Code on FNOL matters.'},
+ biz:['Proportional reinsurance shares premium and claims by percentage (quota share, surplus).','Non-proportional reinsurance pays above a retention (excess of loss, catastrophe, stop loss).','Facultative reinsurance covers one risk; treaty covers a portfolio.'],
+ imo:[['Reinsurance','Treaty set-up, cession, recoveries'],['BCP','RI AR / AP (BCP guide C5, P3)'],['Easy Claim','Claim data and Catastrophe Code feed recoveries']],
+ terms:['Treaty','Quota share','Excess of loss','Retention','Bordereau','Cash call','Ceding commission']}
+];
+
+/* ===================== INSURANCE GLOSSARY ===================== */
+const IGLOSS={
+'General':[
+ ['Insurance','A contract where one party (insurer) promises to pay for defined losses in return for a premium.'],
+ ['Risk','The chance of a loss. Also used for the insured object or person (“a warehouse risk”).'],
+ ['Peril','The cause of a loss, such as fire, flood, theft or collision.'],
+ ['Hazard','A condition that makes a loss more likely or bigger, such as poor wiring (physical) or carelessness (moral).'],
+ ['Exposure','The amount or unit at risk, such as vehicle-years or sum insured.'],
+ ['Premium','The price paid for insurance cover.'],
+ ['Policy','The contract document: schedule, wording and endorsements.'],
+ ['Cover / coverage','What the policy protects against.'],
+ ['Sum insured','The maximum the insurer pays for property or a person under a cover.'],
+ ['Limit of liability','The maximum paid under a liability cover, per claim or in total (aggregate).'],
+ ['Aggregate limit','The total the insurer pays for all claims in the policy period.'],
+ ['Personal lines','Insurance for individuals: motor, home, health, travel.'],
+ ['Commercial lines','Insurance for businesses: property, liability, marine, engineering.'],
+ ['General insurance (P&C)','All non-life insurance. Called property and casualty (P&C) in the US.'],
+ ['Long-tail / short-tail','Long-tail claims take years to settle (liability); short-tail settle fast (motor damage, travel).']
+],
+'Parties and distribution':[
+ ['Insurer / carrier','The company that carries the risk and pays claims.'],
+ ['Policyholder','The person or company that owns the policy and pays premium.'],
+ ['Insured','The person or entity covered by the policy.'],
+ ['Beneficiary / nominee','The person who receives the benefit, mainly in life cover.'],
+ ['Claimant','Anyone making a claim, insured or third party.'],
+ ['Agent','Sells for the insurer; paid commission by the insurer.'],
+ ['Broker','Represents the client, places risk with insurers; paid brokerage.'],
+ ['Corporate agent / bancassurance','A company, often a bank, that sells insurance to its customers as an agent.'],
+ ['MGA / coverholder','An intermediary with delegated authority to bind cover for an insurer.'],
+ ['Aggregator','A website comparing quotes from several insurers.'],
+ ['Producer','General word for any intermediary that brings business.'],
+ ['Lloyd’s','A London insurance market where syndicates underwrite risks, usually placed by brokers.'],
+ ['Distribution channel','The route business comes through: agency, broker, bank, direct, digital.']
+],
+'Underwriting and product':[
+ ['Underwriting','Assessing a risk and deciding whether to accept it, at what price and on what terms.'],
+ ['Underwriter','The person who makes underwriting decisions within an authority limit.'],
+ ['Risk appetite','The kinds and amounts of risk an insurer is willing to write.'],
+ ['Submission','The information pack a broker sends to insurers to get a quote.'],
+ ['Proposal form','The application form with the client’s declarations.'],
+ ['Quote / quotation','The insurer’s offer: premium, cover and terms, valid for a set time.'],
+ ['Subjectivity','A condition attached to a quote or binder that must be met.'],
+ ['Referral','Passing a case above one’s authority to a senior underwriter.'],
+ ['Declination','The insurer refuses to offer cover.'],
+ ['Rating','Calculating the premium from rates, factors, loadings and discounts.'],
+ ['Rate','Price per unit of exposure, such as 0.08% of sum insured.'],
+ ['Loading','An extra charge for higher risk.'],
+ ['Discount','A reduction for lower risk or volume.'],
+ ['Material fact','Any fact that would change an underwriter’s decision or price.'],
+ ['Non-disclosure / misrepresentation','Failing to disclose, or wrongly stating, a material fact. Can void the policy.'],
+ ['Moral hazard','Risk from the insured’s behaviour or honesty.'],
+ ['Adverse selection','People with higher risk are more likely to buy cover.'],
+ ['Wording','The full legal text of the policy.'],
+ ['Exclusion','Something the policy does not cover.'],
+ ['Warranty','A promise by the insured that must be strictly kept; breach can void cover.'],
+ ['Add-on / rider','An optional extra cover bought with the base policy.']
+],
+'Policy administration':[
+ ['New business','A policy written for a client for the first time.'],
+ ['Bind / bound','The insurer’s commitment to provide cover from a set time. A bound risk is covered even before documents are issued.'],
+ ['Binder / cover note','Temporary proof of cover until the policy is issued.'],
+ ['Issuance','Producing the policy documents and putting the policy in force.'],
+ ['In force','The policy is active and providing cover.'],
+ ['Inception date','The date cover starts.'],
+ ['Expiry date','The date cover ends.'],
+ ['Policy period / term','The time between inception and expiry, often 12 months.'],
+ ['Endorsement / MTA','A change to the policy during its term (mid-term adjustment).'],
+ ['Additional premium (AP)','Extra premium charged by an endorsement.'],
+ ['Return premium (RP)','Premium refunded because of an endorsement or cancellation.'],
+ ['Renewal','Continuing cover for a new period.'],
+ ['Non-renewal','The insurer or client decides not to continue the policy.'],
+ ['Cancellation','Ending the policy before expiry.'],
+ ['Pro-rata','In exact proportion to time, such as 292 of 365 days.'],
+ ['Short-rate','A refund scale that keeps more than the pro-rata amount when the client cancels early.'],
+ ['Flat cancellation','Cancellation from inception: as if the policy never existed.'],
+ ['Grace period','Time after the due date when premium can still be paid without the policy lapsing.'],
+ ['Lapse','The policy stops because premium was not paid.'],
+ ['Reinstatement / revival','Bringing a lapsed or cancelled policy back into force.'],
+ ['Backdating','Giving a change an effective date in the past; controlled because of fraud risk.'],
+ ['Certificate of insurance','A short document proving cover, often required by law (motor).']
+],
+'Billing and finance':[
+ ['Billing','Creating the receivable or invoice for premium.'],
+ ['Debit note / invoice','The request for premium payment.'],
+ ['Credit note','A document for money owed to the client, such as a return premium.'],
+ ['Receivable (AR)','Money owed to the insurer.'],
+ ['Payable (AP)','Money the insurer owes, such as a claim or refund.'],
+ ['Collection','Receiving money from a client or other party.'],
+ ['Suspense','A holding account for money received but not yet matched to a receivable.'],
+ ['Offset / application','Matching money or opposite balances to settle a receivable or payable.'],
+ ['Instalment','One of several part-payments of premium.'],
+ ['Direct billing','The insurer bills and collects from the client.'],
+ ['Agency billing','The intermediary collects premium and pays the insurer.'],
+ ['Net settlement','The broker pays the insurer premium minus brokerage.'],
+ ['Commission','Payment to an agent or broker, usually a percentage of premium.'],
+ ['Clawback','Taking back commission when premium is refunded.'],
+ ['Dunning','Sending reminders for overdue payments.'],
+ ['Premium ageing','Analysis of unpaid premium by how long it is overdue.'],
+ ['Write-off','Removing an amount that will not be collected.'],
+ ['Cash before cover','Rule that premium must be received before risk starts (India: Section 64VB of the Insurance Act 1938).'],
+ ['General ledger (GL)','The main accounting record; premium, claims and commission post here.'],
+ ['Reconciliation','Checking that two records (bank and ledger) agree.']
+],
+'Claims':[
+ ['Claim','A request for payment under a policy.'],
+ ['FNOL','First notice of loss: the first report of a claim.'],
+ ['Loss','The damage or financial harm suffered.'],
+ ['Date of loss','When the loss happened; decides which policy period applies.'],
+ ['Claim reserve / case reserve','The estimate of what a claim will cost, held as a liability.'],
+ ['Outstanding reserve','The part of the reserve not yet paid.'],
+ ['Incurred loss','Paid plus outstanding.'],
+ ['IBNR','Incurred but not reported: reserve for claims that happened but are not yet reported. Set by actuaries.'],
+ ['IBNER','Incurred but not enough reserved: extra reserve for known claims that will cost more.'],
+ ['ALAE / ULAE','Allocated and unallocated loss adjustment expense: claim handling costs.'],
+ ['Loss adjuster / surveyor','An expert who assesses the cause and amount of a loss.'],
+ ['Indemnity','Restoring the insured to the position before the loss.'],
+ ['Settlement','Agreeing and paying the claim amount.'],
+ ['Partial / final settlement','A payment on account, or the last payment that ends the claim.'],
+ ['Ex-gratia payment','A goodwill payment the policy does not require.'],
+ ['Repudiation / decline','Refusing a claim that is not covered.'],
+ ['Salvage','The value of damaged property the insurer takes over and sells.'],
+ ['Subrogation','The insurer’s right to recover what it paid from the party at fault.'],
+ ['Total loss','Repair costs more than (or near) the insured value; the insurer pays the value.'],
+ ['Constructive total loss','Repair is possible but not economic.'],
+ ['Cashless claim','The insurer pays the garage or hospital directly.'],
+ ['Reimbursement claim','The insured pays first and claims back.'],
+ ['Claim settlement ratio','Claims paid as a share of claims decided; reported to regulators.'],
+ ['Litigation','A claim dispute that goes to court or tribunal.'],
+ ['Fraud indicator / red flag','A sign that a claim may be fraudulent, such as late reporting or new policy.']
+],
+'Reinsurance':[
+ ['Reinsurance','Insurance bought by an insurer to share its risks.'],
+ ['Cedant / ceding company','The insurer that buys reinsurance.'],
+ ['Cession','The share of a risk passed to the reinsurer.'],
+ ['Retention','The amount the insurer keeps for its own account.'],
+ ['Treaty','An agreement covering a whole portfolio of policies.'],
+ ['Facultative','Reinsurance of one individual risk, negotiated case by case.'],
+ ['Quota share','Proportional treaty: a fixed percentage of every policy is ceded.'],
+ ['Surplus treaty','Proportional treaty: the amount above the retention line is ceded.'],
+ ['Excess of loss (XoL)','Non-proportional: the reinsurer pays losses above a retention, up to a limit.'],
+ ['Catastrophe XoL','XoL that responds to the total loss from one event, such as a cyclone.'],
+ ['Stop loss','Covers the insurer if its loss ratio exceeds a set level.'],
+ ['Ceding commission','Commission the reinsurer pays the insurer on ceded premium.'],
+ ['Bordereau','A list of ceded policies or claims sent to the reinsurer.'],
+ ['Cash call','A request for immediate payment from reinsurers after a large loss.'],
+ ['Retrocession','Reinsurance bought by a reinsurer.'],
+ ['Co-insurance','Several insurers each take a direct share of one risk.']
+],
+'Health':[
+ ['Network hospital','A hospital with an agreement for cashless treatment.'],
+ ['Pre-authorisation','Approval from the insurer or TPA before planned cashless treatment.'],
+ ['TPA','Third-party administrator that runs health claims for insurers.'],
+ ['Co-pay','The percentage of each claim the insured pays.'],
+ ['Room rent limit','A sub-limit on the daily room charge.'],
+ ['Waiting period','Time after start before certain claims are paid, such as 30 days for illness.'],
+ ['Pre-existing disease (PED)','A condition the insured had before buying cover; often covered only after a waiting period.'],
+ ['Day care procedure','Treatment that needs less than 24 hours in hospital.'],
+ ['Hospital cash','A fixed daily amount paid during hospitalisation.'],
+ ['Critical illness','A lump sum on diagnosis of a listed serious illness.'],
+ ['Non-payable items','Items the policy does not pay, such as some consumables.'],
+ ['Portability','Moving a health policy to another insurer keeping waiting-period credit.']
+],
+'Motor':[
+ ['Own damage (OD)','Cover for damage to the insured vehicle.'],
+ ['Third-party liability (TP)','Cover for injury or damage caused to others; compulsory in most countries.'],
+ ['Comprehensive policy','Own damage plus third-party cover.'],
+ ['IDV','Insured declared value: the sum insured of the vehicle in Indian motor cover.'],
+ ['No-claim bonus (NCB)','A discount for claim-free years.'],
+ ['Compulsory deductible','A fixed amount deducted from every own-damage claim.'],
+ ['Zero depreciation add-on','Pays parts without depreciation deduction.'],
+ ['Network garage','A garage that repairs on a cashless basis.'],
+ ['Break-in','A gap between the old and new policy; needs inspection.'],
+ ['MACT','Motor Accident Claims Tribunal (India), which hears third-party injury claims.']
+],
+'Property and liability':[
+ ['Average clause / underinsurance','Claim reduced in the ratio of sum insured to true value.'],
+ ['Reinstatement value','The cost of rebuilding or replacing new.'],
+ ['Market value','Replacement cost minus depreciation.'],
+ ['Business interruption','Cover for lost profit after insured damage stops trading.'],
+ ['Schedule of values','A list of locations and the values insured at each.'],
+ ['Public liability','Cover for injury or damage to the public.'],
+ ['Professional indemnity / E&O','Cover for losses caused by professional mistakes.'],
+ ['D&O','Directors and officers liability cover.'],
+ ['Claims-made','Liability cover triggered by claims made during the policy period.'],
+ ['Occurrence basis','Cover triggered by events that happen during the policy period.']
+],
+'Life':[
+ ['Term insurance','Pays a death benefit if death happens within the term; no maturity value.'],
+ ['Endowment','Pays on death or at maturity; savings element.'],
+ ['ULIP / unit-linked','Life cover with investment in funds.'],
+ ['Annuity','Regular income paid for life or a set period.'],
+ ['Surrender value','Amount paid if a savings policy is ended early.'],
+ ['Maturity','The end of a life policy term when a benefit may be paid.'],
+ ['Free-look period','Time after receiving the policy when the client can cancel for a refund.']
+],
+'Metrics and regulation':[
+ ['Gross written premium (GWP)','Total premium written before reinsurance.'],
+ ['Net written premium (NWP)','Premium after reinsurance ceded.'],
+ ['Earned premium','The part of premium for the time that has passed.'],
+ ['Unearned premium reserve (UPR)','Premium for cover not yet provided; held as a liability.'],
+ ['Loss ratio','Incurred losses ÷ earned premium.'],
+ ['Expense ratio','Expenses ÷ premium.'],
+ ['Combined ratio','Loss ratio + expense ratio. Below 100% means underwriting profit.'],
+ ['Solvency margin','Capital held above liabilities, set by the regulator.'],
+ ['IRDAI','Insurance Regulatory and Development Authority of India.'],
+ ['KYC / AML','Know your customer and anti-money-laundering checks.'],
+ ['Grievance redressal','The required process for handling complaints; ombudsman schemes exist in many markets.'],
+ ['Turnaround time (TAT)','Time to complete a step, such as settling a claim; often regulated.']
+]};
+/* claims flow examples */
+const FLOWEX={
+ M1:['A car is rear-ended at a traffic light at 9:10 am. The owner calls the insurer at 9:40. The handler finds the policy by number, records Date of Loss, cause “Collision”, adds the other driver as a claimant and a sub-claim “FP-Vehicle”. The system warns of another claim on the same policy within 24 hours, which the handler checks for duplication.','Industry practice: most insurers aim to register FNOL in one contact. Late reporting is a fraud indicator and can breach the policy condition to notify “immediately”.'],
+ M2:['After a hailstorm, a dealer partner sends 340 claims in one Excel file. 322 rows succeed, 18 fail because the Date of Loss is missing. The partner fixes and re-uploads the 18 rows.','Industry practice: bulk FNOL is used for catastrophes and partner schemes. Tag catastrophe claims with a Catastrophe Code so reinsurance recoveries can be counted.'],
+ M3:['The handler sets an indemnity reserve of 60,000 for vehicle repair and an expense reserve of 3,000 for the surveyor fee.','Industry practice: first reserves often come from average-cost tables; accuracy is measured by how far the final payment differs from the first reserve.'],
+ M4:['A surveyor visits the garage the next day, confirms the damage matches a rear collision and notes no pre-existing damage. The reserve is raised to 75,000 after the bumper beam is found cracked.','Industry practice: investigation confirms cover (policy in force, licensed driver, cause covered) and liability.'],
+ M5:['Labour 12,000 and parts 63,000 give an appraisal of 75,000. The handler’s authority is 50,000, so an Appraisal Approval goes to the team leader (authority 200,000), who approves.','Industry practice: tiered authority by role and amount is a key internal control that auditors test.'],
+ M6:['The insured has not sent the police report. The handler marks it unqualified and adds the insured by SMS; the system sends the request. Two days later the report arrives and the task moves to Calculation.','Industry practice: missing documents are the top cause of claim delay; checklists per cause of loss cut turnaround time.'],
+ M7:['With the new tool, the formula applies 50% depreciation to plastic parts and the 1,000 deductible: 75,000 → 63,500.','Industry practice: calculation applies the policy’s money terms: deductible, depreciation, sub-limits, average, co-pay.'],
+ M8:['Settlement of 63,500 to the network garage by direct credit. The amount is within authority, the claim closes and BCP creates a payable for finance to pay in the next payment run.','Industry practice: cashless settlement to a network garage is faster and cheaper than reimbursement.'],
+ M9:['An insured is admitted for 4 days. Medical bill 60,000 is capped at 50,000 by the benefit limit, and hospital cash pays 8 days at 1,000 = 8,000 (screenshot example).','Industry practice: health claims need pre-authorisation for cashless, sub-limit checks and non-payable item deductions.'],
+ R1:['A liability claim reserve rises from 200,000 to 900,000 after a lawyer’s letter. The change exceeds the handler’s authority, so a manager approves it.','Industry practice: large reserve movements are reported to management and reinsurers.'],
+ R2:['After the final payment of 63,500 the handler closes the remaining 11,500 reserve. With the new tool, the system blocks the close if settled ≠ calculated.','Industry practice: closing unused reserves releases them to profit; closing too early hides future payments.'],
+ R3:['Two months after closing, the garage finds a hidden damaged sensor. The reserve is reopened with approval for 9,000.','Industry practice: reopened claims are tracked as a quality measure.'],
+ A1:['A hospital asks for an advance of 30,000 before surgery. The handler pays 30,000 as prepay; the final settlement later pays the balance.','Industry practice: interim payments reduce hardship in long claims; the final settlement deducts them.'],
+ A2:['The insurer paid 63,500 for Priya’s car. The other driver was at fault, so the insurer claims 63,500 from that driver’s insurer through subrogation.','Industry practice: inter-insurer recovery agreements speed up motor subrogation.'],
+ A3:['A total-loss car insured for 450,000 is paid in full. The wreck is auctioned for 90,000, recorded as salvage.','Industry practice: salvage sales go through approved auction partners; the salvage value reduces the net claim cost.'],
+ A4:['A payee was paid 12,000 twice by mistake. A Recovery task creates a receivable to get 12,000 back.','Industry practice: duplicate payments are a common audit finding; controls should block them before payment.'],
+ C1:['A health claim was closed, then the hospital sends a follow-up bill of 7,500 within the policy’s post-hospitalisation period. The handler adds reserve, reopens and pays.','Industry practice: post-hospitalisation expenses (often 60 days in Indian health policies) commonly reopen closed claims.'],
+ C2:['Investigation recorded the wrong arrival date. The handler reopens Investigation, corrects it and submits again.','Industry practice: every correction should leave an audit trail.'],
+ C3:['A second damaged vehicle is found in the same accident. The handler adds a new sub-claim with its own reserve.','Industry practice: one event often creates several sub-claims (own damage, third-party property, injury).'],
+ C4:['A handler resigns with 85 open tasks. The manager reassigns them to two colleagues and the pool.','Industry practice: workload balancing keeps turnaround time within regulatory limits.'],
+ C5:['The handler sets a diary task to chase a garage invoice in 3 days.','Industry practice: diaries prevent claims from going quiet.'],
+ C6:['Bank details were wrong on a 63,500 payment. Finance has not paid yet, so the payment is cancelled and re-issued with correct details.','Industry practice: payment changes need extra checks, because changed bank details are a common fraud route.'],
+ E1:['The insured reports a scratch, then decides not to claim to protect the no-claim bonus. The handler cancels at Registration.','Industry practice: many small claims are withdrawn once the insured compares the claim with the bonus loss.'],
+ E2:['The investigation shows the driver had no valid licence, which is excluded. The handler declines at Calculation.','Industry practice: declines need a written reason referring to the policy clause; regulators review decline letters.']
+};
+
+/* ===================== OBJECTIVES, CHECKPOINTS, FINAL ===================== */
+const OBJ=[
+ ['INS-1','insure','Identify the parties in insurance and who each acts for'],
+ ['INS-2','insure','Explain how an insurer makes money and read loss, expense and combined ratios'],
+ ['INS-3','insure','Apply the six principles of insurance to claim situations'],
+ ['INS-4','insure','Calculate a claim payment with deductible, co-pay and average'],
+ ['LIF-1','industry','Explain submission, quote, bind and issue, and when cover starts'],
+ ['LIF-2','industry','Calculate endorsement and cancellation premium'],
+ ['LIF-3','industry','Explain renewal, lapse and reinstatement rules'],
+ ['LIF-4','industry','Explain billing, commission and reinsurance money flows'],
+ ['CLB-1','basics','Name the seven Easy Claim tasks and the two claim modes'],
+ ['CLB-2','basics','Explain reserve types, reserve operations and auxiliary tasks'],
+ ['CLB-3','basics','Apply the authority rule on submit'],
+ ['ENG-1','lifecycle','Predict the next task for any submit, approve or reject'],
+ ['ENG-2','lifecycle','Read the reserve, task and approval status models'],
+ ['FLW-1','flows','Walk the main line, including the document loop'],
+ ['FLW-2','flows','Handle cancel, decline, reopen and payment correction'],
+ ['FLW-3','flows','Use the recovery and prepay tasks correctly'],
+ ['SCR-1','screens','Know which sections are editable and what each button does'],
+ ['SCR-2','screens','Pick the right search, monitor and maintenance screen'],
+ ['CAL-1','calc','Explain incremental vs full-scale calculation'],
+ ['CAL-2','calc','Apply the reserve close rule and the effects of the new tool'],
+ ['INT-1','integration','Work out the policy docking mode'],
+ ['INT-2','integration','Map claim events to BCP records'],
+ ['INT-3','integration','Explain how claims drive reinsurance recoveries'],
+ ['CFG-1','config','Separate configuration, platform API and custom build']
+];
+const CHECK={
+ insure:[
+  {id:'ins1',obj:'INS-1',q:'Who does a broker act for?',o:['The insurer','The client','The regulator'],a:1,w:'A broker represents the client. An agent represents the insurer.'},
+  {id:'ins2',obj:'INS-2',q:'Earned premium 10,000,000; incurred losses 6,500,000; expenses 3,000,000. What is the combined ratio?',o:['65%','95%','105%'],a:1,w:'Loss ratio 65% + expense ratio 30% = 95%, an underwriting profit.'},
+  {id:'ins3',obj:'INS-3',q:'After paying for Priya’s car, the insurer claims the money back from the at-fault driver’s insurer. Which principle allows this?',o:['Contribution','Subrogation','Utmost good faith'],a:1,w:'Subrogation passes the insured’s recovery rights to the insurer after payment.'},
+  {id:'ins4',obj:'INS-4',q:'True value 800,000, sum insured 600,000, loss 200,000, no deductible. What does the average clause pay?',o:['200,000','150,000','133,333'],a:1,w:'200,000 × 600,000 / 800,000 = 150,000.'}],
+ industry:[
+  {id:'ind1',obj:'LIF-1',q:'Cover is bound on 31 March for 1 April and the premium is paid that day. Documents are issued on 3 April. A fire happens on 2 April. Is it covered?',o:['No, the policy was not issued','Yes, cover was bound','Only after a referral'],a:1,w:'Binding puts the insurer on risk; issuance only produces documents.'},
+  {id:'ind2',obj:'LIF-2',q:'Annual premium 12,000. The client cancels after 73 days. What is the pro-rata refund?',o:['2,400','9,600','7,200'],a:1,w:'12,000 × 292 / 365 = 9,600. 7,200 is the illustrative short-rate refund.'},
+  {id:'ind3',obj:'LIF-3',q:'The premium is not paid by the end of the grace period. What is the policy status?',o:['Cancelled flat','Lapsed','Endorsed'],a:1,w:'Non-payment after grace makes the policy lapse; it may be revived later.'},
+  {id:'ind4',obj:'LIF-4',q:'30% quota share treaty. A claim of 10,000,000 is paid. What does the reinsurer pay?',o:['3,000,000','7,000,000','Nothing below the retention'],a:0,w:'Quota share pays its fixed share of every claim: 30%.'}],
+ basics:[
+  {id:'bas1',obj:'CLB-1',q:'Which mode lets one main case hold several sub-cases, as in health insurance?',o:['Claim mode','Sub-claim mode','Batch mode'],a:1,w:'Sub-claim mode; claim mode keeps everything in one case.'},
+  {id:'bas2',obj:'CLB-2',q:'What does an expense reserve cover?',o:['Payment to the insured for the loss','Claim handling costs such as investigation and legal fees','Premium refunds'],a:1,w:'Indemnity reserve covers the loss; expense reserve covers handling costs.'},
+  {id:'bas3',obj:'CLB-3',q:'Settlement amount 80,000; the handler’s authority is 50,000. What does Submit create?',o:['Claim closed','Settlement Approval task','Calculation task'],a:1,w:'Above user authority always creates the approval task.'},
+  {id:'bas4',obj:'CLB-2',q:'Which of these is not an auxiliary task?',o:['Salvage','Document','Prepay'],a:1,w:'Document is a main-line task.'}],
+ lifecycle:[
+  {id:'lc1',obj:'ENG-1',q:'Document is submitted with Is Qualified = No. What happens?',o:['Calculation task','A new Document task and a notice to the contact','The claim is declined'],a:1,w:'The Document task loops until all documents are qualified.'},
+  {id:'lc2',obj:'ENG-1',q:'An approver approves an amount above their own authority. What happens?',o:['The next task is created','A new approval task for the next level','The approval is rejected'],a:1,w:'Approval re-creates until an approver with enough authority approves.'},
+  {id:'lc3',obj:'ENG-2',q:'A Reserve Update Approval is rejected. What happens to the reserve?',o:['It is updated','The task closes and the reserve is unchanged','A new approval task is created'],a:1,w:'Reserve approvals close on reject; the old amount stays.'},
+  {id:'lc4',obj:'ENG-2',q:'A task owner shows as “Pool”. What does that mean?',o:['Assigned to the manager','In the shared queue with no named owner','Closed'],a:1,w:'Pool tasks can be taken by any eligible user.'}],
+ flows:[
+  {id:'fl1',obj:'FLW-2',q:'Where can a claim be cancelled?',o:['FNOL or Registration','Calculation or Settlement','Any task'],a:0,w:'Cancel is on FNOL and Registration; Decline is on Calculation and Settlement.'},
+  {id:'fl2',obj:'FLW-2',q:'Finance has already paid a wrong settlement. What do you do?',o:['Cancel payment','Create a Recovery task, then pay again correctly','Close the reserve'],a:1,w:'Cancel works only before payment. After payment, recover the money.'},
+  {id:'fl3',obj:'FLW-3',q:'How is a Subrogation task created?',o:['Automatically after settlement','New and Reopen > New Task','From the FNOL page'],a:1,w:'All auxiliary tasks are added with New Task.'},
+  {id:'fl4',obj:'FLW-1',q:'What task follows Registration Submit?',o:['Investigation','Appraisal','Document'],a:0,w:'FNOL → Registration → Investigation → Appraisal → Document → Calculation → Settlement.'}],
+ screens:[
+  {id:'sc1',obj:'SCR-1',q:'On the Settlement task, what can you change in Sub-Claim Information?',o:['Everything','Only the claimant','Nothing'],a:1,w:'Only the claimant is editable; calculation is read-only.'},
+  {id:'sc2',obj:'SCR-1',q:'What can the approver edit on an approval page?',o:['Every section','Only the Approval Decision section','Only the reserve'],a:1,w:'Approval pages are read-only except the decision and remark.'},
+  {id:'sc3',obj:'SCR-2',q:'Which screen shows the tasks of your subordinates?',o:['My Claim','Task Monitor','Diary Task'],a:1,w:'Task Monitor shows the user’s and subordinates’ tasks, open and closed.'},
+  {id:'sc4',obj:'SCR-2',q:'Where do you maintain garages and hospitals?',o:['Party Management','New Policy','Claim Search'],a:0,w:'Third parties are kept in Party Management.'}],
+ calc:[
+  {id:'ca1',obj:'CAL-1',q:'New calculation tool: the first calculation was 1,000 and the total is now 1,500. What do you enter?',o:['500','1,500','2,500'],a:1,w:'Full-scale: enter the new total.'},
+  {id:'ca2',obj:'CAL-1',q:'What is the GIMO rating (V1) formula on the calculation screen?',o:['Calculated = Total Recognized − Previous Adjusted','Calculated = Requested − Deductible','Calculated = Bill × Parameter'],a:0,w:'The screenshot shows this incremental formula.'},
+  {id:'ca3',obj:'CAL-2',q:'New tool. Paid 600, settled 600, calculation 1,000. You close the reserve. Result?',o:['The reserve closes','A validation message appears'],a:1,w:'Paid ≠ 0 and settled ≠ calculation: both conditions are met.'},
+  {id:'ca4',obj:'CAL-2',q:'When does the Settled column appear on Settlement and Prepay?',o:['With GIMO rating','With the new calculation tool'],a:1,w:'It is one of the new tool’s screen effects.'}],
+ integration:[
+  {id:'in1',obj:'INT-1',q:'PA Docking 02-PA, Manual Policy Docking 03, Is Manual Policy = No. Where does the policy come from?',o:['Manual policy','PA','Mock data'],a:1,w:'With 03 the user’s choice decides; No uses the PA source.'},
+  {id:'in2',obj:'INT-1',q:'Manual Policy Docking = 02. Where does the policy come from?',o:['Manual policy','PA','Third party'],a:0,w:'02 supports only manual policy, whatever PA Docking says.'},
+  {id:'in3',obj:'INT-2',q:'What does a claim reserve create in BCP?',o:['A payable','A fee only (200201)','A receivable'],a:1,w:'Reserve is fee-only, for the GL.'},
+  {id:'in4',obj:'INT-2',q:'What does a subrogation recovery create in BCP?',o:['A receivable (ArapCate 1)','A payable','Nothing'],a:0,w:'Recoveries are receivables under BizModule 20.'}],
+ config:[
+  {id:'cf1',obj:'CFG-1',q:'Where do reserve button permissions and authority amounts come from?',o:['Claim authority configuration','Claim Matrix V2','The Batch FNOL template'],a:0,w:'Claim authority configuration in the Claim API.'},
+  {id:'cf2',obj:'CFG-1',q:'Retrieve mode 02 opens which page from New Accident Report?',o:['New Claim','Policy Search'],a:1,w:'01 opens New Claim; 02 opens Policy Search.'},
+  {id:'cf3',obj:'CFG-1',q:'Where are parallel tasks configured?',o:['Claim process management','Party Management','Upload Monitor'],a:0,w:'Workflow configuration in claim process management.'},
+  {id:'cf4',obj:'CFG-1',q:'A payment gateway connection for claim payments is:',o:['Standard','Configuration','Build or integrate'],a:2,w:'Gateways and bank files are built (BCP / iComposer).'}]
+};
+const FINAL=[
+ {id:'F1',obj:'INS-1',q:'A bank sells one insurer’s health policies to its account holders. The bank acts as:',o:['A broker for the customer','A corporate agent of the insurer','A reinsurer'],a:1,w:'Bancassurance partners are corporate agents of the insurer.'},
+ {id:'F2',obj:'INS-3',q:'A house is insured with two insurers for 50,000 each. A loss of 40,000 happens. How much does each insurer pay?',o:['40,000','20,000','0'],a:1,w:'Contribution: each pays its rateable share.'},
+ {id:'F3',obj:'INS-4',q:'Health bill 100,000; co-pay 10%; no deductible or sub-limit. Claim payment?',o:['90,000','100,000','10,000'],a:0,w:'The insured bears 10%.'},
+ {id:'F4',obj:'LIF-1',q:'Which order is correct for commercial new business?',o:['Quote → Submission → Bind → Issue','Submission → Quote → Bind → Issue','Submission → Bind → Quote → Issue'],a:1,w:'Submission, quote, bind (cover starts), issue (documents).'},
+ {id:'F5',obj:'LIF-2',q:'On day 200 of a 365-day policy, a change adds 3,000 to the annual premium. What is the pro-rata additional premium?',o:['3,000','1,356','1,644'],a:1,w:'3,000 × 165 / 365 = 1,356.'},
+ {id:'F6',obj:'LIF-3',q:'In India, can a health insurer refuse renewal only because the insured made a claim last year?',o:['Yes','No; only for reasons such as fraud or misrepresentation'],a:1,w:'IRDAI rules do not allow renewal refusal because of past claims.'},
+ {id:'F7',obj:'LIF-4',q:'A broker collects 100,000 of premium; brokerage is 12.5%. Under net settlement the broker pays the insurer:',o:['100,000','87,500','112,500'],a:1,w:'Premium minus brokerage.'},
+ {id:'F8',obj:'INT-3',q:'Cyclone gross loss 45,000,000. Quota share 30%; catastrophe cover 50,000,000 excess of 20,000,000 on the net. What does the insurer keep?',o:['20,000,000','31,500,000','13,500,000'],a:0,w:'Net after quota share 31,500,000; cat cover pays 11,500,000; insurer keeps the 20,000,000 retention.'},
+ {id:'F9',obj:'CLB-3',q:'Appraisal 75,000. Handler authority 50,000; level-1 approver authority 60,000. Level 1 approves. What next?',o:['Document task','A new Appraisal Approval for level 2','Appraisal rework'],a:1,w:'75,000 exceeds the level-1 approver’s authority.'},
+ {id:'F10',obj:'ENG-1',q:'A Calculation Approval is rejected. What is created?',o:['Settlement task','Calculation task again','A declined claim'],a:1,w:'Reject returns the work to Calculation.'},
+ {id:'F11',obj:'FLW-1',q:'The police report is missing at the Document task. What is the correct action?',o:['Mark qualified and chase later','Mark it unqualified, add a contact and submit, creating a new Document task','Decline the claim'],a:1,w:'The Document loop with notification handles missing documents.'},
+ {id:'F12',obj:'FLW-2',q:'At Calculation the insurer finds the loss is excluded. Which button ends the claim?',o:['Cancel','Decline','Exit'],a:1,w:'Decline is on Calculation and Settlement; Cancel only on FNOL and Registration.'},
+ {id:'F13',obj:'FLW-3',q:'A total-loss car wreck is sold at auction for 90,000. Which task records it?',o:['Recovery','Salvage','Subrogation'],a:1,w:'Salvage is the sale of damaged property.'},
+ {id:'F14',obj:'SCR-1',q:'Which pages offer the Decline button?',o:['FNOL and Registration','Calculation and Settlement','All approval pages'],a:1,w:'Calculation and Settlement.'},
+ {id:'F15',obj:'CAL-1',q:'GIMO rating: Total Recognized 1,500; Previous Adjusted 1,000. Calculated Amount?',o:['1,500','500','2,500'],a:1,w:'1,500 − 1,000 = 500 (incremental).'},
+ {id:'F16',obj:'CAL-2',q:'New tool. Paid 0, settled 0, calculation 1,000. Does the new close-reserve check show a message?',o:['Yes','No, this check passes'],a:1,w:'Paid is 0, so both conditions are not met.'},
+ {id:'F17',obj:'INT-1',q:'PA Docking 03-Third Party; Manual Policy Docking 01. Docking mode?',o:['Third Party','Manual Policy'],a:0,w:'01 does not support manual policies, so the PA Docking source is used.'},
+ {id:'F18',obj:'INT-2',q:'What does a claim settlement create in BCP?',o:['AR (ArapCate 1)','AP (ArapCate 2)','Fee only'],a:1,w:'Indemnity is a claim payable.'},
+ {id:'F19',obj:'CFG-1',q:'A health product needs formula benefits such as per-day allowances. What is needed?',o:['Claim Matrix V2 and the new calculation tool','Batch FNOL','Party Management'],a:0,w:'Formulas are configured in the new calculation tool and linked in Claim Matrix V2.'},
+ {id:'F20',obj:'INS-2',q:'An insurer reports a combined ratio of 104%. What does it mean?',o:['An underwriting profit','An underwriting loss','An investment loss'],a:1,w:'Above 100% means claims and expenses exceed earned premium.'}
+];
+
 
 /* ===================== APP ===================== */
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
@@ -1922,52 +2784,64 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 const store={get(k,d){try{const v=localStorage.getItem('clmguide:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('clmguide:'+k,JSON.stringify(v))}catch(e){}}};
 const SVGNS='http://www.w3.org/2000/svg';
 const BCPG='../bcp-learning-guide/index.html#';
+const IMG=n=>(window.IMGDATA&&window.IMGDATA[n])||('img/s'+n+'.png');
 const SCR=id=>SCREENS.find(s=>s.id===id);
 const FL=id=>FLOWS.find(f=>f.id===id);
+const IFL=id=>IFLOWS.find(f=>f.id===id);
 const TAGTXT={inf:'Domain context',bcp:'BCP guide',shot:'Screenshot'};
+const fmt=x=>(Math.round(x*100)/100).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2});
+const pct=x=>isFinite(x)?(Math.round(x*1000)/10)+'%':'—';
 function wrap(t,n){const w=String(t).split(/\s+/),out=[];let line='';for(const x of w){if((line+' '+x).trim().length>n&&line){out.push(line);line=x}else line=(line+' '+x).trim()}if(line)out.push(line);return out}
 const flowLink=id=>{const f=FL(id);return f?`<a class="tag src" href="#fl-${id}">${id} · ${esc(f.name)}</a>`:''};
 const scrLink=id=>{const s=SCR(id);return s?`<a class="tag src" href="#scr-${id}">${esc(s.n)}</a>`:''};
-const shot=(n,cap,tall)=>`<figure class="shot ${tall?'tall':''}"><a href="img/s${n}.png" target="_blank" rel="noopener"><img loading="lazy" src="img/s${n}.png" alt="${esc(cap)}"></a><figcaption>${esc(cap)}</figcaption></figure>`;
+const shot=(n,cap,tall)=>`<figure class="shot ${tall?'tall':''}"><button type="button" class="shot-open" data-n="${n}" data-cap="${esc(cap)}" aria-label="Enlarge: ${esc(cap)}"><img loading="lazy" src="${IMG(n)}" alt="${esc(cap)}"></button><figcaption>${esc(cap)}</figcaption></figure>`;
+const termLink=t=>`<button type="button" class="tag src termlink" data-term="${esc(t)}">${esc(t)}</button>`;
 
-/* ---------- swimlane renderer ---------- */
-function swimlane(steps,opts={}){
-  const used=new Set(steps.map(s=>s.l));(opts.extraLanes||[]).forEach(l=>used.add(l));
-  const lanes=LANE_ORDER.filter(l=>used.has(l));
-  const COL=158,BW=136,BH=66,LH=90,LW=112,PAD=14;
-  const W=LW+steps.length*COL+PAD,H=lanes.length*LH;
-  const li=Object.fromEntries(lanes.map((l,i)=>[l,i]));const u=opts.uid||'';
+/* ---------- swimlane: wraps into bands to fit the page width ---------- */
+function swimSvg(steps,W,opts={}){
+  const LW=108,PADR=16,MINCOL=132,LH=72,BH=56,GAP=34,n=steps.length;
+  const maxCols=Math.max(3,Math.floor((W-LW-PADR)/MINCOL));const bands=Math.ceil(n/maxCols);const cols=Math.ceil(n/bands);
+  const colW=Math.max(MINCOL,Math.min(230,(W-LW-PADR)/cols));W=Math.max(W,LW+PADR+cols*colW);
+  const BW=colW-14,u=opts.uid||'',cpl=Math.max(13,Math.floor(BW/6.3));
+  // each band shows only the lanes its own steps use
+  const B=[];let y=0;for(let b=0;b<bands;b++){const st=steps.slice(b*cols,(b+1)*cols);const used=new Set(st.map(x=>x.l));const lanes=LANE_ORDER.filter(l=>used.has(l));B.push({y0:y,lanes,li:Object.fromEntries(lanes.map((l,i)=>[l,i])),h:lanes.length*LH});y+=lanes.length*LH+GAP}
+  const H=y-GAP+2;
   let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label||'Swimlane diagram')}"><defs><marker id="ah${u}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
-  lanes.forEach((l,i)=>{s+=`<rect class="${i%2?'lane-b':'lane-a'}" x="0" y="${i*LH}" width="${W}" height="${LH}"/>`;
-    const lbl=wrap(LANES[l],14);lbl.forEach((t,j)=>{s+=`<text class="lane-lbl" x="10" y="${i*LH+LH/2-(lbl.length-1)*6+j*12+4}">${esc(t.toUpperCase())}</text>`});
-    s+=`<line class="lane-sep" x1="0" y1="${(i+1)*LH}" x2="${W}" y2="${(i+1)*LH}"/>`});
-  s+=`<line class="lane-sep" x1="${LW-6}" y1="0" x2="${LW-6}" y2="${H}"/>`;
-  const pos=steps.map((st,i)=>({x:LW+i*COL+(COL-BW)/2,y:li[st.l]*LH+(LH-BH)/2}));
-  for(let i=0;i<steps.length-1;i++){const a=pos[i],b=pos[i+1];const y1=a.y+BH/2,y2=b.y+BH/2,x1=a.x+BW,x2=b.x;
+  B.forEach((bd,b)=>{bd.lanes.forEach((l,i)=>{s+=`<rect class="${i%2?'lane-b':'lane-a'}" x="0" y="${bd.y0+i*LH}" width="${W}" height="${LH}"/>`;
+      const lbl=wrap(LANES[l]||l,13);lbl.forEach((t,j)=>{s+=`<text class="lane-lbl" x="8" y="${bd.y0+i*LH+LH/2-(lbl.length-1)*6+j*12+4}">${esc(t.toUpperCase())}</text>`});
+      s+=`<line class="lane-sep" x1="0" y1="${bd.y0+(i+1)*LH}" x2="${W}" y2="${bd.y0+(i+1)*LH}"/>`});
+    s+=`<line class="lane-sep" x1="${LW-6}" y1="${bd.y0}" x2="${LW-6}" y2="${bd.y0+bd.h}"/>`;
+    if(b<bands-1)s+=`<text class="lane-lbl" x="${W-PADR-4}" y="${bd.y0+bd.h+21}" text-anchor="end">CONTINUES BELOW</text>`});
+  const pos=steps.map((st,i)=>{const b=Math.floor(i/cols),c=i%cols,bd=B[b];return{b,x:LW+c*colW+(colW-BW)/2,y:bd.y0+bd.li[st.l]*LH+(LH-BH)/2}});
+  for(let i=0;i<n-1;i++){const a=pos[i],t=pos[i+1];const y1=a.y+BH/2,y2=t.y+BH/2,x1=a.x+BW,x2=t.x;
+    if(a.b!==t.b){const gy=B[a.b].y0+B[a.b].h+GAP/2-4;s+=`<path class="edge" stroke-dasharray="4 3" d="M${x1},${y1} H${W-PADR/2} V${gy} H${LW-12} V${y2} H${x2-2}" marker-end="url(#ah${u})"/>`;continue}
     if(Math.abs(y1-y2)<1)s+=`<path class="edge" d="M${x1},${y1} H${x2-2}" marker-end="url(#ah${u})"/>`;
     else{const mx=x1+(x2-x1)/2;s+=`<path class="edge" d="M${x1},${y1} H${mx} V${y2} H${x2-2}" marker-end="url(#ah${u})"/>`}}
-  steps.forEach((st,i)=>{const p=pos[i];const tl=wrap(st.t,21).slice(0,3);const sub=st.s||st.f||st.m||'';
+  steps.forEach((st,i)=>{const p=pos[i];const tl=wrap(st.t,cpl).slice(0,3);const sub=st.s||st.f||st.m||'';
     s+=`<g class="node k-${st.k}" data-i="${i}" tabindex="0"><rect x="${p.x}" y="${p.y}" width="${BW}" height="${BH}" rx="${st.k==='ev'||st.k==='end'?14:4}"/>`;
     s+=`<circle class="numbg" cx="${p.x+2}" cy="${p.y+2}" r="8"/><text class="num" x="${p.x+2}" y="${p.y+5.5}" text-anchor="middle">${i+1}</text>`;
-    const ty=p.y+(sub?14:BH/2-(tl.length-1)*6.5+4);
-    tl.forEach((t,j)=>{s+=`<text class="t" x="${p.x+BW/2}" y="${ty+j*13}" text-anchor="middle">${esc(t)}</text>`});
-    if(sub){const w=wrap(sub,27);s+=`<text class="f" x="${p.x+BW/2}" y="${p.y+BH-7}" text-anchor="middle">${esc(w[0]+(w.length>1?'…':''))}</text>`}
-    s+=`<title>${esc(st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:'')+(st.m?' — '+st.m:''))}</title></g>`});
+    const ty=p.y+(sub?13:BH/2-(tl.length-1)*6.5+4);
+    tl.forEach((t,j)=>{s+=`<text class="t" x="${p.x+BW/2}" y="${ty+j*12.5}" text-anchor="middle">${esc(t)}</text>`});
+    if(sub){const w=wrap(sub,cpl+5);s+=`<text class="f" x="${p.x+BW/2}" y="${p.y+BH-5}" text-anchor="middle">${esc(w[0]+(w.length>1?'…':''))}</text>`}
+    s+=`<title>${esc((LANES[st.l]||'')+': '+st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:'')+(st.m?' — '+st.m:''))}</title></g>`});
   return s+'</svg>';
 }
+function drawSwim(box){const W=Math.max(320,box.clientWidth-18);box.innerHTML=swimSvg(box._steps,W,box._opts);box._w=box.clientWidth;linkDiagram(box.closest('.swimwrap')||box.parentNode)}
+function mountSwim(box,steps,opts){box._steps=steps;box._opts=opts;box.setAttribute('data-swim','');drawSwim(box)}
+let rsT;window.addEventListener('resize',()=>{clearTimeout(rsT);rsT=setTimeout(()=>$$('[data-swim]').forEach(b=>{if(b.offsetParent&&Math.abs(b.clientWidth-(b._w||0))>40)drawSwim(b)}),150)});
 function stepTable(steps,id){
-  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Screen / menu</th><th>Task or status after</th><th>Note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}${s.tag?` <span class="tag ${s.tag}">${TAGTXT[s.tag]}</span>`:''}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>What happens and why</th><th>Screen / system</th><th>Result</th><th>Note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td><b>${esc(LANES[s.l]||s.l)}</b></td><td>${esc(s.t)}${s.d?`<div class="small muted">${esc(s.d)}</div>`:''}${s.r?`<div class="small">Rule: ${esc(s.r)}</div>`:''}${s.tag?` <span class="tag ${s.tag}">${TAGTXT[s.tag]}</span>`:''}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function linkDiagram(root){
   $$('.node',root).forEach(n=>{const go=()=>{const i=n.dataset.i;$$('.node',root).forEach(x=>x.classList.toggle('hl',x===n));$$('tbody tr',root).forEach(r=>r.classList.toggle('hl',r.dataset.i===i));const r=$(`tbody tr[data-i="${i}"]`,root);if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})};n.addEventListener('click',go);n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
 }
 
-/* ---------- graph renderer (flowchart and status models) ---------- */
+/* ---------- graph renderer (flowcharts, status models, maps) ---------- */
 function graphSvg(m,uid){
   const NH=38,nw=n=>n.w||150;
   const W=m.W||Math.max(...m.nodes.map(n=>n.x+nw(n)))+30,H=m.H||Math.max(...m.nodes.map(n=>n.y))+NH+40;
   const N=Object.fromEntries(m.nodes.map(n=>[n.id,n]));const mk='gah'+uid;
-  let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(m.name)}"><defs><marker id="${mk}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
+  let s=`<svg xmlns="${SVGNS}" width="100%" viewBox="0 0 ${W} ${H}" style="max-width:${W}px;min-width:${Math.min(W,620)}px;display:block;margin:0 auto" role="img" aria-label="${esc(m.name||'Diagram')}"><defs><marker id="${mk}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
   const labels=[];
   m.edges.forEach(([a,b,l,o])=>{o=o||{};const A=N[a],B=N[b];
     if(o.self){const x=A.x+nw(A)-26,y=A.y+5;s+=`<path class="edge" d="M${x},${y} C ${x+10},${y-38} ${x+46},${y-30} ${x+26},${y+6}" marker-end="url(#${mk})"/>`;labels.push([x+26,y-30,l]);return}
@@ -1979,10 +2853,14 @@ function graphSvg(m,uid){
     const [sx,sy]=clip(ax,ay,cx,cy,A),[ex,ey]=clip(bx,by,cx,cy,B);
     s+=`<path class="edge" d="M${sx},${sy} Q${cx},${cy} ${ex},${ey}" marker-end="url(#${mk})"/>`;
     labels.push([(sx+2*cx+ex)/4,(sy+2*cy+ey)/4,l])});
-  m.nodes.forEach(n=>{s+=`<g class="st-node ${n.c||''}"><rect x="${n.x}" y="${n.y+5}" width="${nw(n)}" height="${NH}" rx="19"/><text x="${n.x+nw(n)/2}" y="${n.y+5+NH/2+4}" text-anchor="middle">${esc(n.t)}</text></g>`});
+  m.nodes.forEach(n=>{s+=`<g class="st-node ${n.c||''}" data-id="${n.id}"><rect x="${n.x}" y="${n.y+5}" width="${nw(n)}" height="${NH}" rx="19"/><text x="${n.x+nw(n)/2}" y="${n.y+5+NH/2+4}" text-anchor="middle">${esc(n.t)}</text></g>`});
   labels.forEach(([lx,ly,l])=>{const tw=l.length*5.6+8;s+=`<rect class="st-lblbg" x="${lx-tw/2}" y="${ly-8}" width="${tw}" height="15" rx="3"/><text class="st-lbl" x="${lx}" y="${ly+3}" text-anchor="middle">${esc(l)}</text>`});
   return s+'</svg>';
 }
+
+/* ---------- visit tracking ---------- */
+function seen(kind,id){const v=store.get('seen',{});v[kind]=v[kind]||{};if(!v[kind][id]){v[kind][id]=Date.now();store.set('seen',v)}}
+const seenGet=()=>store.get('seen',{});
 
 /* ---------- static content ---------- */
 function renderStatic(){
@@ -2005,15 +2883,129 @@ function renderStatic(){
   $('#fitBody').innerHTML=FIT.map(r=>`<tr>${r.map((c,i)=>`<td>${i===0?`<b>${esc(c)}</b>`:esc(c)}</td>`).join('')}</tr>`).join('');
   $('#faqBody').innerHTML=FAQ.map((f,i)=>`<div class="card"><span class="eyebrow">Q${i+1}</span><h3>${esc(f[0])}</h3><p>${esc(f[1])}</p>${(f[2].length||f[3].length)?`<div class="filter-row">${f[2].map(flowLink).join('')}${f[3].map(scrLink).join('')}</div>`:''}</div>`).join('');
   $('#gapBody').innerHTML=GAPS.map((g,i)=>`<tr><td class="num">${i+1}</td><td><span class="tag ${g[0]==='High'?'cancel':g[0]==='Medium'?'inf':''}">${g[0]}</span></td><td><b>${esc(g[1])}</b></td><td>${esc(g[2])}</td><td>${esc(g[3])}</td></tr>`).join('');
-  const gl=()=>{const q=($('#glFilter').value||'').toLowerCase();$('#glBody').innerHTML=GLOSS.filter(r=>r.join(' ').toLowerCase().includes(q)).map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td></tr>`).join('')};gl();$('#glFilter').addEventListener('input',gl);
+  renderGlossary();
+}
+
+/* ---------- glossary ---------- */
+const ALLGLOSS=[...Object.entries(IGLOSS).flatMap(([c,a])=>a.map(t=>[t[0],t[1],c])),...GLOSS.map(g=>[g[0],g[1],'InsureMO / Easy Claim'])].sort((a,b)=>a[0].localeCompare(b[0]));
+function renderGlossary(){
+  const cats=[...new Set(ALLGLOSS.map(g=>g[2]))];
+  if(!$('#glCat').options.length)$('#glCat').innerHTML=`<option value="">All categories (${ALLGLOSS.length} terms)</option>`+cats.map(c=>`<option>${esc(c)}</option>`).join('');
+  const q=($('#glFilter').value||'').toLowerCase(),c=$('#glCat').value;
+  const rows=ALLGLOSS.filter(r=>(!c||r[2]===c)&&(r[0]+' '+r[1]).toLowerCase().includes(q));
+  $('#glBody').innerHTML=rows.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td class="small muted">${esc(r[2])}</td></tr>`).join('')||'<tr><td colspan="3" class="muted">No term matches. Clear the filter or pick another category.</td></tr>';
+  $('#glCount').textContent=`${rows.length} of ${ALLGLOSS.length} terms`;
+}
+function goTerm(t){$('#glCat').value='';$('#glFilter').value=t;renderGlossary();location.hash='glossary'}
+
+/* ---------- insurance basics ---------- */
+let partySel='broker';
+function renderInsure(){
+  $('#partyDiagram').innerHTML=graphSvg(Object.assign({name:'Parties in insurance'},PMAP),'p');
+  $$('#partyDiagram .st-node').forEach(g=>{g.setAttribute('tabindex','0');g.setAttribute('role','button');const go=()=>{partySel=g.dataset.id;drawParty()};g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
+  drawParty();
+  const pf=()=>{const q=($('#ptFilter').value||'').toLowerCase();$('#partyBody').innerHTML=PARTIES.filter(p=>Object.values(p).join(' ').toLowerCase().includes(q)).map(p=>`<tr><td><b>${esc(p.n)}</b></td><td>${esc(p.who)}</td><td>${esc(p.acts)}</td><td>${esc(p.paid)}</td><td class="small">${esc(p.ex)}</td><td class="small">${esc(p.imo)}</td></tr>`).join('')};pf();$('#ptFilter').addEventListener('input',pf);
+  $('#prinBody').innerHTML=PRIN.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td class="small">${esc(r[2])}</td><td class="small">${esc(r[3])}</td></tr>`).join('');
+  $('#anatBody').innerHTML=ANAT.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td></tr>`).join('');
+  $('#redBody').innerHTML=RED.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td class="small">${esc(r[2])}</td></tr>`).join('');
+  $('#lobBody').innerHTML=LOB.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td class="small">${esc(r[3])}</td></tr>`).join('');
+  $('#chainDiagram').innerHTML=`<div class="chain">${CHAIN.map((c,i)=>`<a class="chain-step" href="${c[3]==='#bcp'?BCPG+'start':c[3]}" ${c[3]==='#bcp'?'target="_blank" rel="noopener"':''}><span class="eyebrow">${i+1}</span><b>${esc(c[0])}</b><span class="small muted">${esc(c[2])}</span></a>`).join('<span class="chain-arrow" aria-hidden="true">→</span>')}</div>`;
+  $('#chainBody').innerHTML=CHAIN.map(c=>`<tr><td><b>${esc(c[0])}</b></td><td>${esc(c[1])}</td><td>${esc(c[2])}</td><td>${c[3]==='#bcp'?`<a class="xlink" href="${BCPG}start" target="_blank" rel="noopener">BCP guide ↗</a>`:`<a href="${c[3]}">${c[3]==='#industry'?'Policy lifecycle':c[3]==='#basics'?'Claims foundations':'Cross-module'}</a>`}</td></tr>`).join('');
+  ['kmGwp','kmUpr','kmPaid','kmRes','kmExp'].forEach(id=>$('#'+id).addEventListener('input',runKM));runKM();
+  ['cpLoss','cpSi','cpVal','cpDed','cpCo','cpSub','cpPre'].forEach(id=>$('#'+id).addEventListener('input',runCP));runCP();
+}
+function drawParty(){
+  $$('#partyDiagram .st-node').forEach(g=>g.classList.toggle('sel',g.dataset.id===partySel));
+  const p=PARTIES.find(x=>x.id===partySel)||PARTIES[0];
+  $('#partyPanel').innerHTML=`<div class="card"><span class="eyebrow">Party</span><h2 style="margin:0">${esc(p.n)}</h2><p>${esc(p.who)}</p><dl class="kv"><dt>Acts for</dt><dd>${esc(p.acts)}</dd><dt>Paid by</dt><dd>${esc(p.paid)}</dd><dt>Example</dt><dd>${esc(p.ex)}</dd><dt>In InsureMO</dt><dd>${esc(p.imo)}</dd></dl><div class="filter-row">${PARTIES.map(x=>`<button type="button" class="tag ${x.id===p.id?'main':'src'} pchip" data-id="${x.id}">${esc(x.n)}</button>`).join('')}</div></div>`;
+  $$('#partyPanel .pchip').forEach(b=>b.addEventListener('click',()=>{partySel=b.dataset.id;drawParty()}));
+}
+const num=id=>parseFloat(($('#'+id)||{}).value)||0;
+function runKM(){
+  const g=num('kmGwp'),u=num('kmUpr'),p=num('kmPaid'),r=num('kmRes'),e=num('kmExp');const earned=g-u,inc=p+r,lr=inc/earned,er=e/earned,cr=lr+er;
+  $('#kmOut').innerHTML=`<div class="tbl"><table><tbody>
+   <tr><td>Earned premium = GWP − unearned</td><td class="num">${fmt(earned)}</td></tr>
+   <tr><td>Incurred losses = paid + reserve increase</td><td class="num">${fmt(inc)}</td></tr>
+   <tr><td><b>Loss ratio</b> = incurred ÷ earned</td><td class="num"><b>${pct(lr)}</b></td></tr>
+   <tr><td><b>Expense ratio</b> = expenses ÷ earned</td><td class="num"><b>${pct(er)}</b></td></tr>
+   <tr><td><b>Combined ratio</b></td><td class="num"><b class="${cr<1?'ok':'bad'}">${pct(cr)}</b></td></tr></tbody></table></div>
+   <p class="small">${cr<1?`Underwriting profit of ${fmt(earned-inc-e)}.`:`Underwriting loss of ${fmt(inc+e-earned)}; the insurer needs investment income to cover it.`} The reserve increase counts as a cost even though no cash was paid: this is why claim reserves matter to profit.</p>
+   <p class="small muted">Simplified: assumes no opening unearned premium. Some markets measure the expense ratio on written premium.</p>`;
+}
+function runCP(){
+  const L=num('cpLoss'),si=num('cpSi'),v=num('cpVal'),d=num('cpDed'),co=num('cpCo'),sub=num('cpSub'),pre=num('cpPre');const rows=[];let x=L;
+  rows.push(['Assessed loss',x]);
+  if(v>si&&si>0){x=x*si/v;rows.push([`Average: × ${fmt(si)} ÷ ${fmt(v)} (underinsured by ${pct(1-si/v)})`,x])}
+  if(sub>0&&x>sub){x=sub;rows.push(['Capped at sub-limit',x])}
+  if(si>0&&x>si){x=si;rows.push(['Capped at sum insured',x])}
+  if(d>0){x=Math.max(0,x-d);rows.push([`Less deductible ${fmt(d)}`,x])}
+  if(co>0){x=x*(1-co/100);rows.push([`Less co-pay ${co}%`,x])}
+  if(pre>0){x=Math.max(0,x-pre);rows.push([`Less prepay already paid ${fmt(pre)}`,x])}
+  $('#cpOut').innerHTML=`<div class="tbl"><table><tbody>${rows.map((r,i)=>`<tr><td>${esc(r[0])}</td><td class="num">${i===rows.length-1?`<b>${fmt(r[1])}</b>`:fmt(r[1])}</td></tr>`).join('')}</tbody></table></div><p class="small">Payable now: <b>${fmt(x)}</b>. In Easy Claim these steps happen in Calculation (formula) and Settlement (payment).</p><p class="small muted">The order of deductions follows the policy wording; this order is common but not universal.</p>`;
+}
+
+/* ---------- policy lifecycle ---------- */
+function renderIndustry(){
+  $('#lifeDiagram').innerHTML=graphSvg(LIFEMAP,'l');
+  ['cxPrem','cxDays','cxTerm','cxClaim'].forEach(id=>$('#'+id).addEventListener('input',runCX));runCX();
+  ['riLoss','riQs','riRet','riLim'].forEach(id=>$('#'+id).addEventListener('input',runRI));runRI();
+}
+const SHORTRATE=[[1,20],[3,40],[6,60],[9,80],[12,100]];
+function runCX(){
+  const P=num('cxPrem'),d=num('cxDays'),T=num('cxTerm')||365,claim=$('#cxClaim').value==='yes';const months=d/T*12;
+  const keep=(SHORTRATE.find(r=>months<=r[0])||[0,100])[1];const pr=Math.max(0,P*(T-d)/T),sr=Math.max(0,P*(1-keep/100));
+  $('#cxOut').innerHTML=`<div class="tbl"><table><thead><tr><th>Method</th><th>When used</th><th class="num">Refund</th></tr></thead><tbody>
+   <tr><td><b>Pro-rata</b></td><td class="small">Insurer cancels, or the wording allows exact refund</td><td class="num">${claim?'0*':fmt(pr)}</td></tr>
+   <tr><td><b>Short-rate</b></td><td class="small">Client cancels early; insurer keeps ${keep}% (illustrative scale, ${fmt(months)} months used)</td><td class="num">${claim?'0*':fmt(sr)}</td></tr>
+   <tr><td><b>Flat</b></td><td class="small">Cancelled from inception: duplicate policy, void contract</td><td class="num">${claim?'Not possible':fmt(P)}</td></tr></tbody></table></div>
+   <p class="small">Earned premium kept by the insurer under pro-rata: <b>${fmt(P-pr)}</b> for ${fmt(d)} days of cover.${claim?' * When a claim has been paid, most wordings give no refund (for example a total loss ends the policy).':''}</p>
+   <p class="small muted">Illustrative short-rate scale: up to 1 month 20%, 3 months 40%, 6 months 60%, 9 months 80%, over 9 months 100%. Real scales are in each policy wording.</p>`;
+}
+function runRI(){
+  const L=num('riLoss'),q=num('riQs')/100,ret=num('riRet'),lim=num('riLim');const qs=L*q,net=L-qs,xol=Math.min(Math.max(net-ret,0),lim),keep=net-xol;
+  $('#riOut').innerHTML=`<div class="tbl"><table><tbody><tr><td>Gross claim</td><td class="num">${fmt(L)}</td></tr><tr><td>Quota share recovery (${pct(q)})</td><td class="num">${fmt(qs)}</td></tr><tr><td>Net after quota share</td><td class="num">${fmt(net)}</td></tr><tr><td>Excess-of-loss recovery (${fmt(lim)} xs ${fmt(ret)})</td><td class="num">${fmt(xol)}</td></tr><tr><td><b>Insurer keeps</b></td><td class="num"><b>${fmt(keep)}</b></td></tr></tbody></table></div><p class="small">Total recovered from reinsurers: <b>${fmt(qs+xol)}</b> (${pct((qs+xol)/L)} of the gross claim).${net-ret>lim?' The loss exceeds the excess-of-loss limit, so the insurer also bears the part above it.':''}</p>`;
+}
+
+/* ---------- generic flow explorer (claims and industry) ---------- */
+const EXP={
+ fl:{data:()=>FLOWS,grp:GRP,list:'#scList',sel:'#scSelect',det:'#scDetail',cur:FLOWS[0].id,path:0,mod:m=>MODTAG[m]},
+ ip:{data:()=>IFLOWS,grp:IGRP,list:'#ipList',sel:'#ipSelect',det:'#ipDetail',cur:IFLOWS[0].id,path:0,mod:m=>IMOD[m]}
+};
+function renderExpList(k){
+  const e=EXP[k],D=e.data();let h='',opt='';
+  Object.entries(e.grp).forEach(([g,[lbl,c]])=>{const items=D.filter(s=>s.grp===g);if(!items.length)return;h+=`<div class="grp ${c}">${lbl}</div>`;opt+=`<optgroup label="${lbl}">`;
+    items.forEach(s=>{h+=`<button type="button" data-id="${s.id}" aria-current="${s.id===e.cur}"><span class="id">${s.id}</span><span>${esc(s.name)}</span></button>`;opt+=`<option value="${s.id}" ${s.id===e.cur?'selected':''}>${s.id} · ${esc(s.name)}</option>`});opt+='</optgroup>'});
+  $(e.list).innerHTML=h;$(e.sel).innerHTML=opt;
+  $$(e.list+' button').forEach(b=>b.addEventListener('click',()=>{location.hash=k+'-'+b.dataset.id}));
+}
+function renderExp(k){
+  const e=EXP[k],D=e.data(),f=D.find(x=>x.id===e.cur)||D[0];if(e.path>=f.paths.length)e.path=0;const p=f.paths[e.path];const [gl,gc]=e.grp[f.grp];
+  seen(k,f.id);
+  const lanesAll=[...new Set(f.paths.flatMap(x=>x.steps.map(s=>s.l)))];
+  const ex=k==='fl'?(FLOWEX[f.id]||[])[0]:f.ex&&f.ex.b,biz=k==='fl'?[(FLOWEX[f.id]||[])[1]].filter(Boolean):f.biz||[];
+  $(e.det).innerHTML=`<div class="sc-head"><div class="row"><span class="tag ${gc}">${gl}</span>${f.mods.map(m=>`<span class="tag ${m==='bcp'?'bcp':m==='ri'?'ri':m==='pa'?'pa':'src'}">${esc(e.mod(m))}</span>`).join('')}<span class="tag src">${f.id}</span>${k==='ip'?'<span class="tag inf">Industry practice</span>':''}</div>
+   <h2 style="margin:0">${esc(f.name)}</h2><p style="max-width:80ch">${esc(f.desc)}</p>
+   <div class="row"><div class="seg" role="group" aria-label="Path">${f.paths.map((x,i)=>`<button type="button" data-p="${i}" aria-pressed="${i===e.path}">${esc(x.n)}</button>`).join('')}</div>${f.src?`<span class="small muted">Source: ${esc(f.src)}</span>`:''}</div></div>
+   <div class="swimwrap" style="display:flex;flex-direction:column;gap:12px"><div class="diagram swim"></div><h3 style="margin:0">Step by step: ${esc(p.n)} (${p.steps.length} steps, ${new Set(p.steps.map(s=>s.l)).size} actors)</h3>${stepTable(p.steps,k+'Tbl')}</div>
+   ${ex?`<div class="callout"><b>Real example.</b> ${esc(ex)}</div>`:''}
+   <div class="grid g2">
+    ${biz.length?`<div class="card"><h4>Industry knowledge</h4><ul class="clean">${biz.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+    ${f.imo?`<div class="card"><h4>In InsureMO</h4><div class="tbl"><table><tbody>${f.imo.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div><p class="small muted">Module mapping is domain context except where a tag says BCP guide.</p></div>`:''}
+    ${f.terms?`<div class="card"><h4>Key terms</h4><div class="filter-row">${f.terms.map(termLink).join('')}</div></div>`:''}
+    ${f.rules?`<div class="card"><h4>Business rules</h4><ul class="clean">${f.rules.map(r=>`<li>${esc(r)}</li>`).join('')}</ul>${f.scr?`<h4>Screens used</h4><div class="filter-row">${f.scr.map(scrLink).join('')}</div>`:''}</div>`:''}
+    ${f.ba?`<div class="notes" style="grid-template-columns:1fr"><div class="note" data-r="ba"><span class="who">Business analyst</span>${esc(f.ba)}</div><div class="note" data-r="qa"><span class="who">Tester</span>${esc(f.qa)}</div><div class="note" data-r="dev"><span class="who">Developer</span>${esc(f.dev)}</div></div>`:''}
+   </div>`;
+  $$(e.det+' .seg button').forEach(b=>b.addEventListener('click',()=>{e.path=+b.dataset.p;renderExp(k)}));
+  mountSwim($(e.det+' .swim'),p.steps,{extraLanes:lanesAll,uid:k,label:f.name+' — '+p.n});
+  $$(e.list+' button').forEach(b=>b.setAttribute('aria-current',b.dataset.id===e.cur));$(e.sel).value=e.cur;
 }
 
 /* ---------- router simulator ---------- */
 function renderSimInputs(){
   const k=$('#simTask').value,d=SIM[k];let h='';
-  const num=(id,l,v)=>`<label>${l}<input type="number" id="${id}" value="${v}" min="0" step="0.01"></label>`;
-  if(d.t==='amt')h=num('simAmt','Amount on the task',12000)+num('simAuth','User authority',10000);
-  else if(d.t==='appr')h=`<label>Approval Decision<select id="simDec"><option>Approve</option><option>Reject</option></select></label>`+num('simAmt','Amount',12000)+num('simAuth','Approver authority',50000);
+  const numI=(id,l,v)=>`<label>${l}<input type="number" id="${id}" value="${v}" min="0" step="0.01"></label>`;
+  if(d.t==='amt')h=numI('simAmt','Amount on the task',12000)+numI('simAuth','User authority',10000);
+  else if(d.t==='appr')h=`<label>Approval Decision<select id="simDec"><option>Approve</option><option>Reject</option></select></label>`+numI('simAmt','Amount',12000)+numI('simAuth','Approver authority',50000);
   else if(d.t==='appr2')h=`<label>Approval Decision<select id="simDec"><option>Approve</option><option>Reject</option></select></label>`;
   else if(d.t==='doc')h=`<label>Is Qualified<select id="simQ"><option>Yes</option><option>No</option></select></label>`;
   else h=`<label>Button<select id="simOpt">${d.opts.map((o,i)=>`<option value="${i}">${o[0]}</option>`).join('')}</select></label>`;
@@ -2040,31 +3032,10 @@ function renderStates(){
   $('#stTable').innerHTML=m.rows.map(r=>`<tr>${r.map((c,i)=>`<td>${i===3?`<span class="tag ${/Screenshot/.test(c)&&!/Source/.test(c)?'shot':'src'}">${esc(c)}</span>`:esc(c)}</td>`).join('')}</tr>`).join('');
 }
 
-/* ---------- flows ---------- */
-let curFl=FLOWS[0].id,curPath=0;
-function renderFlowList(){
-  let h='',opt='';Object.entries(GRP).forEach(([g,[lbl,c]])=>{const items=FLOWS.filter(s=>s.grp===g);h+=`<div class="grp ${c}">${lbl}</div>`;opt+=`<optgroup label="${lbl}">`;
-    items.forEach(s=>{h+=`<button type="button" data-id="${s.id}" aria-current="${s.id===curFl}"><span class="id">${s.id}</span><span>${esc(s.name)}</span></button>`;opt+=`<option value="${s.id}" ${s.id===curFl?'selected':''}>${s.id} · ${esc(s.name)}</option>`});opt+='</optgroup>'});
-  $('#scList').innerHTML=h;$('#scSelect').innerHTML=opt;
-  $$('#scList button').forEach(b=>b.addEventListener('click',()=>{location.hash='fl-'+b.dataset.id}));
-}
-function renderFlow(){
-  const f=FL(curFl)||FLOWS[0];if(curPath>=f.paths.length)curPath=0;const p=f.paths[curPath];const [gl,gc]=GRP[f.grp];
-  const lanesAll=[...new Set(f.paths.flatMap(x=>x.steps.map(s=>s.l)))];
-  $('#scDetail').innerHTML=`<div class="sc-head"><div class="row"><span class="tag ${gc}">${gl}</span>${f.mods.map(m=>`<span class="tag ${m==='bcp'?'bcp':m==='ri'?'ri':m==='pa'?'pa':'src'}">${MODTAG[m]}</span>`).join('')}<span class="tag src">${f.id}</span></div>
-   <h2 style="margin:0">${esc(f.name)}</h2><p style="max-width:75ch">${esc(f.desc)}</p>
-   <div class="row"><div class="seg" role="group" aria-label="Path">${f.paths.map((x,i)=>`<button type="button" data-p="${i}" aria-pressed="${i===curPath}">${esc(x.n)}</button>`).join('')}</div><span class="small muted">Source: ${esc(f.src)}</span></div></div>
-   <div id="flDia" style="display:flex;flex-direction:column;gap:12px"><div class="diagram">${swimlane(p.steps,{extraLanes:lanesAll,uid:'fl',label:f.name+' — '+p.n})}</div>${stepTable(p.steps,'flTbl')}</div>
-   <div class="grid g2"><div class="card"><h4>Business rules</h4><ul class="clean">${f.rules.map(r=>`<li>${esc(r)}</li>`).join('')}</ul><h4>Screens used</h4><div class="filter-row">${f.scr.map(scrLink).join('')}</div></div>
-   <div class="notes" style="grid-template-columns:1fr"><div class="note" data-r="ba"><span class="who">Business analyst</span>${esc(f.ba)}</div><div class="note" data-r="qa"><span class="who">Tester</span>${esc(f.qa)}</div><div class="note" data-r="dev"><span class="who">Developer</span>${esc(f.dev)}</div></div></div>`;
-  $$('#scDetail .seg button').forEach(b=>b.addEventListener('click',()=>{curPath=+b.dataset.p;renderFlow()}));
-  linkDiagram($('#flDia'));
-  $$('#scList button').forEach(b=>b.setAttribute('aria-current',b.dataset.id===curFl));$('#scSelect').value=curFl;
-}
-
 /* ---------- screens ---------- */
 let curScr=SCREENS[0].id;
 function renderScreens(){
+  seen('scr',curScr);
   const groups=[...new Set(SCREENS.map(s=>s.g))];
   $('#menuTree').innerHTML=groups.map(g=>`<div class="mt-grp"><h4>${g}</h4><div class="items">${SCREENS.filter(s=>s.g===g).map(s=>`<button type="button" data-id="${s.id}" aria-current="${s.id===curScr}">${esc(s.n)}</button>`).join('')}</div></div>`).join('');
   $$('#menuTree button').forEach(b=>b.addEventListener('click',()=>{location.hash='scr-'+b.dataset.id}));
@@ -2076,10 +3047,10 @@ function renderScreens(){
    ${s.btn.length?`<h4>Buttons and results</h4>${tbl('Button','What happens',s.btn)}`:''}
    ${s.fields.length?`<h4>Key fields</h4>${tbl('Field','Behaviour',s.fields)}`:''}
    ${s.rules.length?`<h4>Rules and notes</h4><ul class="clean">${s.rules.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
-   ${s.icons?`<h4>Icons on this screen</h4><p class="small">${s.icons.map(n=>`<img class="ico" src="img/s${n}.png" alt="icon"> `).join(' ')} <a href="#basics">Icon meanings</a></p>`:''}
+   ${s.icons?`<h4>Icons on this screen</h4><p class="small">${s.icons.map(n=>`<img class="ico" src="${IMG(n)}" alt="icon"> `).join(' ')} <a href="#basics">Icon meanings</a></p>`:''}
    ${s.dock?`<h4>Docking mode table</h4><div class="tbl"><table><thead><tr><th>PA Docking</th><th>Manual Policy Docking</th><th>Is Manual Policy</th><th>Docking Mode</th></tr></thead><tbody>${DOCK.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div><p class="small"><a href="#integration">Try the docking simulator</a></p>`:''}
    ${s.fl.length?`<h4>Used in flows</h4><div class="filter-row">${s.fl.map(flowLink).join('')}</div>`:''}
-   <details class="more" open><summary>Source screenshots (${s.img.length})</summary><div><div class="shots">${s.img.map(i=>shot(i[0],i[1],i[2])).join('')}</div></div></details></div>`;
+   <details class="more" open><summary>Source screenshots (${s.img.length}) — click to enlarge</summary><div><div class="shots">${s.img.map(i=>shot(i[0],i[1],i[2])).join('')}</div></div></details></div>`;
 }
 
 /* ---------- hub ---------- */
@@ -2121,12 +3092,11 @@ function renderJourneys(){
   $('#jTabs').innerHTML=JOURNEYS.map(j=>`<button role="tab" type="button" data-k="${j.id}" aria-selected="${j.id===curJ}">${esc(j.n)}</button>`).join('');
   $$('#jTabs button').forEach(b=>b.addEventListener('click',()=>{curJ=b.dataset.k;renderJourneys()}));
   const j=JOURNEYS.find(x=>x.id===curJ);
-  $('#jDetail').innerHTML=`<p>${esc(j.d)}</p><div id="jDia" style="display:flex;flex-direction:column;gap:12px"><div class="diagram">${swimlane(j.steps,{uid:'j',label:j.n})}</div>${stepTable(j.steps,'jTbl')}</div>${j.note?`<div class="callout warn">${esc(j.note)}</div>`:''}`;
-  linkDiagram($('#jDia'));
+  $('#jDetail').innerHTML=`<p>${esc(j.d)}</p><div class="swimwrap" style="display:flex;flex-direction:column;gap:12px"><div class="diagram swim"></div>${stepTable(j.steps,'jTbl')}</div>${j.note?`<div class="callout warn">${esc(j.note)}</div>`:''}`;
+  mountSwim($('#jDetail .swim'),j.steps,{uid:'j',label:j.n});
 }
 
 /* ---------- calculation demos ---------- */
-const fmt=x=>(Math.round(x*100)/100).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2});
 function runCI(){
   const t=($('#ciTotals').value||'').split(/[,;\s]+/).filter(x=>x!=='').map(Number).filter(x=>!isNaN(x));
   if(!t.length){$('#ciOut').innerHTML='<p class="bad">Enter at least one number.</p>';return}
@@ -2140,7 +3110,7 @@ function runCI(){
 function runRV(){
   const tool=$('#rvTool').value,p=+$('#rvPaid').value,s=+$('#rvSettled').value,c=+$('#rvCalc').value;let h;
   if(tool==='gimo')h=`<span class="eyebrow">GIMO rating</span><div class="big">Old validation</div><p>The new paid / settled / calculation rule is not applied. The existing close-reserve validation stays unchanged.</p>`;
-  else{const a=p!==0,b=s!==c;h=a&&b?`<span class="eyebrow">New calculation tool</span><div class="big bad">Validation message</div><p>Paid amount is not 0 (${fmt(p)}) and settled (${fmt(s)}) differs from the calculation amount (${fmt(c)}). Both conditions are met.</p>`:`<span class="eyebrow">New calculation tool</span><div class="big ok">This check passes</div><p>${!a?'Paid amount is 0.':''}${!a&&!b?' ':''}${!b?'Settled equals the calculation amount.':''} At least one condition is not met, so this rule shows no message. Approval is still needed.</p>`}
+  else{const a=p!==0,b=s!==c;h=a&&b?`<span class="eyebrow">New calculation tool</span><div class="big bad">Validation message</div><p>Paid amount is not 0 (${fmt(p)}) and settled (${fmt(s)}) differs from the calculation amount (${fmt(c)}). Both conditions are met.</p>`:`<span class="eyebrow">New calculation tool</span><div class="big ok">This check passes</div><p>${!a?'Paid amount is 0. ':''}${!b?'Settled equals the calculation amount. ':''}At least one condition is not met, so this rule shows no message. Approval is still needed.</p>`}
   $('#rvOut').innerHTML=h;
 }
 
@@ -2160,6 +3130,7 @@ function renderToolkit(){
     <h3>Validation and negative tests</h3><div class="tbl"><table><thead><tr><th>ID</th><th>Screen</th><th>Test</th><th>Expected</th></tr></thead><tbody>${TESTS_EXTRA.map(r=>`<tr><td class="mono small">${r[0]}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>
     <p class="small muted">* Derived from a stated rule; the exact system message is not in the source.</p>
     <h3>Authority boundary set (per approval-type task)</h3><div class="tbl"><table><thead><tr><th>Case</th><th>Amount</th><th>Expected</th></tr></thead><tbody><tr><td>Below</td><td>authority − 0.01</td><td>Next task</td></tr><tr><td>Equal</td><td>authority</td><td>Next task ("does not exceed")</td></tr><tr><td>Above</td><td>authority + 0.01</td><td>Approval task</td></tr><tr><td>Above level 1 approver</td><td>L1 authority + 0.01</td><td>Second approval task</td></tr><tr><td>Reject</td><td>any</td><td>Original task again; data kept*</td></tr></tbody></table></div>
+    <h3>Insurance business test ideas</h3><ul class="clean"><li>Date of loss before inception, after expiry and in a lapsed period: claim must not be accepted without override.</li><li>Claim on a policy endorsed after the loss date: the version in force on the loss date applies.</li><li>Underinsured property claim: check the average clause in the calculation.</li><li>Catastrophe Code on FNOL for a cat event: needed for reinsurance recoveries.</li><li>Cancellation with a paid claim: refund normally zero.</li></ul>
     <h3>Test data checklist</h3><ul class="clean"><li>Products in Claim Matrix V1 and V2.</li><li>A claim-mode product (motor / property) and a sub-claim-mode product (health).</li><li>Users with different authority levels and with / without reserve permission.</li><li>A manager with subordinates, and a peer user.</li><li>Policies from each docking source, plus a manual policy.</li><li>A payee with Direct Credit bank details and one with Cash.</li><li>A third party in Party Management (garage, hospital).</li></ul>`;
   } else {
     h=`<div class="grid g2">${DEVCHECK.map(c=>`<div class="card"><h3>${esc(c[0])}</h3><ol class="steps">${c[1].map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div>`).join('')}
@@ -2169,22 +3140,91 @@ function renderToolkit(){
   if(curTk==='qa'){$('#tFilter').addEventListener('input',()=>{const q=$('#tFilter').value.toLowerCase();$$('#tBody tr').forEach(r=>{r.hidden=!r.dataset.t.includes(q)})})}
 }
 
-/* ---------- quiz ---------- */
-function renderQuiz(){
-  const ans=store.get('quiz',{});
-  $('#quizBody').innerHTML=QUIZ.map((q,i)=>`<div class="q"><b>${i+1}. ${esc(q.q)}</b><div class="opts">${q.o.map((o,j)=>{const a=ans[i];let c='';if(a!=null){if(j===q.a)c='right';else if(j===a)c='wrong'}return`<button type="button" data-q="${i}" data-o="${j}" class="${c}" ${a!=null?'disabled':''}>${esc(o)}</button>`}).join('')}</div>${ans[i]!=null?`<p class="why">${ans[i]===q.a?'<b class="ok">Correct.</b> ':'<b class="bad">Not quite.</b> '}${esc(q.w)}</p>`:''}</div>`).join('');
-  const done=Object.keys(ans).length,right=Object.entries(ans).filter(([i,a])=>QUIZ[i].a===a).length;
-  $('#quizScore').textContent=done?`${right} of ${done} correct · ${QUIZ.length-done} left`:`${QUIZ.length} questions`;
-  $$('#quizBody button').forEach(b=>b.addEventListener('click',()=>{const a=store.get('quiz',{});a[b.dataset.q]=+b.dataset.o;store.set('quiz',a);renderQuiz()}));
+/* ---------- checkpoints ---------- */
+const CPMOD=Object.keys(CHECK);
+function cpScore(mod){const a=store.get('cp',{});const qs=CHECK[mod];const done=qs.filter(q=>a[q.id]!=null);return{done:done.length,total:qs.length,right:done.filter(q=>a[q.id]===q.a).length}}
+function renderCheckpoints(){
+  CPMOD.forEach(mod=>{const v=$('#v-'+mod);if(!v)return;let box=$('.cp-block',v);
+    if(!box){box=document.createElement('section');box.className='block cp-block';const md=$('.mark-done',v);if(md)v.insertBefore(box,md);else v.appendChild(box)}
+    const a=store.get('cp',{}),sc=cpScore(mod);
+    box.innerHTML=`<h2>Checkpoint</h2><p class="muted">${sc.total} questions on this module. Your answers count towards the tracker. <b>${sc.done?`${sc.right} of ${sc.done} correct`:'Not started'}</b>${sc.done===sc.total?` · ${pct(sc.right/sc.total)}`:''}</p>
+     <div style="display:flex;flex-direction:column;gap:10px">${CHECK[mod].map((q,i)=>`<div class="q"><span class="eyebrow">${q.id.toUpperCase()} · objective ${q.obj}</span><b>${i+1}. ${esc(q.q)}</b><div class="opts">${q.o.map((o,j)=>{const x=a[q.id];let c='';if(x!=null){if(j===q.a)c='right';else if(j===x)c='wrong'}return`<button type="button" data-q="${q.id}" data-o="${j}" class="${c}" ${x!=null?'disabled':''}>${esc(o)}</button>`}).join('')}</div>${a[q.id]!=null?`<p class="why">${a[q.id]===q.a?'<b class="ok">Correct.</b> ':'<b class="bad">Not quite.</b> '}${esc(q.w)}</p>`:''}</div>`).join('')}</div>
+     <div class="btnrow"><button type="button" class="btn ghost" data-cpreset="${mod}">Retry this checkpoint</button><a class="btn ghost" href="#tracker" style="text-decoration:none">Open tracker</a></div>`;
+    $$('button[data-q]',box).forEach(b=>b.addEventListener('click',()=>{const s=store.get('cp',{});s[b.dataset.q]=+b.dataset.o;store.set('cp',s);renderCheckpoints();renderRail()}));
+    $('[data-cpreset]',box).addEventListener('click',()=>{const s=store.get('cp',{});CHECK[mod].forEach(q=>delete s[q.id]);store.set('cp',s);renderCheckpoints();renderRail()});
+  });
 }
 
+/* ---------- final assessment ---------- */
+function renderAssess(){
+  const cur=store.get('as_cur',{}),last=store.get('as_last',null);const show=last&&last.closed;
+  $('#asBody').innerHTML=FINAL.map((q,i)=>{const pick=show?last.ans[q.id]:cur[q.id];return`<div class="q"><span class="eyebrow">${q.id} · objective ${q.obj}</span><b>${i+1}. ${esc(q.q)}</b><div class="opts">${q.o.map((o,j)=>{let c='';if(show){if(j===q.a)c='right';else if(j===pick)c='wrong'}else if(j===pick)c='picked';return`<button type="button" data-f="${q.id}" data-o="${j}" class="${c}" ${show?'disabled':''} aria-pressed="${j===pick}">${esc(o)}</button>`}).join('')}</div>${show?`<p class="why">${pick===q.a?'<b class="ok">Correct.</b> ':pick==null?'<b class="bad">Not answered.</b> ':'<b class="bad">Wrong.</b> '}${esc(q.w)}</p>`:''}</div>`}).join('');
+  $$('#asBody button[data-f]').forEach(b=>b.addEventListener('click',()=>{const c=store.get('as_cur',{});c[b.dataset.f]=+b.dataset.o;store.set('as_cur',c);renderAssess()}));
+  const n=Object.keys(cur).length;$('#asSubmit').hidden=!!show;$('#asRetry').hidden=!show;
+  if(show){const byMod={};FINAL.forEach(q=>{const m=OBJ.find(o=>o[0]===q.obj)[1];byMod[m]=byMod[m]||[0,0];byMod[m][1]++;if(last.ans[q.id]===q.a)byMod[m][0]++});
+    $('#asResult').innerHTML=`<div class="card" style="border:2px solid ${last.pass?'var(--in)':'var(--cancel)'}"><span class="eyebrow">Attempt ${store.get('as_hist',[]).length} · ${new Date(last.t).toLocaleString()}</span><div class="big ${last.pass?'ok':'bad'}">${last.score} / ${FINAL.length} · ${pct(last.score/FINAL.length)} · ${last.pass?'Pass':'Not yet passed'}</div><p>Pass mark 70% (14 of 20). ${last.pass?'You can explain the claim process end to end and link it to policy, billing and reinsurance.':'Review the modules marked below, retry their checkpoints, then start a new attempt.'}</p><div class="tbl"><table><thead><tr><th>Module</th><th class="num">Correct</th></tr></thead><tbody>${Object.entries(byMod).map(([m,v])=>`<tr><td><a href="#${m}">${esc(LEVELS.find(l=>l.id===m).name)}</a></td><td class="num ${v[0]<v[1]?'bad':'ok'}">${v[0]} / ${v[1]}</td></tr>`).join('')}</tbody></table></div></div>`}
+  else $('#asResult').innerHTML=`<p class="small muted">${n} of ${FINAL.length} answered.${n<FINAL.length?' Unanswered questions count as wrong.':''}</p>`;
+}
+function submitAssess(){
+  const cur=store.get('as_cur',{});const score=FINAL.filter(q=>cur[q.id]===q.a).length;const rec={t:Date.now(),ans:cur,score,pass:score/FINAL.length>=0.7,closed:true};
+  const h=store.get('as_hist',[]);h.push({t:rec.t,score,pass:rec.pass,ans:cur});store.set('as_hist',h);store.set('as_last',rec);store.set('as_cur',{});renderAssess();renderRail();window.scrollTo({top:0});
+}
+
+/* ---------- tracker ---------- */
+const MODS_T=['insure','industry','basics','lifecycle','flows','screens','calc','integration','config','toolkit'];
+function modCoverage(id){const s=seenGet();const v=(s.view||{})[id]?1:0;
+  if(id==='flows')return(v+Object.keys(s.fl||{}).length/FLOWS.length)/2;
+  if(id==='industry')return(v+Object.keys(s.ip||{}).length/IFLOWS.length)/2;
+  if(id==='screens')return(v+Object.keys(s.scr||{}).length/SCREENS.length)/2;
+  return v}
+function objStatus(o){const cp=store.get('cp',{}),last=store.get('as_last',null);const qs=[...Object.values(CHECK).flat().filter(q=>q.obj===o[0]),...FINAL.filter(q=>q.obj===o[0])];
+  const res=qs.map(q=>{const isF=q.id[0]==='F';const a=isF?(last&&last.ans[q.id]):cp[q.id];return{q,ans:a!=null&&!(isF&&!last),ok:a===q.a}});
+  const ok=res.filter(r=>r.ok).length,ans=res.filter(r=>r.ans).length;return{qs:res,ok,ans,status:ok===res.length?'proven':ok>0?'partial':'open'}}
+function trackerData(){
+  const done=store.get('done',{}),hist=store.get('as_hist',[]);const best=hist.reduce((m,h)=>Math.max(m,h.score),-1);
+  const mods=MODS_T.map(id=>{const l=LEVELS.find(x=>x.id===id);const cov=modCoverage(id);const sc=CHECK[id]?cpScore(id):null;const cpPct=sc&&sc.done?sc.right/sc.total:null;
+    const status=(done[id]||(cov>=1&&(!sc||cpPct>=0.75)))?'Completed':(cov>0||(sc&&sc.done))?'In progress':'Not started';return{id,l,cov,sc,cpPct,status,opened:!!(seenGet().view||{})[id]}});
+  const cpAll=Object.keys(CHECK).map(cpScore);const cpRight=cpAll.reduce((a,b)=>a+b.right,0),cpTot=cpAll.reduce((a,b)=>a+b.total,0);
+  const objs=OBJ.map(o=>({o,st:objStatus(o)}));const proven=objs.filter(x=>x.st.status==='proven').length;
+  const covAvg=mods.reduce((a,m)=>a+m.cov,0)/mods.length;
+  const overall=(covAvg*0.4+(cpRight/cpTot)*0.3+(best>=0?best/FINAL.length:0)*0.3);
+  return{mods,cpRight,cpTot,objs,proven,best,hist,overall,covAvg}}
+function renderTracker(){
+  const d=trackerData();
+  $('#trkTiles').innerHTML=[[pct(d.overall),'Overall progress','40% content opened, 30% checkpoints, 30% best final score'],[`${d.mods.filter(m=>m.status==='Completed').length} / ${d.mods.length}`,'Modules completed','Completed = all content opened and checkpoint ≥ 75%, or marked done'],[`${d.cpRight} / ${d.cpTot}`,'Checkpoint answers correct',`${pct(d.cpRight/d.cpTot)} of all checkpoint questions`],[d.best>=0?`${d.best} / ${FINAL.length}`:'Not taken','Best final score',d.best>=0?`${d.hist.length} attempt(s); pass mark 70%`:'Take it after the modules'],[`${d.proven} / ${OBJ.length}`,'Objectives proven','Every linked question answered correctly']]
+   .map(t=>`<div class="card"><span class="eyebrow">${t[1]}</span><div class="big">${t[0]}</div><p class="small muted">${t[2]}</p></div>`).join('');
+  $('#trkBody').innerHTML=d.mods.map(m=>`<tr><td><a href="#${m.id}"><b>${m.l.n} · ${esc(m.l.name)}</b></a></td><td>${m.opened?'<span class="ok">Yes</span>':'<span class="muted">No</span>'}</td><td><div class="bar"><i style="width:${Math.round(m.cov*100)}%"></i></div><span class="small">${pct(m.cov)}</span></td><td>${m.sc?(m.sc.done?`${m.sc.right} / ${m.sc.total}`:'<span class="muted">Not started</span>'):'<span class="muted">—</span>'}</td><td><span class="tag ${m.status==='Completed'?'aux':m.status==='In progress'?'appr':''}">${m.status}</span></td></tr>`).join('');
+  const f=$('#trkFilter').value;
+  $('#trcBody').innerHTML=d.objs.filter(x=>!f||x.st.status===f).map(({o,st})=>{const l=LEVELS.find(x=>x.id===o[1]);return`<tr><td class="mono small">${o[0]}</td><td>${esc(o[2])}</td><td><a href="#${o[1]}">${esc(l.name)}</a></td><td class="small">${st.qs.map(r=>`<span class="tag ${r.ok?'aux':r.ans?'end':''}" title="${esc(r.q.q)}">${r.q.id.toUpperCase()}</span>`).join(' ')}</td><td><span class="tag ${st.status==='proven'?'aux':st.status==='partial'?'appr':''}">${st.status==='proven'?'Proven':st.status==='partial'?`Partly (${st.ok}/${st.qs.length})`:st.ans?`Wrong (0/${st.qs.length})`:'Not tested'}</span></td></tr>`}).join('');
+  $('#trkReport').textContent=reportText(d);
+}
+function reportText(d){
+  const name=store.get('name','');const L=[];L.push('InsureMO Claims Learning Guide — progress report');L.push(`Learner: ${name||'(not set)'}   Date: ${new Date().toLocaleString()}`);L.push(`Overall progress: ${pct(d.overall)}   Objectives proven: ${d.proven}/${OBJ.length}`);
+  L.push(`Final assessment: ${d.best>=0?`best ${d.best}/${FINAL.length} (${pct(d.best/FINAL.length)}) ${d.best/FINAL.length>=0.7?'PASS':'not yet passed'}, ${d.hist.length} attempt(s)`:'not taken'}`);L.push('');L.push('Modules:');
+  d.mods.forEach(m=>L.push(`- ${m.l.n} ${m.l.name}: ${m.status}; content ${pct(m.cov)}; checkpoint ${m.sc?(m.sc.done?`${m.sc.right}/${m.sc.total}`:'not started'):'n/a'}`));
+  L.push('');L.push('Objectives:');d.objs.forEach(({o,st})=>L.push(`- ${o[0]} ${o[2]}: ${st.status==='proven'?'proven':st.status==='partial'?`partly ${st.ok}/${st.qs.length}`:'open'}`));
+  if(d.hist.length){L.push('');L.push('Final assessment attempts:');d.hist.forEach((h,i)=>L.push(`- #${i+1} ${new Date(h.t).toLocaleString()}: ${h.score}/${FINAL.length} ${h.pass?'PASS':'not passed'}`))}
+  return L.join('\n');
+}
+let resetArm=0;
+function trackerInit(){
+  $('#lrnName').value=store.get('name','');$('#lrnName').addEventListener('input',e=>{store.set('name',e.target.value);$('#trkReport').textContent=reportText(trackerData())});
+  $('#trkFilter').addEventListener('change',renderTracker);
+  $('#trkCopy').addEventListener('click',()=>{const t=$('#trkReport').textContent;const ok=()=>{$('#trkMsg').textContent='Report copied. Paste it into an email or chat.'};const fb=()=>{const r=document.createRange();r.selectNodeContents($('#trkReport'));const s=getSelection();s.removeAllRanges();s.addRange(r);$('#trkMsg').textContent='Copy is blocked here. The report is selected: press Ctrl+C (or Cmd+C).'};try{navigator.clipboard.writeText(t).then(ok,fb)}catch(e){fb()}});
+  $('#trkReset').addEventListener('click',()=>{if(!resetArm){resetArm=1;$('#trkReset').textContent='Click again to erase all progress';setTimeout(()=>{resetArm=0;$('#trkReset').textContent='Reset all progress'},4000);return}
+    ['done','cp','seen','as_cur','as_last','as_hist'].forEach(k=>store.set(k,k==='as_hist'?[]:k==='as_last'?null:{}));resetArm=0;$('#trkReset').textContent='Reset all progress';$('#trkMsg').textContent='All progress erased.';renderCheckpoints();renderAssess();renderRail();renderTracker()});
+}
+
+/* ---------- lightbox ---------- */
+function openShot(n,cap){const lb=$('#lightbox');$('#lbImg').src=IMG(n);$('#lbImg').alt=cap;$('#lbCap').textContent=cap;lb.hidden=false;$('#lbClose').focus()}
+function closeShot(){$('#lightbox').hidden=true}
 
 /* ---------- role lens ---------- */
 const ROLE_NAME={ba:'Business analyst',qa:'Tester',dev:'Developer'};
-const ROLE_LEVELS={ba:['basics','lifecycle','flows','integration','config','toolkit'],qa:['basics','lifecycle','flows','screens','calc','toolkit'],dev:['basics','lifecycle','flows','calc','integration','config','toolkit']};
+const ROLE_LEVELS={ba:['insure','industry','basics','lifecycle','flows','integration','config','toolkit'],qa:['insure','industry','basics','lifecycle','flows','screens','calc','toolkit'],dev:['insure','industry','basics','lifecycle','flows','calc','integration','config','toolkit']};
 const BLOCK_ROLES={'Two kinds of task':'ba qa','Menu map':'ba qa','Common screen parts':'qa dev','Task router simulator':'qa dev','Section reuse matrix':'qa dev',
  'Incremental vs full-scale: try it':'qa dev','Calculation screens':'qa dev','Effects of the new tool on other screens':'qa dev','Reserve close validation checker':'qa dev','Reserve mechanics':'ba qa',
- 'End-to-end journeys across modules':'ba qa','Code lists seen on screens':'qa dev','APIs':'dev','Configure or build?':'ba dev'};
+ 'End-to-end journeys across modules':'ba qa','Code lists seen on screens':'qa dev','APIs':'dev','Configure or build?':'ba dev','Key metrics calculator':'ba qa','Reinsurance recovery calculator':'ba dev'};
 const curRole=()=>document.body.dataset.role||'';
 function applyLens(){
   const r=curRole();
@@ -2197,38 +3237,46 @@ function applyLens(){
   $$('#railNav a').forEach(a=>{const v=a.dataset.v;a.classList.toggle('off-path',!!(r&&LEVELS.find(l=>l.id===v&&l.learn)&&!ROLE_LEVELS[r].includes(v)))});
   if(ROLE_NAME[r]&&curTk!==r){curTk=r;renderToolkit()}
 }
+
 /* ---------- nav, progress, role, routing ---------- */
 function renderRail(){
   const done=store.get('done',{});let h='',g='';
-  LEVELS.forEach(l=>{if(l.grp!==g){h+=`<div class="grp">${l.grp}</div>`;g=l.grp}h+=`<a href="#${l.id}" data-v="${l.id}"><span class="n">${l.n}</span><span>${esc(l.name)}</span>${l.learn?`<span class="done ${done[l.id]?'on':''}" title="${done[l.id]?'Completed':'Not completed'}"></span>`:'<span></span>'}</a>`});
-  $('#railNav').innerHTML=h;const total=LEVELS.filter(l=>l.learn).length,n=LEVELS.filter(l=>l.learn&&done[l.id]).length;$('#progBar').style.width=(n/total*100)+'%';
+  LEVELS.forEach(l=>{if(l.grp!==g){h+=`<div class="grp">${l.grp}</div>`;g=l.grp}const sc=CHECK[l.id]?cpScore(l.id):null;h+=`<a href="#${l.id}" data-v="${l.id}"><span class="n">${l.n}</span><span>${esc(l.name)}${sc&&sc.done?` <span class="small muted">${sc.right}/${sc.total}</span>`:''}</span>${l.learn?`<span class="done ${done[l.id]?'on':''}" title="${done[l.id]?'Completed':'Not completed'}"></span>`:'<span></span>'}</a>`});
+  $('#railNav').innerHTML=h;const d=trackerData();$('#progBar').style.width=Math.round(d.overall*100)+'%';$('#progBar').parentNode.title=`Overall progress ${pct(d.overall)}`;
   $$('[data-done]').forEach(c=>{c.checked=!!done[c.dataset.done]});
   const role=document.body.dataset.role;$('#rolePath').innerHTML=role&&PATHS[role]?`<b>${PATHS[role].t} path</b><ol style="margin:6px 0 0;padding-left:18px">${PATHS[role].steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>`:'<span class="muted">Choose a lens at the top to see your learning path here.</span>';
-  markCurrent();
+  markCurrent();if(curView==='tracker')renderTracker();
 }
 function setRole(r){if(r==='all')delete document.body.dataset.role;else document.body.dataset.role=r;store.set('role',r);$$('.roles .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.role===r));renderRail();applyLens()}
 let curView='start';
 function markCurrent(){$$('#railNav a').forEach(a=>a.setAttribute('aria-current',a.dataset.v===curView?'page':'false'))}
 function route(){
   let h=decodeURIComponent((location.hash||'#start').slice(1));let v=h;
-  if(h.startsWith('fl-')){const id=h.slice(3);if(FL(id)){if(curFl!==id)curPath=0;curFl=id}v='flows'}
+  if(h.startsWith('fl-')){const id=h.slice(3);if(FL(id)){if(EXP.fl.cur!==id)EXP.fl.path=0;EXP.fl.cur=id}v='flows'}
+  else if(h.startsWith('ip-')){const id=h.slice(3);if(IFL(id)){if(EXP.ip.cur!==id)EXP.ip.path=0;EXP.ip.cur=id}v='industry'}
   else if(h.startsWith('scr-')){const id=h.slice(4);if(SCR(id))curScr=id;v='screens'}
   if(!$('#v-'+v))v='start';
-  const changed=v!==curView||h.startsWith('fl-')||h.startsWith('scr-');curView=v;
-  $$('.view').forEach(s=>{s.hidden=s.id!=='v-'+v});
-  if(v==='flows'){renderFlowList();renderFlow()}
+  const changed=v!==curView||/^(fl|ip|scr)-/.test(h);curView=v;
+  $$('.view').forEach(s=>{s.hidden=s.id!=='v-'+v});seen('view',v);
+  if(v==='flows'){renderExpList('fl');renderExp('fl')}
+  if(v==='industry'){renderExpList('ip');renderExp('ip');if(h.startsWith('ip-')){const t=$('#ipDetail');if(t){setTimeout(()=>t.scrollIntoView({block:'start'}),0)}}}
   if(v==='screens')renderScreens();
-  markCurrent();applyLens();if(changed)window.scrollTo({top:0});
+  if(v==='integration'){const j=$('#jDetail .swim');if(j&&Math.abs(j.clientWidth-(j._w||0))>40)drawSwim(j)}
+  if(v==='tracker')renderTracker();
+  if(v==='assess')renderAssess();
+  markCurrent();applyLens();if(changed&&!h.startsWith('ip-'))window.scrollTo({top:0});
 }
 
 /* ---------- search ---------- */
 let INDEX=[];
 function buildIndex(){
   INDEX=[];
-  FLOWS.forEach(f=>INDEX.push({k:'Flow',t:f.id+' · '+f.name,x:(f.name+' '+f.desc+' '+f.rules.join(' ')+' '+f.paths.map(p=>p.n+' '+p.steps.map(x=>[x.t,x.m,x.s,x.f,x.r].join(' ')).join(' ')).join(' ')).toLowerCase(),h:'fl-'+f.id}));
+  FLOWS.forEach(f=>INDEX.push({k:'Claims flow',t:f.id+' · '+f.name,x:(f.name+' '+f.desc+' '+f.rules.join(' ')+' '+(FLOWEX[f.id]||[]).join(' ')+' '+f.paths.map(p=>p.n+' '+p.steps.map(x=>[x.t,x.m,x.s,x.f,x.r].join(' ')).join(' ')).join(' ')).toLowerCase(),h:'fl-'+f.id}));
+  IFLOWS.forEach(f=>INDEX.push({k:'Industry process',t:f.id+' · '+f.name,x:(f.name+' '+f.desc+' '+f.ex.b+' '+f.biz.join(' ')+' '+f.terms.join(' ')+' '+f.paths.map(p=>p.n+' '+p.steps.map(x=>[x.t,x.d,x.f].join(' ')).join(' ')).join(' ')).toLowerCase(),h:'ip-'+f.id}));
   SCREENS.forEach(s=>INDEX.push({k:'Screen',t:s.g+' > '+s.n,x:(s.n+' '+s.menu+' '+s.p+' '+s.sec.flat().join(' ')+' '+s.btn.flat().join(' ')+' '+s.fields.flat().join(' ')+' '+s.rules.join(' ')+' '+s.img.map(i=>i[1]).join(' ')).toLowerCase(),h:'scr-'+s.id}));
+  PARTIES.forEach(p=>INDEX.push({k:'Party',t:p.n,x:Object.values(p).join(' ').toLowerCase(),h:'insure'}));
   FAQ.forEach((f,i)=>INDEX.push({k:'Q&A',t:'Q'+(i+1)+' · '+f[0],x:(f[0]+' '+f[1]).toLowerCase(),h:'faq'}));
-  GLOSS.forEach(g=>INDEX.push({k:'Glossary',t:g[0],x:(g[0]+' '+g[1]).toLowerCase(),h:'glossary'}));
+  ALLGLOSS.forEach(g=>INDEX.push({k:'Glossary · '+g[2],t:g[0],x:(g[0]+' '+g[1]).toLowerCase(),h:'gl:'+g[0]}));
   CONFIG.forEach(c=>INDEX.push({k:'Config',t:c[0],x:c.join(' ').toLowerCase(),h:'config'}));
   GAPS.forEach(g=>INDEX.push({k:'Source gap',t:g[1],x:g.join(' ').toLowerCase(),h:'gaps'}));
   Object.values(MODS).forEach(m=>INDEX.push({k:'Module',t:m.n,x:(m.n+' '+m.gets.join(' ')+' '+m.sends.join(' ')+' '+m.extra.join(' ')).toLowerCase(),h:'integration'}));
@@ -2236,33 +3284,41 @@ function buildIndex(){
 }
 function doSearch(){
   const q=$('#q').value.trim().toLowerCase(),box=$('#results');if(q.length<2){box.hidden=true;return}
-  const terms=q.split(/\s+/);const hits=INDEX.map(it=>({it,sc:terms.every(t=>it.x.includes(t)||it.t.toLowerCase().includes(t))?(it.t.toLowerCase().includes(q)?3:1):0})).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc).slice(0,14);
-  box.innerHTML=hits.length?hits.map(r=>`<button type="button" data-h="${r.it.h}"><span class="rk">${r.it.k}</span><br>${esc(r.it.t)}</button>`).join(''):'<p class="small muted" style="padding:10px 12px">No match. Try a task name like Settlement, or a field like Ex-Gratia.</p>';
-  box.hidden=false;$$('button',box).forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.h;box.hidden=true;$('#q').value=''}));
+  const terms=q.split(/\s+/);const hits=INDEX.map(it=>({it,sc:terms.every(t=>it.x.includes(t)||it.t.toLowerCase().includes(t))?(it.t.toLowerCase()===q?5:it.t.toLowerCase().includes(q)?3:1):0})).filter(r=>r.sc).sort((a,b)=>b.sc-a.sc).slice(0,16);
+  box.innerHTML=hits.length?hits.map(r=>`<button type="button" data-h="${esc(r.it.h)}"><span class="rk">${esc(r.it.k)}</span><br>${esc(r.it.t)}</button>`).join(''):'<p class="small muted" style="padding:10px 12px">No match. Try a task name like Settlement, or a term like subrogation.</p>';
+  box.hidden=false;$$('button',box).forEach(b=>b.addEventListener('click',()=>{const h=b.dataset.h;box.hidden=true;$('#q').value='';if(h.startsWith('gl:'))goTerm(h.slice(3));else location.hash=h}));
 }
 
 /* ---------- init ---------- */
 function init(){
-  renderStatic();renderStates();renderHub();renderJourneys();renderToolkit();renderQuiz();buildIndex();
+  renderStatic();renderInsure();renderIndustry();renderStates();renderHub();renderToolkit();buildIndex();trackerInit();
   $('#simTask').innerHTML=Object.keys(SIM).map(k=>`<option>${esc(k)}</option>`).join('');$('#simTask').addEventListener('change',renderSimInputs);renderSimInputs();
   ['dkPa','dkMan','dkIs'].forEach(id=>$('#'+id).addEventListener('change',runDock));runDock();
   $('#ciRun').addEventListener('click',runCI);$('#ciTotals').addEventListener('keydown',e=>{if(e.key==='Enter')runCI()});runCI();
   ['rvTool','rvPaid','rvSettled','rvCalc'].forEach(id=>$('#'+id).addEventListener('input',runRV));runRV();
+  $('#glFilter').addEventListener('input',renderGlossary);$('#glCat').addEventListener('change',renderGlossary);
+  document.addEventListener('click',e=>{const t=e.target.closest('.termlink');if(t){goTerm(t.dataset.term);return}const s=e.target.closest('.shot-open');if(s){openShot(s.dataset.n,s.dataset.cap)}});
+  $('#lbClose').addEventListener('click',closeShot);$('#lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeShot()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#lightbox').hidden)closeShot()});
+  renderCheckpoints();renderAssess();
+  $('#asSubmit').addEventListener('click',submitAssess);
+  $('#asRetry').addEventListener('click',()=>{const l=store.get('as_last',null);if(l){l.closed=false;store.set('as_last',l)}store.set('as_cur',{});renderAssess();window.scrollTo({top:0})});
   setRole(store.get('role','all'));
   $$('.roles .chip').forEach(c=>c.addEventListener('click',()=>setRole(c.dataset.role)));
   $$('[data-done]').forEach(c=>c.addEventListener('change',()=>{const d=store.get('done',{});d[c.dataset.done]=c.checked;store.set('done',d);renderRail()}));
   $('#scSelect').addEventListener('change',e=>{location.hash='fl-'+e.target.value});
+  $('#ipSelect').addEventListener('change',e=>{location.hash='ip-'+e.target.value});
   $$('#tkTabs button').forEach(b=>b.addEventListener('click',()=>{curTk=b.dataset.tk;renderToolkit()}));
-  $('#quizReset').addEventListener('click',()=>{store.set('quiz',{});renderQuiz()});
   $('#q').addEventListener('input',doSearch);
   $('#q').addEventListener('keydown',e=>{if(e.key==='Escape'){$('#results').hidden=true}if(e.key==='Enter'){const b=$('#results button');if(b)b.click()}});
   document.addEventListener('click',e=>{if(!e.target.closest('.search'))$('#results').hidden=true});
   $('#themeBtn').addEventListener('click',()=>{const r=document.documentElement;const cur=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.theme=cur==='dark'?'light':'dark';store.set('theme',r.dataset.theme)});
   const th=store.get('theme',null);if(th)document.documentElement.dataset.theme=th;
+  const wide=()=>{document.body.classList.toggle('wide',!!store.get('wide',false));$('#wideBtn').setAttribute('aria-pressed',!!store.get('wide',false));$$('[data-swim]').forEach(b=>{if(b.offsetParent)drawSwim(b)})};
+  $('#wideBtn').addEventListener('click',()=>{store.set('wide',!store.get('wide',false));wide()});wide();
   window.addEventListener('hashchange',route);route();
 }
 init();
-
 
 </script>
 </body></html>

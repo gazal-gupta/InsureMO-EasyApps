@@ -31,25 +31,41 @@ Progress, quiz answers and the role lens are saved only in the viewer's browser 
 
 ## Claims Learning Guide
 
-`claims-learning-guide/index.html` is a single-page, interactive learning guide for the InsureMO **Easy Claim** module. Open it in any browser; keep the `img/` folder next to it (it holds all 136 screenshots from the source guide). It needs no build and no server. Fonts load from Google Fonts when online.
+Two ways to use it:
 
-**Audience:** business analysts, testers and developers.
+- `claims-learning-guide/InsureMO-Claims-Learning-Guide.html` is a **single file with all 136 screenshots embedded** (about 6 MB). Download it and open it in any browser; it works offline. Links to the BCP guide open its shared web page.
+- `claims-learning-guide/index.html` is the editable source. It loads screenshots from the `img/` folder next to it and links to the BCP guide in this repo.
+
+After editing `index.html`, rebuild the single file:
+
+```bash
+python3 claims-learning-guide/build_standalone.py claims-learning-guide claims-learning-guide/InsureMO-Claims-Learning-Guide.html /tmp/claims-guide-artifact.html
+```
+
+**Audience:** business analysts, testers and developers learning insurance and InsureMO Easy Claim.
 
 **Structure (basic to advanced)**
 
 | Level | Content |
 |---|---|
 | 0 Start here | Learning paths by role, source labels, how to read the swimlanes |
-| 1 Foundations | What a claim is, the seven main tasks, claim vs sub-claim mode, reserves, auxiliary tasks, the authority rule, menu map, common screen parts and icons |
-| 2 Lifecycle and task engine | Claim process flowchart, routing rules for every Submit, task router simulator, status models (claim, reserve, task, approval chain), section reuse matrix |
-| 3 Process flows | 24 swimlane flows with alternate paths (normal, above authority, rejected, cancel, reopen and others), business rules, screens and role notes |
-| 4 Screens | 41 screens: menu, how to open, sections, buttons and results, key fields, rules and the original screenshots |
-| 5 Calculation and reserve logic | GIMO rating vs new calculation tool, Claim Matrix V1 / V2, incremental vs full-scale calculator, reserve close validation checker |
-| 6 Cross-module | Easy PA policy docking (with simulator), Claims-to-BCP money map, Reinsurance (domain context), iDocs and notification, end-to-end journeys |
-| 7 Configuration and APIs | Parameters, authority, workflow, Claim Matrix, code lists seen on screens, APIs, configure-or-build table |
-| 8 Role toolkits | BA workshop questions and fit-gap, test matrix generated from every flow path plus boundary and validation tests, developer checklists |
-| Reference | All 17 source Q&As (linked to flows and screens), source gaps, knowledge check, glossary |
+| 1 Insurance basics | The parties (insurer, client, insured, agent, broker, MGA, TPA, surveyor, reinsurer, regulator) with a clickable map; how insurers make money; the six principles; policy anatomy; deductible, co-pay, average and depreciation; lines of business; value chain mapped to InsureMO modules; metric and claim payment calculators |
+| 2 Policy lifecycle | 10 industry processes with every actor and step explained: broker submission to quote, bind and issue; online motor sale; endorsement; renewal; cancellation (pro-rata, short-rate, flat); lapse and reinstatement; billing; commission; claims (motor, health cashless, third-party); reinsurance. Real examples, InsureMO mapping, cancellation and reinsurance calculators |
+| 3 Claims foundations | The seven Easy Claim tasks, claim vs sub-claim mode, reserves, auxiliary tasks, the authority rule, menu map, icons |
+| 4 Lifecycle and task engine | Claim process flowchart, routing rules, task router simulator, status models, section reuse matrix |
+| 5 Claims process flows | 24 swimlane flows with alternate paths, step-by-step tables, a real example and industry practice for each |
+| 6 Screens | 41 screens with sections, buttons, fields, rules and all source screenshots (click to enlarge) |
+| 7 Calculation and reserve logic | GIMO rating vs new calculation tool, Claim Matrix V1 / V2, full-scale calculator, reserve close checker |
+| 8 Cross-module | Easy PA policy docking, Claims-to-BCP money map, Reinsurance (domain context), journeys |
+| 9 Configuration and APIs | Parameters, authority, workflow, code lists, APIs, configure-or-build |
+| 10 Role toolkits | BA questions and fit-gap, test matrix, boundary and validation tests, developer checklists |
+| Reference | 17 source Q&As, source gaps, insurance glossary (226 terms in 14 categories) |
+| Progress | Learning tracker (content covered, checkpoint scores, objective-to-question traceability, copyable report) and a 20-question final assessment (pass mark 70%) |
 
-**Source:** the InsureMO Easy Claim Function User Guide. Labels in the guide show where each statement comes from: *Source*, *Screenshot* (visible on a source screenshot only), *BCP guide* (from the BCP module guide) and *Domain context* (general insurance practice). The Claims source does not describe Reinsurance at all; treat every Reinsurance item as domain context. The "Source gaps" page lists errors and missing rules to resolve with the platform team.
+Every module from 1 to 9 ends with a 4-question checkpoint. Each question is linked to one of 24 learning objectives, so the tracker shows which objectives are proven.
 
-The two guides link to each other: money steps in the Claims guide open the matching BCP scenario.
+Swimlanes wrap to the page width instead of scrolling sideways; "Wide view" hides the side menu for more room.
+
+**Source:** the InsureMO Easy Claim Function User Guide. Labels show where each statement comes from: *Source*, *Screenshot*, *BCP guide* or *Domain context* (general insurance practice; confirm with your project). The Claims source does not describe Reinsurance. Industry facts cited (for example India's Section 64VB cash-before-cover rule and IRDAI health cashless timelines) should be re-checked against current regulation before use in client deliverables.
+
+Progress, answers and preferences are stored only in the learner's browser.
