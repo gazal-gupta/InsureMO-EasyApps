@@ -56,12 +56,35 @@
   <p class="muted" style="max-width:80ch">A claim is one stage in the life of a policy. Click a stage to see what happens and which InsureMO module handles it.</p>
   <div id="policyLife"></div><div id="plDetail" class="callout">Click a stage in the policy lifecycle.</div>
 </section>
+<section class="block"><h2>Industry processes around the policy</h2>
+  <p class="muted" style="max-width:84ch"><span class="tag ind">Insurance knowledge</span> Ten everyday insurance processes, each drawn as a swimlane with the actors, a real example, business points and the InsureMO modules involved. They give the context a claims learner needs: how the policy that a claim is checked against was sold, changed, billed and reinsured.</p>
+  <div class="taskgrid" id="indPicker" role="group" aria-label="Choose an industry process"></div>
+  <div id="indBody" class="view" style="gap:16px"></div>
+  <h3>Try it: cancellation refund calculator</h3>
+  <p class="small muted">Compare the three ways an insurer returns premium when a policy ends early.</p>
+  <div class="card"><div class="calc">
+    <label>Annual premium<input id="cxPrem" type="number" value="12000"></label>
+    <label>Days the policy was in force<input id="cxDays" type="number" value="90"></label>
+    <label>Policy term (days)<input id="cxTerm" type="number" value="365"></label>
+    <label>Claim already paid on this policy?<select id="cxClaim"><option value="no">No</option><option value="yes">Yes</option></select></label>
+  </div><div id="cxOut"></div></div>
+</section>
 <section class="block"><h2>Why claims drive insurer profit</h2>
   <div class="grid g2">
     <div class="card"><h4>Loss ratio <span class="tag ind">Insurance knowledge</span></h4><p class="small"><b>Loss ratio = incurred claims ÷ earned premium.</b> Incurred claims = paid claims + change in outstanding reserves. In many non-life lines the loss ratio is between 55% and 80%, so claims are the largest cost of an insurer.</p></div>
     <div class="card"><h4>Combined ratio <span class="tag ind">Insurance knowledge</span></h4><p class="small"><b>Combined ratio = loss ratio + expense ratio.</b> Below 100% means the insurer makes an underwriting profit. Above 100% means it loses money on underwriting and depends on investment income.</p></div>
   </div>
   <div class="example"><b>Worked example</b>A motor portfolio earns premium of 100 million. Paid claims in the year are 52 million. Outstanding reserves rose from 20 million to 26 million. Incurred claims = 52 + (26 − 20) = 58 million. Loss ratio = 58%. With an expense ratio of 33%, the combined ratio is 91%, so the portfolio made an underwriting profit of 9 million. If claim handlers set reserves 5 million too low, the loss ratio looks like 53% and management makes pricing decisions on wrong data. This is why reserve accuracy matters in InsureMO Easy Claims.</div>
+</section>
+<section class="block"><h2>Try it: key metrics calculator</h2>
+  <p class="small muted">Change the numbers to see how the ratios move.</p>
+  <div class="card"><div class="calc">
+    <label>Gross written premium (GWP)<input id="kmGwp" type="number" value="100000000"></label>
+    <label>Unearned premium at year end<input id="kmUpr" type="number" value="20000000"></label>
+    <label>Claims paid in the year<input id="kmPaid" type="number" value="38000000"></label>
+    <label>Increase in claim reserves (case + IBNR)<input id="kmRes" type="number" value="8000000"></label>
+    <label>Expenses (commission + operations)<input id="kmExp" type="number" value="26000000"></label>
+  </div><div id="kmOut"></div></div>
 </section>
 <section class="block"><h2>Claims by line of business</h2>
   <div class="tbl"><table><thead><tr><th>Line</th><th>Typical claim</th><th>Main external parties</th><th>Typical payable logic</th><th>InsureMO Easy Claims mode</th></tr></thead><tbody id="lobTable"></tbody></table></div>
@@ -146,6 +169,15 @@
   <div class="example"><b>Example</b>Mr Tan's family floater: the knee surgery bill is sub-claim 001 (indemnity, cashless). Hospital cash for 5 days is sub-claim 002 (benefit). A follow-up physiotherapy bill a month later is sub-claim 003. Each can be assessed and settled on its own timeline under one case.</div>
 </section>
 <div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>Claim, sub-claim and reserve in plain words</h4><ul><li><b>Claim:</b> one folder for one incident on one policy, for example one car accident.</li><li><b>Sub-claim:</b> a section inside that folder for each damaged item or each person claiming, for example own car damage and a passenger injury.</li><li><b>Reserve:</b> the money the insurer sets aside today for what it expects to pay later. It is an estimate, updated as facts arrive.</li><li><b>Why split into sub-claims:</b> different parts move at different speeds and are paid to different people; splitting lets each part close on its own.</li></ul></div>
+<section class="block"><h2>Anatomy of a policy</h2>
+  <p class="small muted"><span class="tag ind">Insurance knowledge</span> Every claim is checked against these parts of the contract. The schedule holds the facts; the wording holds the rules.</p>
+  <div class="grid g2">
+    <div class="tbl"><table><thead><tr><th>Part of the contract</th><th>What it contains</th></tr></thead><tbody id="anatBody"></tbody></table></div>
+    <div class="card"><h4>Example schedule: Riya's private car policy</h4><dl class="kv small">
+      <dt>Policy No.</dt><dd>PMC-2026-0012345</dd><dt>Policyholder / insured</dt><dd>Riya</dd><dt>Period</dt><dd>01 Apr 2026 to 31 Mar 2027 (365 days)</dd><dt>Vehicle</dt><dd>Hatchback, 2024 model</dd><dt>IDV (sum insured)</dt><dd>INR 6,00,000</dd><dt>Covers</dt><dd>Own damage; third-party liability; personal accident for owner-driver</dd><dt>Compulsory deductible</dt><dd>INR 1,000</dd><dt>No-claim bonus</dt><dd>20% on own-damage premium</dd><dt>Intermediary</dt><dd>Agent code AG-4471</dd></dl>
+      <p class="small muted">Illustrative. In InsureMO this comes from Easy PA and is shown on the claim through the Policy No link.</p></div>
+  </div>
+</section>
 <section class="block"><h2>What decides the payable amount</h2>
   <div class="tbl"><table><thead><tr><th>Term</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
     <tr><td>Sum insured / limit</td><td>Maximum the insurer pays for a coverage, per claim or per year</td><td>Fire policy on stock: USD 2,000,000</td></tr>
@@ -215,6 +247,15 @@
 <section class="block"><h2>Task by task</h2>
   <div class="tbl"><table><thead><tr><th>Task</th><th>Description <span class="tag src">InsureMO Easy Claims</span></th><th>Main actor</th><th>Key output</th><th>On Submit</th></tr></thead><tbody id="taskTable"></tbody></table></div>
 </section>
+<section class="block"><h2>Routing rules: what Submit creates</h2>
+  <p class="small muted"><span class="tag src">InsureMO Easy Claims</span> Every task, every button and the task the system creates next. Filter by task name.</p>
+  <input class="filter" id="routeFilter" placeholder="Filter, for example Settlement or Reject" style="max-width:320px">
+  <div class="tbl" style="max-height:420px;overflow:auto"><table><thead><tr><th>Task</th><th>Action or condition</th><th>Result</th><th>Learn</th></tr></thead><tbody id="routeBody"></tbody></table></div>
+</section>
+<section class="block"><h2>Try it: what happens when I press Submit?</h2>
+  <p class="small muted">Pick a task, enter the amount and the user's authority, choose a decision, and see which task the system creates. Testers can use it to plan boundary tests.</p>
+  <div class="card"><div class="calc" id="simForm"></div><div class="calc-out" id="simOut"></div></div>
+</section>
 <section class="block"><h2>How the task engine works</h2>
   <div class="grid g2">
     <div class="card"><h4>1. Every Submit creates the next task</h4><p class="small">After FNOL Submit, the system closes FNOL, creates a Registration task and opens the <b>Task Transfer</b> UI. The next task needs manual completion by a user. <span class="tag src">InsureMO Easy Claims</span></p></div>
@@ -236,7 +277,7 @@
     <tr><td>Diary Task</td><td>Create a reminder task for a user</td></tr>
     <tr><td>Print, Litigation, Payment Info, Medical Bill</td><td>Print claim forms; record legal proceedings; view payment details from finance; capture medical bills (health)</td></tr>
     <tr><td>Pending Claim toggle</td><td>Marks the claim as pending (seen on health FNOL)</td></tr>
-    <tr><td>Red warning text</td><td>"Existed claim record in system on the same policy which reported within 24 hours" – a duplicate-claim alert</td></tr>
+    <tr><td>Red warning text</td><td>"Existed claim record in system on the same policy which reported within 24 hours" (duplicate-claim alert) and "Claim should be reported within 30 days after date of loss" (late-reporting alert)</td></tr>
   </tbody></table></div>
   <div class="callout ind"><span class="tag ind">Insurance knowledge</span> The 24-hour duplicate warning is a basic fraud and data-quality control. Two reports on one policy in a day are often the same loss reported twice (by the agent and by the customer), or a staged claim. The handler should check Prior Claims before registering.</div>
 </section>
@@ -252,6 +293,9 @@
 <header><span class="eyebrow">Module 2.2 · Core process</span><h1>Main tasks in depth</h1>
 <p class="lede">Pick a task. Each one shows who does what (swimlane), the screen sections, what each button does, the business reason behind the task, a real example, and notes for your role.</p></header>
 <div class="objectives" data-obj></div>
+<details class="more"><summary>Which sections can you edit on each task? (section reuse matrix)</summary><div>
+  <p class="small muted"><span class="tag src">InsureMO Easy Claims</span> Most task pages reuse the same sections. E = editable, C = only claimant editable, R = read-only, — = not on the page, * = derived from "same as" statements in the InsureMO Easy Claims guide. Testers: use it to plan "field is read-only" checks.</p>
+  <div class="tbl"><table id="mxTable"></table></div></div></details>
 <div class="taskgrid" id="taskPicker" role="group" aria-label="Choose a task"></div>
 <div id="taskBody" class="view" style="gap:20px"></div>
 </section>
@@ -318,6 +362,25 @@
   </div>
   <div class="callout"><b>Full-scale versus incremental calculation.</b> <span class="tag src">InsureMO Easy Claims</span> Old way (incremental): first calculation 1,000; an extra 500 is found; you calculate again with 500 as a new factor; total 1,500 across two records. New way (full-scale): you enter 1,500 in the second calculation and the system treats it as the final total. The latest version always holds the full amount, which is easier to audit and to reverse.</div>
   <div class="example"><b>Calculation screen example (InsureMO Easy Claims screenshot)</b>Family Inpatient Medical product. Line 1: Loss (Indemnity), Medical Treatment-Normal, Bill Amount 50,000, Parameter "Medical Fee" 60,000, Calculated 50,000, Adjusted 50,000. Line 2: Hospitalization Allowance, Parameter "Admission Days" 8, Calculated 8,000. Sum of Adjusted Amount 58,000. The bill was 60,000 but coverage capped it at 50,000; the allowance is a benefit (8 days × 1,000).</div>
+</section>
+<section class="block"><h2>V1 and V2 side by side</h2>
+  <div class="tbl"><table><thead><tr><th>Topic</th><th>Claim Matrix V1 + GIMO rating</th><th>Claim Matrix V2 + new calculation tool</th></tr></thead><tbody id="cmpBody"></tbody></table></div>
+  <p class="small"><span class="tag src">InsureMO Easy Claims</span> V1 screen formula shown under each row: <b>Calculated Amount = Total Recognized Amount − Previous Adjusted Amount</b>.</p>
+  <h3>Effects of the new tool on other screens</h3>
+  <div class="tbl"><table><thead><tr><th>Screen</th><th>With GIMO rating</th><th>With the new calculation tool</th></tr></thead><tbody id="fxBody"></tbody></table></div>
+</section>
+<section class="block"><h2>Try it: incremental vs full-scale</h2>
+  <p class="small muted">Enter the total loss as it is known at each calculation round, separated by commas. See what the user enters in each model. InsureMO Easy Claims example: 1000, 1500.</p>
+  <div class="card"><div class="calc"><label>Total known at each round<input id="fsIn" value="1000, 1500, 1400"></label></div><div id="fsOut"></div></div>
+</section>
+<section class="block"><h2>Try it: reserve close validation checker</h2>
+  <p class="small muted"><span class="tag src">InsureMO Easy Claims</span> With the new tool, closing a reserve runs an extra check: if the paid amount is not 0 and the settled amount differs from the calculation amount, the system shows a validation message. With GIMO rating, the old validation stays.</p>
+  <div class="card"><div class="calc">
+    <label>Calculation engine<select id="clEng"><option value="v2">New calculation tool (V2)</option><option value="v1">GIMO rating (V1)</option></select></label>
+    <label>Paid amount<input id="clPaid" type="number" value="500"></label>
+    <label>Settled amount<input id="clSet" type="number" value="500"></label>
+    <label>Calculation amount<input id="clCalc" type="number" value="800"></label>
+  </div><div class="calc-out" id="clOut"></div></div>
 </section>
 <section class="block"><h2>Settlement money rules</h2>
   <div class="tbl"><table><thead><tr><th>Rule</th><th>Detail</th></tr></thead><tbody>
@@ -407,6 +470,14 @@
   </tbody></table></div>
   <div class="example"><b>Worked example: Sunrise Textiles fire</b>Gross claim USD 1,200,000. Quota share 40% → reinsurer share 480,000, net retained 720,000. A per-risk XOL treaty covers 500,000 xs 250,000 on the retained share → XOL pays min(720,000 − 250,000, 500,000) = 470,000. Net cost to the insurer = 250,000. If salvage brings in 40,000, the recovery is shared the same way (quota share reinsurer gets 16,000 back). Large losses usually trigger a <b>cash call</b>: the insurer asks the reinsurer to pay its share at once instead of waiting for the quarterly account.</div>
 </section>
+<section class="block"><h2>Try it: reinsurance recovery calculator</h2>
+  <div class="card"><div class="calc">
+    <label>Gross claim<input id="riLoss" type="number" value="1200000"></label>
+    <label>Quota share ceded %<input id="riQs" type="number" value="40"></label>
+    <label>Excess of loss: retention (on net after quota share)<input id="riRet" type="number" value="250000"></label>
+    <label>Excess of loss: limit<input id="riLim" type="number" value="500000"></label>
+  </div><div id="riOut"></div></div>
+</section>
 <section class="block"><h2>End-to-end journeys across modules</h2>
   <div class="taskgrid" id="journeyPicker" role="group" aria-label="Choose a journey"></div>
   <div id="journeyBody" class="view" style="gap:16px"></div>
@@ -421,6 +492,10 @@
 <section class="block"><h2>Configuration items</h2>
   <input class="filter" id="cfgFilter" placeholder="Filter configuration…" style="max-width:320px">
   <div class="tbl"><table><thead><tr><th>Item</th><th>Options / content</th><th>Effect</th><th>Who configures</th><th>Basis</th></tr></thead><tbody id="cfgTable"></tbody></table></div>
+</section>
+<section class="block"><h2>Code lists seen on screens</h2>
+  <p class="small muted"><span class="tag src">InsureMO Easy Claims</span> These drop-down lists appear in the InsureMO Easy Claims screenshots. Values are tenant or product configuration; confirm the lists for your product. Batch FNOL templates have sheets for Basic info, Claimant info, Subclaim info, Payee info and Payment info.</p>
+  <div class="tbl"><table><thead><tr><th>List</th><th>Screen</th><th>Example values seen</th></tr></thead><tbody id="codeBody"></tbody></table></div>
 </section>
 <section class="block"><h2>Policy docking: try it</h2>
   <div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>Policy docking in plain words</h4><ul><li><b>Docking:</b> how InsureMO Easy Claims gets the policy it checks the claim against.</li><li><b>PA:</b> policy read live from Easy PA (normal case).</li><li><b>Third Party:</b> policy read from another company system through an interface.</li><li><b>Manual policy:</b> handler types the policy details in, used when the policy is not held in any connected system.</li><li><b>Mock:</b> test data only.</li></ul></div>

@@ -4,8 +4,9 @@
 Inputs (all in src/):
   template.html  page shell and styles
   views.html     page content for each module
-  data1-5.js     guide content (modules, tasks, scenarios, glossary, quizzes)
+  data1-6.js     guide content (modules, tasks, scenarios, glossary, quizzes)
   engine.js      rendering, diagrams, tracker, quizzes, search
+  engine2.js     simulators and calculators (routing, refund, metrics, reinsurance, reserve close)
   img/           source screenshots (WebP) and icons (PNG), listed in img/manifest.json
 
 Screenshots are embedded as data URIs so the single HTML file works offline.
@@ -22,8 +23,8 @@ SRC = ROOT / "src"
 def main():
     tpl = (SRC / "template.html").read_text(encoding="utf-8")
     views = (SRC / "views.html").read_text(encoding="utf-8")
-    data = "\n".join((SRC / f"data{i}.js").read_text(encoding="utf-8") for i in range(1, 6))
-    engine = (SRC / "engine.js").read_text(encoding="utf-8")
+    data = "\n".join((SRC / f"data{i}.js").read_text(encoding="utf-8") for i in range(1, 7))
+    engine = (SRC / "engine.js").read_text(encoding="utf-8") + "\n" + (SRC / "engine2.js").read_text(encoding="utf-8")
 
     manifest = json.loads((SRC / "img" / "manifest.json").read_text(encoding="utf-8"))
     imgs = {}
