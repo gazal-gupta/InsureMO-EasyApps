@@ -30,3 +30,19 @@ Progress (levels visited, time spent, checkpoint and final scores) is saved in t
 **Role lens:** the Business analyst / Tester / Developer buttons hide sections that are less relevant to that role, dim levels outside the role's path, open role-specific blocks (workshop questions, test cases, integration detail) on each scenario and screen, and switch the toolkit tab. "Show everything" turns the filter off.
 
 **Screenshots:** the 58 images from the source guide are embedded in `index.html`. The originals are also kept in `bcp-learning-guide/img/` at full resolution for reuse.
+
+## Reusable skill and build engine
+
+`.claude/skills/insuremo-learning-guide/` is a Claude Code skill. It acts as the product manager for this guide and holds the build engine, so the same guide can be updated or built for other modules (Claims, Easy PA, Reinsurance).
+
+- `SKILL.md`: role, workflow, curriculum, how to adapt to another module.
+- `references/feature-spec.md`: every feature with acceptance criteria, and the backlog.
+- `references/data-model.md`: formats of all data files.
+- `references/lessons-learned.md`: issues found while building and how to avoid them.
+- `engine/`: source files, `build.py` (embeds images, writes the standalone and artifact versions) and `qa.js` (offline, layout, lens, assessment and persistence checks).
+
+Rebuild the BCP guide:
+
+```bash
+python3 -I .claude/skills/insuremo-learning-guide/engine/build.py --img bcp-learning-guide/img --out bcp-learning-guide/index.html
+```
