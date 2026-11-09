@@ -282,6 +282,9 @@ details.more>div{padding:0 14px 14px;display:flex;flex-direction:column;gap:12px
 .sim select,.sim input{padding:7px 8px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);font:inherit;font-size:14px}
 .sim .out{border:2px solid var(--accent);border-radius:var(--r);padding:16px;background:var(--surface);display:flex;flex-direction:column;gap:8px}
 .sim .out .big{font-family:var(--f-display);font-size:22px;font-weight:700}
+.lensbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:10px 14px;border:1px solid var(--accent);background:var(--accent-soft);border-radius:var(--r);font-size:14px}
+.lens-off{display:none!important}
+.rail a.off-path:not([aria-current="page"]){opacity:.42}
 .basis{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12.5px;color:var(--ink-2);align-items:center}
 .btnrow{display:flex;gap:8px;flex-wrap:wrap}
 .xlink{display:inline-flex;gap:6px;align-items:center;font-size:13px;border:1px solid var(--bcp);color:var(--bcp);border-radius:999px;padding:2px 10px;text-decoration:none}
@@ -2175,6 +2178,25 @@ function renderQuiz(){
   $$('#quizBody button').forEach(b=>b.addEventListener('click',()=>{const a=store.get('quiz',{});a[b.dataset.q]=+b.dataset.o;store.set('quiz',a);renderQuiz()}));
 }
 
+
+/* ---------- role lens ---------- */
+const ROLE_NAME={ba:'Business analyst',qa:'Tester',dev:'Developer'};
+const ROLE_LEVELS={ba:['basics','lifecycle','flows','integration','config','toolkit'],qa:['basics','lifecycle','flows','screens','calc','toolkit'],dev:['basics','lifecycle','flows','calc','integration','config','toolkit']};
+const BLOCK_ROLES={'Two kinds of task':'ba qa','Menu map':'ba qa','Common screen parts':'qa dev','Task router simulator':'qa dev','Section reuse matrix':'qa dev',
+ 'Incremental vs full-scale: try it':'qa dev','Calculation screens':'qa dev','Effects of the new tool on other screens':'qa dev','Reserve close validation checker':'qa dev','Reserve mechanics':'ba qa',
+ 'End-to-end journeys across modules':'ba qa','Code lists seen on screens':'qa dev','APIs':'dev','Configure or build?':'ba dev'};
+const curRole=()=>document.body.dataset.role||'';
+function applyLens(){
+  const r=curRole();
+  $$('section.block').forEach(b=>{const h=$('h2',b);const roles=h&&BLOCK_ROLES[h.textContent.trim()];b.classList.toggle('lens-off',!!(r&&roles&&!roles.split(' ').includes(r)))});
+  $$('.view').forEach(v=>{let bar=$('.lensbar',v);if(!bar){bar=document.createElement('div');bar.className='lensbar';const hd=$(':scope>header',v)||$(':scope>.hero',v);if(hd)hd.after(bar);else v.prepend(bar)}
+    if(!r){bar.hidden=true;return}
+    const off=$$('section.block.lens-off',v).length;const lid=v.id.slice(2);const onPath=!LEVELS.find(l=>l.id===lid&&l.learn)||ROLE_LEVELS[r].includes(lid);
+    bar.hidden=false;bar.innerHTML=`<span><b>${ROLE_NAME[r]} lens.</b> ${off?`${off} section${off>1?'s':''} on this page hidden as less relevant to your role.`:'All sections on this page are relevant to your role.'} ${onPath?'':'This level is outside your recommended path.'} Role notes show only your role.</span><button type="button" class="btn ghost" data-clear>Show everything</button>`;
+    $('[data-clear]',bar).addEventListener('click',()=>setRole('all'))});
+  $$('#railNav a').forEach(a=>{const v=a.dataset.v;a.classList.toggle('off-path',!!(r&&LEVELS.find(l=>l.id===v&&l.learn)&&!ROLE_LEVELS[r].includes(v)))});
+  if(ROLE_NAME[r]&&curTk!==r){curTk=r;renderToolkit()}
+}
 /* ---------- nav, progress, role, routing ---------- */
 function renderRail(){
   const done=store.get('done',{});let h='',g='';
@@ -2184,7 +2206,7 @@ function renderRail(){
   const role=document.body.dataset.role;$('#rolePath').innerHTML=role&&PATHS[role]?`<b>${PATHS[role].t} path</b><ol style="margin:6px 0 0;padding-left:18px">${PATHS[role].steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>`:'<span class="muted">Choose a lens at the top to see your learning path here.</span>';
   markCurrent();
 }
-function setRole(r){if(r==='all')delete document.body.dataset.role;else document.body.dataset.role=r;store.set('role',r);$$('.roles .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.role===r));renderRail()}
+function setRole(r){if(r==='all')delete document.body.dataset.role;else document.body.dataset.role=r;store.set('role',r);$$('.roles .chip').forEach(c=>c.setAttribute('aria-pressed',c.dataset.role===r));renderRail();applyLens()}
 let curView='start';
 function markCurrent(){$$('#railNav a').forEach(a=>a.setAttribute('aria-current',a.dataset.v===curView?'page':'false'))}
 function route(){
@@ -2196,7 +2218,7 @@ function route(){
   $$('.view').forEach(s=>{s.hidden=s.id!=='v-'+v});
   if(v==='flows'){renderFlowList();renderFlow()}
   if(v==='screens')renderScreens();
-  markCurrent();if(changed)window.scrollTo({top:0});
+  markCurrent();applyLens();if(changed)window.scrollTo({top:0});
 }
 
 /* ---------- search ---------- */
