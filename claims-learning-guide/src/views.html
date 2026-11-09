@@ -3,7 +3,7 @@
 <header>
   <span class="eyebrow">Start here</span>
   <h1>InsureMO Easy Claim: learning guide</h1>
-  <p class="lede">This guide teaches the Easy Claim module from first principles to advanced configuration. Every process has a swimlane diagram with the actor for each step, a step table, a real insurance example, and links to Easy PA, BCP and Reinsurance. Your progress and scores stay in this browser, so the downloaded file works offline.</p>
+  <p class="lede">This guide teaches the InsureMO Easy Claims module from first principles to advanced configuration. Every process has a swimlane diagram with the actor for each step, a step table, a real insurance example, and links to Easy PA, BCP and Reinsurance. Your progress and scores stay in this browser, so the downloaded file works offline.</p>
 </header>
 <section class="block"><h2>Your learning dashboard</h2><div id="dashStart"></div></section>
 <section class="block">
@@ -20,10 +20,10 @@
   <div class="grid g2">
     <div class="card"><h4>Swimlane diagrams</h4><p class="small">Each column is an actor (a person, company or system). Steps run from top to bottom. A coloured box shows who acts. Click a box to highlight its row in the step table below the diagram. Use <b>Full screen</b> on any diagram to fit it to your screen.</p>
       <div class="legend small" style="display:flex;gap:10px;flex-wrap:wrap">
-        <span class="pill" style="background:var(--cust-soft)">Customer side / event</span><span class="pill" style="background:var(--ins-soft)">Insurer user action</span><span class="pill" style="background:var(--sys-soft)">Easy Claim system</span><span class="pill" style="background:var(--warn-soft)">Decision</span><span class="pill" style="background:var(--ext-soft)">External party</span><span class="pill" style="border:2px solid var(--accent)">Approval</span><span class="pill" style="background:var(--pa-soft)">Easy PA</span><span class="pill" style="background:var(--bcp-soft)">BCP</span><span class="pill" style="background:var(--ri-soft)">Reinsurance</span></div></div>
+        <span class="pill" style="background:var(--cust-soft)">Customer side / event</span><span class="pill" style="background:var(--ins-soft)">Insurer user action</span><span class="pill" style="background:var(--sys-soft)">InsureMO Easy Claims system</span><span class="pill" style="background:var(--warn-soft)">Decision</span><span class="pill" style="background:var(--ext-soft)">External party</span><span class="pill" style="border:2px solid var(--accent)">Approval</span><span class="pill" style="background:var(--pa-soft)">Easy PA</span><span class="pill" style="background:var(--bcp-soft)">BCP</span><span class="pill" style="background:var(--ri-soft)">Reinsurance</span></div></div>
     <div class="card"><h4>Tags you will see</h4>
-      <p class="small"><span class="tag src">Source</span> fact from the InsureMO Easy Claim user guide.</p>
-      <p class="small"><span class="tag ind">Industry practice</span> general insurance knowledge or a worked example added for learning. Rules differ by country and product, so confirm before you use it in a requirement or a test.</p>
+      <p class="small"><span class="tag src">InsureMO Easy Claims</span> fact from the InsureMO Easy Claim user guide.</p>
+      <p class="small"><span class="tag ind">Insurance knowledge</span> general insurance knowledge or a worked example added for learning. Rules differ by country and product, so confirm before you use it in a requirement or a test.</p>
       <p class="small"><span class="tag pa">Easy PA</span> <span class="tag bcp">BCP</span> <span class="tag ri">Reinsurance</span> cross-module link.</p></div>
   </div>
 </section>
@@ -44,27 +44,31 @@
 <p class="lede">A claim is the moment the insurer keeps its promise. To design, test or build a claims system, you first need to know where claims sit in the insurance business and why they drive profit.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>What a claim is</h2>
-  <div class="callout"><span class="tag src">Source</span> A claim is the entire process where, after a risk event stated in the insurance contract occurs, the insured or beneficiary submits a claim request to the insurer. The insurer then reviews, investigates, assesses the loss, calculates and pays compensation according to the contract terms.</div>
-  <div class="prose"><p>Insurance is risk transfer. Many customers pay a small, certain amount (the <b>premium</b>) so that the few who suffer a loss receive a large, uncertain amount (the <b>claim</b>). The insurer pools the premiums and pays claims out of the pool. <span class="tag ind">Industry practice</span></p>
+  <div class="callout"><span class="tag src">InsureMO Easy Claims</span> A claim is the entire process where, after a risk event stated in the insurance contract occurs, the insured or beneficiary submits a claim request to the insurer. The insurer then reviews, investigates, assesses the loss, calculates and pays compensation according to the contract terms.</div>
+  <div class="prose"><p>Insurance is risk transfer. Many customers pay a small, certain amount (the <b>premium</b>) so that the few who suffer a loss receive a large, uncertain amount (the <b>claim</b>). The insurer pools the premiums and pays claims out of the pool. <span class="tag ind">Insurance knowledge</span></p>
   <p>The insurance contract (the <b>policy</b>) defines what is covered, up to what amount, for what period and with what exclusions. Claims handling is the process of checking a loss against that contract and paying the right amount to the right person, quickly and with evidence.</p></div>
 </section>
 <section class="block"><h2>Where claims sit in the insurance value chain</h2>
   <div id="valueChain"></div>
   <p class="small muted">Click a box to see the related InsureMO module. Claims depend on data created upstream (product, policy, premium) and create data downstream (payments, reinsurance recoveries, accounting).</p>
 </section>
+<section class="block"><h2>Policy lifecycle: where the claim happens</h2>
+  <p class="muted" style="max-width:80ch">A claim is one stage in the life of a policy. Click a stage to see what happens and which InsureMO module handles it.</p>
+  <div id="policyLife"></div><div id="plDetail" class="callout">Click a stage in the policy lifecycle.</div>
+</section>
 <section class="block"><h2>Why claims drive insurer profit</h2>
   <div class="grid g2">
-    <div class="card"><h4>Loss ratio <span class="tag ind">Industry practice</span></h4><p class="small"><b>Loss ratio = incurred claims ÷ earned premium.</b> Incurred claims = paid claims + change in outstanding reserves. In many non-life lines the loss ratio is between 55% and 80%, so claims are the largest cost of an insurer.</p></div>
-    <div class="card"><h4>Combined ratio <span class="tag ind">Industry practice</span></h4><p class="small"><b>Combined ratio = loss ratio + expense ratio.</b> Below 100% means the insurer makes an underwriting profit. Above 100% means it loses money on underwriting and depends on investment income.</p></div>
+    <div class="card"><h4>Loss ratio <span class="tag ind">Insurance knowledge</span></h4><p class="small"><b>Loss ratio = incurred claims ÷ earned premium.</b> Incurred claims = paid claims + change in outstanding reserves. In many non-life lines the loss ratio is between 55% and 80%, so claims are the largest cost of an insurer.</p></div>
+    <div class="card"><h4>Combined ratio <span class="tag ind">Insurance knowledge</span></h4><p class="small"><b>Combined ratio = loss ratio + expense ratio.</b> Below 100% means the insurer makes an underwriting profit. Above 100% means it loses money on underwriting and depends on investment income.</p></div>
   </div>
-  <div class="example"><b>Worked example</b>A motor portfolio earns premium of 100 million. Paid claims in the year are 52 million. Outstanding reserves rose from 20 million to 26 million. Incurred claims = 52 + (26 − 20) = 58 million. Loss ratio = 58%. With an expense ratio of 33%, the combined ratio is 91%, so the portfolio made an underwriting profit of 9 million. If claim handlers set reserves 5 million too low, the loss ratio looks like 53% and management makes pricing decisions on wrong data. This is why reserve accuracy matters in Easy Claim.</div>
+  <div class="example"><b>Worked example</b>A motor portfolio earns premium of 100 million. Paid claims in the year are 52 million. Outstanding reserves rose from 20 million to 26 million. Incurred claims = 52 + (26 − 20) = 58 million. Loss ratio = 58%. With an expense ratio of 33%, the combined ratio is 91%, so the portfolio made an underwriting profit of 9 million. If claim handlers set reserves 5 million too low, the loss ratio looks like 53% and management makes pricing decisions on wrong data. This is why reserve accuracy matters in InsureMO Easy Claims.</div>
 </section>
 <section class="block"><h2>Claims by line of business</h2>
-  <div class="tbl"><table><thead><tr><th>Line</th><th>Typical claim</th><th>Main external parties</th><th>Typical payable logic</th><th>Easy Claim mode</th></tr></thead><tbody id="lobTable"></tbody></table></div>
-  <div class="callout"><span class="tag ind">Industry practice</span> <b>Indemnity versus benefit.</b> Indemnity cover (motor, property, most health) pays the actual loss, so the handler must assess and calculate. Benefit cover (hospital cash, personal accident death, life) pays a fixed amount stated in the policy once the event is proved. The screenshots in this guide include a "Hospital Cash" product, which is a benefit product: the calculation is days in hospital × daily amount.</div>
+  <div class="tbl"><table><thead><tr><th>Line</th><th>Typical claim</th><th>Main external parties</th><th>Typical payable logic</th><th>InsureMO Easy Claims mode</th></tr></thead><tbody id="lobTable"></tbody></table></div>
+  <div class="callout"><span class="tag ind">Insurance knowledge</span> <b>Indemnity versus benefit.</b> Indemnity cover (motor, property, most health) pays the actual loss, so the handler must assess and calculate. Benefit cover (hospital cash, personal accident death, life) pays a fixed amount stated in the policy once the event is proved. The screenshots in this guide include a "Hospital Cash" product, which is a benefit product: the calculation is days in hospital × daily amount.</div>
 </section>
 <section class="block"><h2>The claim journey from two sides</h2>
-  <div class="tbl"><table><thead><tr><th>Stage</th><th>What the customer experiences</th><th>What the insurer does</th><th>Easy Claim task</th></tr></thead><tbody>
+  <div class="tbl"><table><thead><tr><th>Stage</th><th>What the customer experiences</th><th>What the insurer does</th><th>InsureMO Easy Claims task</th></tr></thead><tbody>
     <tr><td>Notify</td><td>Calls, uses an app, tells the agent, or the hospital/garage notifies</td><td>Records the loss, checks the policy exists and was in force on the date of loss</td><td>FNOL</td></tr>
     <tr><td>Register</td><td>Gets a claim number</td><td>Completes details, sets an initial reserve (estimate of cost)</td><td>Registration</td></tr>
     <tr><td>Verify</td><td>May get a visit from a surveyor or investigator</td><td>Checks cause of loss, coverage and fraud signals</td><td>Investigation</td></tr>
@@ -76,7 +80,7 @@
   </tbody></table></div>
 </section>
 <section class="block"><h2>Claims KPIs that business leaders track</h2>
-  <div class="tbl"><table><thead><tr><th>KPI</th><th>Meaning</th><th>Where Easy Claim supports it</th></tr></thead><tbody>
+  <div class="tbl"><table><thead><tr><th>KPI</th><th>Meaning</th><th>Where InsureMO Easy Claims supports it</th></tr></thead><tbody>
     <tr><td>Turnaround time (TAT)</td><td>Days from report date to payment. Regulators often set maximum days.</td><td>Report date, task create/close dates, due date and overdue highlight (Task Monitor)</td></tr>
     <tr><td>Claim settlement ratio</td><td>Claims paid ÷ claims reported in a period</td><td>Claim Search with status and dates; download to Excel</td></tr>
     <tr><td>Reserve accuracy</td><td>Final paid amount compared with the first reserve</td><td>Reserve History, Transaction History</td></tr>
@@ -84,14 +88,14 @@
     <tr><td>Reopen rate</td><td>Share of closed claims that reopen. A high rate signals poor first settlement.</td><td>New and Reopen menu; reopen history</td></tr>
     <tr><td>Recovery rate</td><td>Money recovered (subrogation, salvage) ÷ paid claims</td><td>Subrogation, Salvage, Recovery histories</td></tr>
   </tbody></table></div>
-  <p class="small muted"><span class="tag ind">Industry practice</span> KPI definitions vary by insurer. Agree the formula with finance before building a report.</p>
+  <p class="small muted"><span class="tag ind">Insurance knowledge</span> KPI definitions vary by insurer. Agree the formula with finance before building a report.</p>
 </section>
 </section>
 
 <!-- ======================= 1.2 PARTIES ======================= -->
 <section class="view" id="v-parties">
 <header><span class="eyebrow">Module 1.2 · Basics</span><h1>Parties and roles in a claim</h1>
-<p class="lede">A claim involves many parties. Mixing them up is the most common cause of wrong requirements and wrong payee data. Learn who each party is, what they do, and where they appear in Easy Claim.</p></header>
+<p class="lede">A claim involves many parties. Mixing them up is the most common cause of wrong requirements and wrong payee data. Learn who each party is, what they do, and where they appear in InsureMO Easy Claims.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Who talks to whom in a motor claim</h2><div id="partyMap"></div></section>
 <section class="block"><h2>Policyholder, insured, claimant and payee are often different people</h2>
@@ -99,20 +103,20 @@
     <div class="example"><b>Group health example</b>An employer buys a group health policy. The <b>policyholder</b> is the employer. Each employee is an <b>insured</b> person. Mr Tan (an employee) is admitted to hospital, so he is the <b>claimant</b>. The bill is paid cashless to the hospital, so the <b>payee</b> is the hospital. The <b>TPA</b> handles the medical review for the insurer.</div>
     <div class="example"><b>Motor third-party example</b>Riya's car is hit by a truck. For the truck's insurer, the <b>policyholder and insured</b> is the truck owner. Riya is a <b>third-party claimant</b>: she has no contract with that insurer, but the law gives her a right to claim. If Riya's own insurer pays her first, it becomes a <b>subrogating</b> insurer and claims from the truck's insurer.</div>
   </div>
-  <div class="callout"><b>Why this matters in Easy Claim.</b> Claimant Information, Sub-Claim (each with a claimant), Payee (on Settlement and Prepay) and Party Management are separate data. One claim can have several claimants and several payees. A tester must test a claim where claimant ≠ payee, and a BA must define who can be a payee for each product.</div>
+  <div class="callout"><b>Why this matters in InsureMO Easy Claims.</b> Claimant Information, Sub-Claim (each with a claimant), Payee (on Settlement and Prepay) and Party Management are separate data. One claim can have several claimants and several payees. A tester must test a claim where claimant ≠ payee, and a BA must define who can be a payee for each product.</div>
 </section>
 <section class="block"><h2>Party reference</h2>
   <input class="filter" id="partyFilter" placeholder="Filter parties…" style="max-width:320px">
-  <div class="tbl"><table><thead><tr><th>Party</th><th>Who they are</th><th>Role in a claim</th><th>Where in Easy Claim / InsureMO</th><th>Real example</th></tr></thead><tbody id="partyTable"></tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>Party</th><th>Who they are</th><th>Role in a claim</th><th>Where in InsureMO Easy Claims / InsureMO</th><th>Real example</th></tr></thead><tbody id="partyTable"></tbody></table></div>
 </section>
 <section class="block"><h2>Agent versus broker in claims</h2>
   <div class="tbl"><table><thead><tr><th></th><th>Agent</th><th>Broker</th></tr></thead><tbody>
     <tr><td>Represents</td><td>The insurer (tied agent) or several insurers (corporate agent)</td><td>The customer</td></tr>
     <tr><td>Paid by</td><td>Commission from the insurer (Sales Channel, paid through BCP)</td><td>Commission or brokerage from the insurer, sometimes a fee from the client</td></tr>
     <tr><td>Claim role</td><td>Helps the customer report and collect documents</td><td>Advocates for the client, negotiates with the insurer and loss adjuster, often prepares the claim file for large commercial losses</td></tr>
-    <tr><td>Easy Claim</td><td colspan="2">Agent/Broker Code and Name fields on Claim Information (visible on health FNOL screens). The producer comes from the policy in Easy PA.</td></tr>
+    <tr><td>InsureMO Easy Claims</td><td colspan="2">Agent/Broker Code and Name fields on Claim Information (visible on health FNOL screens). The producer comes from the policy in Easy PA.</td></tr>
   </tbody></table></div>
-  <p class="small muted"><span class="tag ind">Industry practice</span> In some markets brokers may hold claim money in a client account. Check local rules before allowing a broker as payee.</p>
+  <p class="small muted"><span class="tag ind">Insurance knowledge</span> In some markets brokers may hold claim money in a client account. Check local rules before allowing a broker as payee.</p>
 </section>
 </section>
 
@@ -122,10 +126,10 @@
 <p class="lede">These ideas decide how much is paid and how the claim is stored: insurance principles, payable amount rules, reserves, claim versus sub-claim mode, and the claim data structure.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Six insurance principles every claim must respect</h2>
-  <p class="small muted"><span class="tag ind">Industry practice</span> These are taught in every insurance qualification. Each one maps to a check in the claim process.</p>
-  <div class="tbl"><table><thead><tr><th>Principle</th><th>Meaning</th><th>Effect on a claim</th><th>Where it shows in Easy Claim</th></tr></thead><tbody id="principles"></tbody></table></div>
+  <p class="small muted"><span class="tag ind">Insurance knowledge</span> These are taught in every insurance qualification. Each one maps to a check in the claim process.</p>
+  <div class="tbl"><table><thead><tr><th>Principle</th><th>Meaning</th><th>Effect on a claim</th><th>Where it shows in InsureMO Easy Claims</th></tr></thead><tbody id="principles"></tbody></table></div>
 </section>
-<section class="block"><h2>How Easy Claim stores a claim</h2>
+<section class="block"><h2>How InsureMO Easy Claims stores a claim</h2>
   <div id="hierDiagram"></div>
   <div class="grid g2">
     <div class="card"><h4>Claim (case)</h4><p class="small">One loss event on one policy. Holds date of loss, report date, cause of loss, catastrophe code, contact details and claimants. Has one Claim No.</p></div>
@@ -135,12 +139,13 @@
   </div>
 </section>
 <section class="block"><h2>Claim mode and sub-claim mode</h2>
-  <div class="tbl"><table><thead><tr><th>Mode</th><th>Description <span class="tag src">Source</span></th><th>Applicable scenarios</th><th>What changes in practice</th></tr></thead><tbody>
+  <div class="tbl"><table><thead><tr><th>Mode</th><th>Description <span class="tag src">InsureMO Easy Claims</span></th><th>Applicable scenarios</th><th>What changes in practice</th></tr></thead><tbody>
     <tr><td><b>Claim mode</b></td><td>Traditional mode. One claim case contains all information.</td><td>Property, motor</td><td>The workflow runs once for the whole case. Tasks move the whole claim forward.</td></tr>
     <tr><td><b>Sub-claim mode</b></td><td>One main case can contain multiple sub-cases.</td><td>Health, multiple claims</td><td>Each sub-claim can run its own tasks (New Subclaim generates a task "according to the configuration of the workflow"). Claim numbers carry a suffix, for example <code>CFHI001202500001155-001</code>.</td></tr>
   </tbody></table></div>
   <div class="example"><b>Example</b>Mr Tan's family floater: the knee surgery bill is sub-claim 001 (indemnity, cashless). Hospital cash for 5 days is sub-claim 002 (benefit). A follow-up physiotherapy bill a month later is sub-claim 003. Each can be assessed and settled on its own timeline under one case.</div>
 </section>
+<div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>Claim, sub-claim and reserve in plain words</h4><ul><li><b>Claim:</b> one folder for one incident on one policy, for example one car accident.</li><li><b>Sub-claim:</b> a section inside that folder for each damaged item or each person claiming, for example own car damage and a passenger injury.</li><li><b>Reserve:</b> the money the insurer sets aside today for what it expects to pay later. It is an estimate, updated as facts arrive.</li><li><b>Why split into sub-claims:</b> different parts move at different speeds and are paid to different people; splitting lets each part close on its own.</li></ul></div>
 <section class="block"><h2>What decides the payable amount</h2>
   <div class="tbl"><table><thead><tr><th>Term</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
     <tr><td>Sum insured / limit</td><td>Maximum the insurer pays for a coverage, per claim or per year</td><td>Fire policy on stock: USD 2,000,000</td></tr>
@@ -153,7 +158,7 @@
     <tr><td>Exclusion</td><td>Event or cause not covered</td><td>Driving without a valid licence; pre-existing disease inside the waiting period</td></tr>
     <tr><td>Ex-gratia</td><td>Payment made as goodwill although not strictly payable</td><td>"Ex-Gratia Flag" on the Settlement payee line</td></tr>
   </tbody></table></div>
-  <p class="small muted"><span class="tag ind">Industry practice</span> In Easy Claim these rules live in the calculation configuration (Claim Matrix and the calculation tool, or GIMO rating). The handler sees the result as Calculated Amount and may enter an Adjusted Amount.</p>
+  <p class="small muted"><span class="tag ind">Insurance knowledge</span> In InsureMO Easy Claims these rules live in the calculation configuration (Claim Matrix and the calculation tool, or GIMO rating). The handler sees the result as Calculated Amount and may enter an Adjusted Amount.</p>
 </section>
 <section class="block"><h2>Try it: payable amount calculator</h2>
   <p class="small muted">Change the values to see how each rule reduces the loss. The order used here is a common market order; your product may apply rules in a different order.</p>
@@ -172,13 +177,13 @@
   </div>
 </section>
 <section class="block"><h2>Reserves</h2>
-  <div class="tbl"><table><thead><tr><th>Type</th><th>Description <span class="tag src">Source</span></th><th>Industry name</th></tr></thead><tbody>
+  <div class="tbl"><table><thead><tr><th>Type</th><th>Description <span class="tag src">InsureMO Easy Claims</span></th><th>Industry name</th></tr></thead><tbody>
     <tr><td>Indemnity reserve</td><td>Expected payment to the insured for losses</td><td>Case reserve for loss</td></tr>
     <tr><td>Expense reserve</td><td>Expenses for processing the claim, for example investigation fees and legal fees</td><td>Allocated loss adjustment expense (ALAE)</td></tr>
   </tbody></table></div>
   <div class="prose">
-    <p><b>Reserve</b> is the insurer's estimate of what the claim will still cost. It is a liability on the balance sheet from the day the claim is registered. Reserve operations in Easy Claim are <b>Update</b>, <b>Close</b> and <b>Reopen</b>. <span class="tag src">Source</span></p>
-    <p><b>Incurred = paid to date + outstanding reserve.</b> When a payment is made, outstanding goes down and paid goes up, so incurred stays the same unless the estimate changes. <span class="tag ind">Industry practice</span></p>
+    <p><b>Reserve</b> is the insurer's estimate of what the claim will still cost. It is a liability on the balance sheet from the day the claim is registered. Reserve operations in InsureMO Easy Claims are <b>Update</b>, <b>Close</b> and <b>Reopen</b>. <span class="tag src">InsureMO Easy Claims</span></p>
+    <p><b>Incurred = paid to date + outstanding reserve.</b> When a payment is made, outstanding goes down and paid goes up, so incurred stays the same unless the estimate changes. <span class="tag ind">Insurance knowledge</span></p>
     <p><b>IBNR</b> (incurred but not reported) covers losses that happened but nobody has reported yet. Actuaries calculate it for the whole portfolio; it is not entered on an individual claim. This is why report date and date of loss are both mandatory: the gap between them feeds the IBNR model.</p>
   </div>
 </section>
@@ -195,27 +200,33 @@
 <!-- ======================= 2.1 LIFECYCLE ======================= -->
 <section class="view" id="v-lifecycle">
 <header><span class="eyebrow">Module 2.1 · Core process</span><h1>End-to-end claim lifecycle</h1>
-<p class="lede">Easy Claim runs a claim as a chain of tasks. Submitting one task closes it and creates the next. Approval tasks appear only when an amount is above the user's authority. This page shows the whole chain and the task engine behind it.</p></header>
+<p class="lede">InsureMO Easy Claims runs a claim as a chain of tasks. Submitting one task closes it and creates the next. Approval tasks appear only when an amount is above the user's authority. This page shows the whole chain and the task engine behind it.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Standard claim process with approval gates</h2>
   <div id="masterFlow"></div>
-  <p class="small muted"><span class="tag src">Source</span> Main chain: FNOL → Registration → Investigation → Appraisal [Appraisal Approval] → Document → Calculation [Calculation Approval] → Settlement [Settlement Approval]. Auxiliary tasks (Prepay, Subrogation, Salvage, Recovery) are created through New Task at any point after registration.</p>
+  <p class="small muted"><span class="tag src">InsureMO Easy Claims</span> Main chain: FNOL → Registration → Investigation → Appraisal [Appraisal Approval] → Document → Calculation [Calculation Approval] → Settlement [Settlement Approval]. Auxiliary tasks (Prepay, Subrogation, Salvage, Recovery) are created through New Task at any point after registration.</p>
+</section>
+<section class="block"><h2>Step by step: the standard claim process in one view</h2>
+  <p class="muted" style="max-width:84ch">The flowchart above shows the task order. This view shows every step, who does it, which InsureMO Easy Claims screen is used, what comes out, and what it means in plain words. Numbers in the diagram match the table.</p>
+  <div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>How InsureMO Easy Claims moves a claim</h4><ul><li><b>Task-based workflow:</b> each stage is a "task" sitting in someone's work queue. Finishing it (Submit) creates the next task automatically, like a relay baton.</li><li><b>Approval gates:</b> when an amount is above the user's limit, the system inserts an approval task for a senior person before the claim can move on.</li><li><b>Money is separate:</b> InsureMO Easy Claims decides what to pay; BCP (finance) actually pays. This split is a standard fraud control.</li><li><b>Loops are normal:</b> missing documents or a rejected approval send the claim back a step; this is expected, not an error.</li></ul></div>
+  <div id="stdSwim"></div>
+  <div id="stdTable"></div>
 </section>
 <section class="block"><h2>Task by task</h2>
-  <div class="tbl"><table><thead><tr><th>Task</th><th>Description <span class="tag src">Source</span></th><th>Main actor</th><th>Key output</th><th>On Submit</th></tr></thead><tbody id="taskTable"></tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>Task</th><th>Description <span class="tag src">InsureMO Easy Claims</span></th><th>Main actor</th><th>Key output</th><th>On Submit</th></tr></thead><tbody id="taskTable"></tbody></table></div>
 </section>
 <section class="block"><h2>How the task engine works</h2>
   <div class="grid g2">
-    <div class="card"><h4>1. Every Submit creates the next task</h4><p class="small">After FNOL Submit, the system closes FNOL, creates a Registration task and opens the <b>Task Transfer</b> UI. The next task needs manual completion by a user. <span class="tag src">Source</span></p></div>
-    <div class="card"><h4>2. Task Transfer and Work On</h4><p class="small">Task Transfer lists pending tasks on the claim. A task checkbox is selectable only if you are the assigned owner or the task is unassigned. Select it and click <b>Work On</b> to open the task page. <span class="tag src">Source</span></p></div>
-    <div class="card"><h4>3. Two ways into a task</h4><p class="small">From Task Transfer (straight after the previous task) or from <b>Claim Task</b> search: find the claim, then click the edit icon or the Claim No link. The system opens the right page for the task type. <span class="tag src">Source</span></p></div>
-    <div class="card"><h4>4. Workflow tasks and diary tasks</h4><p class="small">Workflow tasks (FNOL, Registration…) are in Claim Task. Diary tasks are reminders a user creates from the Claim Summary "Diary Task" link and assigns to someone; they are in Diary Task. <span class="tag src">Source Q9, Q10</span></p></div>
-    <div class="card"><h4>5. Due dates</h4><p class="small">A due date is assigned when a task is created. When it expires, the workbench highlights the task. Managers see their team's tasks in Task Monitor. <span class="tag src">Source Q8, Q12</span></p></div>
-    <div class="card"><h4>6. Owners and shared pool</h4><p class="small">Tasks and claim owners can be reassigned to a named user or to a shared pool (Reassignment menu), for example when a handler is on leave. <span class="tag src">Source Q13</span></p></div>
+    <div class="card"><h4>1. Every Submit creates the next task</h4><p class="small">After FNOL Submit, the system closes FNOL, creates a Registration task and opens the <b>Task Transfer</b> UI. The next task needs manual completion by a user. <span class="tag src">InsureMO Easy Claims</span></p></div>
+    <div class="card"><h4>2. Task Transfer and Work On</h4><p class="small">Task Transfer lists pending tasks on the claim. A task checkbox is selectable only if you are the assigned owner or the task is unassigned. Select it and click <b>Work On</b> to open the task page. <span class="tag src">InsureMO Easy Claims</span></p></div>
+    <div class="card"><h4>3. Two ways into a task</h4><p class="small">From Task Transfer (straight after the previous task) or from <b>Claim Task</b> search: find the claim, then click the edit icon or the Claim No link. The system opens the right page for the task type. <span class="tag src">InsureMO Easy Claims</span></p></div>
+    <div class="card"><h4>4. Workflow tasks and diary tasks</h4><p class="small">Workflow tasks (FNOL, Registration…) are in Claim Task. Diary tasks are reminders a user creates from the Claim Summary "Diary Task" link and assigns to someone; they are in Diary Task. <span class="tag src">InsureMO Easy Claims Q9, Q10</span></p></div>
+    <div class="card"><h4>5. Due dates</h4><p class="small">A due date is assigned when a task is created. When it expires, the workbench highlights the task. Managers see their team's tasks in Task Monitor. <span class="tag src">InsureMO Easy Claims Q8, Q12</span></p></div>
+    <div class="card"><h4>6. Owners and shared pool</h4><p class="small">Tasks and claim owners can be reassigned to a named user or to a shared pool (Reassignment menu), for example when a handler is on leave. <span class="tag src">InsureMO Easy Claims Q13</span></p></div>
   </div>
 </section>
 <section class="block"><h2>Claim Summary toolbar (on every task page)</h2>
-  <p class="small muted">Seen on the source screenshots. Availability can depend on product and configuration.</p>
+  <p class="small muted">Seen on the InsureMO Easy Claims screenshots. Availability can depend on product and configuration.</p>
   <div class="tbl"><table><thead><tr><th>Item</th><th>Use</th></tr></thead><tbody>
     <tr><td>Policy No link</td><td>Opens the policy information page (data from Easy PA or the docked policy source)</td></tr>
     <tr><td>Notes (under Advance)</td><td>All claim notes under that policy</td></tr>
@@ -227,11 +238,11 @@
     <tr><td>Pending Claim toggle</td><td>Marks the claim as pending (seen on health FNOL)</td></tr>
     <tr><td>Red warning text</td><td>"Existed claim record in system on the same policy which reported within 24 hours" – a duplicate-claim alert</td></tr>
   </tbody></table></div>
-  <div class="callout ind"><span class="tag ind">Industry practice</span> The 24-hour duplicate warning is a basic fraud and data-quality control. Two reports on one policy in a day are often the same loss reported twice (by the agent and by the customer), or a staged claim. The handler should check Prior Claims before registering.</div>
+  <div class="callout ind"><span class="tag ind">Insurance knowledge</span> The 24-hour duplicate warning is a basic fraud and data-quality control. Two reports on one policy in a day are often the same loss reported twice (by the agent and by the customer), or a staged claim. The handler should check Prior Claims before registering.</div>
 </section>
 <section class="block"><h2>Claim status model</h2>
   <div id="statusFlow"></div>
-  <p class="small muted">Status names differ by tenant. This model combines the source rules (cancel at FNOL or Registration, decline at Calculation or Settlement, close after Settlement, reopen through New and Reopen) with common market practice.</p>
+  <p class="small muted">Status names differ by tenant. This model combines the InsureMO Easy Claims rules (cancel at FNOL or Registration, decline at Calculation or Settlement, close after Settlement, reopen through New and Reopen) with common market practice.</p>
 </section>
 <section class="block"><h2>Screens</h2><div class="shots" data-shots="4,16"></div></section>
 </section>
@@ -248,7 +259,7 @@
 <!-- ======================= 2.3 APPROVALS ======================= -->
 <section class="view" id="v-approvals">
 <header><span class="eyebrow">Module 2.3 · Core process</span><h1>Approvals and authority</h1>
-<p class="lede">Easy Claim uses one approval pattern for nine task types. Learn the pattern once and you can design, test and configure all of them.</p></header>
+<p class="lede">InsureMO Easy Claims uses one approval pattern for nine task types. Learn the pattern once and you can design, test and configure all of them.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>The approval pattern</h2>
   <div id="apprFlow"></div>
@@ -258,12 +269,13 @@
     <div class="card"><h4>Escalation</h4><p class="small">If the approver approves but the amount is above the approver's own authority, the system creates <b>another</b> approval task for the next level.</p></div>
   </div>
 </section>
+<div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>Authority and approvals in plain words</h4><ul><li><b>Authority limit:</b> the maximum amount a person may approve on their own, set by role (like a spending limit on a company card).</li><li><b>Why it exists:</b> it stops one person from paying large or wrong amounts alone, and is checked by auditors and regulators.</li><li><b>Escalation:</b> if the approver's own limit is too low, the claim goes one level higher automatically.</li><li><b>Reject:</b> sends the work back to the person who submitted it, with a remark explaining why.</li></ul></div>
 <section class="block"><h2>All approval tasks</h2>
   <div class="tbl"><table><thead><tr><th>Approval task</th><th>Created when</th><th>Reject →</th><th>Approve, within authority →</th><th>Approve, above authority →</th></tr></thead><tbody id="apprTable"></tbody></table></div>
-  <p class="small muted"><span class="tag src">Source</span> Reserve buttons (Update, Close, Reopen) are shown based on the user's reserve management permissions, configured in the claim authority configuration of the InsureMO Claim API.</p>
+  <p class="small muted"><span class="tag src">InsureMO Easy Claims</span> Reserve buttons (Update, Close, Reopen) are shown based on the user's reserve management permissions, configured in the claim authority configuration of the InsureMO Claim API.</p>
 </section>
 <section class="block"><h2>Designing an authority matrix</h2>
-  <p class="small muted"><span class="tag ind">Industry practice</span> The source does not give limits; these are typical. Use them as a starting point in workshops.</p>
+  <p class="small muted"><span class="tag ind">Insurance knowledge</span> InsureMO Easy Claims does not give limits; these are typical. Use them as a starting point in workshops.</p>
   <div class="tbl"><table><thead><tr><th>Level</th><th>Role</th><th>Typical motor limit</th><th>Typical property limit</th><th>Notes</th></tr></thead><tbody>
     <tr><td>L1</td><td>Claim handler</td><td>INR 50,000</td><td>USD 10,000</td><td>Most claims close at this level (straight-through for small claims)</td></tr>
     <tr><td>L2</td><td>Senior handler / team lead</td><td>INR 2,00,000</td><td>USD 50,000</td><td></td></tr>
@@ -285,8 +297,9 @@
 <p class="lede">Reserves carry the financial truth of a claim. This module follows the money from first estimate to final payment, including the new calculation tool, full-scale calculation and the reserve close rule.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Reserve lifecycle</h2><div id="reserveFlow"></div></section>
+<div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>Reserves and incurred cost in plain words</h4><ul><li><b>Reserve:</b> money set aside for a claim that is not yet paid. It is a promise in the accounts, not cash leaving the bank.</li><li><b>Paid:</b> money already sent to payees.</li><li><b>Incurred:</b> paid plus reserve: the best estimate of the total cost of the claim.</li><li><b>Why it matters to the business:</b> profit, pricing and reinsurance all use incurred figures. Wrong reserves mean wrong decisions.</li></ul></div>
 <section class="block"><h2>Reserve operations by task</h2>
-  <div class="tbl"><table><thead><tr><th>Where</th><th>What you can do <span class="tag src">Source</span></th></tr></thead><tbody>
+  <div class="tbl"><table><thead><tr><th>Where</th><th>What you can do <span class="tag src">InsureMO Easy Claims</span></th></tr></thead><tbody>
     <tr><td>Registration</td><td>Claim Reserve section: Add a reserve line (Subclaim, Reserve Type, Coverage Name, Outstanding Reserve). Delete a line. View Transaction History.</td></tr>
     <tr><td>Investigation, Appraisal (Claim Information tab)</td><td>Update, Close, Reopen reserve; view Reserve Summary and Reserve History. Close is also possible at claim level and sub-claim level.</td></tr>
     <tr><td>Case Information</td><td>Reserve History and Update</td></tr>
@@ -295,26 +308,26 @@
   </tbody></table></div>
 </section>
 <section class="block"><h2>Follow the money: Riya's motor claim</h2>
-  <div class="tbl"><table><thead><tr><th>Day</th><th>Event</th><th>Outstanding</th><th>Paid to date</th><th>Incurred</th><th>Easy Claim action</th></tr></thead><tbody id="incurredTable"></tbody></table></div>
-  <div class="callout ind"><span class="tag ind">Industry practice</span> Good practice is to set the first reserve on known facts within 24 to 48 hours and review it at every task. Large reserve jumps late in the claim ("reserve creep") distort the loss ratio and are flagged by auditors and reinsurers.</div>
+  <div class="tbl"><table><thead><tr><th>Day</th><th>Event</th><th>Outstanding</th><th>Paid to date</th><th>Incurred</th><th>InsureMO Easy Claims action</th></tr></thead><tbody id="incurredTable"></tbody></table></div>
+  <div class="callout ind"><span class="tag ind">Insurance knowledge</span> Good practice is to set the first reserve on known facts within 24 to 48 hours and review it at every task. Large reserve jumps late in the claim ("reserve creep") distort the loss ratio and are flagged by auditors and reinsurers.</div>
 </section>
 <section class="block"><h2>Calculation: two engines</h2>
   <div class="grid g2">
-    <div class="card"><h4>Claim Matrix V1 + GIMO rating <span class="tag src">Source</span></h4><p class="small">The original approach. Calculation uses the built-in rating function of GIMO. Settlement and Prepay screens stay unchanged. Existing tenants need no change.</p></div>
-    <div class="card"><h4>Claim Matrix V2 + new calculation tool <span class="tag src">Source</span></h4><p class="small">A configuration tool for claim formulas and calculation logic. Products are maintained in Claim Matrix V2. Supports full-scale calculation and parallel tasks. Adds the "Settled" field on Settlement/Prepay, and "Is Reopened" / "Reopened To" in calculation history.</p></div>
+    <div class="card"><h4>Claim Matrix V1 + GIMO rating <span class="tag src">InsureMO Easy Claims</span></h4><p class="small">The original approach. Calculation uses the built-in rating function of GIMO. Settlement and Prepay screens stay unchanged. Existing tenants need no change.</p></div>
+    <div class="card"><h4>Claim Matrix V2 + new calculation tool <span class="tag src">InsureMO Easy Claims</span></h4><p class="small">A configuration tool for claim formulas and calculation logic. Products are maintained in Claim Matrix V2. Supports full-scale calculation and parallel tasks. Adds the "Settled" field on Settlement/Prepay, and "Is Reopened" / "Reopened To" in calculation history.</p></div>
   </div>
-  <div class="callout"><b>Full-scale versus incremental calculation.</b> <span class="tag src">Source</span> Old way (incremental): first calculation 1,000; an extra 500 is found; you calculate again with 500 as a new factor; total 1,500 across two records. New way (full-scale): you enter 1,500 in the second calculation and the system treats it as the final total. The latest version always holds the full amount, which is easier to audit and to reverse.</div>
-  <div class="example"><b>Calculation screen example (source screenshot)</b>Family Inpatient Medical product. Line 1: Loss (Indemnity), Medical Treatment-Normal, Bill Amount 50,000, Parameter "Medical Fee" 60,000, Calculated 50,000, Adjusted 50,000. Line 2: Hospitalization Allowance, Parameter "Admission Days" 8, Calculated 8,000. Sum of Adjusted Amount 58,000. The bill was 60,000 but coverage capped it at 50,000; the allowance is a benefit (8 days × 1,000).</div>
+  <div class="callout"><b>Full-scale versus incremental calculation.</b> <span class="tag src">InsureMO Easy Claims</span> Old way (incremental): first calculation 1,000; an extra 500 is found; you calculate again with 500 as a new factor; total 1,500 across two records. New way (full-scale): you enter 1,500 in the second calculation and the system treats it as the final total. The latest version always holds the full amount, which is easier to audit and to reverse.</div>
+  <div class="example"><b>Calculation screen example (InsureMO Easy Claims screenshot)</b>Family Inpatient Medical product. Line 1: Loss (Indemnity), Medical Treatment-Normal, Bill Amount 50,000, Parameter "Medical Fee" 60,000, Calculated 50,000, Adjusted 50,000. Line 2: Hospitalization Allowance, Parameter "Admission Days" 8, Calculated 8,000. Sum of Adjusted Amount 58,000. The bill was 60,000 but coverage capped it at 50,000; the allowance is a benefit (8 days × 1,000).</div>
 </section>
 <section class="block"><h2>Settlement money rules</h2>
   <div class="tbl"><table><thead><tr><th>Rule</th><th>Detail</th></tr></thead><tbody>
-    <tr><td>Partial or final</td><td>Each settlement record is Partial or Final. A partial payment keeps the reserve open. <span class="tag src">Source</span></td></tr>
+    <tr><td>Partial or final</td><td>Each settlement record is Partial or Final. A partial payment keeps the reserve open. <span class="tag src">InsureMO Easy Claims</span></td></tr>
     <tr><td>Multiple payees</td><td>Add Payee adds payee blocks: Payee Name, Pay Mode, Pay Currency, Exchange Rate, and lines (Subclaim, Reserve Type, Coverage, Outstanding Reserve, Partial/Final, Indemnity Amount, Tax, Total Indemnity, Ex-Gratia Flag).</td></tr>
     <tr><td>Settled field (V2)</td><td>Shows how much of each reserve line is already settled.</td></tr>
     <tr><td>Decline</td><td>Decline button on Settlement (and Calculation per Q6) declines the claim.</td></tr>
-    <tr><td>Cancel settlement</td><td>New feature: cancel a submitted settlement request. <span class="tag src">Source Q1</span></td></tr>
-    <tr><td>Payment already in finance</td><td>If BCP has not paid yet: cancel payment and pay again. If BCP has paid: use Recovery to recover the payment and pay again with correct data. <span class="tag src">Source Q16</span></td></tr>
-    <tr><td>Reserve close rule (V2)</td><td>When closing a reserve, the system checks whether the paid amount is not 0 and the settled amount differs from the calculation amount. If both are true, it shows a validation message. GIMO-rating tenants keep the old validation. <span class="tag src">Source</span></td></tr>
+    <tr><td>Cancel settlement</td><td>New feature: cancel a submitted settlement request. <span class="tag src">InsureMO Easy Claims Q1</span></td></tr>
+    <tr><td>Payment already in finance</td><td>If BCP has not paid yet: cancel payment and pay again. If BCP has paid: use Recovery to recover the payment and pay again with correct data. <span class="tag src">InsureMO Easy Claims Q16</span></td></tr>
+    <tr><td>Reserve close rule (V2)</td><td>When closing a reserve, the system checks whether the paid amount is not 0 and the settled amount differs from the calculation amount. If both are true, it shows a validation message. GIMO-rating tenants keep the old validation. <span class="tag src">InsureMO Easy Claims</span></td></tr>
   </tbody></table></div>
 </section>
 <section class="block"><h2>Screens</h2><div class="shots" data-shots="17,20,18,Calculation,NewCalculation,159,161,33,34,35,160"></div></section>
@@ -326,13 +339,13 @@
 <p class="lede">Four auxiliary tasks run beside the main chain. Prepay sends money out early. Subrogation, Salvage and Recovery bring money back. Recoveries are often the difference between a profitable and a loss-making motor book.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Compare the four tasks</h2>
-  <div class="tbl"><table><thead><tr><th>Task</th><th>Source definition</th><th>Money direction</th><th>Counterparty</th><th>Approval task</th><th>Effect on net claim cost</th><th>BCP record</th></tr></thead><tbody>
-    <tr><td><b>Prepay</b></td><td>Advance payment before final settlement</td><td><span class="tag bad">Out</span></td><td>Insured / payee</td><td>Prepay Approval</td><td>No change to incurred; paid goes up, outstanding goes down</td><td>Claim AP <span class="tag ind">Industry practice</span></td></tr>
+  <div class="tbl"><table><thead><tr><th>Task</th><th>InsureMO Easy Claims definition</th><th>Money direction</th><th>Counterparty</th><th>Approval task</th><th>Effect on net claim cost</th><th>BCP record</th></tr></thead><tbody>
+    <tr><td><b>Prepay</b></td><td>Advance payment before final settlement</td><td><span class="tag bad">Out</span></td><td>Insured / payee</td><td>Prepay Approval</td><td>No change to incurred; paid goes up, outstanding goes down</td><td>Claim AP <span class="tag ind">Insurance knowledge</span></td></tr>
     <tr><td><b>Subrogation</b></td><td>Recovery from third parties</td><td><span class="tag ok">In</span></td><td>At-fault third party or their insurer</td><td>Subrogation Approval</td><td>Reduces net incurred</td><td>Recovery AR (200312, 200100 +)</td></tr>
     <tr><td><b>Salvage</b></td><td>Disposal of damaged property</td><td><span class="tag ok">In</span></td><td>Salvage buyer</td><td>Salvage Approval</td><td>Reduces net incurred</td><td>Recovery AR (200312, 200100 +)</td></tr>
-    <tr><td><b>Recovery</b></td><td>Recovery of overpaid amounts</td><td><span class="tag ok">In</span></td><td>Person who was overpaid</td><td>None in source</td><td>Corrects the overpayment</td><td>Recovery AR</td></tr>
+    <tr><td><b>Recovery</b></td><td>Recovery of overpaid amounts</td><td><span class="tag ok">In</span></td><td>Person who was overpaid</td><td>None in InsureMO Easy Claims</td><td>Corrects the overpayment</td><td>Recovery AR</td></tr>
   </tbody></table></div>
-  <p class="small muted">All four are created with <b>New Task</b> (Claim > New and Reopen). With parallel tasks on, the current logic for these subordinate tasks is unchanged. <span class="tag src">Source</span></p>
+  <p class="small muted">All four are created with <b>New Task</b> (Claim > New and Reopen). With parallel tasks on, the current logic for these subordinate tasks is unchanged. <span class="tag src">InsureMO Easy Claims</span></p>
 </section>
 <div class="taskgrid" id="auxPicker" role="group" aria-label="Choose an auxiliary task"></div>
 <div id="auxBody" class="view" style="gap:20px"></div>
@@ -341,7 +354,7 @@
 <!-- ======================= 3.2 SCENARIOS ======================= -->
 <section class="view" id="v-scenarios">
 <header><span class="eyebrow">Module 3.2 · Advanced</span><h1>Real-world claim scenarios</h1>
-<p class="lede">Ten end-to-end cases that join parties, Easy Claim tasks and other modules. Each one shows the full swimlane with every actor, the money result, and the lessons for business, testing and development.</p></header>
+<p class="lede">Ten end-to-end cases that join parties, InsureMO Easy Claims tasks and other modules. Each one shows the full swimlane with every actor, the money result, and the lessons for business, testing and development.</p></header>
 <div class="objectives" data-obj></div>
 <div class="taskgrid" id="scPicker" role="group" aria-label="Choose a scenario"></div>
 <div id="scBody" class="view" style="gap:20px"></div>
@@ -350,11 +363,11 @@
 <!-- ======================= 3.3 WORK MANAGEMENT ======================= -->
 <section class="view" id="v-workmgmt">
 <header><span class="eyebrow">Module 3.3 · Advanced</span><h1>Screens and work management</h1>
-<p class="lede">Beyond task pages, Easy Claim has screens to create claims, find them, manage workload, add tasks, reopen work and maintain third parties. Pick a screen.</p></header>
+<p class="lede">Beyond task pages, InsureMO Easy Claims has screens to create claims, find them, manage workload, add tasks, reopen work and maintain third parties. Pick a screen.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Menu map</h2>
   <div class="tbl"><table><thead><tr><th>Menu</th><th>Screen</th><th>Main user</th><th>Use</th></tr></thead><tbody id="menuMap"></tbody></table></div>
-  <p class="small muted">Common icons in the source: <img class="ico" data-icon="Common_1" alt="search"> search, <img class="ico" data-icon="Common_6" alt="columns"> choose result columns, <img class="ico" data-icon="Common_8" alt="edit"> edit / open task, <img class="ico" data-icon="Common_5" alt="delete"> delete, <img class="ico" data-icon="Common_2" alt="view"> view detail, <img class="ico" data-icon="Common_9" alt="expand"> expand detail.</p>
+  <p class="small muted">Common icons in InsureMO Easy Claims: <img class="ico" data-icon="Common_1" alt="search"> search, <img class="ico" data-icon="Common_6" alt="columns"> choose result columns, <img class="ico" data-icon="Common_8" alt="edit"> edit / open task, <img class="ico" data-icon="Common_5" alt="delete"> delete, <img class="ico" data-icon="Common_2" alt="view"> view detail, <img class="ico" data-icon="Common_9" alt="expand"> expand detail.</p>
 </section>
 <div class="taskgrid" id="scrPicker" role="group" aria-label="Choose a screen"></div>
 <div id="scrBody" class="view" style="gap:20px"></div>
@@ -363,14 +376,14 @@
 <!-- ======================= 3.4 INTEGRATION ======================= -->
 <section class="view" id="v-integration">
 <header><span class="eyebrow">Module 3.4 · Advanced</span><h1>Cross-module links: Easy PA, BCP and Reinsurance</h1>
-<p class="lede">Easy Claim does not work alone. It reads the policy from Easy PA, sends payments and recoveries to BCP, feeds reinsurance cessions and recoveries, and ends in the general ledger. Click a module on the map.</p></header>
+<p class="lede">InsureMO Easy Claims does not work alone. It reads the policy from Easy PA, sends payments and recoveries to BCP, feeds reinsurance cessions and recoveries, and ends in the general ledger. Click a module on the map.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Integration map</h2>
   <div id="hub"></div>
   <div id="hubDetail"></div>
 </section>
 <section class="block"><h2>What moves between modules</h2>
-  <div class="tbl"><table><thead><tr><th>From → To</th><th>Data</th><th>Trigger</th><th>Easy Claim point</th><th>Basis</th></tr></thead><tbody id="xTable"></tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>From → To</th><th>Data</th><th>Trigger</th><th>InsureMO Easy Claims point</th><th>Basis</th></tr></thead><tbody id="xTable"></tbody></table></div>
 </section>
 <section class="block"><h2>BCP fee codes for claims</h2>
   <p class="small muted">Taken from the BCP module guide (see the <a href="../bcp-learning-guide/index.html#integration">BCP learning guide</a>, which must sit in the folder next to this one for the link to work). BizModule 20 = Claims.</p>
@@ -383,7 +396,7 @@
 </section>
 <section class="block"><h2>Reinsurance in claims</h2>
   <div class="prose">
-    <p><span class="tag ind">Industry practice</span> The insurer passes part of each risk to reinsurers. When a claim happens, the reinsurer pays its share. The claim system must therefore tell the reinsurance module about every reserve change and payment on reinsured policies.</p>
+    <p><span class="tag ind">Insurance knowledge</span> The insurer passes part of each risk to reinsurers. When a claim happens, the reinsurer pays its share. The claim system must therefore tell the reinsurance module about every reserve change and payment on reinsured policies.</p>
   </div>
   <div class="tbl"><table><thead><tr><th>Treaty type</th><th>How the claim is shared</th><th>Claim data the RI module needs</th></tr></thead><tbody>
     <tr><td>Quota share</td><td>Fixed % of every claim (for example 40%)</td><td>Paid and outstanding per policy and coverage</td></tr>
@@ -403,29 +416,30 @@
 <!-- ======================= 3.5 CONFIG ======================= -->
 <section class="view" id="v-config">
 <header><span class="eyebrow">Module 3.5 · Advanced</span><h1>Configuration, APIs and the health baseline</h1>
-<p class="lede">Easy Claim behaviour is driven by parameters and configuration on the InsureMO Claim API platform. This module lists what can be configured, what it changes on screen, and the API route for straight-through claims.</p></header>
+<p class="lede">InsureMO Easy Claims behaviour is driven by parameters and configuration on the InsureMO Claim API platform. This module lists what can be configured, what it changes on screen, and the API route for straight-through claims.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Configuration items</h2>
   <input class="filter" id="cfgFilter" placeholder="Filter configuration…" style="max-width:320px">
   <div class="tbl"><table><thead><tr><th>Item</th><th>Options / content</th><th>Effect</th><th>Who configures</th><th>Basis</th></tr></thead><tbody id="cfgTable"></tbody></table></div>
 </section>
 <section class="block"><h2>Policy docking: try it</h2>
-  <p class="small muted"><span class="tag src">Source</span> The New Claim page decides where the policy comes from. Choose the two parameters and the "Is Manual Policy" flag.</p>
+  <div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>Policy docking in plain words</h4><ul><li><b>Docking:</b> how InsureMO Easy Claims gets the policy it checks the claim against.</li><li><b>PA:</b> policy read live from Easy PA (normal case).</li><li><b>Third Party:</b> policy read from another company system through an interface.</li><li><b>Manual policy:</b> handler types the policy details in, used when the policy is not held in any connected system.</li><li><b>Mock:</b> test data only.</li></ul></div>
+  <p class="small muted"><span class="tag src">InsureMO Easy Claims</span> The New Claim page decides where the policy comes from. Choose the two parameters and the "Is Manual Policy" flag.</p>
   <div class="card"><div class="calc" id="dockSel"></div><div class="calc-out" id="dockOut"></div></div>
 </section>
 <section class="block"><h2>APIs and straight-through processing</h2>
   <div class="prose">
-    <p><span class="tag src">Source</span> Easy Claim is built on the InsureMO Claim API. With API integration, clients can complete claims within minutes. API reference: <a href="https://docs.insuremo.com/tech/pro/sdk/api/claimbusiness" target="_blank" rel="noopener">docs.insuremo.com · Claim Business API</a>. Claims can also be created through ECS API calls on the ECS page.</p>
-    <p><span class="tag ind">Industry practice</span> Straight-through processing (STP) is used for small, simple claims: travel delay, hospital cash, windscreen, mobile phone. A typical API sequence is below. Confirm the exact endpoints and payloads in the API documentation.</p>
+    <p><span class="tag src">InsureMO Easy Claims</span> InsureMO Easy Claims is built on the InsureMO Claim API. With API integration, clients can complete claims within minutes. API reference: <a href="https://docs.insuremo.com/tech/pro/sdk/api/claimbusiness" target="_blank" rel="noopener">docs.insuremo.com · Claim Business API</a>. Claims can also be created through ECS API calls on the ECS page.</p>
+    <p><span class="tag ind">Insurance knowledge</span> Straight-through processing (STP) is used for small, simple claims: travel delay, hospital cash, windscreen, mobile phone. A typical API sequence is below. Confirm the exact endpoints and payloads in the API documentation.</p>
   </div>
   <div id="apiFlow"></div>
 </section>
 <section class="block"><h2>Health insurance baseline</h2>
   <div class="prose">
-    <p><span class="tag src">Source</span> A health insurance claims baseline is available, built on the Claim API and configuration. It adds health-specific fields and rules so the system captures richer data. Health screens exist for FNOL, Sub-Claim Information, Registration, Investigation, Appraisal, Settlement and Case Information.</p>
+    <p><span class="tag src">InsureMO Easy Claims</span> A health insurance claims baseline is available, built on the Claim API and configuration. It adds health-specific fields and rules so the system captures richer data. Health screens exist for FNOL, Sub-Claim Information, Registration, Investigation, Appraisal, Settlement and Case Information.</p>
     <p>From the screenshots, health FNOL adds: "Claim with other insurer?" (contribution check), "Report to police", Event Description, Agent/Broker Code and Name, Pending Claim toggle, Medical Bill and Payment Info links.</p>
   </div>
-  <div class="callout ind"><span class="tag ind">Industry practice</span> Health claims need data that motor and property do not: diagnosis code (ICD-10), procedure code, hospital (provider) ID, admission and discharge dates, room category, pre-authorisation number, and itemised bills. Regulators in several markets set tight timelines for cashless decisions; for example India's 2024 health master circular asks for cashless authorisation within one hour and final discharge authorisation within three hours. Confirm current rules for your market.</div>
+  <div class="callout ind"><span class="tag ind">Insurance knowledge</span> Health claims need data that motor and property do not: diagnosis code (ICD-10), procedure code, hospital (provider) ID, admission and discharge dates, room category, pre-authorisation number, and itemised bills. Regulators in several markets set tight timelines for cashless decisions; for example India's 2024 health master circular asks for cashless authorisation within one hour and final discharge authorisation within three hours. Confirm current rules for your market.</div>
   <div class="shots" data-shots="Health_FNOL,Health_SubClaimInformation,Health_Registration,Health_Investigation,Health_Appraisal,Health_Settlement,Health_CaseInfo"></div>
 </section>
 </section>
@@ -448,26 +462,26 @@
 </section>
 
 <section class="view" id="v-faq">
-<header><span class="eyebrow">Reference</span><h1>Source Q&amp;A</h1>
-<p class="lede">The 17 questions and answers from the source guide, each linked to the module that explains it.</p></header>
+<header><span class="eyebrow">Reference</span><h1>InsureMO Easy Claims Q&amp;A</h1>
+<p class="lede">The 17 questions and answers from the InsureMO Easy Claims guide, each linked to the module that explains it.</p></header>
 <div id="faqBody" class="grid"></div>
 </section>
 
 <section class="view" id="v-gaps">
-<header><span class="eyebrow">Reference</span><h1>Source gaps and assumptions</h1>
-<p class="lede">Points where the source is unclear, inconsistent or silent. Resolve them with the platform team before you lock requirements or expected test results.</p></header>
-<div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What the source says</th><th>What to confirm</th></tr></thead><tbody id="gapBody"></tbody></table></div>
+<header><span class="eyebrow">Reference</span><h1>InsureMO Easy Claims: gaps and assumptions</h1>
+<p class="lede">Points where the InsureMO Easy Claims guide is unclear, inconsistent or silent. Resolve them with the platform team before you lock requirements or expected test results.</p></header>
+<div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What InsureMO Easy Claims says</th><th>What to confirm</th></tr></thead><tbody id="gapBody"></tbody></table></div>
 </section>
 
 <section class="view" id="v-trace">
 <header><span class="eyebrow">Reference</span><h1>Learning tracker and traceability</h1>
-<p class="lede">Each source section is traced to the module that teaches it and the questions that test it. Your status and scores update as you learn.</p></header>
+<p class="lede">Each InsureMO Easy Claims guide section is traced to the module that teaches it and the questions that test it. Your status and scores update as you learn.</p></header>
 <div id="dashTrace"></div>
 <section class="block"><h2>Module scorecard</h2>
-  <div class="tbl"><table><thead><tr><th>Module</th><th>Status</th><th>Knowledge check</th><th>Score</th><th>Source sections covered</th></tr></thead><tbody id="scoreBody"></tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>Module</th><th>Status</th><th>Knowledge check</th><th>Score</th><th>InsureMO Easy Claims sections covered</th></tr></thead><tbody id="scoreBody"></tbody></table></div>
 </section>
-<section class="block"><h2>Source-to-guide traceability</h2>
-  <div class="tbl"><table><thead><tr><th>Source section</th><th>Guide location</th><th>Tested by</th><th>Your result</th></tr></thead><tbody id="traceBody"></tbody></table></div>
+<section class="block"><h2>InsureMO Easy Claims-to-guide traceability</h2>
+  <div class="tbl"><table><thead><tr><th>InsureMO Easy Claims section</th><th>Guide location</th><th>Tested by</th><th>Your result</th></tr></thead><tbody id="traceBody"></tbody></table></div>
 </section>
 <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="dlReport" type="button">Download progress report</button><button class="btn ghost" id="printBtn" type="button">Print guide</button><button class="btn ghost" id="resetAll" type="button">Reset all progress</button></div>
 </section>

@@ -7,8 +7,8 @@ const APPROVALS=[
  ['Subrogation Approval','Subrogation Submit with amount above user authority','New Subrogation task','Task closed','New Subrogation Approval task'],
  ['Salvage Approval','Salvage Submit with amount above user authority','New Salvage task','Task closed','New Salvage Approval task'],
  ['Reserve Update Approval','Reserve update above user authority','Task closed (reserve unchanged)','Reserve updated','New Reserve Update Approval task'],
- ['Reserve Close Approval','Reserve close needing approval','Task closed (reserve stays open)','Reserve closed','Not stated in source'],
- ['Reserve Reopen Approval','Reserve reopen needing approval','Task closed (reserve stays closed)','Reserve reopened','Not stated in source']
+ ['Reserve Close Approval','Reserve close needing approval','Task closed (reserve stays open)','Reserve closed','Not stated in InsureMO Easy Claims'],
+ ['Reserve Reopen Approval','Reserve reopen needing approval','Task closed (reserve stays closed)','Reserve reopened','Not stated in InsureMO Easy Claims']
 ];
 
 const INCURRED=[
@@ -44,9 +44,9 @@ const AUX=[
  shots:['45','46','47','48','49','50']},
 {id:'recov',name:'Recovery',def:'Recovery of overpaid amounts.',
  why:'Overpayments happen: duplicate payments, wrong payee, a later finding of fraud or non-disclosure, or the insured received money from another insurer. The insurer must create a receivable and collect it, and auditors expect every overpayment to be tracked to closure.',
- steps:[S('hand','op','Overpayment found (for example paid to wrong account and already paid by BCP)'),S('hand','op','New Task → Recovery',{m:'Claim > New and Reopen'}),S('hand','op','Add Recovery: counterparty and amount',{m:'Recovery'}),S('hand','op','Submit'),S('sys','sys','Task closed (no approval task in source)'),S('bcp','bcp','Recovery AR; collection from the person overpaid'),S('hand','op','Correct payment made with a new settlement')],
+ steps:[S('hand','op','Overpayment found (for example paid to wrong account and already paid by BCP)'),S('hand','op','New Task → Recovery',{m:'Claim > New and Reopen'}),S('hand','op','Add Recovery: counterparty and amount',{m:'Recovery'}),S('hand','op','Submit'),S('sys','sys','Task closed (no approval task in InsureMO Easy Claims)'),S('bcp','bcp','Recovery AR; collection from the person overpaid'),S('hand','op','Correct payment made with a new settlement')],
  sections:'Claim Summary, Recovery History (view opens detail), Recovery (Add Recovery; delete extra), Remark, Transaction History.',
- outcome:'Submit; the source describes no Recovery Approval task.',
+ outcome:'Submit; the InsureMO Easy Claims guide describes no Recovery Approval task.',
  example:'A health claim was paid twice because the hospital submitted the same bill under two claim numbers. The handler raises a Recovery for the duplicate amount against the hospital, and BCP offsets it against the hospital\'s next payment or collects it.',
  shots:['51','52','53','54']}
 ];

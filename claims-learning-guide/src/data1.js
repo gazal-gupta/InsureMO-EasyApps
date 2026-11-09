@@ -6,11 +6,11 @@ const MODULES=[
  {id:'insurance',n:'1.1',name:'Insurance and claims basics',grp:'Level 1 · Basics',roles:['ba','qa','dev'],
   learn:'What a claim is, where it sits in the value chain, loss ratio, claim types, KPIs',
   ready:'Explain why reserve accuracy changes the loss ratio',
-  obj:['Define a claim using the source definition','Place claims in the insurance value chain and name the InsureMO module for each step','Calculate loss ratio and combined ratio','Tell indemnity cover from benefit cover']},
+  obj:['Define a claim using the InsureMO Easy Claims definition','Place claims in the insurance value chain and name the InsureMO module for each step','Calculate loss ratio and combined ratio','Tell indemnity cover from benefit cover']},
  {id:'parties',n:'1.2',name:'Parties and roles',grp:'Level 1 · Basics',roles:['ba','qa','dev'],
   learn:'Insurer, insured, policyholder, claimant, agent, broker, TPA, garage, surveyor, third parties',
   ready:'Name the claimant, payee and policyholder in any claim story',
-  obj:['Tell policyholder, insured, claimant, beneficiary and payee apart','Explain what a TPA, surveyor, loss adjuster, garage and investigator do','Know where each party is captured in Easy Claim']},
+  obj:['Tell policyholder, insured, claimant, beneficiary and payee apart','Explain what a TPA, surveyor, loss adjuster, garage and investigator do','Know where each party is captured in InsureMO Easy Claims']},
  {id:'concepts',n:'1.3',name:'Core claim concepts',grp:'Level 1 · Basics',roles:['ba','qa','dev'],
   learn:'Insurance principles, claim structure, claim vs sub-claim mode, payable rules, reserves',
   ready:'Calculate a payable amount with average, deductible and co-pay',
@@ -58,8 +58,8 @@ const MODULES=[
 ];
 const REFVIEWS=[
  {id:'glossary',n:'R',name:'Glossary',grp:'Reference'},
- {id:'faq',n:'R',name:'Source Q&A',grp:'Reference'},
- {id:'gaps',n:'R',name:'Source gaps',grp:'Reference'},
+ {id:'faq',n:'R',name:'Easy Claims Q&A',grp:'Reference'},
+ {id:'gaps',n:'R',name:'Easy Claims gaps',grp:'Reference'},
  {id:'trace',n:'R',name:'Tracker and traceability',grp:'Reference'},
  {id:'assess',n:'★',name:'Overall assessment',grp:'Final'}
 ];
@@ -70,7 +70,7 @@ const PATHS={
  dev:{t:'Developer',d:'Understand data, task engine, integration and configuration.',steps:['1.3 claim structure','2.1 task engine','2.4 reserves and calculation','3.4 integration, 3.5 configuration and APIs','4 developer checklist','Overall assessment'],mods:['concepts','lifecycle','tasks','approvals','reserves','aux','integration','config','toolkit','scenarios']}
 };
 
-const LANES={clmt:'Insured / claimant',pol:'Policyholder',agt:'Agent / broker',hosp:'Hospital',tpa:'TPA',gar:'Garage',surv:'Surveyor / loss adjuster',tp:'Third party / other insurer',buyer:'Salvage buyer',hand:'Claim handler',appr:'Approver',sys:'Easy Claim system',pa:'Easy PA',bcp:'BCP',ri:'Reinsurance',gl:'General ledger',bank:'Bank',api:'Partner app / portal'};
+const LANES={clmt:'Insured / claimant',pol:'Policyholder',agt:'Agent / broker',hosp:'Hospital',tpa:'TPA',gar:'Garage',surv:'Surveyor / loss adjuster',tp:'Third party / other insurer',buyer:'Salvage buyer',hand:'Claim handler',appr:'Approver',sys:'InsureMO Easy Claims system',pa:'Easy PA',bcp:'BCP',ri:'Reinsurance',gl:'General ledger',bank:'Bank',api:'Partner app / portal'};
 const LANE_ORDER=['clmt','pol','agt','api','hosp','tpa','gar','surv','tp','buyer','hand','appr','sys','pa','bcp','bank','ri','gl'];
 
 const VALUE_CHAIN=[
@@ -79,7 +79,7 @@ const VALUE_CHAIN=[
  {id:'uw',t:'Underwriting',m:'Easy PA',d:'Decides whether to accept the risk and at what premium. Claims experience feeds back into underwriting at renewal.'},
  {id:'pol',t:'Policy issue',m:'Easy PA',d:'Creates the contract the claim is checked against: insured, period, sum insured, coverages.'},
  {id:'bill',t:'Billing and collection',m:'BCP',d:'Collects premium. Some products need premium paid before cover starts (cash before cover).'},
- {id:'clm',t:'Claims',m:'Easy Claim',d:'This guide. Notifies, assesses, reserves, pays and recovers.'},
+ {id:'clm',t:'Claims',m:'InsureMO Easy Claims',d:'This guide. Notifies, assesses, reserves, pays and recovers.'},
  {id:'ri',t:'Reinsurance',m:'Reinsurance module',d:'Cedes part of premium and recovers part of each claim.'},
  {id:'fin',t:'Finance and GL',m:'BCP → GL',d:'Books reserves, payments and recoveries; produces financial statements.'}
 ];
@@ -97,7 +97,7 @@ const LOB=[
 ];
 
 const PARTIES=[
- {n:'Insurer',g:'ins',who:'The company that issues the policy and pays valid claims',role:'Owns the claim decision, reserves and payment',ec:'The tenant using Easy Claim; claim handlers and approvers are its users',ex:'The insurer that issued Riya\'s motor policy'},
+ {n:'Insurer',g:'ins',who:'The company that issues the policy and pays valid claims',role:'Owns the claim decision, reserves and payment',ec:'The tenant using InsureMO Easy Claims; claim handlers and approvers are its users',ex:'The insurer that issued Riya\'s motor policy'},
  {n:'Policyholder',g:'cust',who:'The person or company that buys the policy and pays premium',role:'Often reports the claim; signs the claim form for commercial policies',ec:'Policy Holder Name in Claim Search, My Claim; comes from Easy PA',ex:'Sunrise Textiles Ltd; an employer in group health'},
  {n:'Insured',g:'cust',who:'The person or property covered by the policy',role:'Suffers the loss',ec:'Insured Name in Claim Search; Risk Name on the sub-claim',ex:'Mr Tan (insured person); Riya\'s car (insured object)'},
  {n:'Beneficiary / nominee',g:'cust',who:'Person named to receive the benefit, usually on death',role:'Claimant and payee for death claims',ec:'Claimant and Payee records',ex:'Spouse named on a personal accident policy'},
@@ -106,8 +106,8 @@ const PARTIES=[
  {n:'Agent',g:'ext',who:'Intermediary who sells for one or more insurers',role:'Helps the customer report and collect documents',ec:'Agent/Broker Code and Name on Claim Information (health); producer from Easy PA',ex:'Tied agent who sold Riya\'s policy'},
  {n:'Broker',g:'ext',who:'Intermediary who acts for the customer',role:'Prepares and negotiates large commercial claims',ec:'Agent/Broker Code and Name; contact person',ex:'Broker of Sunrise Textiles who notifies the fire'},
  {n:'TPA (third-party administrator)',g:'ext',who:'Licensed company that administers health claims for insurers',role:'Issues health cards, approves cashless requests, reviews bills, may settle hospitals',ec:'Party Management (third party); creates claims through API or Batch FNOL; contact on Document task',ex:'TPA approving Mr Tan\'s pre-authorisation'},
- {n:'Hospital / provider',g:'ext',who:'Medical service provider, network (agreed rates) or non-network',role:'Requests cashless approval, sends bills; payee in cashless claims',ec:'Party Management ("hospitals" in source Q17); Provider Price on loss items; Medical Bill',ex:'Network hospital where Mr Tan has surgery'},
- {n:'Garage / repairer',g:'ext',who:'Workshop that repairs vehicles, network or non-network',role:'Gives repair estimate; repairs; payee in cashless motor claims',ec:'Party Management ("garage" in source Q17); Garage Price on spare part loss items',ex:'Network garage repairing Riya\'s car'},
+ {n:'Hospital / provider',g:'ext',who:'Medical service provider, network (agreed rates) or non-network',role:'Requests cashless approval, sends bills; payee in cashless claims',ec:'Party Management ("hospitals" in InsureMO Easy Claims Q17); Provider Price on loss items; Medical Bill',ex:'Network hospital where Mr Tan has surgery'},
+ {n:'Garage / repairer',g:'ext',who:'Workshop that repairs vehicles, network or non-network',role:'Gives repair estimate; repairs; payee in cashless motor claims',ec:'Party Management ("garage" in InsureMO Easy Claims Q17); Garage Price on spare part loss items',ex:'Network garage repairing Riya\'s car'},
  {n:'Surveyor / loss adjuster',g:'ext',who:'Independent expert who assesses cause and amount of loss',role:'Inspects damage, checks coverage facts, recommends an amount',ec:'Investigation Information (Investigator Name, Contact, Arrival Date, Address, Description); Surveyor Price on loss items; expense reserve for fees',ex:'Motor surveyor; fire loss adjuster for Sunrise Textiles'},
  {n:'Investigator',g:'ext',who:'Person who verifies facts when fraud or doubt exists',role:'Field visits, interviews, records checks',ec:'Investigation task; expense reserve',ex:'Verifying a hospital admission was genuine'},
  {n:'Third party',g:'ext',who:'Someone outside the contract who caused or suffered the loss',role:'May claim against the insured, or be pursued by the insurer',ec:'Claimant (third-party claimant type); Subrogation counterparty',ex:'Truck owner who hit Riya'},
@@ -151,9 +151,9 @@ const TASKS=[
   ['Claimant Information','Add, edit (edit icon) and delete (bin icon) claimants. Fields: Claimant Name*, Claimant Type*, ID Type, ID Number.'],
   ['Sub-Claim Information','Add a sub-claim and Save; the system checks mandatory fields. Fields: Subclaim (number), Risk Name*, Subclaim Type* (for example FP-Vehicle), Damage Object*, Claim Owner, Claimant Name.'],
   ['Remark','Free text for notes.']],
- buttons:[['Save','Saves the information'],['Cancel','Cancels the report. The claim is cancelled (source Q5: used when the customer does not want to claim).'],['Submit','Closes FNOL, creates the Registration task, opens Task Transfer'],['Exit','Returns to Claim Task without saving']],
+ buttons:[['Save','Saves the information'],['Cancel','Cancels the report. The claim is cancelled (InsureMO Easy Claims Q5: used when the customer does not want to claim).'],['Submit','Closes FNOL, creates the Registration task, opens Task Transfer'],['Exit','Returns to Claim Task without saving']],
  example:'<b>Riya, 18:40, Tuesday.</b> The call centre agent clicks New Accident Report, enters the policy number and today\'s date, and Easy PA returns the policy: private car, IDV INR 6,00,000, comprehensive. On FNOL the agent records Cause of Loss = collision, no other insurance, accident address and a short description ("rear-ended by truck at signal; boot and rear bumper damaged; no injuries"). Claimant = Riya (insured). Sub-claim 001: Risk = the car, Subclaim Type = vehicle own damage, Damage Object = rear bumper and boot. Submit creates the Registration task. Total time: 6 minutes.',
- health:'Health FNOL (source screenshots) adds Claim with other insurer?, Report to police, Event Description, Agent/Broker Code and Name, Pending Claim toggle, and links to Payment Info and Medical Bill. The red warning "Existed claim record in system on the same policy which reported within 24 hours" appears for possible duplicates.',
+ health:'Health FNOL (InsureMO Easy Claims screenshots) adds Claim with other insurer?, Report to police, Event Description, Agent/Broker Code and Name, Pending Claim toggle, and links to Payment Info and Medical Bill. The red warning "Existed claim record in system on the same policy which reported within 24 hours" appears for possible duplicates.',
  shots:['5','6','7','8','11','12','13','14','15','16','Health_FNOL','Health_SubClaimInformation'],
  ba:'Agree per product: mandatory FNOL fields, cause-of-loss list, who may report (customer, agent, garage, hospital, TPA), catastrophe code process, and the duplicate-claim window. Decide whether reserve must be set at FNOL or at Registration.',
  qa:'Test: policy not in force on date of loss; date of loss in the future; report date earlier than date of loss; duplicate report within 24 hours shows the warning; Submit with a missing mandatory field; Cancel results in a cancelled claim; Task Transfer checkbox is read-only when another user owns the task.',
@@ -166,13 +166,13 @@ const TASKS=[
   S('hand','op','Claim Reserve: Add a line per sub-claim, reserve type and coverage; enter Outstanding Reserve',{m:'Claim Reserve > Add'}),
   S('sys','sys','Reserve saved; Transaction History records the change',{r:'Reserve Open'}),
   S('bcp','bcp','Reserve fee 200201 booked for accounting (no AR/AP)',{n:'From BCP guide'}),
-  S('ri','ri','Reinsurance share of outstanding updated',{n:'Industry practice'}),
+  S('ri','ri','Reinsurance share of outstanding updated',{n:'Insurance knowledge'}),
   S('hand','op','Submit Registration (or Cancel to cancel the claim)'),
   S('sys','sys','Registration closed; Investigation task created',{b:'Submit',r:'Investigation pending'})],
  sections:[['Claim Summary / Claim / Claimant / Sub-Claim / Remark','Same as FNOL'],['Claim Reserve','Add creates a reserve line: Subclaim*, Reserve Type* (for example Loss (Indemnity), Loss (Expense)), Coverage Name*, Sum Insured (read-only), Outstanding Reserve*, Settled (read-only), Remark. Bin icon deletes a line.'],['Transaction History','Log of changes on the claim']],
  buttons:[['Save','Saves'],['Cancel','Cancels the reporting (claim cancelled)'],['Submit','Creates the Investigation task'],['Exit','Back to Claim Task']],
  example:'Riya\'s handler adds two reserve lines on sub-claim 001: Loss (Indemnity), Own Damage coverage, INR 60,000 (the average cost of a rear-end repair for this car model), and Loss (Expense), INR 1,500 for the surveyor\'s fee. Incurred is now INR 61,500.',
- health:'Health Registration has its own layout (source screenshot "Health_Registration").',
+ health:'Health Registration has its own layout (InsureMO Easy Claims screenshot).',
  shots:['17','18','19','Health_Registration'],
  ba:'Define the initial reserve method per product: fixed average reserve by cause of loss, handler judgement, or estimate from the garage/hospital. Define which coverages can be reserved for each sub-claim type.',
  qa:'Test reserve on a coverage the policy does not have; reserve above sum insured; deleting a reserve line; Transaction History entry after save; Cancel at Registration.',
@@ -181,7 +181,7 @@ const TASKS=[
  purpose:'Investigate and verify the claim and collect relevant evidence.',
  why:'Investigation answers three questions before money is spent: did the event happen as described, is the cause covered, and is the claimant entitled. Typical evidence: site photos, police or fire brigade report, witness statements, hospital records. Suspected fraud is referred to a special investigation unit (SIU).',
  steps:[S('hand','op','Open the Investigation task',{m:'Work On'}),
-  S('surv','ext','Surveyor or investigator visits the site, vehicle or hospital',{n:'Industry practice'}),
+  S('surv','ext','Surveyor or investigator visits the site, vehicle or hospital',{n:'Insurance knowledge'}),
   S('hand','op','Sub-Claim tab: record Investigator Name, Contact, Arrival Date, Address, Description; Save per sub-claim',{m:'Investigation Information'}),
   S('hand','op','Claim Information tab: Update, Close or Reopen reserve if the estimate changed',{m:'Claim Reserve (buttons by permission)'}),
   S('sys','dec','Reserve change above authority?',{}),
@@ -200,8 +200,8 @@ const TASKS=[
  purpose:'Determine the loss amount. May require approval.',
  why:'Appraisal puts a value on each damaged item before policy terms are applied. Comparing the surveyor\'s price, the garage\'s price and a provider (parts supplier) price is the main control against inflated repair bills, which is a large source of claim leakage in motor insurance.',
  steps:[S('hand','op','Open the Appraisal task; review latest investigation information',{m:'Sub-Claim tab'}),
-  S('gar','ext','Garage submits repair estimate (labour and parts)',{n:'Industry practice'}),
-  S('surv','ext','Surveyor gives assessed prices',{n:'Industry practice'}),
+  S('gar','ext','Garage submits repair estimate (labour and parts)',{n:'Insurance knowledge'}),
+  S('surv','ext','Surveyor gives assessed prices',{n:'Insurance knowledge'}),
   S('hand','op','Loss Item: Add labour lines (part, work type, coverage, labour cost) and spare part lines (surveyor, garage, provider price; appraisal amount)',{m:'Loss Item'}),
   S('sys','sys','Totals: labour cost, spare part cost, total',{}),
   S('hand','op','Submit Appraisal'),
@@ -248,9 +248,9 @@ const TASKS=[
   S('appr','appr','Calculation Approval: Approve or Reject',{b:'Yes'}),
   S('sys','sys','Settlement task created',{b:'No / Approved',r:'Settlement pending'})],
  sections:[['Claim Summary, Claim Information, Sub-Claim Information','Read-only context'],['Calculation (V2)','Claim Calculation table: Order, Reserve Type*, Coverage Name*, Bill Amount, Parameter*, Calculated Amount*, Adjusted Amount*, Action. Add and Calculate buttons. Sum Of Adjusted Amount.'],['Calculation (V1)','GIMO rating calculation page'],['Remark','Notes']],
- buttons:[['Decline','Declines the claim (source Q6)'],['Save','Saves'],['Submit','Above authority → Calculation Approval; otherwise Settlement task'],['Exit','Back to Claim Task']],
+ buttons:[['Decline','Declines the claim (InsureMO Easy Claims Q6)'],['Save','Saves'],['Submit','Above authority → Calculation Approval; otherwise Settlement task'],['Exit','Back to Claim Task']],
  example:'Riya: 82,000 assessed. Depreciation: metal parts 10% (car is 1–2 years old) = 3,200; plastic parts 50% = 10,000; labour 0%. Deductible 1,000. Payable = 82,000 − 13,200 − 1,000 = INR 67,800. This is above the handler\'s 50,000 limit, so Calculation Approval goes to the team lead.',
- health:'Source screenshot: Family Inpatient Medical. Medical Treatment-Normal: bill 50,000, parameter Medical Fee 60,000, calculated 50,000. Hospitalization Allowance: Admission Days 8, calculated 8,000. Sum of Adjusted Amount 58,000.',
+ health:'InsureMO Easy Claims screenshot: Family Inpatient Medical. Medical Treatment-Normal: bill 50,000, parameter Medical Fee 60,000, calculated 50,000. Hospitalization Allowance: Admission Days 8, calculated 8,000. Sum of Adjusted Amount 58,000.',
  shots:['Calculation','NewCalculation','31','32'],
  ba:'Write each calculation rule as a formula with order of application (depreciation before or after deductible, co-pay before or after sub-limit). Decide when a handler may override with Adjusted Amount, and whether an override needs approval.',
  qa:'Build a calculation test sheet with expected values for each coverage. Test full-scale recalculation: second calculation entered as the new total, not the increment. Test Decline at calculation.',
@@ -267,7 +267,7 @@ const TASKS=[
   S('sys','sys','Claim closed (Final) or reserve stays open (Partial)',{b:'No / Approved',r:'Closed'}),
   S('bcp','bcp','Claim AP created (200312, 200100 −); Refund Approval; Single or Massive Refund',{m:'BCP'}),
   S('bank','ext','Bank transfer or cheque to payee',{}),
-  S('ri','ri','Paid loss reported for reinsurance recovery',{n:'Industry practice'}),
+  S('ri','ri','Paid loss reported for reinsurance recovery',{n:'Insurance knowledge'}),
   S('gl','gl','Paid claim and reserve release booked',{})],
  sections:[['Claim Summary, Claim Information, Sub-Claim Information, Calculation','Same as Calculation task; only claimant can be changed; Calculation read-only'],['Settlement History','Earlier settlements on the claim'],['Payee (GIMO rating tenants)','Add settlement record (partial/final); Add Payee; delete records and extra payees'],['Payee (new calculation tool)','Adds "Settled" to show the settled reserve amount for each item']],
  buttons:[['Decline','Declines the claim'],['Save','Saves'],['Submit','Above authority → Settlement Approval; otherwise the claim closes (reopen through New and Reopen)'],['Exit','Back to Claim Task']],

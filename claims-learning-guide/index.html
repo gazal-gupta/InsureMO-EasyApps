@@ -146,6 +146,10 @@ details.more>div{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px
 .rn.qa{border-left-color:var(--ok)} .rn.qa b.who{color:var(--ok)}
 .rn.dev{border-left-color:var(--sys)} .rn.dev b.who{color:var(--sys)}
 body[data-role="ba"] .rn.qa,body[data-role="ba"] .rn.dev,body[data-role="qa"] .rn.ba,body[data-role="qa"] .rn.dev,body[data-role="dev"] .rn.ba,body[data-role="dev"] .rn.qa{display:none}
+.explain{border:1px solid var(--line);border-left:4px solid var(--warn);background:var(--surface);border-radius:0 var(--r) var(--r) 0;padding:12px 16px;max-width:92ch;display:flex;flex-direction:column;gap:6px}
+.explain .ex-h{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--warn);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.explain ul{font-size:14px}
+.stage-row td{background:var(--surface-2);font-family:var(--f-display);font-weight:700}
 .example{border:1px dashed var(--warn);background:var(--warn-soft);border-radius:var(--r);padding:12px 14px;font-size:14px}
 .example>b:first-child{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--warn);display:block;margin-bottom:4px}
 
@@ -262,7 +266,7 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <body>
 <header class="top"><div class="top-in">
   <button class="menu-btn" type="button" id="menuBtn" aria-label="Open menu">Menu</button>
-  <a class="brand" href="#start"><span class="brand-mark">CLM</span><span><b>Easy Claim Learning Guide</b><span>InsureMO · Claims · basic to advanced</span></span></a>
+  <a class="brand" href="#start"><span class="brand-mark">CLM</span><span><b>InsureMO Easy Claims Learning Guide</b><span>InsureMO · Claims · basic to advanced</span></span></a>
   <div class="search"><input id="q" type="search" placeholder="Search tasks, terms, screens, scenarios…" autocomplete="off" aria-label="Search the guide"><div class="results" id="results" hidden></div></div>
   <div class="roles" role="group" aria-label="Role lens"><span class="small muted">Lens</span>
     <button class="chip" data-role="all" aria-pressed="true">Everyone</button>
@@ -285,7 +289,7 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <header>
   <span class="eyebrow">Start here</span>
   <h1>InsureMO Easy Claim: learning guide</h1>
-  <p class="lede">This guide teaches the Easy Claim module from first principles to advanced configuration. Every process has a swimlane diagram with the actor for each step, a step table, a real insurance example, and links to Easy PA, BCP and Reinsurance. Your progress and scores stay in this browser, so the downloaded file works offline.</p>
+  <p class="lede">This guide teaches the InsureMO Easy Claims module from first principles to advanced configuration. Every process has a swimlane diagram with the actor for each step, a step table, a real insurance example, and links to Easy PA, BCP and Reinsurance. Your progress and scores stay in this browser, so the downloaded file works offline.</p>
 </header>
 <section class="block"><h2>Your learning dashboard</h2><div id="dashStart"></div></section>
 <section class="block">
@@ -302,10 +306,10 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
   <div class="grid g2">
     <div class="card"><h4>Swimlane diagrams</h4><p class="small">Each column is an actor (a person, company or system). Steps run from top to bottom. A coloured box shows who acts. Click a box to highlight its row in the step table below the diagram. Use <b>Full screen</b> on any diagram to fit it to your screen.</p>
       <div class="legend small" style="display:flex;gap:10px;flex-wrap:wrap">
-        <span class="pill" style="background:var(--cust-soft)">Customer side / event</span><span class="pill" style="background:var(--ins-soft)">Insurer user action</span><span class="pill" style="background:var(--sys-soft)">Easy Claim system</span><span class="pill" style="background:var(--warn-soft)">Decision</span><span class="pill" style="background:var(--ext-soft)">External party</span><span class="pill" style="border:2px solid var(--accent)">Approval</span><span class="pill" style="background:var(--pa-soft)">Easy PA</span><span class="pill" style="background:var(--bcp-soft)">BCP</span><span class="pill" style="background:var(--ri-soft)">Reinsurance</span></div></div>
+        <span class="pill" style="background:var(--cust-soft)">Customer side / event</span><span class="pill" style="background:var(--ins-soft)">Insurer user action</span><span class="pill" style="background:var(--sys-soft)">InsureMO Easy Claims system</span><span class="pill" style="background:var(--warn-soft)">Decision</span><span class="pill" style="background:var(--ext-soft)">External party</span><span class="pill" style="border:2px solid var(--accent)">Approval</span><span class="pill" style="background:var(--pa-soft)">Easy PA</span><span class="pill" style="background:var(--bcp-soft)">BCP</span><span class="pill" style="background:var(--ri-soft)">Reinsurance</span></div></div>
     <div class="card"><h4>Tags you will see</h4>
-      <p class="small"><span class="tag src">Source</span> fact from the InsureMO Easy Claim user guide.</p>
-      <p class="small"><span class="tag ind">Industry practice</span> general insurance knowledge or a worked example added for learning. Rules differ by country and product, so confirm before you use it in a requirement or a test.</p>
+      <p class="small"><span class="tag src">InsureMO Easy Claims</span> fact from the InsureMO Easy Claim user guide.</p>
+      <p class="small"><span class="tag ind">Insurance knowledge</span> general insurance knowledge or a worked example added for learning. Rules differ by country and product, so confirm before you use it in a requirement or a test.</p>
       <p class="small"><span class="tag pa">Easy PA</span> <span class="tag bcp">BCP</span> <span class="tag ri">Reinsurance</span> cross-module link.</p></div>
   </div>
 </section>
@@ -326,27 +330,31 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <p class="lede">A claim is the moment the insurer keeps its promise. To design, test or build a claims system, you first need to know where claims sit in the insurance business and why they drive profit.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>What a claim is</h2>
-  <div class="callout"><span class="tag src">Source</span> A claim is the entire process where, after a risk event stated in the insurance contract occurs, the insured or beneficiary submits a claim request to the insurer. The insurer then reviews, investigates, assesses the loss, calculates and pays compensation according to the contract terms.</div>
-  <div class="prose"><p>Insurance is risk transfer. Many customers pay a small, certain amount (the <b>premium</b>) so that the few who suffer a loss receive a large, uncertain amount (the <b>claim</b>). The insurer pools the premiums and pays claims out of the pool. <span class="tag ind">Industry practice</span></p>
+  <div class="callout"><span class="tag src">InsureMO Easy Claims</span> A claim is the entire process where, after a risk event stated in the insurance contract occurs, the insured or beneficiary submits a claim request to the insurer. The insurer then reviews, investigates, assesses the loss, calculates and pays compensation according to the contract terms.</div>
+  <div class="prose"><p>Insurance is risk transfer. Many customers pay a small, certain amount (the <b>premium</b>) so that the few who suffer a loss receive a large, uncertain amount (the <b>claim</b>). The insurer pools the premiums and pays claims out of the pool. <span class="tag ind">Insurance knowledge</span></p>
   <p>The insurance contract (the <b>policy</b>) defines what is covered, up to what amount, for what period and with what exclusions. Claims handling is the process of checking a loss against that contract and paying the right amount to the right person, quickly and with evidence.</p></div>
 </section>
 <section class="block"><h2>Where claims sit in the insurance value chain</h2>
   <div id="valueChain"></div>
   <p class="small muted">Click a box to see the related InsureMO module. Claims depend on data created upstream (product, policy, premium) and create data downstream (payments, reinsurance recoveries, accounting).</p>
 </section>
+<section class="block"><h2>Policy lifecycle: where the claim happens</h2>
+  <p class="muted" style="max-width:80ch">A claim is one stage in the life of a policy. Click a stage to see what happens and which InsureMO module handles it.</p>
+  <div id="policyLife"></div><div id="plDetail" class="callout">Click a stage in the policy lifecycle.</div>
+</section>
 <section class="block"><h2>Why claims drive insurer profit</h2>
   <div class="grid g2">
-    <div class="card"><h4>Loss ratio <span class="tag ind">Industry practice</span></h4><p class="small"><b>Loss ratio = incurred claims ÷ earned premium.</b> Incurred claims = paid claims + change in outstanding reserves. In many non-life lines the loss ratio is between 55% and 80%, so claims are the largest cost of an insurer.</p></div>
-    <div class="card"><h4>Combined ratio <span class="tag ind">Industry practice</span></h4><p class="small"><b>Combined ratio = loss ratio + expense ratio.</b> Below 100% means the insurer makes an underwriting profit. Above 100% means it loses money on underwriting and depends on investment income.</p></div>
+    <div class="card"><h4>Loss ratio <span class="tag ind">Insurance knowledge</span></h4><p class="small"><b>Loss ratio = incurred claims ÷ earned premium.</b> Incurred claims = paid claims + change in outstanding reserves. In many non-life lines the loss ratio is between 55% and 80%, so claims are the largest cost of an insurer.</p></div>
+    <div class="card"><h4>Combined ratio <span class="tag ind">Insurance knowledge</span></h4><p class="small"><b>Combined ratio = loss ratio + expense ratio.</b> Below 100% means the insurer makes an underwriting profit. Above 100% means it loses money on underwriting and depends on investment income.</p></div>
   </div>
-  <div class="example"><b>Worked example</b>A motor portfolio earns premium of 100 million. Paid claims in the year are 52 million. Outstanding reserves rose from 20 million to 26 million. Incurred claims = 52 + (26 − 20) = 58 million. Loss ratio = 58%. With an expense ratio of 33%, the combined ratio is 91%, so the portfolio made an underwriting profit of 9 million. If claim handlers set reserves 5 million too low, the loss ratio looks like 53% and management makes pricing decisions on wrong data. This is why reserve accuracy matters in Easy Claim.</div>
+  <div class="example"><b>Worked example</b>A motor portfolio earns premium of 100 million. Paid claims in the year are 52 million. Outstanding reserves rose from 20 million to 26 million. Incurred claims = 52 + (26 − 20) = 58 million. Loss ratio = 58%. With an expense ratio of 33%, the combined ratio is 91%, so the portfolio made an underwriting profit of 9 million. If claim handlers set reserves 5 million too low, the loss ratio looks like 53% and management makes pricing decisions on wrong data. This is why reserve accuracy matters in InsureMO Easy Claims.</div>
 </section>
 <section class="block"><h2>Claims by line of business</h2>
-  <div class="tbl"><table><thead><tr><th>Line</th><th>Typical claim</th><th>Main external parties</th><th>Typical payable logic</th><th>Easy Claim mode</th></tr></thead><tbody id="lobTable"></tbody></table></div>
-  <div class="callout"><span class="tag ind">Industry practice</span> <b>Indemnity versus benefit.</b> Indemnity cover (motor, property, most health) pays the actual loss, so the handler must assess and calculate. Benefit cover (hospital cash, personal accident death, life) pays a fixed amount stated in the policy once the event is proved. The screenshots in this guide include a "Hospital Cash" product, which is a benefit product: the calculation is days in hospital × daily amount.</div>
+  <div class="tbl"><table><thead><tr><th>Line</th><th>Typical claim</th><th>Main external parties</th><th>Typical payable logic</th><th>InsureMO Easy Claims mode</th></tr></thead><tbody id="lobTable"></tbody></table></div>
+  <div class="callout"><span class="tag ind">Insurance knowledge</span> <b>Indemnity versus benefit.</b> Indemnity cover (motor, property, most health) pays the actual loss, so the handler must assess and calculate. Benefit cover (hospital cash, personal accident death, life) pays a fixed amount stated in the policy once the event is proved. The screenshots in this guide include a "Hospital Cash" product, which is a benefit product: the calculation is days in hospital × daily amount.</div>
 </section>
 <section class="block"><h2>The claim journey from two sides</h2>
-  <div class="tbl"><table><thead><tr><th>Stage</th><th>What the customer experiences</th><th>What the insurer does</th><th>Easy Claim task</th></tr></thead><tbody>
+  <div class="tbl"><table><thead><tr><th>Stage</th><th>What the customer experiences</th><th>What the insurer does</th><th>InsureMO Easy Claims task</th></tr></thead><tbody>
     <tr><td>Notify</td><td>Calls, uses an app, tells the agent, or the hospital/garage notifies</td><td>Records the loss, checks the policy exists and was in force on the date of loss</td><td>FNOL</td></tr>
     <tr><td>Register</td><td>Gets a claim number</td><td>Completes details, sets an initial reserve (estimate of cost)</td><td>Registration</td></tr>
     <tr><td>Verify</td><td>May get a visit from a surveyor or investigator</td><td>Checks cause of loss, coverage and fraud signals</td><td>Investigation</td></tr>
@@ -358,7 +366,7 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
   </tbody></table></div>
 </section>
 <section class="block"><h2>Claims KPIs that business leaders track</h2>
-  <div class="tbl"><table><thead><tr><th>KPI</th><th>Meaning</th><th>Where Easy Claim supports it</th></tr></thead><tbody>
+  <div class="tbl"><table><thead><tr><th>KPI</th><th>Meaning</th><th>Where InsureMO Easy Claims supports it</th></tr></thead><tbody>
     <tr><td>Turnaround time (TAT)</td><td>Days from report date to payment. Regulators often set maximum days.</td><td>Report date, task create/close dates, due date and overdue highlight (Task Monitor)</td></tr>
     <tr><td>Claim settlement ratio</td><td>Claims paid ÷ claims reported in a period</td><td>Claim Search with status and dates; download to Excel</td></tr>
     <tr><td>Reserve accuracy</td><td>Final paid amount compared with the first reserve</td><td>Reserve History, Transaction History</td></tr>
@@ -366,14 +374,14 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
     <tr><td>Reopen rate</td><td>Share of closed claims that reopen. A high rate signals poor first settlement.</td><td>New and Reopen menu; reopen history</td></tr>
     <tr><td>Recovery rate</td><td>Money recovered (subrogation, salvage) ÷ paid claims</td><td>Subrogation, Salvage, Recovery histories</td></tr>
   </tbody></table></div>
-  <p class="small muted"><span class="tag ind">Industry practice</span> KPI definitions vary by insurer. Agree the formula with finance before building a report.</p>
+  <p class="small muted"><span class="tag ind">Insurance knowledge</span> KPI definitions vary by insurer. Agree the formula with finance before building a report.</p>
 </section>
 </section>
 
 <!-- ======================= 1.2 PARTIES ======================= -->
 <section class="view" id="v-parties">
 <header><span class="eyebrow">Module 1.2 · Basics</span><h1>Parties and roles in a claim</h1>
-<p class="lede">A claim involves many parties. Mixing them up is the most common cause of wrong requirements and wrong payee data. Learn who each party is, what they do, and where they appear in Easy Claim.</p></header>
+<p class="lede">A claim involves many parties. Mixing them up is the most common cause of wrong requirements and wrong payee data. Learn who each party is, what they do, and where they appear in InsureMO Easy Claims.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Who talks to whom in a motor claim</h2><div id="partyMap"></div></section>
 <section class="block"><h2>Policyholder, insured, claimant and payee are often different people</h2>
@@ -381,20 +389,20 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
     <div class="example"><b>Group health example</b>An employer buys a group health policy. The <b>policyholder</b> is the employer. Each employee is an <b>insured</b> person. Mr Tan (an employee) is admitted to hospital, so he is the <b>claimant</b>. The bill is paid cashless to the hospital, so the <b>payee</b> is the hospital. The <b>TPA</b> handles the medical review for the insurer.</div>
     <div class="example"><b>Motor third-party example</b>Riya's car is hit by a truck. For the truck's insurer, the <b>policyholder and insured</b> is the truck owner. Riya is a <b>third-party claimant</b>: she has no contract with that insurer, but the law gives her a right to claim. If Riya's own insurer pays her first, it becomes a <b>subrogating</b> insurer and claims from the truck's insurer.</div>
   </div>
-  <div class="callout"><b>Why this matters in Easy Claim.</b> Claimant Information, Sub-Claim (each with a claimant), Payee (on Settlement and Prepay) and Party Management are separate data. One claim can have several claimants and several payees. A tester must test a claim where claimant ≠ payee, and a BA must define who can be a payee for each product.</div>
+  <div class="callout"><b>Why this matters in InsureMO Easy Claims.</b> Claimant Information, Sub-Claim (each with a claimant), Payee (on Settlement and Prepay) and Party Management are separate data. One claim can have several claimants and several payees. A tester must test a claim where claimant ≠ payee, and a BA must define who can be a payee for each product.</div>
 </section>
 <section class="block"><h2>Party reference</h2>
   <input class="filter" id="partyFilter" placeholder="Filter parties…" style="max-width:320px">
-  <div class="tbl"><table><thead><tr><th>Party</th><th>Who they are</th><th>Role in a claim</th><th>Where in Easy Claim / InsureMO</th><th>Real example</th></tr></thead><tbody id="partyTable"></tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>Party</th><th>Who they are</th><th>Role in a claim</th><th>Where in InsureMO Easy Claims / InsureMO</th><th>Real example</th></tr></thead><tbody id="partyTable"></tbody></table></div>
 </section>
 <section class="block"><h2>Agent versus broker in claims</h2>
   <div class="tbl"><table><thead><tr><th></th><th>Agent</th><th>Broker</th></tr></thead><tbody>
     <tr><td>Represents</td><td>The insurer (tied agent) or several insurers (corporate agent)</td><td>The customer</td></tr>
     <tr><td>Paid by</td><td>Commission from the insurer (Sales Channel, paid through BCP)</td><td>Commission or brokerage from the insurer, sometimes a fee from the client</td></tr>
     <tr><td>Claim role</td><td>Helps the customer report and collect documents</td><td>Advocates for the client, negotiates with the insurer and loss adjuster, often prepares the claim file for large commercial losses</td></tr>
-    <tr><td>Easy Claim</td><td colspan="2">Agent/Broker Code and Name fields on Claim Information (visible on health FNOL screens). The producer comes from the policy in Easy PA.</td></tr>
+    <tr><td>InsureMO Easy Claims</td><td colspan="2">Agent/Broker Code and Name fields on Claim Information (visible on health FNOL screens). The producer comes from the policy in Easy PA.</td></tr>
   </tbody></table></div>
-  <p class="small muted"><span class="tag ind">Industry practice</span> In some markets brokers may hold claim money in a client account. Check local rules before allowing a broker as payee.</p>
+  <p class="small muted"><span class="tag ind">Insurance knowledge</span> In some markets brokers may hold claim money in a client account. Check local rules before allowing a broker as payee.</p>
 </section>
 </section>
 
@@ -404,10 +412,10 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <p class="lede">These ideas decide how much is paid and how the claim is stored: insurance principles, payable amount rules, reserves, claim versus sub-claim mode, and the claim data structure.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Six insurance principles every claim must respect</h2>
-  <p class="small muted"><span class="tag ind">Industry practice</span> These are taught in every insurance qualification. Each one maps to a check in the claim process.</p>
-  <div class="tbl"><table><thead><tr><th>Principle</th><th>Meaning</th><th>Effect on a claim</th><th>Where it shows in Easy Claim</th></tr></thead><tbody id="principles"></tbody></table></div>
+  <p class="small muted"><span class="tag ind">Insurance knowledge</span> These are taught in every insurance qualification. Each one maps to a check in the claim process.</p>
+  <div class="tbl"><table><thead><tr><th>Principle</th><th>Meaning</th><th>Effect on a claim</th><th>Where it shows in InsureMO Easy Claims</th></tr></thead><tbody id="principles"></tbody></table></div>
 </section>
-<section class="block"><h2>How Easy Claim stores a claim</h2>
+<section class="block"><h2>How InsureMO Easy Claims stores a claim</h2>
   <div id="hierDiagram"></div>
   <div class="grid g2">
     <div class="card"><h4>Claim (case)</h4><p class="small">One loss event on one policy. Holds date of loss, report date, cause of loss, catastrophe code, contact details and claimants. Has one Claim No.</p></div>
@@ -417,12 +425,13 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
   </div>
 </section>
 <section class="block"><h2>Claim mode and sub-claim mode</h2>
-  <div class="tbl"><table><thead><tr><th>Mode</th><th>Description <span class="tag src">Source</span></th><th>Applicable scenarios</th><th>What changes in practice</th></tr></thead><tbody>
+  <div class="tbl"><table><thead><tr><th>Mode</th><th>Description <span class="tag src">InsureMO Easy Claims</span></th><th>Applicable scenarios</th><th>What changes in practice</th></tr></thead><tbody>
     <tr><td><b>Claim mode</b></td><td>Traditional mode. One claim case contains all information.</td><td>Property, motor</td><td>The workflow runs once for the whole case. Tasks move the whole claim forward.</td></tr>
     <tr><td><b>Sub-claim mode</b></td><td>One main case can contain multiple sub-cases.</td><td>Health, multiple claims</td><td>Each sub-claim can run its own tasks (New Subclaim generates a task "according to the configuration of the workflow"). Claim numbers carry a suffix, for example <code>CFHI001202500001155-001</code>.</td></tr>
   </tbody></table></div>
   <div class="example"><b>Example</b>Mr Tan's family floater: the knee surgery bill is sub-claim 001 (indemnity, cashless). Hospital cash for 5 days is sub-claim 002 (benefit). A follow-up physiotherapy bill a month later is sub-claim 003. Each can be assessed and settled on its own timeline under one case.</div>
 </section>
+<div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>Claim, sub-claim and reserve in plain words</h4><ul><li><b>Claim:</b> one folder for one incident on one policy, for example one car accident.</li><li><b>Sub-claim:</b> a section inside that folder for each damaged item or each person claiming, for example own car damage and a passenger injury.</li><li><b>Reserve:</b> the money the insurer sets aside today for what it expects to pay later. It is an estimate, updated as facts arrive.</li><li><b>Why split into sub-claims:</b> different parts move at different speeds and are paid to different people; splitting lets each part close on its own.</li></ul></div>
 <section class="block"><h2>What decides the payable amount</h2>
   <div class="tbl"><table><thead><tr><th>Term</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
     <tr><td>Sum insured / limit</td><td>Maximum the insurer pays for a coverage, per claim or per year</td><td>Fire policy on stock: USD 2,000,000</td></tr>
@@ -435,7 +444,7 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
     <tr><td>Exclusion</td><td>Event or cause not covered</td><td>Driving without a valid licence; pre-existing disease inside the waiting period</td></tr>
     <tr><td>Ex-gratia</td><td>Payment made as goodwill although not strictly payable</td><td>"Ex-Gratia Flag" on the Settlement payee line</td></tr>
   </tbody></table></div>
-  <p class="small muted"><span class="tag ind">Industry practice</span> In Easy Claim these rules live in the calculation configuration (Claim Matrix and the calculation tool, or GIMO rating). The handler sees the result as Calculated Amount and may enter an Adjusted Amount.</p>
+  <p class="small muted"><span class="tag ind">Insurance knowledge</span> In InsureMO Easy Claims these rules live in the calculation configuration (Claim Matrix and the calculation tool, or GIMO rating). The handler sees the result as Calculated Amount and may enter an Adjusted Amount.</p>
 </section>
 <section class="block"><h2>Try it: payable amount calculator</h2>
   <p class="small muted">Change the values to see how each rule reduces the loss. The order used here is a common market order; your product may apply rules in a different order.</p>
@@ -454,13 +463,13 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
   </div>
 </section>
 <section class="block"><h2>Reserves</h2>
-  <div class="tbl"><table><thead><tr><th>Type</th><th>Description <span class="tag src">Source</span></th><th>Industry name</th></tr></thead><tbody>
+  <div class="tbl"><table><thead><tr><th>Type</th><th>Description <span class="tag src">InsureMO Easy Claims</span></th><th>Industry name</th></tr></thead><tbody>
     <tr><td>Indemnity reserve</td><td>Expected payment to the insured for losses</td><td>Case reserve for loss</td></tr>
     <tr><td>Expense reserve</td><td>Expenses for processing the claim, for example investigation fees and legal fees</td><td>Allocated loss adjustment expense (ALAE)</td></tr>
   </tbody></table></div>
   <div class="prose">
-    <p><b>Reserve</b> is the insurer's estimate of what the claim will still cost. It is a liability on the balance sheet from the day the claim is registered. Reserve operations in Easy Claim are <b>Update</b>, <b>Close</b> and <b>Reopen</b>. <span class="tag src">Source</span></p>
-    <p><b>Incurred = paid to date + outstanding reserve.</b> When a payment is made, outstanding goes down and paid goes up, so incurred stays the same unless the estimate changes. <span class="tag ind">Industry practice</span></p>
+    <p><b>Reserve</b> is the insurer's estimate of what the claim will still cost. It is a liability on the balance sheet from the day the claim is registered. Reserve operations in InsureMO Easy Claims are <b>Update</b>, <b>Close</b> and <b>Reopen</b>. <span class="tag src">InsureMO Easy Claims</span></p>
+    <p><b>Incurred = paid to date + outstanding reserve.</b> When a payment is made, outstanding goes down and paid goes up, so incurred stays the same unless the estimate changes. <span class="tag ind">Insurance knowledge</span></p>
     <p><b>IBNR</b> (incurred but not reported) covers losses that happened but nobody has reported yet. Actuaries calculate it for the whole portfolio; it is not entered on an individual claim. This is why report date and date of loss are both mandatory: the gap between them feeds the IBNR model.</p>
   </div>
 </section>
@@ -477,27 +486,33 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <!-- ======================= 2.1 LIFECYCLE ======================= -->
 <section class="view" id="v-lifecycle">
 <header><span class="eyebrow">Module 2.1 · Core process</span><h1>End-to-end claim lifecycle</h1>
-<p class="lede">Easy Claim runs a claim as a chain of tasks. Submitting one task closes it and creates the next. Approval tasks appear only when an amount is above the user's authority. This page shows the whole chain and the task engine behind it.</p></header>
+<p class="lede">InsureMO Easy Claims runs a claim as a chain of tasks. Submitting one task closes it and creates the next. Approval tasks appear only when an amount is above the user's authority. This page shows the whole chain and the task engine behind it.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Standard claim process with approval gates</h2>
   <div id="masterFlow"></div>
-  <p class="small muted"><span class="tag src">Source</span> Main chain: FNOL → Registration → Investigation → Appraisal [Appraisal Approval] → Document → Calculation [Calculation Approval] → Settlement [Settlement Approval]. Auxiliary tasks (Prepay, Subrogation, Salvage, Recovery) are created through New Task at any point after registration.</p>
+  <p class="small muted"><span class="tag src">InsureMO Easy Claims</span> Main chain: FNOL → Registration → Investigation → Appraisal [Appraisal Approval] → Document → Calculation [Calculation Approval] → Settlement [Settlement Approval]. Auxiliary tasks (Prepay, Subrogation, Salvage, Recovery) are created through New Task at any point after registration.</p>
+</section>
+<section class="block"><h2>Step by step: the standard claim process in one view</h2>
+  <p class="muted" style="max-width:84ch">The flowchart above shows the task order. This view shows every step, who does it, which InsureMO Easy Claims screen is used, what comes out, and what it means in plain words. Numbers in the diagram match the table.</p>
+  <div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>How InsureMO Easy Claims moves a claim</h4><ul><li><b>Task-based workflow:</b> each stage is a "task" sitting in someone's work queue. Finishing it (Submit) creates the next task automatically, like a relay baton.</li><li><b>Approval gates:</b> when an amount is above the user's limit, the system inserts an approval task for a senior person before the claim can move on.</li><li><b>Money is separate:</b> InsureMO Easy Claims decides what to pay; BCP (finance) actually pays. This split is a standard fraud control.</li><li><b>Loops are normal:</b> missing documents or a rejected approval send the claim back a step; this is expected, not an error.</li></ul></div>
+  <div id="stdSwim"></div>
+  <div id="stdTable"></div>
 </section>
 <section class="block"><h2>Task by task</h2>
-  <div class="tbl"><table><thead><tr><th>Task</th><th>Description <span class="tag src">Source</span></th><th>Main actor</th><th>Key output</th><th>On Submit</th></tr></thead><tbody id="taskTable"></tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>Task</th><th>Description <span class="tag src">InsureMO Easy Claims</span></th><th>Main actor</th><th>Key output</th><th>On Submit</th></tr></thead><tbody id="taskTable"></tbody></table></div>
 </section>
 <section class="block"><h2>How the task engine works</h2>
   <div class="grid g2">
-    <div class="card"><h4>1. Every Submit creates the next task</h4><p class="small">After FNOL Submit, the system closes FNOL, creates a Registration task and opens the <b>Task Transfer</b> UI. The next task needs manual completion by a user. <span class="tag src">Source</span></p></div>
-    <div class="card"><h4>2. Task Transfer and Work On</h4><p class="small">Task Transfer lists pending tasks on the claim. A task checkbox is selectable only if you are the assigned owner or the task is unassigned. Select it and click <b>Work On</b> to open the task page. <span class="tag src">Source</span></p></div>
-    <div class="card"><h4>3. Two ways into a task</h4><p class="small">From Task Transfer (straight after the previous task) or from <b>Claim Task</b> search: find the claim, then click the edit icon or the Claim No link. The system opens the right page for the task type. <span class="tag src">Source</span></p></div>
-    <div class="card"><h4>4. Workflow tasks and diary tasks</h4><p class="small">Workflow tasks (FNOL, Registration…) are in Claim Task. Diary tasks are reminders a user creates from the Claim Summary "Diary Task" link and assigns to someone; they are in Diary Task. <span class="tag src">Source Q9, Q10</span></p></div>
-    <div class="card"><h4>5. Due dates</h4><p class="small">A due date is assigned when a task is created. When it expires, the workbench highlights the task. Managers see their team's tasks in Task Monitor. <span class="tag src">Source Q8, Q12</span></p></div>
-    <div class="card"><h4>6. Owners and shared pool</h4><p class="small">Tasks and claim owners can be reassigned to a named user or to a shared pool (Reassignment menu), for example when a handler is on leave. <span class="tag src">Source Q13</span></p></div>
+    <div class="card"><h4>1. Every Submit creates the next task</h4><p class="small">After FNOL Submit, the system closes FNOL, creates a Registration task and opens the <b>Task Transfer</b> UI. The next task needs manual completion by a user. <span class="tag src">InsureMO Easy Claims</span></p></div>
+    <div class="card"><h4>2. Task Transfer and Work On</h4><p class="small">Task Transfer lists pending tasks on the claim. A task checkbox is selectable only if you are the assigned owner or the task is unassigned. Select it and click <b>Work On</b> to open the task page. <span class="tag src">InsureMO Easy Claims</span></p></div>
+    <div class="card"><h4>3. Two ways into a task</h4><p class="small">From Task Transfer (straight after the previous task) or from <b>Claim Task</b> search: find the claim, then click the edit icon or the Claim No link. The system opens the right page for the task type. <span class="tag src">InsureMO Easy Claims</span></p></div>
+    <div class="card"><h4>4. Workflow tasks and diary tasks</h4><p class="small">Workflow tasks (FNOL, Registration…) are in Claim Task. Diary tasks are reminders a user creates from the Claim Summary "Diary Task" link and assigns to someone; they are in Diary Task. <span class="tag src">InsureMO Easy Claims Q9, Q10</span></p></div>
+    <div class="card"><h4>5. Due dates</h4><p class="small">A due date is assigned when a task is created. When it expires, the workbench highlights the task. Managers see their team's tasks in Task Monitor. <span class="tag src">InsureMO Easy Claims Q8, Q12</span></p></div>
+    <div class="card"><h4>6. Owners and shared pool</h4><p class="small">Tasks and claim owners can be reassigned to a named user or to a shared pool (Reassignment menu), for example when a handler is on leave. <span class="tag src">InsureMO Easy Claims Q13</span></p></div>
   </div>
 </section>
 <section class="block"><h2>Claim Summary toolbar (on every task page)</h2>
-  <p class="small muted">Seen on the source screenshots. Availability can depend on product and configuration.</p>
+  <p class="small muted">Seen on the InsureMO Easy Claims screenshots. Availability can depend on product and configuration.</p>
   <div class="tbl"><table><thead><tr><th>Item</th><th>Use</th></tr></thead><tbody>
     <tr><td>Policy No link</td><td>Opens the policy information page (data from Easy PA or the docked policy source)</td></tr>
     <tr><td>Notes (under Advance)</td><td>All claim notes under that policy</td></tr>
@@ -509,11 +524,11 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
     <tr><td>Pending Claim toggle</td><td>Marks the claim as pending (seen on health FNOL)</td></tr>
     <tr><td>Red warning text</td><td>"Existed claim record in system on the same policy which reported within 24 hours" – a duplicate-claim alert</td></tr>
   </tbody></table></div>
-  <div class="callout ind"><span class="tag ind">Industry practice</span> The 24-hour duplicate warning is a basic fraud and data-quality control. Two reports on one policy in a day are often the same loss reported twice (by the agent and by the customer), or a staged claim. The handler should check Prior Claims before registering.</div>
+  <div class="callout ind"><span class="tag ind">Insurance knowledge</span> The 24-hour duplicate warning is a basic fraud and data-quality control. Two reports on one policy in a day are often the same loss reported twice (by the agent and by the customer), or a staged claim. The handler should check Prior Claims before registering.</div>
 </section>
 <section class="block"><h2>Claim status model</h2>
   <div id="statusFlow"></div>
-  <p class="small muted">Status names differ by tenant. This model combines the source rules (cancel at FNOL or Registration, decline at Calculation or Settlement, close after Settlement, reopen through New and Reopen) with common market practice.</p>
+  <p class="small muted">Status names differ by tenant. This model combines the InsureMO Easy Claims rules (cancel at FNOL or Registration, decline at Calculation or Settlement, close after Settlement, reopen through New and Reopen) with common market practice.</p>
 </section>
 <section class="block"><h2>Screens</h2><div class="shots" data-shots="4,16"></div></section>
 </section>
@@ -530,7 +545,7 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <!-- ======================= 2.3 APPROVALS ======================= -->
 <section class="view" id="v-approvals">
 <header><span class="eyebrow">Module 2.3 · Core process</span><h1>Approvals and authority</h1>
-<p class="lede">Easy Claim uses one approval pattern for nine task types. Learn the pattern once and you can design, test and configure all of them.</p></header>
+<p class="lede">InsureMO Easy Claims uses one approval pattern for nine task types. Learn the pattern once and you can design, test and configure all of them.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>The approval pattern</h2>
   <div id="apprFlow"></div>
@@ -540,12 +555,13 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
     <div class="card"><h4>Escalation</h4><p class="small">If the approver approves but the amount is above the approver's own authority, the system creates <b>another</b> approval task for the next level.</p></div>
   </div>
 </section>
+<div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>Authority and approvals in plain words</h4><ul><li><b>Authority limit:</b> the maximum amount a person may approve on their own, set by role (like a spending limit on a company card).</li><li><b>Why it exists:</b> it stops one person from paying large or wrong amounts alone, and is checked by auditors and regulators.</li><li><b>Escalation:</b> if the approver's own limit is too low, the claim goes one level higher automatically.</li><li><b>Reject:</b> sends the work back to the person who submitted it, with a remark explaining why.</li></ul></div>
 <section class="block"><h2>All approval tasks</h2>
   <div class="tbl"><table><thead><tr><th>Approval task</th><th>Created when</th><th>Reject →</th><th>Approve, within authority →</th><th>Approve, above authority →</th></tr></thead><tbody id="apprTable"></tbody></table></div>
-  <p class="small muted"><span class="tag src">Source</span> Reserve buttons (Update, Close, Reopen) are shown based on the user's reserve management permissions, configured in the claim authority configuration of the InsureMO Claim API.</p>
+  <p class="small muted"><span class="tag src">InsureMO Easy Claims</span> Reserve buttons (Update, Close, Reopen) are shown based on the user's reserve management permissions, configured in the claim authority configuration of the InsureMO Claim API.</p>
 </section>
 <section class="block"><h2>Designing an authority matrix</h2>
-  <p class="small muted"><span class="tag ind">Industry practice</span> The source does not give limits; these are typical. Use them as a starting point in workshops.</p>
+  <p class="small muted"><span class="tag ind">Insurance knowledge</span> InsureMO Easy Claims does not give limits; these are typical. Use them as a starting point in workshops.</p>
   <div class="tbl"><table><thead><tr><th>Level</th><th>Role</th><th>Typical motor limit</th><th>Typical property limit</th><th>Notes</th></tr></thead><tbody>
     <tr><td>L1</td><td>Claim handler</td><td>INR 50,000</td><td>USD 10,000</td><td>Most claims close at this level (straight-through for small claims)</td></tr>
     <tr><td>L2</td><td>Senior handler / team lead</td><td>INR 2,00,000</td><td>USD 50,000</td><td></td></tr>
@@ -567,8 +583,9 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <p class="lede">Reserves carry the financial truth of a claim. This module follows the money from first estimate to final payment, including the new calculation tool, full-scale calculation and the reserve close rule.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Reserve lifecycle</h2><div id="reserveFlow"></div></section>
+<div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>Reserves and incurred cost in plain words</h4><ul><li><b>Reserve:</b> money set aside for a claim that is not yet paid. It is a promise in the accounts, not cash leaving the bank.</li><li><b>Paid:</b> money already sent to payees.</li><li><b>Incurred:</b> paid plus reserve: the best estimate of the total cost of the claim.</li><li><b>Why it matters to the business:</b> profit, pricing and reinsurance all use incurred figures. Wrong reserves mean wrong decisions.</li></ul></div>
 <section class="block"><h2>Reserve operations by task</h2>
-  <div class="tbl"><table><thead><tr><th>Where</th><th>What you can do <span class="tag src">Source</span></th></tr></thead><tbody>
+  <div class="tbl"><table><thead><tr><th>Where</th><th>What you can do <span class="tag src">InsureMO Easy Claims</span></th></tr></thead><tbody>
     <tr><td>Registration</td><td>Claim Reserve section: Add a reserve line (Subclaim, Reserve Type, Coverage Name, Outstanding Reserve). Delete a line. View Transaction History.</td></tr>
     <tr><td>Investigation, Appraisal (Claim Information tab)</td><td>Update, Close, Reopen reserve; view Reserve Summary and Reserve History. Close is also possible at claim level and sub-claim level.</td></tr>
     <tr><td>Case Information</td><td>Reserve History and Update</td></tr>
@@ -577,26 +594,26 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
   </tbody></table></div>
 </section>
 <section class="block"><h2>Follow the money: Riya's motor claim</h2>
-  <div class="tbl"><table><thead><tr><th>Day</th><th>Event</th><th>Outstanding</th><th>Paid to date</th><th>Incurred</th><th>Easy Claim action</th></tr></thead><tbody id="incurredTable"></tbody></table></div>
-  <div class="callout ind"><span class="tag ind">Industry practice</span> Good practice is to set the first reserve on known facts within 24 to 48 hours and review it at every task. Large reserve jumps late in the claim ("reserve creep") distort the loss ratio and are flagged by auditors and reinsurers.</div>
+  <div class="tbl"><table><thead><tr><th>Day</th><th>Event</th><th>Outstanding</th><th>Paid to date</th><th>Incurred</th><th>InsureMO Easy Claims action</th></tr></thead><tbody id="incurredTable"></tbody></table></div>
+  <div class="callout ind"><span class="tag ind">Insurance knowledge</span> Good practice is to set the first reserve on known facts within 24 to 48 hours and review it at every task. Large reserve jumps late in the claim ("reserve creep") distort the loss ratio and are flagged by auditors and reinsurers.</div>
 </section>
 <section class="block"><h2>Calculation: two engines</h2>
   <div class="grid g2">
-    <div class="card"><h4>Claim Matrix V1 + GIMO rating <span class="tag src">Source</span></h4><p class="small">The original approach. Calculation uses the built-in rating function of GIMO. Settlement and Prepay screens stay unchanged. Existing tenants need no change.</p></div>
-    <div class="card"><h4>Claim Matrix V2 + new calculation tool <span class="tag src">Source</span></h4><p class="small">A configuration tool for claim formulas and calculation logic. Products are maintained in Claim Matrix V2. Supports full-scale calculation and parallel tasks. Adds the "Settled" field on Settlement/Prepay, and "Is Reopened" / "Reopened To" in calculation history.</p></div>
+    <div class="card"><h4>Claim Matrix V1 + GIMO rating <span class="tag src">InsureMO Easy Claims</span></h4><p class="small">The original approach. Calculation uses the built-in rating function of GIMO. Settlement and Prepay screens stay unchanged. Existing tenants need no change.</p></div>
+    <div class="card"><h4>Claim Matrix V2 + new calculation tool <span class="tag src">InsureMO Easy Claims</span></h4><p class="small">A configuration tool for claim formulas and calculation logic. Products are maintained in Claim Matrix V2. Supports full-scale calculation and parallel tasks. Adds the "Settled" field on Settlement/Prepay, and "Is Reopened" / "Reopened To" in calculation history.</p></div>
   </div>
-  <div class="callout"><b>Full-scale versus incremental calculation.</b> <span class="tag src">Source</span> Old way (incremental): first calculation 1,000; an extra 500 is found; you calculate again with 500 as a new factor; total 1,500 across two records. New way (full-scale): you enter 1,500 in the second calculation and the system treats it as the final total. The latest version always holds the full amount, which is easier to audit and to reverse.</div>
-  <div class="example"><b>Calculation screen example (source screenshot)</b>Family Inpatient Medical product. Line 1: Loss (Indemnity), Medical Treatment-Normal, Bill Amount 50,000, Parameter "Medical Fee" 60,000, Calculated 50,000, Adjusted 50,000. Line 2: Hospitalization Allowance, Parameter "Admission Days" 8, Calculated 8,000. Sum of Adjusted Amount 58,000. The bill was 60,000 but coverage capped it at 50,000; the allowance is a benefit (8 days × 1,000).</div>
+  <div class="callout"><b>Full-scale versus incremental calculation.</b> <span class="tag src">InsureMO Easy Claims</span> Old way (incremental): first calculation 1,000; an extra 500 is found; you calculate again with 500 as a new factor; total 1,500 across two records. New way (full-scale): you enter 1,500 in the second calculation and the system treats it as the final total. The latest version always holds the full amount, which is easier to audit and to reverse.</div>
+  <div class="example"><b>Calculation screen example (InsureMO Easy Claims screenshot)</b>Family Inpatient Medical product. Line 1: Loss (Indemnity), Medical Treatment-Normal, Bill Amount 50,000, Parameter "Medical Fee" 60,000, Calculated 50,000, Adjusted 50,000. Line 2: Hospitalization Allowance, Parameter "Admission Days" 8, Calculated 8,000. Sum of Adjusted Amount 58,000. The bill was 60,000 but coverage capped it at 50,000; the allowance is a benefit (8 days × 1,000).</div>
 </section>
 <section class="block"><h2>Settlement money rules</h2>
   <div class="tbl"><table><thead><tr><th>Rule</th><th>Detail</th></tr></thead><tbody>
-    <tr><td>Partial or final</td><td>Each settlement record is Partial or Final. A partial payment keeps the reserve open. <span class="tag src">Source</span></td></tr>
+    <tr><td>Partial or final</td><td>Each settlement record is Partial or Final. A partial payment keeps the reserve open. <span class="tag src">InsureMO Easy Claims</span></td></tr>
     <tr><td>Multiple payees</td><td>Add Payee adds payee blocks: Payee Name, Pay Mode, Pay Currency, Exchange Rate, and lines (Subclaim, Reserve Type, Coverage, Outstanding Reserve, Partial/Final, Indemnity Amount, Tax, Total Indemnity, Ex-Gratia Flag).</td></tr>
     <tr><td>Settled field (V2)</td><td>Shows how much of each reserve line is already settled.</td></tr>
     <tr><td>Decline</td><td>Decline button on Settlement (and Calculation per Q6) declines the claim.</td></tr>
-    <tr><td>Cancel settlement</td><td>New feature: cancel a submitted settlement request. <span class="tag src">Source Q1</span></td></tr>
-    <tr><td>Payment already in finance</td><td>If BCP has not paid yet: cancel payment and pay again. If BCP has paid: use Recovery to recover the payment and pay again with correct data. <span class="tag src">Source Q16</span></td></tr>
-    <tr><td>Reserve close rule (V2)</td><td>When closing a reserve, the system checks whether the paid amount is not 0 and the settled amount differs from the calculation amount. If both are true, it shows a validation message. GIMO-rating tenants keep the old validation. <span class="tag src">Source</span></td></tr>
+    <tr><td>Cancel settlement</td><td>New feature: cancel a submitted settlement request. <span class="tag src">InsureMO Easy Claims Q1</span></td></tr>
+    <tr><td>Payment already in finance</td><td>If BCP has not paid yet: cancel payment and pay again. If BCP has paid: use Recovery to recover the payment and pay again with correct data. <span class="tag src">InsureMO Easy Claims Q16</span></td></tr>
+    <tr><td>Reserve close rule (V2)</td><td>When closing a reserve, the system checks whether the paid amount is not 0 and the settled amount differs from the calculation amount. If both are true, it shows a validation message. GIMO-rating tenants keep the old validation. <span class="tag src">InsureMO Easy Claims</span></td></tr>
   </tbody></table></div>
 </section>
 <section class="block"><h2>Screens</h2><div class="shots" data-shots="17,20,18,Calculation,NewCalculation,159,161,33,34,35,160"></div></section>
@@ -608,13 +625,13 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <p class="lede">Four auxiliary tasks run beside the main chain. Prepay sends money out early. Subrogation, Salvage and Recovery bring money back. Recoveries are often the difference between a profitable and a loss-making motor book.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Compare the four tasks</h2>
-  <div class="tbl"><table><thead><tr><th>Task</th><th>Source definition</th><th>Money direction</th><th>Counterparty</th><th>Approval task</th><th>Effect on net claim cost</th><th>BCP record</th></tr></thead><tbody>
-    <tr><td><b>Prepay</b></td><td>Advance payment before final settlement</td><td><span class="tag bad">Out</span></td><td>Insured / payee</td><td>Prepay Approval</td><td>No change to incurred; paid goes up, outstanding goes down</td><td>Claim AP <span class="tag ind">Industry practice</span></td></tr>
+  <div class="tbl"><table><thead><tr><th>Task</th><th>InsureMO Easy Claims definition</th><th>Money direction</th><th>Counterparty</th><th>Approval task</th><th>Effect on net claim cost</th><th>BCP record</th></tr></thead><tbody>
+    <tr><td><b>Prepay</b></td><td>Advance payment before final settlement</td><td><span class="tag bad">Out</span></td><td>Insured / payee</td><td>Prepay Approval</td><td>No change to incurred; paid goes up, outstanding goes down</td><td>Claim AP <span class="tag ind">Insurance knowledge</span></td></tr>
     <tr><td><b>Subrogation</b></td><td>Recovery from third parties</td><td><span class="tag ok">In</span></td><td>At-fault third party or their insurer</td><td>Subrogation Approval</td><td>Reduces net incurred</td><td>Recovery AR (200312, 200100 +)</td></tr>
     <tr><td><b>Salvage</b></td><td>Disposal of damaged property</td><td><span class="tag ok">In</span></td><td>Salvage buyer</td><td>Salvage Approval</td><td>Reduces net incurred</td><td>Recovery AR (200312, 200100 +)</td></tr>
-    <tr><td><b>Recovery</b></td><td>Recovery of overpaid amounts</td><td><span class="tag ok">In</span></td><td>Person who was overpaid</td><td>None in source</td><td>Corrects the overpayment</td><td>Recovery AR</td></tr>
+    <tr><td><b>Recovery</b></td><td>Recovery of overpaid amounts</td><td><span class="tag ok">In</span></td><td>Person who was overpaid</td><td>None in InsureMO Easy Claims</td><td>Corrects the overpayment</td><td>Recovery AR</td></tr>
   </tbody></table></div>
-  <p class="small muted">All four are created with <b>New Task</b> (Claim > New and Reopen). With parallel tasks on, the current logic for these subordinate tasks is unchanged. <span class="tag src">Source</span></p>
+  <p class="small muted">All four are created with <b>New Task</b> (Claim > New and Reopen). With parallel tasks on, the current logic for these subordinate tasks is unchanged. <span class="tag src">InsureMO Easy Claims</span></p>
 </section>
 <div class="taskgrid" id="auxPicker" role="group" aria-label="Choose an auxiliary task"></div>
 <div id="auxBody" class="view" style="gap:20px"></div>
@@ -623,7 +640,7 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <!-- ======================= 3.2 SCENARIOS ======================= -->
 <section class="view" id="v-scenarios">
 <header><span class="eyebrow">Module 3.2 · Advanced</span><h1>Real-world claim scenarios</h1>
-<p class="lede">Ten end-to-end cases that join parties, Easy Claim tasks and other modules. Each one shows the full swimlane with every actor, the money result, and the lessons for business, testing and development.</p></header>
+<p class="lede">Ten end-to-end cases that join parties, InsureMO Easy Claims tasks and other modules. Each one shows the full swimlane with every actor, the money result, and the lessons for business, testing and development.</p></header>
 <div class="objectives" data-obj></div>
 <div class="taskgrid" id="scPicker" role="group" aria-label="Choose a scenario"></div>
 <div id="scBody" class="view" style="gap:20px"></div>
@@ -632,11 +649,11 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <!-- ======================= 3.3 WORK MANAGEMENT ======================= -->
 <section class="view" id="v-workmgmt">
 <header><span class="eyebrow">Module 3.3 · Advanced</span><h1>Screens and work management</h1>
-<p class="lede">Beyond task pages, Easy Claim has screens to create claims, find them, manage workload, add tasks, reopen work and maintain third parties. Pick a screen.</p></header>
+<p class="lede">Beyond task pages, InsureMO Easy Claims has screens to create claims, find them, manage workload, add tasks, reopen work and maintain third parties. Pick a screen.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Menu map</h2>
   <div class="tbl"><table><thead><tr><th>Menu</th><th>Screen</th><th>Main user</th><th>Use</th></tr></thead><tbody id="menuMap"></tbody></table></div>
-  <p class="small muted">Common icons in the source: <img class="ico" data-icon="Common_1" alt="search"> search, <img class="ico" data-icon="Common_6" alt="columns"> choose result columns, <img class="ico" data-icon="Common_8" alt="edit"> edit / open task, <img class="ico" data-icon="Common_5" alt="delete"> delete, <img class="ico" data-icon="Common_2" alt="view"> view detail, <img class="ico" data-icon="Common_9" alt="expand"> expand detail.</p>
+  <p class="small muted">Common icons in InsureMO Easy Claims: <img class="ico" data-icon="Common_1" alt="search"> search, <img class="ico" data-icon="Common_6" alt="columns"> choose result columns, <img class="ico" data-icon="Common_8" alt="edit"> edit / open task, <img class="ico" data-icon="Common_5" alt="delete"> delete, <img class="ico" data-icon="Common_2" alt="view"> view detail, <img class="ico" data-icon="Common_9" alt="expand"> expand detail.</p>
 </section>
 <div class="taskgrid" id="scrPicker" role="group" aria-label="Choose a screen"></div>
 <div id="scrBody" class="view" style="gap:20px"></div>
@@ -645,14 +662,14 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <!-- ======================= 3.4 INTEGRATION ======================= -->
 <section class="view" id="v-integration">
 <header><span class="eyebrow">Module 3.4 · Advanced</span><h1>Cross-module links: Easy PA, BCP and Reinsurance</h1>
-<p class="lede">Easy Claim does not work alone. It reads the policy from Easy PA, sends payments and recoveries to BCP, feeds reinsurance cessions and recoveries, and ends in the general ledger. Click a module on the map.</p></header>
+<p class="lede">InsureMO Easy Claims does not work alone. It reads the policy from Easy PA, sends payments and recoveries to BCP, feeds reinsurance cessions and recoveries, and ends in the general ledger. Click a module on the map.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Integration map</h2>
   <div id="hub"></div>
   <div id="hubDetail"></div>
 </section>
 <section class="block"><h2>What moves between modules</h2>
-  <div class="tbl"><table><thead><tr><th>From → To</th><th>Data</th><th>Trigger</th><th>Easy Claim point</th><th>Basis</th></tr></thead><tbody id="xTable"></tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>From → To</th><th>Data</th><th>Trigger</th><th>InsureMO Easy Claims point</th><th>Basis</th></tr></thead><tbody id="xTable"></tbody></table></div>
 </section>
 <section class="block"><h2>BCP fee codes for claims</h2>
   <p class="small muted">Taken from the BCP module guide (see the <a href="../bcp-learning-guide/index.html#integration">BCP learning guide</a>, which must sit in the folder next to this one for the link to work). BizModule 20 = Claims.</p>
@@ -665,7 +682,7 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 </section>
 <section class="block"><h2>Reinsurance in claims</h2>
   <div class="prose">
-    <p><span class="tag ind">Industry practice</span> The insurer passes part of each risk to reinsurers. When a claim happens, the reinsurer pays its share. The claim system must therefore tell the reinsurance module about every reserve change and payment on reinsured policies.</p>
+    <p><span class="tag ind">Insurance knowledge</span> The insurer passes part of each risk to reinsurers. When a claim happens, the reinsurer pays its share. The claim system must therefore tell the reinsurance module about every reserve change and payment on reinsured policies.</p>
   </div>
   <div class="tbl"><table><thead><tr><th>Treaty type</th><th>How the claim is shared</th><th>Claim data the RI module needs</th></tr></thead><tbody>
     <tr><td>Quota share</td><td>Fixed % of every claim (for example 40%)</td><td>Paid and outstanding per policy and coverage</td></tr>
@@ -685,29 +702,30 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <!-- ======================= 3.5 CONFIG ======================= -->
 <section class="view" id="v-config">
 <header><span class="eyebrow">Module 3.5 · Advanced</span><h1>Configuration, APIs and the health baseline</h1>
-<p class="lede">Easy Claim behaviour is driven by parameters and configuration on the InsureMO Claim API platform. This module lists what can be configured, what it changes on screen, and the API route for straight-through claims.</p></header>
+<p class="lede">InsureMO Easy Claims behaviour is driven by parameters and configuration on the InsureMO Claim API platform. This module lists what can be configured, what it changes on screen, and the API route for straight-through claims.</p></header>
 <div class="objectives" data-obj></div>
 <section class="block"><h2>Configuration items</h2>
   <input class="filter" id="cfgFilter" placeholder="Filter configuration…" style="max-width:320px">
   <div class="tbl"><table><thead><tr><th>Item</th><th>Options / content</th><th>Effect</th><th>Who configures</th><th>Basis</th></tr></thead><tbody id="cfgTable"></tbody></table></div>
 </section>
 <section class="block"><h2>Policy docking: try it</h2>
-  <p class="small muted"><span class="tag src">Source</span> The New Claim page decides where the policy comes from. Choose the two parameters and the "Is Manual Policy" flag.</p>
+  <div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>Policy docking in plain words</h4><ul><li><b>Docking:</b> how InsureMO Easy Claims gets the policy it checks the claim against.</li><li><b>PA:</b> policy read live from Easy PA (normal case).</li><li><b>Third Party:</b> policy read from another company system through an interface.</li><li><b>Manual policy:</b> handler types the policy details in, used when the policy is not held in any connected system.</li><li><b>Mock:</b> test data only.</li></ul></div>
+  <p class="small muted"><span class="tag src">InsureMO Easy Claims</span> The New Claim page decides where the policy comes from. Choose the two parameters and the "Is Manual Policy" flag.</p>
   <div class="card"><div class="calc" id="dockSel"></div><div class="calc-out" id="dockOut"></div></div>
 </section>
 <section class="block"><h2>APIs and straight-through processing</h2>
   <div class="prose">
-    <p><span class="tag src">Source</span> Easy Claim is built on the InsureMO Claim API. With API integration, clients can complete claims within minutes. API reference: <a href="https://docs.insuremo.com/tech/pro/sdk/api/claimbusiness" target="_blank" rel="noopener">docs.insuremo.com · Claim Business API</a>. Claims can also be created through ECS API calls on the ECS page.</p>
-    <p><span class="tag ind">Industry practice</span> Straight-through processing (STP) is used for small, simple claims: travel delay, hospital cash, windscreen, mobile phone. A typical API sequence is below. Confirm the exact endpoints and payloads in the API documentation.</p>
+    <p><span class="tag src">InsureMO Easy Claims</span> InsureMO Easy Claims is built on the InsureMO Claim API. With API integration, clients can complete claims within minutes. API reference: <a href="https://docs.insuremo.com/tech/pro/sdk/api/claimbusiness" target="_blank" rel="noopener">docs.insuremo.com · Claim Business API</a>. Claims can also be created through ECS API calls on the ECS page.</p>
+    <p><span class="tag ind">Insurance knowledge</span> Straight-through processing (STP) is used for small, simple claims: travel delay, hospital cash, windscreen, mobile phone. A typical API sequence is below. Confirm the exact endpoints and payloads in the API documentation.</p>
   </div>
   <div id="apiFlow"></div>
 </section>
 <section class="block"><h2>Health insurance baseline</h2>
   <div class="prose">
-    <p><span class="tag src">Source</span> A health insurance claims baseline is available, built on the Claim API and configuration. It adds health-specific fields and rules so the system captures richer data. Health screens exist for FNOL, Sub-Claim Information, Registration, Investigation, Appraisal, Settlement and Case Information.</p>
+    <p><span class="tag src">InsureMO Easy Claims</span> A health insurance claims baseline is available, built on the Claim API and configuration. It adds health-specific fields and rules so the system captures richer data. Health screens exist for FNOL, Sub-Claim Information, Registration, Investigation, Appraisal, Settlement and Case Information.</p>
     <p>From the screenshots, health FNOL adds: "Claim with other insurer?" (contribution check), "Report to police", Event Description, Agent/Broker Code and Name, Pending Claim toggle, Medical Bill and Payment Info links.</p>
   </div>
-  <div class="callout ind"><span class="tag ind">Industry practice</span> Health claims need data that motor and property do not: diagnosis code (ICD-10), procedure code, hospital (provider) ID, admission and discharge dates, room category, pre-authorisation number, and itemised bills. Regulators in several markets set tight timelines for cashless decisions; for example India's 2024 health master circular asks for cashless authorisation within one hour and final discharge authorisation within three hours. Confirm current rules for your market.</div>
+  <div class="callout ind"><span class="tag ind">Insurance knowledge</span> Health claims need data that motor and property do not: diagnosis code (ICD-10), procedure code, hospital (provider) ID, admission and discharge dates, room category, pre-authorisation number, and itemised bills. Regulators in several markets set tight timelines for cashless decisions; for example India's 2024 health master circular asks for cashless authorisation within one hour and final discharge authorisation within three hours. Confirm current rules for your market.</div>
   <div class="shots" data-shots="Health_FNOL,Health_SubClaimInformation,Health_Registration,Health_Investigation,Health_Appraisal,Health_Settlement,Health_CaseInfo"></div>
 </section>
 </section>
@@ -730,26 +748,26 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 </section>
 
 <section class="view" id="v-faq">
-<header><span class="eyebrow">Reference</span><h1>Source Q&amp;A</h1>
-<p class="lede">The 17 questions and answers from the source guide, each linked to the module that explains it.</p></header>
+<header><span class="eyebrow">Reference</span><h1>InsureMO Easy Claims Q&amp;A</h1>
+<p class="lede">The 17 questions and answers from the InsureMO Easy Claims guide, each linked to the module that explains it.</p></header>
 <div id="faqBody" class="grid"></div>
 </section>
 
 <section class="view" id="v-gaps">
-<header><span class="eyebrow">Reference</span><h1>Source gaps and assumptions</h1>
-<p class="lede">Points where the source is unclear, inconsistent or silent. Resolve them with the platform team before you lock requirements or expected test results.</p></header>
-<div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What the source says</th><th>What to confirm</th></tr></thead><tbody id="gapBody"></tbody></table></div>
+<header><span class="eyebrow">Reference</span><h1>InsureMO Easy Claims: gaps and assumptions</h1>
+<p class="lede">Points where the InsureMO Easy Claims guide is unclear, inconsistent or silent. Resolve them with the platform team before you lock requirements or expected test results.</p></header>
+<div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What InsureMO Easy Claims says</th><th>What to confirm</th></tr></thead><tbody id="gapBody"></tbody></table></div>
 </section>
 
 <section class="view" id="v-trace">
 <header><span class="eyebrow">Reference</span><h1>Learning tracker and traceability</h1>
-<p class="lede">Each source section is traced to the module that teaches it and the questions that test it. Your status and scores update as you learn.</p></header>
+<p class="lede">Each InsureMO Easy Claims guide section is traced to the module that teaches it and the questions that test it. Your status and scores update as you learn.</p></header>
 <div id="dashTrace"></div>
 <section class="block"><h2>Module scorecard</h2>
-  <div class="tbl"><table><thead><tr><th>Module</th><th>Status</th><th>Knowledge check</th><th>Score</th><th>Source sections covered</th></tr></thead><tbody id="scoreBody"></tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>Module</th><th>Status</th><th>Knowledge check</th><th>Score</th><th>InsureMO Easy Claims sections covered</th></tr></thead><tbody id="scoreBody"></tbody></table></div>
 </section>
-<section class="block"><h2>Source-to-guide traceability</h2>
-  <div class="tbl"><table><thead><tr><th>Source section</th><th>Guide location</th><th>Tested by</th><th>Your result</th></tr></thead><tbody id="traceBody"></tbody></table></div>
+<section class="block"><h2>InsureMO Easy Claims-to-guide traceability</h2>
+  <div class="tbl"><table><thead><tr><th>InsureMO Easy Claims section</th><th>Guide location</th><th>Tested by</th><th>Your result</th></tr></thead><tbody id="traceBody"></tbody></table></div>
 </section>
 <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="dlReport" type="button">Download progress report</button><button class="btn ghost" id="printBtn" type="button">Print guide</button><button class="btn ghost" id="resetAll" type="button">Reset all progress</button></div>
 </section>
@@ -760,7 +778,7 @@ figure.shot figcaption{padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
 <div id="assessBody"></div>
 </section>
 
-<div class="footer">Source: InsureMO <i>Easy Claim Function User Guide</i>. Items tagged <span class="tag src">Source</span> come from that guide. Items tagged <span class="tag ind">Industry practice</span> are general insurance knowledge added for learning; confirm them against your market rules and your tenant configuration. Progress is saved only in this browser.</div>
+<div class="footer">Source: <i>InsureMO Easy Claims Function User Guide</i>. Items tagged <span class="tag src">InsureMO Easy Claims</span> come from that guide. Items tagged <span class="tag ind">Insurance knowledge</span> are general insurance knowledge added for learning; confirm them against your market rules and your tenant configuration. Progress is saved only in this browser.</div>
 </main>
 </div>
 
@@ -773,11 +791,11 @@ const MODULES=[
  {id:'insurance',n:'1.1',name:'Insurance and claims basics',grp:'Level 1 · Basics',roles:['ba','qa','dev'],
   learn:'What a claim is, where it sits in the value chain, loss ratio, claim types, KPIs',
   ready:'Explain why reserve accuracy changes the loss ratio',
-  obj:['Define a claim using the source definition','Place claims in the insurance value chain and name the InsureMO module for each step','Calculate loss ratio and combined ratio','Tell indemnity cover from benefit cover']},
+  obj:['Define a claim using the InsureMO Easy Claims definition','Place claims in the insurance value chain and name the InsureMO module for each step','Calculate loss ratio and combined ratio','Tell indemnity cover from benefit cover']},
  {id:'parties',n:'1.2',name:'Parties and roles',grp:'Level 1 · Basics',roles:['ba','qa','dev'],
   learn:'Insurer, insured, policyholder, claimant, agent, broker, TPA, garage, surveyor, third parties',
   ready:'Name the claimant, payee and policyholder in any claim story',
-  obj:['Tell policyholder, insured, claimant, beneficiary and payee apart','Explain what a TPA, surveyor, loss adjuster, garage and investigator do','Know where each party is captured in Easy Claim']},
+  obj:['Tell policyholder, insured, claimant, beneficiary and payee apart','Explain what a TPA, surveyor, loss adjuster, garage and investigator do','Know where each party is captured in InsureMO Easy Claims']},
  {id:'concepts',n:'1.3',name:'Core claim concepts',grp:'Level 1 · Basics',roles:['ba','qa','dev'],
   learn:'Insurance principles, claim structure, claim vs sub-claim mode, payable rules, reserves',
   ready:'Calculate a payable amount with average, deductible and co-pay',
@@ -825,8 +843,8 @@ const MODULES=[
 ];
 const REFVIEWS=[
  {id:'glossary',n:'R',name:'Glossary',grp:'Reference'},
- {id:'faq',n:'R',name:'Source Q&A',grp:'Reference'},
- {id:'gaps',n:'R',name:'Source gaps',grp:'Reference'},
+ {id:'faq',n:'R',name:'Easy Claims Q&A',grp:'Reference'},
+ {id:'gaps',n:'R',name:'Easy Claims gaps',grp:'Reference'},
  {id:'trace',n:'R',name:'Tracker and traceability',grp:'Reference'},
  {id:'assess',n:'★',name:'Overall assessment',grp:'Final'}
 ];
@@ -837,7 +855,7 @@ const PATHS={
  dev:{t:'Developer',d:'Understand data, task engine, integration and configuration.',steps:['1.3 claim structure','2.1 task engine','2.4 reserves and calculation','3.4 integration, 3.5 configuration and APIs','4 developer checklist','Overall assessment'],mods:['concepts','lifecycle','tasks','approvals','reserves','aux','integration','config','toolkit','scenarios']}
 };
 
-const LANES={clmt:'Insured / claimant',pol:'Policyholder',agt:'Agent / broker',hosp:'Hospital',tpa:'TPA',gar:'Garage',surv:'Surveyor / loss adjuster',tp:'Third party / other insurer',buyer:'Salvage buyer',hand:'Claim handler',appr:'Approver',sys:'Easy Claim system',pa:'Easy PA',bcp:'BCP',ri:'Reinsurance',gl:'General ledger',bank:'Bank',api:'Partner app / portal'};
+const LANES={clmt:'Insured / claimant',pol:'Policyholder',agt:'Agent / broker',hosp:'Hospital',tpa:'TPA',gar:'Garage',surv:'Surveyor / loss adjuster',tp:'Third party / other insurer',buyer:'Salvage buyer',hand:'Claim handler',appr:'Approver',sys:'InsureMO Easy Claims system',pa:'Easy PA',bcp:'BCP',ri:'Reinsurance',gl:'General ledger',bank:'Bank',api:'Partner app / portal'};
 const LANE_ORDER=['clmt','pol','agt','api','hosp','tpa','gar','surv','tp','buyer','hand','appr','sys','pa','bcp','bank','ri','gl'];
 
 const VALUE_CHAIN=[
@@ -846,7 +864,7 @@ const VALUE_CHAIN=[
  {id:'uw',t:'Underwriting',m:'Easy PA',d:'Decides whether to accept the risk and at what premium. Claims experience feeds back into underwriting at renewal.'},
  {id:'pol',t:'Policy issue',m:'Easy PA',d:'Creates the contract the claim is checked against: insured, period, sum insured, coverages.'},
  {id:'bill',t:'Billing and collection',m:'BCP',d:'Collects premium. Some products need premium paid before cover starts (cash before cover).'},
- {id:'clm',t:'Claims',m:'Easy Claim',d:'This guide. Notifies, assesses, reserves, pays and recovers.'},
+ {id:'clm',t:'Claims',m:'InsureMO Easy Claims',d:'This guide. Notifies, assesses, reserves, pays and recovers.'},
  {id:'ri',t:'Reinsurance',m:'Reinsurance module',d:'Cedes part of premium and recovers part of each claim.'},
  {id:'fin',t:'Finance and GL',m:'BCP → GL',d:'Books reserves, payments and recoveries; produces financial statements.'}
 ];
@@ -864,7 +882,7 @@ const LOB=[
 ];
 
 const PARTIES=[
- {n:'Insurer',g:'ins',who:'The company that issues the policy and pays valid claims',role:'Owns the claim decision, reserves and payment',ec:'The tenant using Easy Claim; claim handlers and approvers are its users',ex:'The insurer that issued Riya\'s motor policy'},
+ {n:'Insurer',g:'ins',who:'The company that issues the policy and pays valid claims',role:'Owns the claim decision, reserves and payment',ec:'The tenant using InsureMO Easy Claims; claim handlers and approvers are its users',ex:'The insurer that issued Riya\'s motor policy'},
  {n:'Policyholder',g:'cust',who:'The person or company that buys the policy and pays premium',role:'Often reports the claim; signs the claim form for commercial policies',ec:'Policy Holder Name in Claim Search, My Claim; comes from Easy PA',ex:'Sunrise Textiles Ltd; an employer in group health'},
  {n:'Insured',g:'cust',who:'The person or property covered by the policy',role:'Suffers the loss',ec:'Insured Name in Claim Search; Risk Name on the sub-claim',ex:'Mr Tan (insured person); Riya\'s car (insured object)'},
  {n:'Beneficiary / nominee',g:'cust',who:'Person named to receive the benefit, usually on death',role:'Claimant and payee for death claims',ec:'Claimant and Payee records',ex:'Spouse named on a personal accident policy'},
@@ -873,8 +891,8 @@ const PARTIES=[
  {n:'Agent',g:'ext',who:'Intermediary who sells for one or more insurers',role:'Helps the customer report and collect documents',ec:'Agent/Broker Code and Name on Claim Information (health); producer from Easy PA',ex:'Tied agent who sold Riya\'s policy'},
  {n:'Broker',g:'ext',who:'Intermediary who acts for the customer',role:'Prepares and negotiates large commercial claims',ec:'Agent/Broker Code and Name; contact person',ex:'Broker of Sunrise Textiles who notifies the fire'},
  {n:'TPA (third-party administrator)',g:'ext',who:'Licensed company that administers health claims for insurers',role:'Issues health cards, approves cashless requests, reviews bills, may settle hospitals',ec:'Party Management (third party); creates claims through API or Batch FNOL; contact on Document task',ex:'TPA approving Mr Tan\'s pre-authorisation'},
- {n:'Hospital / provider',g:'ext',who:'Medical service provider, network (agreed rates) or non-network',role:'Requests cashless approval, sends bills; payee in cashless claims',ec:'Party Management ("hospitals" in source Q17); Provider Price on loss items; Medical Bill',ex:'Network hospital where Mr Tan has surgery'},
- {n:'Garage / repairer',g:'ext',who:'Workshop that repairs vehicles, network or non-network',role:'Gives repair estimate; repairs; payee in cashless motor claims',ec:'Party Management ("garage" in source Q17); Garage Price on spare part loss items',ex:'Network garage repairing Riya\'s car'},
+ {n:'Hospital / provider',g:'ext',who:'Medical service provider, network (agreed rates) or non-network',role:'Requests cashless approval, sends bills; payee in cashless claims',ec:'Party Management ("hospitals" in InsureMO Easy Claims Q17); Provider Price on loss items; Medical Bill',ex:'Network hospital where Mr Tan has surgery'},
+ {n:'Garage / repairer',g:'ext',who:'Workshop that repairs vehicles, network or non-network',role:'Gives repair estimate; repairs; payee in cashless motor claims',ec:'Party Management ("garage" in InsureMO Easy Claims Q17); Garage Price on spare part loss items',ex:'Network garage repairing Riya\'s car'},
  {n:'Surveyor / loss adjuster',g:'ext',who:'Independent expert who assesses cause and amount of loss',role:'Inspects damage, checks coverage facts, recommends an amount',ec:'Investigation Information (Investigator Name, Contact, Arrival Date, Address, Description); Surveyor Price on loss items; expense reserve for fees',ex:'Motor surveyor; fire loss adjuster for Sunrise Textiles'},
  {n:'Investigator',g:'ext',who:'Person who verifies facts when fraud or doubt exists',role:'Field visits, interviews, records checks',ec:'Investigation task; expense reserve',ex:'Verifying a hospital admission was genuine'},
  {n:'Third party',g:'ext',who:'Someone outside the contract who caused or suffered the loss',role:'May claim against the insured, or be pursued by the insurer',ec:'Claimant (third-party claimant type); Subrogation counterparty',ex:'Truck owner who hit Riya'},
@@ -918,9 +936,9 @@ const TASKS=[
   ['Claimant Information','Add, edit (edit icon) and delete (bin icon) claimants. Fields: Claimant Name*, Claimant Type*, ID Type, ID Number.'],
   ['Sub-Claim Information','Add a sub-claim and Save; the system checks mandatory fields. Fields: Subclaim (number), Risk Name*, Subclaim Type* (for example FP-Vehicle), Damage Object*, Claim Owner, Claimant Name.'],
   ['Remark','Free text for notes.']],
- buttons:[['Save','Saves the information'],['Cancel','Cancels the report. The claim is cancelled (source Q5: used when the customer does not want to claim).'],['Submit','Closes FNOL, creates the Registration task, opens Task Transfer'],['Exit','Returns to Claim Task without saving']],
+ buttons:[['Save','Saves the information'],['Cancel','Cancels the report. The claim is cancelled (InsureMO Easy Claims Q5: used when the customer does not want to claim).'],['Submit','Closes FNOL, creates the Registration task, opens Task Transfer'],['Exit','Returns to Claim Task without saving']],
  example:'<b>Riya, 18:40, Tuesday.</b> The call centre agent clicks New Accident Report, enters the policy number and today\'s date, and Easy PA returns the policy: private car, IDV INR 6,00,000, comprehensive. On FNOL the agent records Cause of Loss = collision, no other insurance, accident address and a short description ("rear-ended by truck at signal; boot and rear bumper damaged; no injuries"). Claimant = Riya (insured). Sub-claim 001: Risk = the car, Subclaim Type = vehicle own damage, Damage Object = rear bumper and boot. Submit creates the Registration task. Total time: 6 minutes.',
- health:'Health FNOL (source screenshots) adds Claim with other insurer?, Report to police, Event Description, Agent/Broker Code and Name, Pending Claim toggle, and links to Payment Info and Medical Bill. The red warning "Existed claim record in system on the same policy which reported within 24 hours" appears for possible duplicates.',
+ health:'Health FNOL (InsureMO Easy Claims screenshots) adds Claim with other insurer?, Report to police, Event Description, Agent/Broker Code and Name, Pending Claim toggle, and links to Payment Info and Medical Bill. The red warning "Existed claim record in system on the same policy which reported within 24 hours" appears for possible duplicates.',
  shots:['5','6','7','8','11','12','13','14','15','16','Health_FNOL','Health_SubClaimInformation'],
  ba:'Agree per product: mandatory FNOL fields, cause-of-loss list, who may report (customer, agent, garage, hospital, TPA), catastrophe code process, and the duplicate-claim window. Decide whether reserve must be set at FNOL or at Registration.',
  qa:'Test: policy not in force on date of loss; date of loss in the future; report date earlier than date of loss; duplicate report within 24 hours shows the warning; Submit with a missing mandatory field; Cancel results in a cancelled claim; Task Transfer checkbox is read-only when another user owns the task.',
@@ -933,13 +951,13 @@ const TASKS=[
   S('hand','op','Claim Reserve: Add a line per sub-claim, reserve type and coverage; enter Outstanding Reserve',{m:'Claim Reserve > Add'}),
   S('sys','sys','Reserve saved; Transaction History records the change',{r:'Reserve Open'}),
   S('bcp','bcp','Reserve fee 200201 booked for accounting (no AR/AP)',{n:'From BCP guide'}),
-  S('ri','ri','Reinsurance share of outstanding updated',{n:'Industry practice'}),
+  S('ri','ri','Reinsurance share of outstanding updated',{n:'Insurance knowledge'}),
   S('hand','op','Submit Registration (or Cancel to cancel the claim)'),
   S('sys','sys','Registration closed; Investigation task created',{b:'Submit',r:'Investigation pending'})],
  sections:[['Claim Summary / Claim / Claimant / Sub-Claim / Remark','Same as FNOL'],['Claim Reserve','Add creates a reserve line: Subclaim*, Reserve Type* (for example Loss (Indemnity), Loss (Expense)), Coverage Name*, Sum Insured (read-only), Outstanding Reserve*, Settled (read-only), Remark. Bin icon deletes a line.'],['Transaction History','Log of changes on the claim']],
  buttons:[['Save','Saves'],['Cancel','Cancels the reporting (claim cancelled)'],['Submit','Creates the Investigation task'],['Exit','Back to Claim Task']],
  example:'Riya\'s handler adds two reserve lines on sub-claim 001: Loss (Indemnity), Own Damage coverage, INR 60,000 (the average cost of a rear-end repair for this car model), and Loss (Expense), INR 1,500 for the surveyor\'s fee. Incurred is now INR 61,500.',
- health:'Health Registration has its own layout (source screenshot "Health_Registration").',
+ health:'Health Registration has its own layout (InsureMO Easy Claims screenshot).',
  shots:['17','18','19','Health_Registration'],
  ba:'Define the initial reserve method per product: fixed average reserve by cause of loss, handler judgement, or estimate from the garage/hospital. Define which coverages can be reserved for each sub-claim type.',
  qa:'Test reserve on a coverage the policy does not have; reserve above sum insured; deleting a reserve line; Transaction History entry after save; Cancel at Registration.',
@@ -948,7 +966,7 @@ const TASKS=[
  purpose:'Investigate and verify the claim and collect relevant evidence.',
  why:'Investigation answers three questions before money is spent: did the event happen as described, is the cause covered, and is the claimant entitled. Typical evidence: site photos, police or fire brigade report, witness statements, hospital records. Suspected fraud is referred to a special investigation unit (SIU).',
  steps:[S('hand','op','Open the Investigation task',{m:'Work On'}),
-  S('surv','ext','Surveyor or investigator visits the site, vehicle or hospital',{n:'Industry practice'}),
+  S('surv','ext','Surveyor or investigator visits the site, vehicle or hospital',{n:'Insurance knowledge'}),
   S('hand','op','Sub-Claim tab: record Investigator Name, Contact, Arrival Date, Address, Description; Save per sub-claim',{m:'Investigation Information'}),
   S('hand','op','Claim Information tab: Update, Close or Reopen reserve if the estimate changed',{m:'Claim Reserve (buttons by permission)'}),
   S('sys','dec','Reserve change above authority?',{}),
@@ -967,8 +985,8 @@ const TASKS=[
  purpose:'Determine the loss amount. May require approval.',
  why:'Appraisal puts a value on each damaged item before policy terms are applied. Comparing the surveyor\'s price, the garage\'s price and a provider (parts supplier) price is the main control against inflated repair bills, which is a large source of claim leakage in motor insurance.',
  steps:[S('hand','op','Open the Appraisal task; review latest investigation information',{m:'Sub-Claim tab'}),
-  S('gar','ext','Garage submits repair estimate (labour and parts)',{n:'Industry practice'}),
-  S('surv','ext','Surveyor gives assessed prices',{n:'Industry practice'}),
+  S('gar','ext','Garage submits repair estimate (labour and parts)',{n:'Insurance knowledge'}),
+  S('surv','ext','Surveyor gives assessed prices',{n:'Insurance knowledge'}),
   S('hand','op','Loss Item: Add labour lines (part, work type, coverage, labour cost) and spare part lines (surveyor, garage, provider price; appraisal amount)',{m:'Loss Item'}),
   S('sys','sys','Totals: labour cost, spare part cost, total',{}),
   S('hand','op','Submit Appraisal'),
@@ -1015,9 +1033,9 @@ const TASKS=[
   S('appr','appr','Calculation Approval: Approve or Reject',{b:'Yes'}),
   S('sys','sys','Settlement task created',{b:'No / Approved',r:'Settlement pending'})],
  sections:[['Claim Summary, Claim Information, Sub-Claim Information','Read-only context'],['Calculation (V2)','Claim Calculation table: Order, Reserve Type*, Coverage Name*, Bill Amount, Parameter*, Calculated Amount*, Adjusted Amount*, Action. Add and Calculate buttons. Sum Of Adjusted Amount.'],['Calculation (V1)','GIMO rating calculation page'],['Remark','Notes']],
- buttons:[['Decline','Declines the claim (source Q6)'],['Save','Saves'],['Submit','Above authority → Calculation Approval; otherwise Settlement task'],['Exit','Back to Claim Task']],
+ buttons:[['Decline','Declines the claim (InsureMO Easy Claims Q6)'],['Save','Saves'],['Submit','Above authority → Calculation Approval; otherwise Settlement task'],['Exit','Back to Claim Task']],
  example:'Riya: 82,000 assessed. Depreciation: metal parts 10% (car is 1–2 years old) = 3,200; plastic parts 50% = 10,000; labour 0%. Deductible 1,000. Payable = 82,000 − 13,200 − 1,000 = INR 67,800. This is above the handler\'s 50,000 limit, so Calculation Approval goes to the team lead.',
- health:'Source screenshot: Family Inpatient Medical. Medical Treatment-Normal: bill 50,000, parameter Medical Fee 60,000, calculated 50,000. Hospitalization Allowance: Admission Days 8, calculated 8,000. Sum of Adjusted Amount 58,000.',
+ health:'InsureMO Easy Claims screenshot: Family Inpatient Medical. Medical Treatment-Normal: bill 50,000, parameter Medical Fee 60,000, calculated 50,000. Hospitalization Allowance: Admission Days 8, calculated 8,000. Sum of Adjusted Amount 58,000.',
  shots:['Calculation','NewCalculation','31','32'],
  ba:'Write each calculation rule as a formula with order of application (depreciation before or after deductible, co-pay before or after sub-limit). Decide when a handler may override with Adjusted Amount, and whether an override needs approval.',
  qa:'Build a calculation test sheet with expected values for each coverage. Test full-scale recalculation: second calculation entered as the new total, not the increment. Test Decline at calculation.',
@@ -1034,7 +1052,7 @@ const TASKS=[
   S('sys','sys','Claim closed (Final) or reserve stays open (Partial)',{b:'No / Approved',r:'Closed'}),
   S('bcp','bcp','Claim AP created (200312, 200100 −); Refund Approval; Single or Massive Refund',{m:'BCP'}),
   S('bank','ext','Bank transfer or cheque to payee',{}),
-  S('ri','ri','Paid loss reported for reinsurance recovery',{n:'Industry practice'}),
+  S('ri','ri','Paid loss reported for reinsurance recovery',{n:'Insurance knowledge'}),
   S('gl','gl','Paid claim and reserve release booked',{})],
  sections:[['Claim Summary, Claim Information, Sub-Claim Information, Calculation','Same as Calculation task; only claimant can be changed; Calculation read-only'],['Settlement History','Earlier settlements on the claim'],['Payee (GIMO rating tenants)','Add settlement record (partial/final); Add Payee; delete records and extra payees'],['Payee (new calculation tool)','Adds "Settled" to show the settled reserve amount for each item']],
  buttons:[['Decline','Declines the claim'],['Save','Saves'],['Submit','Above authority → Settlement Approval; otherwise the claim closes (reopen through New and Reopen)'],['Exit','Back to Claim Task']],
@@ -1055,8 +1073,8 @@ const APPROVALS=[
  ['Subrogation Approval','Subrogation Submit with amount above user authority','New Subrogation task','Task closed','New Subrogation Approval task'],
  ['Salvage Approval','Salvage Submit with amount above user authority','New Salvage task','Task closed','New Salvage Approval task'],
  ['Reserve Update Approval','Reserve update above user authority','Task closed (reserve unchanged)','Reserve updated','New Reserve Update Approval task'],
- ['Reserve Close Approval','Reserve close needing approval','Task closed (reserve stays open)','Reserve closed','Not stated in source'],
- ['Reserve Reopen Approval','Reserve reopen needing approval','Task closed (reserve stays closed)','Reserve reopened','Not stated in source']
+ ['Reserve Close Approval','Reserve close needing approval','Task closed (reserve stays open)','Reserve closed','Not stated in InsureMO Easy Claims'],
+ ['Reserve Reopen Approval','Reserve reopen needing approval','Task closed (reserve stays closed)','Reserve reopened','Not stated in InsureMO Easy Claims']
 ];
 
 const INCURRED=[
@@ -1092,9 +1110,9 @@ const AUX=[
  shots:['45','46','47','48','49','50']},
 {id:'recov',name:'Recovery',def:'Recovery of overpaid amounts.',
  why:'Overpayments happen: duplicate payments, wrong payee, a later finding of fraud or non-disclosure, or the insured received money from another insurer. The insurer must create a receivable and collect it, and auditors expect every overpayment to be tracked to closure.',
- steps:[S('hand','op','Overpayment found (for example paid to wrong account and already paid by BCP)'),S('hand','op','New Task → Recovery',{m:'Claim > New and Reopen'}),S('hand','op','Add Recovery: counterparty and amount',{m:'Recovery'}),S('hand','op','Submit'),S('sys','sys','Task closed (no approval task in source)'),S('bcp','bcp','Recovery AR; collection from the person overpaid'),S('hand','op','Correct payment made with a new settlement')],
+ steps:[S('hand','op','Overpayment found (for example paid to wrong account and already paid by BCP)'),S('hand','op','New Task → Recovery',{m:'Claim > New and Reopen'}),S('hand','op','Add Recovery: counterparty and amount',{m:'Recovery'}),S('hand','op','Submit'),S('sys','sys','Task closed (no approval task in InsureMO Easy Claims)'),S('bcp','bcp','Recovery AR; collection from the person overpaid'),S('hand','op','Correct payment made with a new settlement')],
  sections:'Claim Summary, Recovery History (view opens detail), Recovery (Add Recovery; delete extra), Remark, Transaction History.',
- outcome:'Submit; the source describes no Recovery Approval task.',
+ outcome:'Submit; the InsureMO Easy Claims guide describes no Recovery Approval task.',
  example:'A health claim was paid twice because the hospital submitted the same bill under two claim numbers. The handler raises a Recovery for the duplicate amount against the hospital, and BCP offsets it against the hospital\'s next payment or collects it.',
  shots:['51','52','53','54']}
 ];
@@ -1231,7 +1249,7 @@ const MODS={
  bcp:{n:'BCP',cls:'bcp',x:620,y:70,
   gives:['Payment status of claim payables (approved, paid, reversed)','Collection status of recovery receivables'],
   takes:['Claim AP for indemnity and expense payments (200312, 200100 −)','Reserve fee for accounting (200201, fee only)','Recovery AR for salvage and subrogation (200312, 200100 +)'],
-  ba:'Confirm whether a reversed payment in BCP must reopen anything in Claims; the BCP source does not describe a callback.',
+  ba:'Confirm whether a reversed payment in BCP must reopen anything in Claims; the BCP guide does not describe a callback.',
   qa:'Search Refund Approval by Claim No after settlement; check reserve creates a fee but no AR/AP.',
   dev:'BizModule 20 = Claims. ArapCate 2 = AP for payment, 1 = AR for recovery.'},
  ri:{n:'Reinsurance',cls:'ri',x:620,y:330,
@@ -1252,16 +1270,16 @@ const MODS={
   ba:'Which partners create claims directly, and what they can see.',qa:'API-created claims must pass the same validations as screen-created claims.',dev:'Claim Business API: docs.insuremo.com/tech/pro/sdk/api/claimbusiness'}
 };
 const XTABLE=[
- ['Easy PA → Claims','Policy, insured, coverages, sum insured, deductible, producer','New Accident Report search','New Claim / Policy Search','Source (docking)'],
- ['Claims → Easy PA','Claim count and amounts for renewal; total loss','Claim closed / total loss','Settlement','Industry practice'],
+ ['Easy PA → Claims','Policy, insured, coverages, sum insured, deductible, producer','New Accident Report search','New Claim / Policy Search','InsureMO Easy Claims (docking)'],
+ ['Claims → Easy PA','Claim count and amounts for renewal; total loss','Claim closed / total loss','Settlement','Insurance knowledge'],
  ['Claims → BCP','Claim AP (indemnity/expense)','Settlement or prepay approved','Settlement, Prepay','BCP guide'],
  ['Claims → BCP','Reserve fee 200201','Reserve set or changed','Registration, reserve update/close/reopen','BCP guide'],
  ['Claims → BCP','Recovery AR','Subrogation, salvage or recovery submitted/approved','Subrogation, Salvage, Recovery','BCP guide'],
- ['BCP → Claims','Payment status','AP approved, paid or reversed','Payment Info link; cancel payment (Q16)','Source Q16 + BCP guide'],
- ['Claims → Reinsurance','Outstanding, paid, recoveries, catastrophe code','Each financial movement','Reserve, Settlement, recovery tasks','Industry practice'],
+ ['BCP → Claims','Payment status','AP approved, paid or reversed','Payment Info link; cancel payment (Q16)','InsureMO Easy Claims Q16 + BCP guide'],
+ ['Claims → Reinsurance','Outstanding, paid, recoveries, catastrophe code','Each financial movement','Reserve, Settlement, recovery tasks','Insurance knowledge'],
  ['Reinsurance → BCP','RI receivable (reinsurer share of claim)','Claim paid on a reinsured policy / cash call','—','BCP guide (C5)'],
- ['iDocs ↔ Claims','Claim documents','Upload; Document task','Attachment, Document','Source'],
- ['Partners → Claims','FNOL, documents','API call or Batch FNOL','ECS page, Batch FNOL','Source']
+ ['iDocs ↔ Claims','Claim documents','Upload; Document task','Attachment, Document','InsureMO Easy Claims'],
+ ['Partners → Claims','FNOL, documents','API call or Batch FNOL','ECS page, Batch FNOL','InsureMO Easy Claims']
 ];
 const JOURNEYS=[
  {id:'j1',name:'Policy to payment',d:'From policy data to money in the payee\'s bank and the GL.',
@@ -1277,20 +1295,20 @@ const JOURNEYS=[
 const API_STEPS=[S('api','ext','Customer submits claim in app (photos, bills)'),S('sys','sys','Claim API: create claim (FNOL) with policy check',{m:'Claim Business API'}),S('pa','pa','Policy and coverage confirmed'),S('sys','sys','Registration and reserve by rule'),S('sys','dec','Rules: amount small, no fraud flags, documents complete?'),S('sys','sys','Calculation by Claim Matrix rules',{b:'Yes'}),S('sys','sys','Settlement within system authority'),S('bcp','bcp','Claim AP and payment'),S('api','ext','Customer notified: paid'),S('hand','op','Exceptions routed to handler queue',{b:'No'})];
 
 const CONFIG=[
- ['Retrieve mode','01 New Claim page; 02 Policy Search page','Which page New Accident Report opens','Platform / tenant admin','Source'],
- ['PA Docking','01 Mock; 02 PA; 03 Third Party','Where policy data comes from','Platform / tenant admin','Source'],
- ['Manual Policy Docking','01 Not supporting; 02 Only manual; 03 Both','Whether manual (off-system) policies are allowed','Platform / tenant admin','Source'],
- ['Claim Matrix version','V1 (original) or V2 (new)','Product claim configuration; V2 enables the new calculation tool','Product configurator','Source'],
- ['Calculation engine','GIMO rating or new calculation tool','Calculation page layout; Settled field; close-reserve rule; full-scale calculation','Product configurator','Source'],
- ['New calculation logic parameter','On / off','Calculation times selection on Reopen Task; full-scale calculation','Tenant admin','Source'],
- ['Claim authority configuration','Per user/role: amounts and reserve permissions','Approval routing; Update/Close/Reopen buttons','Claims operations + IT','Source'],
- ['Claim process management (workflow)','Task sequence; parallel tasks','Which tasks are created; parallel mainline tasks','Claims operations + IT','Source'],
- ['Document directory','Document types per product','Attachment and Document task lists','Claims operations','Source (iDocs)'],
- ['Notification contact method and templates','Email and other channels; templates','Unqualified document notices','Tenant admin','Source'],
- ['Task due dates','Due date per task','Overdue highlight; Task Monitor Pass Due','Claims operations','Source Q8'],
- ['Batch FNOL template','Per product','Columns in the upload file','Product configurator','Source'],
- ['Code tables','Cause of loss, catastrophe code, claimant type, subclaim type, damage object, reserve type, pay mode','Drop-down lists','Tenant admin','Screens in source'],
- ['Health baseline','Health fields and rules','Health screens on FNOL, Registration, Investigation, Appraisal, Settlement, Case Info','Product configurator','Source'],
+ ['Retrieve mode','01 New Claim page; 02 Policy Search page','Which page New Accident Report opens','Platform / tenant admin','InsureMO Easy Claims'],
+ ['PA Docking','01 Mock; 02 PA; 03 Third Party','Where policy data comes from','Platform / tenant admin','InsureMO Easy Claims'],
+ ['Manual Policy Docking','01 Not supporting; 02 Only manual; 03 Both','Whether manual (off-system) policies are allowed','Platform / tenant admin','InsureMO Easy Claims'],
+ ['Claim Matrix version','V1 (original) or V2 (new)','Product claim configuration; V2 enables the new calculation tool','Product configurator','InsureMO Easy Claims'],
+ ['Calculation engine','GIMO rating or new calculation tool','Calculation page layout; Settled field; close-reserve rule; full-scale calculation','Product configurator','InsureMO Easy Claims'],
+ ['New calculation logic parameter','On / off','Calculation times selection on Reopen Task; full-scale calculation','Tenant admin','InsureMO Easy Claims'],
+ ['Claim authority configuration','Per user/role: amounts and reserve permissions','Approval routing; Update/Close/Reopen buttons','Claims operations + IT','InsureMO Easy Claims'],
+ ['Claim process management (workflow)','Task sequence; parallel tasks','Which tasks are created; parallel mainline tasks','Claims operations + IT','InsureMO Easy Claims'],
+ ['Document directory','Document types per product','Attachment and Document task lists','Claims operations','InsureMO Easy Claims (iDocs)'],
+ ['Notification contact method and templates','Email and other channels; templates','Unqualified document notices','Tenant admin','InsureMO Easy Claims'],
+ ['Task due dates','Due date per task','Overdue highlight; Task Monitor Pass Due','Claims operations','InsureMO Easy Claims Q8'],
+ ['Batch FNOL template','Per product','Columns in the upload file','Product configurator','InsureMO Easy Claims'],
+ ['Code tables','Cause of loss, catastrophe code, claimant type, subclaim type, damage object, reserve type, pay mode','Drop-down lists','Tenant admin','InsureMO Easy Claims screens'],
+ ['Health baseline','Health fields and rules','Health screens on FNOL, Registration, Investigation, Appraisal, Settlement, Case Info','Product configurator','InsureMO Easy Claims'],
  ['Duplicate claim window','24 hours on same policy (as seen)','Red warning on Claim Summary','Tenant admin (confirm)','Screenshot']
 ];
 const DOCK=[['01','01','','Mock Data'],['02','01','','PA'],['03','01','','Third Party'],['01','02','','Manual Policy'],['02','02','','Manual Policy'],['03','02','','Manual Policy'],['01','03','Yes','Manual Policy'],['02','03','Yes','Manual Policy'],['03','03','Yes','Manual Policy'],['01','03','No','Mock Data'],['02','03','No','PA'],['03','03','No','Third Party']];
@@ -1353,7 +1371,7 @@ const TOOLKIT={
   ['T30','Party','Payment info','Add garage with bank account','Garage selectable as payee with bank details'],
   ['T31','Integration','Payment cancel','Cancel payment before BCP pays','AP cancelled; new settlement possible'],
   ['T32','Integration','Reserve fee','Update reserve','BCP fee 200201; no AR/AP']],
-  tips:['Always test the boundary: equal to the limit, one unit below, one unit above. The source says "exceeds"; confirm whether equal triggers approval.','Use the scenarios in Module 3.2 as end-to-end regression tests.','Reconcile money across modules: Claims settlement total = BCP claim AP total = GL paid claims for the period.','Test with users of different authority levels and permissions, not just an admin user.']},
+  tips:['Always test the boundary: equal to the limit, one unit below, one unit above. InsureMO Easy Claims says "exceeds"; confirm whether equal triggers approval.','Use the scenarios in Module 3.2 as end-to-end regression tests.','Reconcile money across modules: Claims settlement total = BCP claim AP total = GL paid claims for the period.','Test with users of different authority levels and permissions, not just an admin user.']},
  dev:{t:'Developer',sections:[
   {h:'Integration checklist',items:[
    ['Policy docking','Confirm docking mode; map policy, risk, coverage and sum insured fields; handle the policy version at the date of loss.'],
@@ -1383,7 +1401,7 @@ const TOOLKIT={
 const GLOSS=[
  /* Claims */
  ['Claim','Claims','A request to the insurer for payment under a policy after an insured event, and the whole process of handling it.'],
- ['FNOL (First Notice of Loss)','Claims','The first report of a loss to the insurer. In Easy Claim, the first task, which creates the claim case.'],
+ ['FNOL (First Notice of Loss)','Claims','The first report of a loss to the insurer. In InsureMO Easy Claims, the first task, which creates the claim case.'],
  ['Claim registration','Claims','Completing claim data and setting the first reserve.'],
  ['Sub-claim','Claims','A part of a claim for one risk, damage object or claimant. Has its own reserves and, in sub-claim mode, its own tasks.'],
  ['Claim mode / sub-claim mode','Claims','Claim mode: one case holds everything (motor, property). Sub-claim mode: one main case with many sub-cases (health).'],
@@ -1408,7 +1426,7 @@ const GLOSS=[
  ['Prepay (interim payment)','Claims','Advance payment before final settlement, deducted from the final amount.'],
  ['Subrogation','Claims','The insurer\'s right, after paying, to recover from the party who caused the loss.'],
  ['Salvage','Claims','Damaged property the insurer owns after paying a total loss and sells to reduce cost.'],
- ['Recovery','Claims','In Easy Claim: recovering an overpaid amount. Generally: any money coming back on a claim.'],
+ ['Recovery','Claims','In InsureMO Easy Claims: recovering an overpaid amount. Generally: any money coming back on a claim.'],
  ['Total loss','Claims','Property destroyed or not worth repairing. Constructive total loss: repair cost is above a set share of insured value.'],
  ['Decline / repudiation','Claims','Refusing a claim because it is not covered or the conditions were not met.'],
  ['Cancel (claim)','Claims','Withdrawing a claim at FNOL or Registration, for example when the customer does not want to claim.'],
@@ -1420,7 +1438,7 @@ const GLOSS=[
  ['TAT','Claims','Turnaround time: days from report to payment or decision.'],
  ['Knock-for-knock','Claims','Agreement between insurers that each pays its own customer and does not pursue the other.'],
  ['Claims cooperation clause','Claims','Reinsurance clause requiring the insurer to involve the reinsurer in large claim decisions.'],
- ['Litigation','Claims','A claim in court or legal dispute. Easy Claim has a Litigation link on the claim summary.'],
+ ['Litigation','Claims','A claim in court or legal dispute. InsureMO Easy Claims has a Litigation link on the claim summary.'],
  /* Policy & underwriting */
  ['Policy','Policy and underwriting','The insurance contract: who and what is covered, for what, for how long, at what price.'],
  ['Policyholder','Policy and underwriting','The person or company that owns the policy and pays premium.'],
@@ -1473,7 +1491,7 @@ const GLOSS=[
  ['Statement','Finance and BCP','Periodic summary of transactions and balance with a party, for example an agent, coinsurer or reinsurer.'],
  ['Statement management','Finance and BCP','Generating, sending, confirming and settling statements.'],
  ['Fee type','Finance and BCP','BCP code that classifies an amount for accounting. Claims: 200100 claim ARAP, 200201 claim reserve, 200312 claim settlement.'],
- ['BizModule','Finance and BCP','Source module code in BCP: 10 PA, 20 Claims, 30 Reinsurance, 40 Sales Channel.'],
+ ['BizModule','Finance and BCP','InsureMO Easy Claims module code in BCP: 10 PA, 20 Claims, 30 Reinsurance, 40 Sales Channel.'],
  ['Refund Approval','Finance and BCP','BCP step that approves payable records (negative AP) before payment.'],
  ['General ledger (GL)','Finance and BCP','The company\'s main accounting records.'],
  ['Loss ratio','Finance and BCP','Incurred claims ÷ earned premium.'],
@@ -1512,7 +1530,7 @@ const GLOSS=[
  ['Hospital cash','Health','Fixed daily benefit for each day in hospital.'],
  ['Pre/post-hospitalisation','Health','Medical costs before admission and after discharge, covered for set days.'],
  /* InsureMO */
- ['Easy Claim','InsureMO system','InsureMO claims application built on the Claim API.'],
+ ['InsureMO Easy Claims','InsureMO system','InsureMO claims application built on the Claim API.'],
  ['Easy PA','InsureMO system','InsureMO policy administration application.'],
  ['BCP','InsureMO system','Billing, Collection and Payment module.'],
  ['Claim Task','InsureMO system','Workbench for workflow tasks.'],
@@ -1534,7 +1552,7 @@ const GLOSS=[
 ];
 
 const FAQ=[
- ['What are the recent upgrades of Easy Claim?','Cancel Settlement; a new calculation tool and version (replacing GIMO built-in rating for claim calculation); a health insurance claims baseline.','reserves'],
+ ['What are the recent upgrades of InsureMO Easy Claims?','Cancel Settlement; a new calculation tool and version (replacing GIMO built-in rating for claim calculation); a health insurance claims baseline.','reserves'],
  ['How long does a claim usually take?','With full API integration, claims can be completed within minutes. API: docs.insuremo.com/tech/pro/sdk/api/claimbusiness','config'],
  ['How to create batch claims?','Batch FNOL: download the template, fill it, upload. After validation the system creates cases; check results in Upload Monitor.','workmgmt'],
  ['Does the system support recovery?','Yes: Subrogation / Subrogation Approval, Salvage / Salvage Approval, Recovery, created with New Task.','aux'],
@@ -1563,15 +1581,15 @@ const GAPS=[
  ['Medium','Prepay History','"Click view, and the system will open the subrogation detail page."','Likely a copy error; it should open prepay detail.'],
  ['Medium','Settlement closure wording','"The claim changes will be closed and go to claim query to reopen the case."','Meaning: the claim is closed; reopening is done from claim query / New and Reopen. Confirm with partial settlements.'],
  ['Medium','Recovery approval','Recovery has no approval task, unlike Subrogation and Salvage.','Whether recovery needs an approval control in your tenant.'],
- ['Medium','Reserve approval at Registration','Reserve Update Approval exists, but source does not say if the first reserve at Registration can trigger it.','When reserve approval applies (first reserve or only updates).'],
+ ['Medium','Reserve approval at Registration','Reserve Update Approval exists, but InsureMO Easy Claims does not say if the first reserve at Registration can trigger it.','When reserve approval applies (first reserve or only updates).'],
  ['Medium','Escalation for reserve close/reopen','No "approve above authority" path given for Reserve Close and Reopen approvals.','Whether these can escalate.'],
  ['Low','Investigation always in chain','Standard flow always includes Investigation.','Whether investigation can be skipped by workflow configuration for simple claims.'],
  ['Low','Duplicate claim window','Screenshot shows a 24-hour duplicate warning; not described in text.','Whether the window is configurable and whether it blocks or only warns.'],
- ['Low','Reinsurance interface','The source does not describe the claim-to-reinsurance interface.','Events, timing and data sent to Reinsurance.'],
+ ['Low','Reinsurance interface','InsureMO Easy Claims does not describe the claim-to-reinsurance interface.','Events, timing and data sent to Reinsurance.'],
  ['Low','Health baseline fields','Health pages are shown only as screenshots.','Full field list and rules for the health baseline.']
 ];
 
-/* Traceability: source section → module, tested by questions (module quiz index or final index) */
+/* Traceability: InsureMO Easy Claims section → module, tested by questions (module quiz index or final index) */
 const TRACE=[
  ['Introduction: What is a claim','insurance','Module 1.1',['insurance:0']],
  ['Standard claim process','lifecycle','Module 2.1 master flow',['lifecycle:0','F:0']],
@@ -1601,34 +1619,34 @@ const TRACE=[
  ['New and Reopen (Subclaim, Task, Reopen, parallel)','workmgmt','Module 3.3',['workmgmt:3','F:9','F:10']],
  ['Diary Task','lifecycle','Module 2.1, 3.3',['lifecycle:3']],
  ['Party Management','parties','Module 1.2, 3.3',['parties:3']],
- ['Q&A 1–17','faq','Source Q&A page',['F:15','F:17']],
+ ['Q&A 1–17','faq','InsureMO Easy Claims Q&A page',['F:15','F:17']],
  ['Cross-module (BCP fee codes, PA, RI)','integration','Module 3.4',['integration:0','integration:1','integration:2','integration:3','F:21','F:22','F:23','F:24']]
 ];
 
 /* Module knowledge checks: q, options, answer index, why */
 const MQ={
  insurance:[
-  {q:'Which statement matches the source definition of a claim?',o:['Only the payment made to the insured','The whole process from the claim request after an insured event to review, investigation, assessment, calculation and payment','The policyholder\'s premium refund'],a:1,w:'The source defines a claim as the entire process after a covered event, from request to compensation payment.'},
+  {q:'Which statement matches the InsureMO Easy Claims definition of a claim?',o:['Only the payment made to the insured','The whole process from the claim request after an insured event to review, investigation, assessment, calculation and payment','The policyholder\'s premium refund'],a:1,w:'InsureMO Easy Claims defines a claim as the entire process after a covered event, from request to compensation payment.'},
   {q:'Earned premium 200, paid claims 110, outstanding moved from 40 to 60. What is the loss ratio?',o:['55%','65%','85%'],a:1,w:'Incurred = 110 + (60 − 40) = 130. 130 ÷ 200 = 65%.'},
   {q:'A hospital cash product pays 2,000 per day. Which type of cover is it?',o:['Indemnity','Benefit (fixed amount)','Liability'],a:1,w:'It pays a fixed amount per day, not the actual loss, so it is benefit cover.'},
-  {q:'Which module issues the policy that the claim is checked against?',o:['BCP','Easy PA','Reinsurance'],a:1,w:'Easy PA issues and maintains the policy; Easy Claim retrieves it at FNOL.'}],
+  {q:'Which module issues the policy that the claim is checked against?',o:['BCP','Easy PA','Reinsurance'],a:1,w:'Easy PA issues and maintains the policy; InsureMO Easy Claims retrieves it at FNOL.'}],
  parties:[
   {q:'An employer buys group health; an employee is treated cashless. Who is the payee?',o:['The employer','The employee','The hospital'],a:2,w:'In cashless claims the insurer (or TPA) pays the hospital directly.'},
   {q:'Who represents the customer rather than the insurer?',o:['Tied agent','Broker','Surveyor'],a:1,w:'A broker acts for the client; an agent acts for the insurer.'},
-  {q:'Where does Easy Claim record the surveyor\'s visit details?',o:['Investigation Information on the sub-claim','Party Management only','Settlement payee'],a:0,w:'Investigation Information holds Investigator Name, Contact, Arrival Date, Address and Description.'},
-  {q:'Where are garages and hospitals maintained as third parties?',o:['Claim Search','Party Management','Task Monitor'],a:1,w:'Source Q17: maintain third parties in Party Management.'}],
+  {q:'Where does InsureMO Easy Claims record the surveyor\'s visit details?',o:['Investigation Information on the sub-claim','Party Management only','Settlement payee'],a:0,w:'Investigation Information holds Investigator Name, Contact, Arrival Date, Address and Description.'},
+  {q:'Where are garages and hospitals maintained as third parties?',o:['Claim Search','Party Management','Task Monitor'],a:1,w:'InsureMO Easy Claims Q17: maintain third parties in Party Management.'}],
  concepts:[
   {q:'After paying Riya, her insurer claims from the truck owner\'s insurer. Which principle allows this?',o:['Contribution','Subrogation','Utmost good faith'],a:1,w:'Subrogation passes the insured\'s right of recovery to the insurer after payment.'},
-  {q:'Which product fits sub-claim mode best?',o:['A single motor accident','Health insurance with several bills in one case','A single fire loss'],a:1,w:'The source lists health and multiple claims for sub-claim mode.'},
+  {q:'Which product fits sub-claim mode best?',o:['A single motor accident','Health insurance with several bills in one case','A single fire loss'],a:1,w:'InsureMO Easy Claims lists health and multiple claims for sub-claim mode.'},
   {q:'Investigation fees are reserved under…',o:['Indemnity reserve','Expense reserve','IBNR'],a:1,w:'Expense reserve covers processing costs such as investigation and legal fees.'},
   {q:'Value at risk 1,000,000, sum insured 600,000, loss 200,000, no deductible. Payable with average?',o:['200,000','120,000','600,000'],a:1,w:'200,000 × 600,000 ÷ 1,000,000 = 120,000.'}],
  lifecycle:[
-  {q:'What is the correct order?',o:['FNOL → Registration → Investigation → Appraisal → Document → Calculation → Settlement','FNOL → Investigation → Registration → Document → Appraisal → Settlement → Calculation','Registration → FNOL → Appraisal → Investigation → Calculation → Document → Settlement'],a:0,w:'This is the source standard claim process.'},
+  {q:'What is the correct order?',o:['FNOL → Registration → Investigation → Appraisal → Document → Calculation → Settlement','FNOL → Investigation → Registration → Document → Appraisal → Settlement → Calculation','Registration → FNOL → Appraisal → Investigation → Calculation → Document → Settlement'],a:0,w:'This is the InsureMO Easy Claims standard claim process.'},
   {q:'Which task establishes the claim reserve?',o:['FNOL','Registration','Document'],a:1,w:'Registration: complete claim information, establish claim reserve.'},
   {q:'In Task Transfer, when is a task checkbox selectable?',o:['Always','When you own the task or it is unassigned','Only for managers'],a:1,w:'Otherwise it is read-only.'},
   {q:'Where do you find a reminder task someone assigned to you?',o:['Claim Task','Diary Task','Task Monitor only'],a:1,w:'Diary tasks are reminder tasks found in the Diary Task menu.'}],
  tasks:[
-  {q:'What happens on FNOL Submit?',o:['Claim closes','FNOL closes, Registration task is created and Task Transfer opens','Investigation task is created'],a:1,w:'Source FNOL step 5.'},
+  {q:'What happens on FNOL Submit?',o:['Claim closes','FNOL closes, Registration task is created and Task Transfer opens','Investigation task is created'],a:1,w:'InsureMO Easy Claims FNOL step 5.'},
   {q:'On Registration, which section is new compared with FNOL?',o:['Claim Reserve','Remark','Claimant Information'],a:0,w:'Registration adds Claim Reserve (and Transaction History).'},
   {q:'Document Submit with Is Qualified = No creates…',o:['Calculation task','A new Document task','Settlement Approval'],a:1,w:'The document loop repeats until qualified.'},
   {q:'Which buttons on Settlement can stop payment of a claim that is not payable?',o:['Decline','Exit','Save'],a:0,w:'Decline declines the claim.'}],
@@ -1636,7 +1654,7 @@ const MQ={
   {q:'Appraisal Approval: the approver rejects. What next?',o:['Document task','New Appraisal task','Claim closed'],a:1,w:'Reject returns the work to a new Appraisal task.'},
   {q:'Calculation Approval: approve, but the amount exceeds the approver\'s authority. What next?',o:['Settlement task','New Calculation Approval task','Calculation task'],a:1,w:'Escalation creates another approval task for the next level.'},
   {q:'Reserve Update Approval: Reject. What happens?',o:['New reserve task','Task closed, reserve unchanged','Reserve closed'],a:1,w:'Source: if Reject, the task is closed.'},
-  {q:'Which approval page differs by having no Prepay Information section and read-only payee?',o:['Prepay Approval','Salvage Approval','Settlement Approval'],a:0,w:'Source Prepay Approval differences.'}],
+  {q:'Which approval page differs by having no Prepay Information section and read-only payee?',o:['Prepay Approval','Salvage Approval','Settlement Approval'],a:0,w:'InsureMO Easy Claims Prepay Approval differences.'}],
  reserves:[
   {q:'Paid 40,000, outstanding 25,000. Incurred?',o:['15,000','40,000','65,000'],a:2,w:'Incurred = paid + outstanding.'},
   {q:'With full-scale calculation, first calculation 1,000; extra 500 found. What do you enter in the second calculation?',o:['500','1,500','2,500'],a:1,w:'Enter the full total; the latest version holds the total.'},
@@ -1646,12 +1664,12 @@ const MQ={
   {q:'Which auxiliary task sends money out?',o:['Prepay','Salvage','Subrogation'],a:0,w:'Prepay is an advance payment; the others bring money in.'},
   {q:'The at-fault driver\'s insurer should pay back what you paid. Which task?',o:['Recovery','Subrogation','Salvage'],a:1,w:'Subrogation: recovery from third parties.'},
   {q:'Selling a wrecked car after a total loss uses…',o:['Salvage','Prepay','Recovery'],a:0,w:'Salvage: disposal of damaged property.'},
-  {q:'Which auxiliary task has no approval task in the source?',o:['Salvage','Prepay','Recovery'],a:2,w:'Only Recovery lacks an approval task.'}],
+  {q:'Which auxiliary task has no approval task in InsureMO Easy Claims?',o:['Salvage','Prepay','Recovery'],a:2,w:'Only Recovery lacks an approval task.'}],
  scenarios:[
   {q:'Riya\'s repair: assessed 82,000, depreciation 13,200, deductible 1,000. Who pays the garage what?',o:['Insurer 82,000','Insurer 67,800; Riya 14,200','Insurer 68,800; Riya 13,200'],a:1,w:'82,000 − 13,200 − 1,000 = 67,800 from the insurer; Riya pays 14,200.'},
   {q:'Mr Tan: bill 3,40,000, non-payables 12,000, co-pay 10%. Insurer pays?',o:['3,06,000','2,95,200','3,28,000'],a:1,w:'(3,40,000 − 12,000) × 90% = 2,95,200.'},
   {q:'A car with a loan is a total loss. Who is usually paid first?',o:['The garage','The financier','The salvage buyer'],a:1,w:'The financier has insurable interest and is paid first.'},
-  {q:'Settlement paid to the wrong account; BCP has already paid. What do you do?',o:['Cancel payment','Recovery task, then pay again correctly','Decline the claim'],a:1,w:'Source Q16: once paid, recover, then pay again.'}],
+  {q:'Settlement paid to the wrong account; BCP has already paid. What do you do?',o:['Cancel payment','Recovery task, then pay again correctly','Decline the claim'],a:1,w:'InsureMO Easy Claims Q16: once paid, recover, then pay again.'}],
  workmgmt:[
   {q:'Which screen lets you download a list of claims to Excel?',o:['Claim Search','Diary Task','Party Management'],a:0,w:'Claim Search and Task Monitor both have Download.'},
   {q:'A manager wants to see overdue tasks of the team.',o:['My Claim','Task Monitor','New and Reopen'],a:1,w:'Task Monitor shows tasks of the user and subordinates with Pass Due.'},
@@ -1684,23 +1702,84 @@ const FINAL=[
  {q:'Under the new calculation tool, the first calculation was 1,000 and it should be 1,500. What is entered on reopen?',o:['500','1,500','2,500'],a:1,w:'Full-scale: the latest version holds the total.',m:'reserves'},
  {q:'Settlement Approval approves within the approver\'s authority. What happens?',o:['Document task','Claim closes; payment goes to BCP','New Settlement task'],a:1,w:'Claim closes; reopen via New and Reopen if needed.',m:'approvals'},
  {q:'A Reserve Close Approval is rejected. What is the reserve status?',o:['Closed','Still open','Reopened'],a:1,w:'Reject closes the approval task; the reserve is not closed.',m:'reserves'},
- {q:'Without parallel tasks, which tasks are offered on Reopen Task?',o:['Finished Investigation, Appraisal, Document, Calculation','Any task including Settlement','Only FNOL'],a:0,w:'Source Reopen Task rule.',m:'workmgmt'},
+ {q:'Without parallel tasks, which tasks are offered on Reopen Task?',o:['Finished Investigation, Appraisal, Document, Calculation','Any task including Settlement','Only FNOL'],a:0,w:'InsureMO Easy Claims Reopen Task rule.',m:'workmgmt'},
  {q:'With parallel tasks on, which tasks still follow the old rules on New Task?',o:['Investigation and Appraisal','Prepay, Subrogation, Salvage, Recovery','Document and Calculation'],a:1,w:'Subordinate tasks keep the current logic.',m:'workmgmt'},
  {q:'A factory needs cash before the final loss figure is agreed. Which task?',o:['Prepay','Recovery','Salvage'],a:0,w:'Prepay = advance payment before final settlement.',m:'aux'},
  {q:'Which pair are both money coming back to the insurer?',o:['Prepay and Salvage','Subrogation and Salvage','Prepay and Settlement'],a:1,w:'Both create recovery receivables.',m:'aux'},
  {q:'The truck owner\'s insurer pays back the claim. Which BCP record is collected?',o:['Claim AP 200312/200100 (−)','Recovery AR 200312/200100 (+)','Reserve fee 200201'],a:1,w:'Recoveries are AR with positive fees.',m:'integration'},
  {q:'A duplicate payment is found after BCP paid it. Which task?',o:['Recovery','Subrogation','Prepay'],a:0,w:'Recovery: recovery of overpaid amounts.',m:'aux'},
- {q:'Where does a manager find all tasks of the team, including closed ones?',o:['My Claim','Task Monitor','Diary Task'],a:1,w:'Source Q12.',m:'workmgmt'},
- {q:'A handler resigns. What is the fastest fix for their open work?',o:['Reopen each claim','Reassignment of tasks and claim owner','Cancel the claims'],a:1,w:'Source Q13.',m:'workmgmt'},
- {q:'Investigation was completed with a wrong arrival date. What now?',o:['Reopen Task: Investigation','Create a new claim','Decline'],a:0,w:'Source Q14.',m:'workmgmt'},
+ {q:'Where does a manager find all tasks of the team, including closed ones?',o:['My Claim','Task Monitor','Diary Task'],a:1,w:'InsureMO Easy Claims Q12.',m:'workmgmt'},
+ {q:'A handler resigns. What is the fastest fix for their open work?',o:['Reopen each claim','Reassignment of tasks and claim owner','Cancel the claims'],a:1,w:'InsureMO Easy Claims Q13.',m:'workmgmt'},
+ {q:'Investigation was completed with a wrong arrival date. What now?',o:['Reopen Task: Investigation','Create a new claim','Decline'],a:0,w:'InsureMO Easy Claims Q14.',m:'workmgmt'},
  {q:'Which screen shows the claimant detail, sub-claim detail, reserve history and settlement detail in one place?',o:['Case Information','Upload Monitor','Party Management'],a:0,w:'Open Claim No from Claim Search.',m:'workmgmt'},
- {q:'After a cyclone, 3,000 notices arrive in spreadsheets. Best route?',o:['Type each on FNOL','Batch FNOL with the product template; track in Upload Monitor','Diary tasks'],a:1,w:'Source Batch FNOL and Q3.',m:'workmgmt'},
+ {q:'After a cyclone, 3,000 notices arrive in spreadsheets. Best route?',o:['Type each on FNOL','Batch FNOL with the product template; track in Upload Monitor','Diary tasks'],a:1,w:'InsureMO Easy Claims Batch FNOL and Q3.',m:'workmgmt'},
  {q:'PA Docking 01, Manual Policy Docking 03, Is Manual Policy = Yes. Docking mode?',o:['Mock Data','Manual Policy','PA'],a:1,w:'User chose a manual policy and the tenant supports both.',m:'config'},
  {q:'A reinsurer asks for the total of all claims from one flood. Which field must be filled on each claim?',o:['Catastrophe Code','Cause of Loss','Accident Address'],a:0,w:'Catastrophe code aggregates event losses.',m:'integration'},
  {q:'Gross claim 1,000,000; quota share 30%; per-risk XOL 400,000 xs 300,000 on the retained share. Net to the insurer?',o:['300,000','400,000','700,000'],a:0,w:'Retained 700,000; XOL pays min(700,000 − 300,000, 400,000) = 400,000; net 300,000.',m:'integration'},
  {q:'Riya\'s claim is closed and paid. What happens at renewal in Easy PA, in most motor markets?',o:['Nothing','No-claim bonus is lost or reduced','Premium is refunded'],a:1,w:'A paid claim usually removes NCB.',m:'integration'},
- {q:'Settlement is approved in Easy Claim. Where does finance approve the payable before it is paid?',o:['BCP Refund Approval','Easy PA endorsement','Reinsurance cash call'],a:0,w:'Claim AP records appear in BCP Refund Approval, then Single or Massive Refund pays them.',m:'integration'}
+ {q:'Settlement is approved in InsureMO Easy Claims. Where does finance approve the payable before it is paid?',o:['BCP Refund Approval','Easy PA endorsement','Reinsurance cash call'],a:0,w:'Claim AP records appear in BCP Refund Approval, then Single or Massive Refund pays them.',m:'integration'}
 ];
+
+/* ---------- Content part 5: standard process step by step, policy lifecycle, plain-English pointers ---------- */
+LANES.expert='Surveyor / garage / hospital';LANES.fin='Finance (BCP, bank, GL)';
+LANE_ORDER.splice(LANE_ORDER.indexOf('hand'),0,'expert');LANE_ORDER.splice(LANE_ORDER.indexOf('ri'),0,'fin');
+
+/* Standard claim process in one view. st = stage, p = plain-English meaning, o = output / next */
+const STAGES=['1 Notify','2 Register','3 Investigate','4 Appraise','5 Documents','6 Calculate','7 Settle and pay','8 After closure'];
+const STD_STEPS=[
+ S('clmt','ev','Loss happens; insured, agent, hospital or garage reports it',{st:0,m:'Phone, app, agent, partner API',o:'Notice received',p:'The customer tells the insurer something went wrong. Nothing is in the system yet.'}),
+ S('hand','op','New Accident Report: enter Policy No and Date of Loss; Search',{st:0,m:'Claim > Claim Task',o:'Policy search',p:'The handler finds the customer\'s policy so the claim can be checked against it.'}),
+ S('pa','pa','Easy PA returns the policy that was in force on the date of loss',{st:0,m:'Policy docking',o:'Policy details shown',p:'Confirms the customer was covered on the day of the loss.'}),
+ S('hand','op','FNOL: record what happened, who claims, what was damaged; Submit',{st:0,m:'FNOL task page',o:'Claim No created',p:'The claim is officially opened and gets its reference number.'}),
+ S('sys','sys','FNOL closes; Registration task created; Task Transfer opens',{st:0,m:'Task Transfer > Work On',o:'Registration pending',p:'The system hands the work to the next step automatically.'}),
+ S('hand','op','Registration: complete details; add reserve lines (indemnity and expense); Submit',{st:1,m:'Registration > Claim Reserve',o:'Reserve open; Investigation task',p:'The insurer writes down its first estimate of the cost (the reserve).'}),
+ S('fin','bcp','Reserve booked for accounting (BCP fee 200201, no payment)',{st:1,m:'BCP',o:'Liability in the books',p:'Finance records the expected cost so profit is not overstated.'}),
+ S('ri','ri','Reinsurer share of the reserve is noted',{st:1,m:'Reinsurance',o:'Ceded reserve',p:'If part of the risk was passed to a reinsurer, its share is tracked from day one.'}),
+ S('expert','ext','Surveyor or investigator inspects the damage and checks the facts',{st:2,m:'Site, garage or hospital visit',o:'Survey / investigation report',p:'An independent expert confirms the loss is real and covered.'}),
+ S('hand','op','Investigation: record findings; update the reserve if needed; Submit',{st:2,m:'Investigation > Sub-Claim tab',o:'Appraisal task',p:'The handler stores the evidence and corrects the estimate.'}),
+ S('expert','ext','Garage or hospital sends the estimate or bill',{st:3,m:'Estimate / bill',o:'Prices received',p:'The repairer or hospital says what it will cost.'}),
+ S('hand','op','Appraisal: enter loss items with surveyor, garage and provider prices; Submit',{st:3,m:'Appraisal > Loss Item',o:'Appraisal amount',p:'The handler values the damage item by item.'}),
+ S('sys','dec','Is the appraisal amount above the handler\'s approval limit?',{st:3,m:'Claim authority configuration',o:'Yes → approval; No → Document',p:'Large amounts need a senior person to check them.'}),
+ S('appr','appr','Appraisal Approval: approve or reject (reject sends it back)',{st:3,b:'Yes',m:'Appraisal Approval task',o:'Document task',p:'A second person confirms the value (four-eyes control).'}),
+ S('clmt','ev','Claimant uploads documents: claim form, ID, bills, reports',{st:4,m:'Attachment (iDocs)',o:'Documents received',p:'The customer provides proof.'}),
+ S('hand','op','Document: mark each document qualified or not; Submit',{st:4,m:'Document tab',o:'Not qualified → new Document task and notice; qualified → Calculation',p:'Payment is not allowed until the proof is complete.'}),
+ S('hand','op','Calculation: apply limits, deductible, co-pay, depreciation; Submit (or Decline)',{st:5,m:'Calculation tab (Claim Matrix)',o:'Calculated amount',p:'The policy rules turn the damage value into the amount the insurer owes.'}),
+ S('appr','appr','Calculation Approval if above the handler\'s limit',{st:5,b:'If above',m:'Calculation Approval task',o:'Settlement task',p:'A senior person checks the amount to be paid.'}),
+ S('hand','op','Settlement: choose payees (customer, garage, hospital), partial or final; Submit (or Decline)',{st:6,m:'Settlement tab > Payee',o:'Payment request',p:'The handler decides who gets paid and how much.'}),
+ S('appr','appr','Settlement Approval if above the handler\'s limit',{st:6,b:'If above',m:'Settlement Approval task',o:'Approved',p:'Final check before money leaves the company.'}),
+ S('sys','sys','Claim closed (final settlement) or kept open (partial)',{st:6,m:'Case status',o:'Closed',p:'The case is finished in the claims system.'}),
+ S('fin','bcp','BCP creates the claim payable; finance approves and pays; bank transfers money; GL posts it',{st:6,m:'BCP Refund Approval, Single / Massive Refund',o:'Payee paid',p:'Finance, not the claims team, releases the money. This separation prevents fraud.'}),
+ S('ri','ri','Reinsurer pays its share of the paid claim',{st:6,m:'Reinsurance',o:'Recovery from reinsurer',p:'The insurer gets back the part of the claim it passed on.'}),
+ S('hand','op','If someone else caused the loss, or there is salvage: Subrogation or Salvage task',{st:7,m:'Claim > New and Reopen > New Task',o:'Recovery receivable in BCP',p:'The insurer tries to get money back from the person at fault or by selling damaged property.'}),
+ S('hand','op','If more costs appear later: Reopen task or add a new reserve',{st:7,m:'Claim > New and Reopen',o:'Claim reopened',p:'Closed claims can be reopened for extra payments.'})
+];
+
+/* Policy lifecycle */
+const POLICY_LIFE=[
+ {id:'q',t:'Quote',s:'Price shown to customer',k:'ev',d:'The customer asks for a price. The insurer (or agent) calculates premium from the risk details.',m:'Easy PA / Sales Channel'},
+ {id:'p',t:'Proposal',s:'Customer applies',k:'ev',d:'The customer fills in the application and declares facts (utmost good faith).',m:'Easy PA'},
+ {id:'u',t:'Underwriting',s:'Accept, load or decline',k:'pa',d:'The underwriter decides whether to accept the risk and on what terms.',m:'Easy PA'},
+ {id:'i',t:'Policy issued',s:'Contract starts',k:'pa',d:'The policy document is created with insured, period, coverages, sum insured and deductibles. Claims are checked against this.',m:'Easy PA'},
+ {id:'b',t:'Premium billed and collected',s:'AR and receipt',k:'bcp',d:'BCP creates the premium receivable (AR) and records the payment. Some products need payment before cover starts.',m:'BCP'},
+ {id:'e',t:'Mid-term changes',s:'Endorsements',k:'pa',d:'Changes during the year, for example a new vehicle or higher sum insured. A claim uses the version in force on the date of loss.',m:'Easy PA'},
+ {id:'c',t:'Claim',s:'InsureMO Easy Claims',k:'appr',d:'If an insured event happens, the claim process in this guide starts. Payments go through BCP; reinsurance shares the cost.',m:'InsureMO Easy Claims → BCP, Reinsurance'},
+ {id:'r',t:'Renewal, lapse or cancellation',s:'Claim history affects price',k:'pa',d:'At the end of the period the policy is renewed (claim history changes the price, for example loss of no-claim bonus), lapses for non-payment, or is cancelled (premium refund through BCP).',m:'Easy PA, BCP'}
+];
+
+/* Plain-English pointers per task: simple, analogy, does, watch */
+const PLAIN={
+ fnol:{simple:'The first time the insurer hears about a loss. A claim record is opened.',analogy:'Like reporting a fault to a service desk: you get a ticket number before anyone fixes anything.',does:'Finds the policy, captures what happened, who is claiming and what was damaged, then creates the Registration task.',watch:'Date of loss decides whether the policy was active. A duplicate report on the same policy within 24 hours shows a warning.'},
+ reg:{simple:'The claim is completed and the first cost estimate (reserve) is entered.',analogy:'Like a project manager setting an initial budget for a job.',does:'Adds reserve lines per sub-claim, reserve type and coverage, and records history. Creates the Investigation task.',watch:'A reserve that is too low hides cost from management; too high ties up capital.'},
+ inv:{simple:'Checking the facts: did it happen, is it covered, is the claimant entitled.',analogy:'Like an auditor checking a receipt before reimbursing an expense.',does:'Stores investigator details and findings per sub-claim; lets authorised users update, close or reopen reserves.',watch:'Reserve buttons only appear for users with permission.'},
+ app:{simple:'Putting a money value on the damage, item by item.',analogy:'Like getting three quotes for a home repair and agreeing a fair price.',does:'Records labour and parts with surveyor, garage and provider prices. Sends large amounts for approval.',watch:'This is where inflated repair bills are caught.'},
+ doc:{simple:'Collecting and checking the proof needed to pay.',analogy:'Like a bank asking for payslips before approving a loan.',does:'Marks documents qualified or not, notifies the contact person, and loops until all proof is complete.',watch:'Missing documents are the most common reason for slow claims.'},
+ calc:{simple:'Applying the policy rules to work out what the insurer owes.',analogy:'Like a tax calculation: gross amount minus allowances and limits gives the net amount.',does:'Uses configured formulas (Claim Matrix) to calculate each line; handler can adjust; large amounts go for approval; Decline is possible.',watch:'Order of deductions changes the result. Agree it in writing.'},
+ set:{simple:'Deciding who gets paid, how much, and sending it to finance.',analogy:'Like approving a supplier invoice: claims approves, finance pays.',does:'Records payees, partial or final payments, sends approved amounts to BCP and closes the claim on final settlement.',watch:'Wrong payee or bank details are the most expensive errors.'},
+ prepay:{simple:'Paying part of the claim early, before the final amount is known.',analogy:'Like an advance on salary.',does:'Records payees and amount; approval if above limit; the amount is deducted from the final settlement.',watch:'Make sure the final settlement deducts it, so nothing is paid twice.'},
+ subro:{simple:'Getting money back from the person who caused the loss, after paying your own customer.',analogy:'Like your employer paying your medical bill after a work accident and then claiming from the company at fault.',does:'Records the recovery against the third party; approval if above limit; BCP creates a receivable.',watch:'Some markets have agreements between insurers that remove the need to recover.'},
+ salv:{simple:'Selling what is left of damaged property after paying a total loss.',analogy:'Like selling a written-off car for scrap.',does:'Records the buyer and amount; approval if above limit; BCP collects the money.',watch:'Reinsurers get their share of the salvage money.'},
+ recov:{simple:'Getting back money that was paid by mistake.',analogy:'Like a bank reversing a payment sent to the wrong account.',does:'Records the overpayment as a receivable; there is no approval task.',watch:'Use only after BCP has paid; before that, cancel the payment instead.'}
+};
 
 </script>
 <script>
@@ -1718,20 +1797,20 @@ let UID=0;
 
 /* ---------- screenshots ---------- */
 const CAP={'4':'Claim Task search: fast and advanced search, result columns, edit icon to open a task','5':'Claim Task: New Accident Report button','6':'New Claim: Policy No, Date of Loss, Is Manual Policy, Search','7':'Policy Information returned after search; Submit opens FNOL','8':'Claim Summary: key case information, Policy No link, Notes under Advance','11':'Claim Information: date of loss, report date, cause of loss, catastrophe code, contacts, other insurance','12':'Claimant Information: add, edit, delete claimants','13':'Sub-Claim Information: risk name, sub-claim type, damage object, owner, claimant','14':'Remark section','15':'FNOL buttons: Save, Cancel, Submit, Exit','16':'Task Transfer after Submit: pending tasks and Work On','17':'Claim Reserve on Registration: subclaim, reserve type, coverage, sum insured, outstanding, settled','18':'Transaction History','19':'Registration buttons','20':'Claim Reserve on Investigation: Reserve Summary, Reserve History, Update, Close per line, status and locked','21':'Investigation Information: investigator, contact, arrival date, address, description','22':'Investigation buttons','23':'Appraisal Loss Item: labour cost, spare part cost with surveyor, garage and provider price, total cost','24':'Approval Decision: Approve or Reject with remark; read-only sub-claim data','25':'Document: document information and unqualified documents','26':'Contact Information for unqualified document notification','27':'Document buttons','31':'Calculation Approval decision','32':'Calculation Approval buttons','33':'Settlement History','34':'Payee block: payee, pay mode, currency, exchange rate; lines with partial/final, amount, tax, ex-gratia','35':'Multiple payees','36':'Settlement buttons: Save, Decline, Submit, Exit','37':'Settlement Approval decision','38':'Settlement Approval buttons','39':'Subrogation History','40':'Subrogation: Add Subrogation','41':'Subrogation detail','42':'Subrogation buttons','43':'Subrogation Approval decision','44':'Subrogation Approval buttons','45':'Salvage History','46':'Salvage: Add Salvage','47':'Salvage detail','48':'Salvage buttons','49':'Salvage Approval decision','50':'Salvage Approval buttons','51':'Recovery History','52':'Recovery: Add Recovery','53':'Recovery detail','54':'Recovery buttons','55':'Prepay History','56':'Prepay payee (GIMO rating tenants)','57':'Prepay payees','58':'Prepay Information','59':'Prepay Transaction History','60':'Prepay buttons','61':'Prepay Approval decision','62':'Prepay Approval buttons','63':'Reserve Update Approval: claim reserve','64':'Reserve Update Approval: decision','65':'Reserve Update Approval: transaction history','66':'Reserve Update Approval buttons','67':'Reserve Close Approval: claim reserve','68':'Reserve Close Approval: decision','71':'Reserve Reopen Approval: claim reserve','72':'Reserve Reopen Approval: decision','75':'Policy Search (retrieve mode 02)','76':'New Policy (manual policy)','77':'Claim Search','78':'Claim Search results and columns','79':'Case Information: Claim Summary','80':'Case Information: Claim Information','81':'Case Information: Claimant Information','82':'Claimant detail','83':'Case Information: Sub-claim Information','84':'Sub-claim detail','85':'Sub-claim detail (continued)','86':'Case Information: Claim Reserve','87':'Reserve History','88':'Reserve Update','89':'Calculation history (GIMO rating)','90':'Calculation detail (GIMO rating)','91':'Prepay / Settlement on Case Information','92':'Tasks on Case Information','93':'My Claim','94':'My Claim results','95':'Task Monitor','96':'Reassignment: Tasks','97':'Reassignment: Claim Owner','98':'New and Reopen search','99':'New Subclaim, New Task, Reopen Task buttons','100':'New Subclaim page','101':'New Subclaim: sub-claim information','102':'New Subclaim: reserve for the new sub-claim','103':'New Subclaim buttons','104':'New Task page','105':'New Task: sub-claim information','106':'New Task: task selection','107':'New Task buttons','108':'Reopen Task page','109':'Reopen Task: sub-claim information','110':'Reopen Task: finished tasks to reopen','127':'Diary Task search','128':'Diary Task results','129':'Diary Task operation page','136':'Party Management search','137':'Party Management results','138':'New / Edit Party page','139':'Party Information','140':'Address Information','141':'Payment Information','142':'Remark','152':'Batch FNOL page','153':'Select product and Template Download','154':'Fill the template','155':'Upload: Upload No generated','156':'Upload Monitor','159':'Calculation history with Is Reopened and Reopened To (new tool)','160':'Settled field (new calculation tool)','161':'Calculation detail (new tool)','162':'Reopen Calculation: choose calculation times','Calculation':'Calculation page with GIMO rating','NewCalculation':'Calculation page with the new calculation tool: lines, Calculate, Sum of Adjusted Amount, Decline','Health_FNOL':'Health FNOL: other insurer, police report, agent/broker, Pending Claim, duplicate warning','Health_SubClaimInformation':'Health sub-claim information','Health_Registration':'Health Registration','Health_Investigation':'Health Investigation','Health_Appraisal':'Health Appraisal','Health_Settlement':'Health Settlement','Health_CaseInfo':'Health Case Information'};
-function shot(k){const src=(typeof IMGS!=='undefined')&&IMGS[k];if(!src)return'';const cap=CAP[k]||('Source screenshot '+k);return`<figure class="shot"><button type="button" data-zoom="${esc(k)}" aria-label="Enlarge: ${esc(cap)}"><img src="${src}" alt="${esc(cap)}" loading="lazy"></button><figcaption>${esc(cap)}</figcaption></figure>`}
+function shot(k){const src=(typeof IMGS!=='undefined')&&IMGS[k];if(!src)return'';const cap=CAP[k]||('InsureMO Easy Claims screenshot '+k);return`<figure class="shot"><button type="button" data-zoom="${esc(k)}" aria-label="Enlarge: ${esc(cap)}"><img src="${src}" alt="${esc(cap)}" loading="lazy"></button><figcaption>${esc(cap)}</figcaption></figure>`}
 function shots(list){return`<div class="shots">${list.map(shot).join('')}</div>`}
 function openLightbox(k){const lb=document.createElement('div');lb.className='lightbox';lb.innerHTML=`<button class="btn" type="button">Close</button><img src="${IMGS[k]}" alt=""><p>${esc(CAP[k]||k)}</p>`;const close=()=>lb.remove();lb.addEventListener('click',e=>{if(e.target===lb||e.target.tagName==='BUTTON')close()});document.addEventListener('keydown',function f(e){if(e.key==='Escape'){close();document.removeEventListener('keydown',f)}});document.body.appendChild(lb)}
 
 /* ---------- diagram frame + full screen ---------- */
-const LEG={ev:'Customer / event',op:'Insurer user',sys:'Easy Claim',dec:'Decision',ext:'External party',appr:'Approval',mod:'Other module'};
+const LEG={ev:'Customer / event',op:'Insurer user',sys:'InsureMO Easy Claims',dec:'Decision',ext:'External party',appr:'Approval',mod:'Other module'};
 function frame(title,svg,kinds,cls){const k=(kinds||['ev','op','sys','dec','ext','appr','mod']);return`<figure class="diagram"><div class="dg-bar"><b>${esc(title)}</b><span class="legend">${k.map(x=>`<span><i class="k-${x}"></i>${LEG[x]}</span>`).join('')}</span><button class="btn ghost sm fs-btn" type="button">Full screen</button></div><div class="dg-body ${cls||''}">${svg}</div></figure>`}
 function bindFrames(root){$$('.fs-btn',root).forEach(b=>{if(b.dataset.bound)return;b.dataset.bound=1;b.addEventListener('click',()=>{const fig=b.closest('.diagram');const ov=document.createElement('div');ov.className='fs';ov.innerHTML=`<div class="dg-bar">${$('.dg-bar',fig).innerHTML}</div><div class="fs-body">${$('.dg-body',fig).innerHTML}</div>`;const btn=$('.fs-btn',ov);btn.textContent='Close (Esc)';const close=()=>{ov.remove();document.removeEventListener('keydown',esc_)};const esc_=e=>{if(e.key==='Escape')close()};btn.addEventListener('click',close);document.addEventListener('keydown',esc_);document.body.appendChild(ov);const svg=$('svg',ov);svg.removeAttribute('width');svg.style.minWidth='0'})})}
 
 /* ---------- vertical swimlane: actors as columns, steps top to bottom ---------- */
-function laneKind(l){return({pa:'pa',bcp:'bcp',ri:'ri',gl:'gl'})[l]}
+function laneKind(l){return({pa:'pa',bcp:'bcp',ri:'ri',gl:'gl',fin:'bcp'})[l]}
 function swimV(steps,o={}){
   const used=new Set(steps.map(s=>s.l));const lanes=LANE_ORDER.filter(l=>used.has(l));const n=lanes.length;
-  const CW=Math.max(150,Math.min(230,Math.floor(1160/n))),HD=40,BW=CW-24;const cplG=Math.floor(BW/6.4);const maxL=Math.min(4,Math.max(2,...steps.map(st=>wrap(st.t,cplG).length+(st.m?1:0))));const BH=maxL*13+14,RH=BH+18;
+  const CW=Math.max(150,Math.min(230,Math.floor(1160/n))),HD=40,BW=CW-24;const cplG=Math.floor(BW/6.4);const maxL=Math.min(5,Math.max(2,...steps.map(st=>wrap(st.t,cplG).length+(st.m?1:0))));const BH=maxL*13+14,RH=BH+18;
   const li=Object.fromEntries(lanes.map((l,i)=>[l,i]));const row=[0];for(let i=1;i<steps.length;i++)row[i]=li[steps[i].l]>li[steps[i-1].l]?row[i-1]:row[i-1]+1;const W=n*CW,H=HD+(row[row.length-1]+1)*RH+8;const id='a'+(++UID);
   let s=`<svg xmlns="${SVGNS}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label||'Swimlane')}"><defs><marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
   lanes.forEach((l,i)=>{s+=`<rect class="${i%2?'lane-b':'lane-a'}" x="${i*CW}" y="0" width="${CW}" height="${H}"/>`;const lb=wrap(LANES[l].toUpperCase(),Math.floor(CW/7.2));lb.slice(0,2).forEach((t,j)=>{s+=`<text class="lane-h" x="${i*CW+CW/2}" y="${(lb.length>1?15:22)+j*13}" text-anchor="middle">${esc(t)}</text>`});if(i)s+=`<line class="lane-sep" x1="${i*CW}" y1="0" x2="${i*CW}" y2="${H}"/>`});
@@ -1739,7 +1818,7 @@ function swimV(steps,o={}){
   const pos=steps.map((st,i)=>({x:li[st.l]*CW+(CW-BW)/2,y:HD+row[i]*RH+8}));
   for(let i=0;i<steps.length-1;i++){const a=pos[i],b=pos[i+1];const ax=a.x+BW/2,ay=a.y+BH,bx=b.x+BW/2,by=b.y;const my=ay+(by-ay)/2;
     const neg=/^(no|reject|not)/i.test(steps[i+1].b||'');
-    if(row[i]===row[i+1]){const hy=a.y+BH/2;s+=`<path class="edge${neg?' neg':''}" d="M${a.x+BW},${hy} H${b.x-1}" marker-end="url(#${id})"/>`;if(steps[i+1].b){const tw=steps[i+1].b.length*6+6,lx=(a.x+BW+b.x)/2;s+=`<rect class="elbl-bg" x="${lx-tw/2}" y="${hy-17}" width="${tw}" height="13" rx="2"/><text class="elbl" x="${lx}" y="${hy-7}" text-anchor="middle">${esc(steps[i+1].b)}</text>`}continue}
+    if(row[i]===row[i+1]){const hy=a.y+BH/2;s+=`<path class="edge${neg?' neg':''}" d="M${a.x+BW},${hy} H${b.x-1}" marker-end="url(#${id})"/>`;if(steps[i+1].b&&b.x-(a.x+BW)>steps[i+1].b.length*6+8){const tw=steps[i+1].b.length*6+6,lx=(a.x+BW+b.x)/2;s+=`<rect class="elbl-bg" x="${lx-tw/2}" y="${hy-17}" width="${tw}" height="13" rx="2"/><text class="elbl" x="${lx}" y="${hy-7}" text-anchor="middle">${esc(steps[i+1].b)}</text>`}continue}
     s+=`<path class="edge${neg?' neg':''}" d="M${ax},${ay} ${ax===bx?'':`V${my} H${bx}`} V${by-1}" marker-end="url(#${id})"/>`;
     if(steps[i+1].b){const lx=ax===bx?bx+6:(ax+bx)/2,ly=ax===bx?my+3:my-3;const tw=steps[i+1].b.length*6+6;s+=`<rect class="elbl-bg" x="${ax===bx?lx-2:lx-tw/2}" y="${ly-10}" width="${tw}" height="13" rx="2"/><text class="elbl" x="${ax===bx?lx+1:lx}" y="${ly}" ${ax===bx?'':'text-anchor="middle"'}>${esc(steps[i+1].b)}</text>`}}
   steps.forEach((st,i)=>{const p=pos[i];const kc=laneKind(st.l)||st.k;const cpl=cplG;let tl=wrap(st.t,cpl);const ml=st.m?maxL-1:maxL;if(tl.length>ml){tl=tl.slice(0,ml);tl[ml-1]=tl[ml-1].replace(/.{0,2}$/,'…')}
@@ -1773,6 +1852,7 @@ function flow(def){
     if(n.k==='dec')s+=`<polygon points="${c.x-BW/2-4},${c.y} ${c.x},${c.y-BH/2-6} ${c.x+BW/2+4},${c.y} ${c.x},${c.y+BH/2+6}"/>`;else s+=`<rect x="${x}" y="${y}" width="${BW}" height="${BH}" rx="${n.k==='ev'||n.k==='end'?16:4}"/>`;
     const cpl=n.k==='dec'?17:Math.floor(BW/6.6);const tl=wrap(n.t,cpl).slice(0,n.s?2:3);const sl=n.s?wrap(n.s,Math.floor(BW/5.6)).slice(0,2):[];const tot=tl.length+sl.length;const ty=c.y-(tot-1)*6.2+4;
     tl.forEach((t,j)=>{s+=`<text class="t" x="${c.x}" y="${ty+j*12.5}" text-anchor="middle" ${n.k==='dec'?'style="font-size:11px"':''}>${esc(t)}</text>`});sl.forEach((t,j)=>{s+=`<text class="sub" x="${c.x}" y="${ty+(tl.length+j)*12.5}" text-anchor="middle">${esc(t)}</text>`});
+    const nb=n.n!=null?n.n:(def.num?String(def.nodes.indexOf(n)+1):null);if(nb!=null){const bx=n.k==='dec'?c.x-BW/2+10:x+2,by=n.k==='dec'?c.y-BH/2+2:y+2,r=String(nb).length>1?10:8.5;s+=`<circle class="numbg" cx="${bx}" cy="${by}" r="${r}"/><text class="num" x="${bx}" y="${by+3.5}" text-anchor="middle">${esc(nb)}</text>`}
     s+=`<title>${esc(n.t+(n.s?' — '+n.s:''))}</title></g>`});
   return s+labels+'</svg>';
 }
@@ -1787,7 +1867,7 @@ function radial(def){const W=def.w||1000,H=def.h||460,cx=W/2,cy=H/2,BW=def.bw||1
     s+=`<line class="edge" x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" ${mk}/>`;
     if(sp.l){const mx=(p1.x+p2.x)/2,my=(p1.y+p2.y)/2;const ls=wrap(sp.l,26).slice(0,2);const tw=Math.max(...ls.map(x=>x.length))*5.9+8;lbl+=`<rect class="elbl-bg" x="${mx-tw/2}" y="${my-9}" width="${tw}" height="${ls.length*12+4}" rx="3" opacity=".92"/>`+ls.map((t,j)=>`<text class="elbl" x="${mx}" y="${my+1+j*12}" text-anchor="middle">${esc(t)}</text>`).join('')}
     const tl=wrap(sp.t,Math.floor(BW/6.6)).slice(0,2),sl=sp.s?wrap(sp.s,Math.floor(BW/5.6)).slice(0,1):[];const ty=y-(tl.length+sl.length-1)*6.2+4;
-    nodes+=`<g class="node k-${sp.k} ${sp.id?'hub-node':''}" ${sp.id?`data-id="${sp.id}"`:''} tabindex="0"><rect x="${x-BW/2}" y="${y-BH/2}" width="${BW}" height="${BH}" rx="6"/>${tl.map((t,j)=>`<text class="t" x="${x}" y="${ty+j*12.5}" text-anchor="middle" style="font-weight:600">${esc(t)}</text>`).join('')}${sl.map((t,j)=>`<text class="sub" x="${x}" y="${ty+(tl.length+j)*12.5}" text-anchor="middle">${esc(t)}</text>`).join('')}</g>`});
+    nodes+=`<g class="node k-${sp.k} ${sp.id?'hub-node':''}" ${sp.id?`data-id="${sp.id}"`:''} tabindex="0"><rect x="${x-BW/2}" y="${y-BH/2}" width="${BW}" height="${BH}" rx="6"/><circle class="numbg" cx="${x-BW/2+3}" cy="${y-BH/2+3}" r="8.5"/><text class="num" x="${x-BW/2+3}" y="${y-BH/2+6.5}" text-anchor="middle">${i+1}</text>${tl.map((t,j)=>`<text class="t" x="${x}" y="${ty+j*12.5}" text-anchor="middle" style="font-weight:600">${esc(t)}</text>`).join('')}${sl.map((t,j)=>`<text class="sub" x="${x}" y="${ty+(tl.length+j)*12.5}" text-anchor="middle">${esc(t)}</text>`).join('')}</g>`});
   const c=def.center;const cbw=def.cbw||200,cbh=def.cbh||70;nodes+=`<g class="node k-${c.k}"><rect x="${cx-cbw/2}" y="${cy-cbh/2}" width="${cbw}" height="${cbh}" rx="8" style="stroke-width:2.4"/>${wrap(c.t,30).map((t,j,a)=>`<text class="t" x="${cx}" y="${cy-(a.length-1)*7+4+j*14}" text-anchor="middle" style="font-weight:700;font-size:13.5px">${esc(t)}</text>`).join('')}</g>`;
   return s+nodes+lbl+'</svg>'}
 
@@ -1800,11 +1880,13 @@ function renderStatic(){
   $$('[data-setrole]').forEach(b=>b.addEventListener('click',()=>setRole(b.dataset.setrole)));
   $$('[data-obj]').forEach(el=>{const id=el.closest('.view').id.slice(2);const m=MODULES.find(x=>x.id===id);if(m)el.innerHTML=`<span class="eyebrow">Learning objectives</span><ul class="small">${m.obj.map(o=>`<li>${esc(o)}</li>`).join('')}</ul>`});
   /* 1.1 */
-  $('#valueChain').innerHTML=frame('Insurance value chain',flow({label:'Insurance value chain',cols:8,rows:1,cw:150,bw:130,rh:96,nodes:VALUE_CHAIN.map((v,i)=>({id:v.id,x:i,y:0,t:v.t,s:v.m,k:v.id==='clm'?'appr':v.id==='pol'||v.id==='uw'?'pa':v.id==='bill'||v.id==='fin'?'bcp':v.id==='ri'?'ri':'op'})),edges:VALUE_CHAIN.slice(1).map((v,i)=>({f:VALUE_CHAIN[i].id,t:v.id}))}),['op','appr','mod'],'flowc')+'<div id="vcDetail" class="callout" style="margin-top:10px">Click a box in the chain.</div>';
+  $('#valueChain').innerHTML=frame('Insurance value chain',flow({label:'Insurance value chain',num:true,cols:8,rows:1,cw:150,bw:130,rh:96,nodes:VALUE_CHAIN.map((v,i)=>({id:v.id,x:i,y:0,t:v.t,s:v.m,k:v.id==='clm'?'appr':v.id==='pol'||v.id==='uw'?'pa':v.id==='bill'||v.id==='fin'?'bcp':v.id==='ri'?'ri':'op'})),edges:VALUE_CHAIN.slice(1).map((v,i)=>({f:VALUE_CHAIN[i].id,t:v.id}))}),['op','appr','mod'],'flowc')+'<div id="vcDetail" class="callout" style="margin-top:10px">Click a box in the chain.</div>';
   $$('#valueChain .node').forEach(n=>n.addEventListener('click',()=>{const v=VALUE_CHAIN.find(x=>x.id===n.dataset.id);$$('#valueChain .node').forEach(x=>x.classList.toggle('hl',x===n));$('#vcDetail').innerHTML=`<b>${esc(v.t)}</b> · <span class="tag">${esc(v.m)}</span><br>${esc(v.d)}`}));
+  $('#policyLife').innerHTML=frame('Policy lifecycle and where the claim fits',flow({label:'Policy lifecycle',num:true,cols:8,rows:1,cw:150,bw:132,rh:96,nodes:POLICY_LIFE.map((v,i)=>({id:v.id,x:i,y:0,t:v.t,s:v.s,k:v.k})),edges:POLICY_LIFE.slice(1).map((v,i)=>({f:POLICY_LIFE[i].id,t:v.id}))}),['ev','mod','appr'],'flowc');
+  $$('#policyLife .node').forEach(n=>n.addEventListener('click',()=>{const v=POLICY_LIFE.find(x=>x.id===n.dataset.id);$$('#policyLife .node').forEach(x=>x.classList.toggle('hl',x===n));$('#plDetail').innerHTML=`<b>Step ${POLICY_LIFE.indexOf(v)+1}: ${esc(v.t)}</b> · <span class="tag">${esc(v.m)}</span><br>${esc(v.d)}`}));
   $('#lobTable').innerHTML=LOB.map(r=>`<tr>${r.map((c,i)=>`<td${i===0?' style="font-weight:600"':''}>${esc(c)}</td>`).join('')}</tr>`).join('');
   /* 1.2 */
-  $('#partyMap').innerHTML=frame('Motor claim: parties around the claim handler',radial({label:'Party map',w:1040,h:470,center:{t:'Insurer: claim handler (Easy Claim)',k:'op'},spokes:[
+  $('#partyMap').innerHTML=frame('The parties in insurance: a motor claim example',radial({label:'Party map',w:1040,h:470,center:{t:'Insurer: claim handler (InsureMO Easy Claims)',k:'op'},spokes:[
     {t:'Riya',s:'Insured and claimant',k:'ev',l:'Reports loss (FNOL), sends documents',dir:'out',a:180},
     {t:'Agent',s:'Sold the policy',k:'ext',l:'Helps report',a:-140},
     {t:'Easy PA',s:'Policy record',k:'pa',l:'Policy check at FNOL',dir:'both',a:-90},
@@ -1816,7 +1898,7 @@ function renderStatic(){
   const pf=()=>{const q=($('#partyFilter').value||'').toLowerCase();$('#partyTable').innerHTML=PARTIES.filter(p=>Object.values(p).join(' ').toLowerCase().includes(q)).map(p=>`<tr><td><span class="tag ${p.g}">${p.g==='cust'?'Customer side':p.g==='ins'?'Insurer side':'External'}</span><br><b>${esc(p.n)}</b></td><td>${esc(p.who)}</td><td>${esc(p.role)}</td><td class="small">${esc(p.ec)}</td><td class="small">${esc(p.ex)}</td></tr>`).join('')};pf();$('#partyFilter').addEventListener('input',pf);
   /* 1.3 */
   $('#principles').innerHTML=PRINCIPLES.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td class="small">${esc(r[3])}</td></tr>`).join('');
-  $('#hierDiagram').innerHTML=frame('Claim data structure',flow({label:'Claim data structure',cols:6,rows:3,cw:178,bw:150,rh:84,nodes:[
+  $('#hierDiagram').innerHTML=frame('Claim data structure',flow({label:'Claim data structure',num:true,cols:6,rows:3,cw:178,bw:150,rh:84,nodes:[
     {id:'p',x:0,y:1,t:'Policy',s:'Easy PA, retrieved at FNOL',k:'pa'},{id:'c',x:1,y:1,t:'Claim (case)',s:'Claim No, date of loss, cause, cat code',k:'op'},
     {id:'cl',x:1,y:2,t:'Claimants',s:'Name, type, ID',k:'ev'},{id:'s1',x:2,y:0,t:'Sub-claim 001',s:'Risk, damage object, owner',k:'op'},{id:'s2',x:2,y:2,t:'Sub-claim 002',s:'Another risk or claimant',k:'op'},
     {id:'r1',x:3,y:0,t:'Reserve: Indemnity',s:'× coverage; outstanding, settled',k:'sys'},{id:'r2',x:3,y:1,t:'Reserve: Expense',s:'Surveyor, legal fees',k:'sys'},{id:'r3',x:3,y:2,t:'Reserve lines',s:'for sub-claim 002',k:'sys'},
@@ -1824,45 +1906,46 @@ function renderStatic(){
     edges:[{f:'p',t:'c'},{f:'c',t:'cl'},{f:'c',t:'s1'},{f:'c',t:'s2'},{f:'s1',t:'r1'},{f:'s1',t:'r2',via:[[2.56,0],[2.56,1]]},{f:'s2',t:'r3'},{f:'r1',t:'ca'},{f:'ca',t:'se'},{f:'se',t:'b',l:'on approval'}]}),['op','sys','ev','mod'],'flowc');
   /* 2.1 */
   $('#masterFlow').innerHTML=frame('Standard claim process with approval gates',flow({label:'Standard claim process',cols:7,rows:4,cw:166,bw:136,rh:104,nodes:[
-    {id:'rep',x:0,y:1,t:'Loss reported',s:'Insured, agent, partner, API',k:'ev'},{id:'fnol',x:1,y:1,t:'FNOL',s:'Claim case created',k:'op'},{id:'reg',x:2,y:1,t:'Registration',s:'Reserve set',k:'op'},{id:'inv',x:3,y:1,t:'Investigation',s:'Evidence, reserve review',k:'op'},{id:'app',x:4,y:1,t:'Appraisal',s:'Loss items valued',k:'op'},
-    {id:'ga',x:5,y:1,t:'Above user authority?',k:'dec'},{id:'aa',x:5,y:0,t:'Appraisal Approval',s:'Approve above own limit → next level',k:'appr'},{id:'doc',x:6,y:1,t:'Document',s:'Qualified?',k:'op'},{id:'gd',x:6,y:2,t:'Documents qualified?',k:'dec'},
-    {id:'calc',x:5,y:2,t:'Calculation',s:'Policy terms applied; Decline possible',k:'op'},{id:'gc',x:4,y:2,t:'Above user authority?',k:'dec'},{id:'ca',x:4,y:3,t:'Calculation Approval',s:'Escalates if above approver limit',k:'appr'},
-    {id:'set',x:3,y:2,t:'Settlement',s:'Payees, partial/final; Decline',k:'op'},{id:'gs',x:2,y:2,t:'Above user authority?',k:'dec'},{id:'sa',x:2,y:3,t:'Settlement Approval',s:'Escalates if above approver limit',k:'appr'},
-    {id:'clo',x:1,y:2,t:'Claim closed',s:'Payment to BCP',k:'end'},{id:'reo',x:0,y:2,t:'Reopen',s:'New and Reopen menu',k:'ev'},
+    {id:'rep',n:'0',x:0,y:1,t:'Loss reported',s:'Insured, agent, partner, API',k:'ev'},{id:'fnol',n:'1',x:1,y:1,t:'FNOL',s:'Claim case created',k:'op'},{id:'reg',n:'2',x:2,y:1,t:'Registration',s:'Reserve set',k:'op'},{id:'inv',n:'3',x:3,y:1,t:'Investigation',s:'Evidence, reserve review',k:'op'},{id:'app',n:'4',x:4,y:1,t:'Appraisal',s:'Loss items valued',k:'op'},
+    {id:'ga',n:'4a',x:5,y:1,t:'Above user authority?',k:'dec'},{id:'aa',n:'4b',x:5,y:0,t:'Appraisal Approval',s:'Approve above own limit → next level',k:'appr'},{id:'doc',n:'5',x:6,y:1,t:'Document',s:'Qualified?',k:'op'},{id:'gd',n:'5a',x:6,y:2,t:'Documents qualified?',k:'dec'},
+    {id:'calc',n:'6',x:5,y:2,t:'Calculation',s:'Policy terms applied; Decline possible',k:'op'},{id:'gc',n:'6a',x:4,y:2,t:'Above user authority?',k:'dec'},{id:'ca',n:'6b',x:4,y:3,t:'Calculation Approval',s:'Escalates if above approver limit',k:'appr'},
+    {id:'set',n:'7',x:3,y:2,t:'Settlement',s:'Payees, partial/final; Decline',k:'op'},{id:'gs',n:'7a',x:2,y:2,t:'Above user authority?',k:'dec'},{id:'sa',n:'7b',x:2,y:3,t:'Settlement Approval',s:'Escalates if above approver limit',k:'appr'},
+    {id:'clo',n:'8',x:1,y:2,t:'Claim closed',s:'Payment to BCP',k:'end'},{id:'reo',n:'9',x:0,y:2,t:'Reopen',s:'New and Reopen menu',k:'ev'},
     {id:'aux',x:0,y:0,t:'Auxiliary tasks any time after registration',s:'Prepay, Subrogation, Salvage, Recovery',k:'ext'},{id:'cx',x:1,y:0,t:'Cancel at FNOL / Registration',s:'Decline at Calculation / Settlement',k:'ext'}],
     edges:[{f:'rep',t:'fnol'},{f:'fnol',t:'reg'},{f:'reg',t:'inv'},{f:'inv',t:'app'},{f:'app',t:'ga'},{f:'ga',t:'doc',l:'No'},{f:'ga',t:'aa',l:'Yes'},{f:'aa',t:'doc',l:'Approve',via:[[6,0]],c:'pos'},{f:'aa',t:'app',l:'Reject',via:[[4,0]],dash:true,c:'neg'},
       {f:'doc',t:'gd'},{f:'gd',t:'calc',l:'Yes'},{f:'gd',t:'doc',l:'No: new Document task',via:[[6.62,2],[6.62,1]],dash:true,c:'neg'},
       {f:'calc',t:'gc'},{f:'gc',t:'set',l:'No'},{f:'gc',t:'ca',l:'Yes'},{f:'ca',t:'set',l:'Approve',via:[[3.22,3]],c:'pos'},{f:'ca',t:'calc',l:'Reject',via:[[5,3]],dash:true,c:'neg'},
       {f:'set',t:'gs'},{f:'gs',t:'clo',l:'No'},{f:'gs',t:'sa',l:'Yes'},{f:'sa',t:'clo',l:'Approve',via:[[1,3.0]],c:'pos'},{f:'sa',t:'set',l:'Reject',via:[[2.78,3]],dash:true,c:'neg'},{f:'clo',t:'reo',dash:true}]}),['ev','op','dec','appr','ext'],'flowc');
   $('#taskTable').innerHTML=[['FNOL','Customer reports loss for the first time; system creates claim case','Handler / call centre / API','Claim No, policy link, sub-claims','Registration task'],['Registration','Complete claim information, establish claim reserve','Handler','Reserve lines','Investigation task'],['Investigation','Investigate and verify the claim, collect evidence','Handler + surveyor / investigator','Investigation information, reserve review','Appraisal task'],['Appraisal','Determine loss amount, may require approval','Handler / appraiser + garage, provider','Loss items, appraisal amount','Appraisal Approval or Document'],['Document','Collect required claim documents','Handler (assessor)','Qualified / unqualified documents','New Document task or Calculation'],['Calculation','Calculate payment amount based on policy terms, may require approval','Handler','Calculated and adjusted amounts','Calculation Approval or Settlement'],['Settlement','Determine final payment amount and process payment, may require approval','Handler; finance in BCP','Payees, payment records','Settlement Approval or claim closed']].map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td class="small">${r[2]}</td><td class="small">${r[3]}</td><td class="small">${r[4]}</td></tr>`).join('');
-  $('#statusFlow').innerHTML=frame('Claim status model',flow({label:'Claim status',cols:5,rows:3,cw:180,bw:150,rh:88,nodes:[
+  $('#stdSwim').innerHTML=`<div class="swim">${frame('Standard claim process step by step (single view)',swimV(STD_STEPS,{label:'Standard claim process step by step'}))}<div class="tbl" style="margin-top:12px"><table class="steptbl"><thead><tr><th>#</th><th>Actor</th><th>What happens</th><th>InsureMO Easy Claims screen / system</th><th>Output / next</th><th>In plain words</th></tr></thead><tbody>${STD_STEPS.map((s,i)=>(i===0||STD_STEPS[i-1].st!==s.st?`<tr class="stage-row"><td colspan="6">Stage ${esc(STAGES[s.st])}</td></tr>`:'')+`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${s.b?`<span class="tag">${esc(s.b)}</span> `:''}${esc(s.t)}</td><td class="small">${esc(s.m||'')}</td><td class="small"><b>${esc(s.o||'')}</b></td><td class="small">${esc(s.p||'')}</td></tr>`).join('')}</tbody></table></div></div>`;
+  $('#statusFlow').innerHTML=frame('Claim status model',flow({label:'Claim status',num:true,cols:5,rows:3,cw:180,bw:150,rh:88,nodes:[
     {id:'r',x:0,y:1,t:'Reported',s:'FNOL open',k:'ev'},{id:'o',x:1,y:1,t:'Registered / open',s:'Reserve set',k:'op'},{id:'p',x:2,y:1,t:'In progress',s:'Investigation → Settlement',k:'op'},{id:'c',x:3,y:1,t:'Closed',s:'Final settlement approved',k:'end'},{id:'re',x:4,y:1,t:'Reopened',s:'Reopen task or new reserve',k:'ev'},
     {id:'x',x:1,y:0,t:'Cancelled',s:'Customer withdraws (FNOL / Registration)',k:'ext'},{id:'d',x:2,y:2,t:'Declined',s:'Not covered (Calculation / Settlement)',k:'ext'}],
     edges:[{f:'r',t:'o'},{f:'o',t:'p'},{f:'p',t:'c'},{f:'c',t:'re',l:'more to pay'},{f:'re',t:'p',via:[[4,0.35],[2,0.35]],dash:true,l:'work again'},{f:'r',t:'x',via:[[0,0]],c:'neg',l:'Cancel'},{f:'o',t:'x',c:'neg'},{f:'p',t:'d',c:'neg',l:'Decline'}]}),['ev','op','ext'],'flowc');
   /* 2.3 */
-  $('#apprFlow').innerHTML=frame('Approval pattern used by all approval tasks',flow({label:'Approval pattern',cols:6,rows:3,cw:178,bw:146,rh:96,nodes:[
+  $('#apprFlow').innerHTML=frame('Approval pattern used by all approval tasks',flow({label:'Approval pattern',num:true,cols:6,rows:3,cw:178,bw:146,rh:96,nodes:[
     {id:'t',x:0,y:1,t:'Business task',s:'Appraisal, Calculation, Settlement, Prepay, Subrogation, Salvage, reserve change',k:'op'},{id:'g1',x:1,y:1,t:'Amount above submitter authority?',k:'dec'},
     {id:'a',x:2,y:1,t:'Approval task',s:'Data read-only + Approval Decision',k:'appr'},{id:'g2',x:3,y:1,t:'Decision?',k:'dec'},{id:'g3',x:4,y:1,t:'Above approver authority?',k:'dec'},{id:'n',x:5,y:1,t:'Next task or close',s:'e.g. Document, Settlement, closed',k:'end'}],
     edges:[{f:'t',t:'g1',l:'Submit'},{f:'g1',t:'a',l:'Yes'},{f:'g1',t:'n',l:'No',via:[[1,0],[5,0]],c:'pos'},{f:'a',t:'g2'},{f:'g2',t:'g3',l:'Approve',c:'pos'},{f:'g3',t:'n',l:'No',c:'pos'},{f:'g3',t:'a',l:'Yes: next-level approval',via:[[4,0.5],[2,0.5]],dash:true},{f:'g2',t:'t',l:'Reject: new business task (reserve approvals: task closed)',via:[[3,2],[0,2]],dash:true,c:'neg'}]}),['op','dec','appr'],'flowc');
   $('#apprTable').innerHTML=APPROVALS.map(r=>`<tr><td><b>${r[0]}</b></td><td class="small">${r[1]}</td><td class="small bad">${r[2]}</td><td class="small ok">${r[3]}</td><td class="small">${r[4]}</td></tr>`).join('');
   /* 2.4 */
-  $('#reserveFlow').innerHTML=frame('Reserve lifecycle',flow({label:'Reserve lifecycle',cols:6,rows:3,cw:176,bw:148,rh:92,nodes:[
+  $('#reserveFlow').innerHTML=frame('Reserve lifecycle',flow({label:'Reserve lifecycle',num:true,cols:6,rows:3,cw:176,bw:148,rh:92,nodes:[
     {id:'n',x:0,y:1,t:'No reserve',s:'After FNOL',k:'ev'},{id:'o',x:1,y:1,t:'Open',s:'Added at Registration',k:'op'},{id:'u',x:2,y:1,t:'Updated',s:'Update; Reserve Update Approval if above authority',k:'appr'},{id:'pp',x:3,y:1,t:'Open, part paid',s:'Prepay or partial settlement',k:'sys'},{id:'c',x:4,y:1,t:'Closed',s:'Final settlement, Close (approval), Decline, Cancel',k:'end'},{id:'r',x:5,y:1,t:'Reopened',s:'Reopen (Reserve Reopen Approval) or new reserve',k:'ev'}],
     edges:[{f:'n',t:'o',l:'Registration'},{f:'o',t:'u'},{f:'u',t:'pp'},{f:'pp',t:'c',l:'Final'},{f:'c',t:'r',l:'more to pay'},{f:'r',t:'o',via:[[5,0.3],[1,0.3]],dash:true,l:'Back to open'},{f:'o',t:'c',via:[[1,2],[4,2]],c:'neg',l:'Close / Decline / Cancel without payment'}]}),['ev','op','appr','sys'],'flowc');
   $('#incurredTable').innerHTML=INCURRED.map(r=>`<tr>${r.map((c,i)=>`<td class="${i>=2&&i<=4?'mono':''}">${esc(c)}</td>`).join('')}</tr>`).join('');
   /* 3.3 */
   let last='';$('#menuMap').innerHTML=MENU.map(m=>{const r=`<tr><td>${m[0]!==last?`<b>${m[0]}</b>`:''}</td><td>${esc(m[1])}</td><td class="small">${esc(m[2])}</td><td>${esc(m[3])}</td></tr>`;last=m[0];return r}).join('');
   /* 3.4 */
-  $('#hub').innerHTML=frame('Easy Claim integration map (click a module)',radial({label:'Integration map',w:1040,h:460,cbw:210,center:{t:'Easy Claim (InsureMO Claim API)',k:'appr'},spokes:[
+  $('#hub').innerHTML=frame('InsureMO Easy Claims integration map (click a module)',radial({label:'Integration map',w:1040,h:460,cbw:210,center:{t:'InsureMO Easy Claims (InsureMO Claim API)',k:'appr'},spokes:[
     {id:'ext',t:'Partners and APIs',s:'Apps, TPA, garages, Batch FNOL',k:'ext',l:'FNOL, documents',dir:'in',a:-90},
     {id:'pa',t:'Easy PA',s:'Policy administration',k:'pa',l:'Policy data in; claim history out',dir:'both',a:-150},
     {id:'idocs',t:'iDocs',s:'Documents',k:'sys',l:'Attachments',dir:'both',a:150},
     {id:'bcp',t:'BCP',s:'Billing, collection, payment',k:'bcp',l:'Claim AP, reserve fee, recovery AR',dir:'both',a:-30},
     {id:'ri',t:'Reinsurance',s:'Cessions and recoveries',k:'ri',l:'Outstanding, paid, recoveries, cat code',dir:'out',a:30},
     {id:'gl',t:'General ledger',s:'Through BCP',k:'gl',l:'Accounting via BCP',dir:'out',a:90}]}),['appr','mod','ext'])+'';
-  const hubShow=id=>{const m=MODS[id];$$('#hub .hub-node').forEach(x=>x.classList.toggle('hl',x.dataset.id===id));$('#hubDetail').innerHTML=`<div class="card"><h3><span class="tag ${m.cls}">${esc(m.n)}</span></h3><div class="grid g2"><div><h4>Sends to Easy Claim</h4><ul class="small">${m.gives.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div><h4>Receives from Easy Claim</h4><ul class="small">${m.takes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div><div class="rn ba"><b class="who">Business analyst</b>${esc(m.ba)}</div><div class="rn qa"><b class="who">Tester</b>${esc(m.qa)}</div><div class="rn dev"><b class="who">Developer</b>${esc(m.dev)}</div></div>`};
+  const hubShow=id=>{const m=MODS[id];$$('#hub .hub-node').forEach(x=>x.classList.toggle('hl',x.dataset.id===id));$('#hubDetail').innerHTML=`<div class="card"><h3><span class="tag ${m.cls}">${esc(m.n)}</span></h3><div class="grid g2"><div><h4>Sends to InsureMO Easy Claims</h4><ul class="small">${m.gives.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div><h4>Receives from InsureMO Easy Claims</h4><ul class="small">${m.takes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div><div class="rn ba"><b class="who">Business analyst</b>${esc(m.ba)}</div><div class="rn qa"><b class="who">Tester</b>${esc(m.qa)}</div><div class="rn dev"><b class="who">Developer</b>${esc(m.dev)}</div></div>`};
   $$('#hub .hub-node').forEach(n=>{n.addEventListener('click',()=>hubShow(n.dataset.id));n.addEventListener('keydown',e=>{if(e.key==='Enter')hubShow(n.dataset.id)})});hubShow('pa');
-  $('#xTable').innerHTML=XTABLE.map(r=>`<tr>${r.map((c,i)=>`<td class="${i===4?'small':''}">${i===4?`<span class="tag ${/Industry/.test(c)?'ind':'src'}">${esc(c)}</span>`:esc(c)}</td>`).join('')}</tr>`).join('');
+  $('#xTable').innerHTML=XTABLE.map(r=>`<tr>${r.map((c,i)=>`<td class="${i===4?'small':''}">${i===4?`<span class="tag ${/Insurance knowledge/.test(c)?'ind':'src'}">${esc(c)}</span>`:esc(c)}</td>`).join('')}</tr>`).join('');
   /* 3.5 */
   const cf=()=>{const q=($('#cfgFilter').value||'').toLowerCase();$('#cfgTable').innerHTML=CONFIG.filter(r=>r.join(' ').toLowerCase().includes(q)).map(r=>`<tr><td><b>${esc(r[0])}</b></td><td class="small">${esc(r[1])}</td><td>${esc(r[2])}</td><td class="small">${esc(r[3])}</td><td><span class="tag src">${esc(r[4])}</span></td></tr>`).join('')};cf();$('#cfgFilter').addEventListener('input',cf);
   $('#dockSel').innerHTML=`<label>PA Docking<select id="d1"><option value="01">01 Mock</option><option value="02" selected>02 PA</option><option value="03">03 Third Party</option></select></label><label>Manual Policy Docking<select id="d2"><option value="01">01 Not supporting manual policy</option><option value="02">02 Only support manual policy</option><option value="03" selected>03 Both support manual policy</option></select></label><label>Is Manual Policy (only used with 03)<select id="d3"><option>No</option><option>Yes</option></select></label>`;
@@ -1889,38 +1972,40 @@ function renderStatic(){
 }
 
 /* ---------- pickers ---------- */
+function plainBox(id,name){const p=PLAIN[id];if(!p)return'';return`<div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag ind">Insurance knowledge</span></b><h4>${esc(name)} in plain words</h4><ul><li><b>In simple terms:</b> ${esc(p.simple)}</li><li><b>Everyday comparison:</b> ${esc(p.analogy)}</li><li><b>What InsureMO Easy Claims does:</b> ${esc(p.does)}</li><li><b>Watch out for:</b> ${esc(p.watch)}</li></ul></div>`}
 function roleNotes(o){return`<div class="grid g3">${o.ba?`<div class="rn ba"><b class="who">Business analyst</b>${o.ba}</div>`:''}${o.qa?`<div class="rn qa"><b class="who">Tester</b>${o.qa}</div>`:''}${o.dev?`<div class="rn dev"><b class="who">Developer</b>${o.dev}</div>`:''}</div>`}
 function picker(sel,items,cur,onPick,sub){const el=$(sel);el.innerHTML=items.map(i=>`<button type="button" data-k="${i.id}" aria-pressed="${i.id===cur}">${esc(i.name)}${sub?`<small>${esc(sub(i))}</small>`:''}</button>`).join('');$$('button',el).forEach(b=>b.addEventListener('click',()=>onPick(b.dataset.k)))}
 let curTask='fnol',curAux='prepay',curSc='s1',curScr='claimtask',curJ='j1',curTk='ba';
 function renderTask(){const t=TASKS.find(x=>x.id===curTask);picker('#taskPicker',TASKS,curTask,k=>{location.hash='tasks/'+k},x=>x.full);
-  $('#taskBody').innerHTML=`<header class="modhead"><h2>${esc(t.full)}${t.full!==t.name?` (${esc(t.name)})`:''}</h2><span class="tag src">Source</span></header>
-  <div class="grid g2"><div class="card"><dl class="kv"><dt>Purpose</dt><dd>${esc(t.purpose)}</dd><dt>How to open</dt><dd>${esc(t.menu)}</dd><dt>Who</dt><dd>${esc(t.actor)}</dd></dl></div><div class="callout ind"><span class="tag ind">Industry practice</span> <b>Why this task exists.</b> ${t.why}</div></div>
+  $('#taskBody').innerHTML=`<header class="modhead"><h2>${esc(t.full)}${t.full!==t.name?` (${esc(t.name)})`:''}</h2><span class="tag src">InsureMO Easy Claims</span></header>
+  <div class="grid g2"><div class="card"><dl class="kv"><dt>Purpose</dt><dd>${esc(t.purpose)}</dd><dt>How to open</dt><dd>${esc(t.menu)}</dd><dt>Who</dt><dd>${esc(t.actor)}</dd></dl></div><div class="callout ind"><span class="tag ind">Insurance knowledge</span> <b>Why insurers do this.</b> ${t.why}</div></div>
+  ${plainBox(t.id,t.full)}
   ${swimBlock(t.full+': who does what',t.steps,{open:false})}
   <section class="block"><h3>Screen sections</h3><div class="tbl"><table><thead><tr><th>Section</th><th>Content and actions</th></tr></thead><tbody>${t.sections.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td>${esc(s[1])}</td></tr>`).join('')}</tbody></table></div></section>
   <section class="block"><h3>Buttons and outcomes</h3><div class="tbl"><table><thead><tr><th>Button</th><th>What happens</th></tr></thead><tbody>${t.buttons.map(s=>`<tr><td><b>${esc(s[0])}</b></td><td>${esc(s[1])}</td></tr>`).join('')}</tbody></table></div></section>
   <div class="example"><b>Real example</b>${t.example}</div>
   ${t.health?`<div class="callout"><b>Health products.</b> ${esc(t.health)}</div>`:''}
   ${roleNotes(t)}
-  <section class="block"><h3>Source screenshots</h3>${shots(t.shots)}</section>`;afterRender($('#taskBody'))}
+  <section class="block"><h3>InsureMO Easy Claims screenshots</h3>${shots(t.shots)}</section>`;afterRender($('#taskBody'))}
 function renderAux(){const t=AUX.find(x=>x.id===curAux);picker('#auxPicker',AUX,curAux,k=>{location.hash='aux/'+k},x=>x.def);
-  $('#auxBody').innerHTML=`<header class="modhead"><h2>${esc(t.name)}</h2><span class="tag src">Source: ${esc(t.def)}</span></header>
-  <div class="callout ind"><span class="tag ind">Industry practice</span> ${esc(t.why)}</div>
+  $('#auxBody').innerHTML=`<header class="modhead"><h2>${esc(t.name)}</h2><span class="tag src">InsureMO Easy Claims: ${esc(t.def)}</span></header>
+  ${plainBox(t.id,t.name)}<div class="callout ind"><span class="tag ind">Insurance knowledge</span> <b>Why insurers do this.</b> ${esc(t.why)}</div>
   ${swimBlock(t.name+': who does what',t.steps)}
   <div class="grid g2"><div class="card"><h4>Page sections</h4><p class="small">${esc(t.sections)}</p></div><div class="card"><h4>Submit and approval outcomes</h4><p class="small">${esc(t.outcome)}</p></div></div>
   <div class="example"><b>Real example</b>${esc(t.example)}</div>
-  <section class="block"><h3>Source screenshots</h3>${shots(t.shots)}</section>`;afterRender($('#auxBody'))}
+  <section class="block"><h3>InsureMO Easy Claims screenshots</h3>${shots(t.shots)}</section>`;afterRender($('#auxBody'))}
 function renderSc(){const t=SCEN.find(x=>x.id===curSc);picker('#scPicker',SCEN,curSc,k=>{location.hash='scenarios/'+k},x=>x.lob+' · '+x.mode);
   $('#scBody').innerHTML=`<header class="modhead"><h2>${esc(t.name)}</h2><span class="tag">${esc(t.lob)}</span><span class="tag">${esc(t.mode)}</span></header>
   <p class="lede">${esc(t.story)}</p>
   ${swimBlock('Scenario: '+t.name,t.steps,{open:false})}
-  <div class="grid g2"><div class="card"><h4>Money result</h4><div class="tbl"><table><tbody>${t.money.map(m=>`<tr><td>${esc(m[0])}</td><td class="mono" style="text-align:right">${esc(m[1])}</td></tr>`).join('')}</tbody></table></div><p class="small muted"><span class="tag ind">Industry practice</span> Figures are illustrative.</p></div>
+  <div class="grid g2"><div class="card"><h4>Money result</h4><div class="tbl"><table><tbody>${t.money.map(m=>`<tr><td>${esc(m[0])}</td><td class="mono" style="text-align:right">${esc(m[1])}</td></tr>`).join('')}</tbody></table></div><p class="small muted"><span class="tag ind">Insurance knowledge</span> Figures are illustrative.</p></div>
   <div class="card"><h4>Related learning</h4><p class="small">${t.links.map(l=>{const tk=TASKS.find(x=>x.id===l);const ax=AUX.find(x=>x.id===l);return tk?`<a href="#tasks/${l}">${tk.full}</a>`:ax?`<a href="#aux/${l}">${ax.name}</a>`:`<a href="#${l}">${l}</a>`}).join(' · ')}</p></div></div>
   ${roleNotes(t.lessons)}`;afterRender($('#scBody'))}
 function renderScr(){const t=SCREENS.find(x=>x.id===curScr);picker('#scrPicker',SCREENS.map(s=>({id:s.id,name:s.n,menu:s.menu})),curScr,k=>{location.hash='workmgmt/'+k},x=>x.menu);
-  $('#scrBody').innerHTML=`<header class="modhead"><h2>${esc(t.n)}</h2><span class="tag">${esc(t.menu)}</span><span class="tag src">Source</span></header><p class="lede">${esc(t.p)}</p>
+  $('#scrBody').innerHTML=`<header class="modhead"><h2>${esc(t.n)}</h2><span class="tag">${esc(t.menu)}</span><span class="tag src">InsureMO Easy Claims</span></header><p class="lede">${esc(t.p)}</p>
   <div class="card"><h4>How to use it</h4><ol class="small">${t.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol></div>
   ${t.rules.length?`<div class="callout"><b>Rules</b><ul class="small">${t.rules.map(r=>`<li>${esc(r)}</li>`).join('')}</ul></div>`:''}
-  <section class="block"><h3>Source screenshots</h3>${shots(t.shots)}</section>`;afterRender($('#scrBody'))}
+  <section class="block"><h3>InsureMO Easy Claims screenshots</h3>${shots(t.shots)}</section>`;afterRender($('#scrBody'))}
 function renderJourney(){const t=JOURNEYS.find(x=>x.id===curJ);picker('#journeyPicker',JOURNEYS,curJ,k=>{curJ=k;renderJourney()},x=>x.d);
   $('#journeyBody').innerHTML=swimBlock('Journey: '+t.name,t.steps,{open:false});afterRender($('#journeyBody'))}
 function renderToolkit(){$('#tkTabs').innerHTML=Object.entries(TOOLKIT).map(([k,v])=>`<button role="tab" type="button" data-tk="${k}" aria-selected="${k===curTk}">${v.t}</button>`).join('');$$('#tkTabs button').forEach(b=>b.addEventListener('click',()=>{curTk=b.dataset.tk;renderToolkit()}));
@@ -1929,7 +2014,8 @@ function renderToolkit(){$('#tkTabs').innerHTML=Object.entries(TOOLKIT).map(([k,
   if(t.matrix)h=`<section class="block" style="margin-top:16px"><h3>Test scenario matrix</h3><input class="filter" id="tmFilter" placeholder="Filter tests…" style="max-width:320px"><div class="tbl"><table><thead><tr><th>ID</th><th>Area</th><th>Scenario</th><th>Steps</th><th>Expected result</th></tr></thead><tbody id="tmBody"></tbody></table></div></section><div class="callout" style="margin-top:12px"><b>Testing tips</b><ul class="small">${t.tips.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   $('#tkBody').innerHTML=h;
   if(t.matrix){const tm=()=>{const q=($('#tmFilter').value||'').toLowerCase();$('#tmBody').innerHTML=t.matrix.filter(r=>r.join(' ').toLowerCase().includes(q)).map(r=>`<tr><td class="mono">${r[0]}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td class="small">${esc(r[3])}</td><td class="small">${esc(r[4])}</td></tr>`).join('')};tm();$('#tmFilter').addEventListener('input',tm)}}
-function afterRender(root){bindFrames(root);linkSwims(root);$$('[data-zoom]',root).forEach(b=>{if(b.dataset.bz)return;b.dataset.bz=1;b.addEventListener('click',()=>openLightbox(b.dataset.zoom))})}
+function numberFigures(){const v=$('#v-'+curView);if(!v)return;const m=MODULES.find(x=>x.id===curView);const pre=m?m.n:'R';$$('.diagram .dg-bar > b',v).forEach((b,i)=>{if(!b.dataset.t)b.dataset.t=b.textContent;b.textContent=`Figure ${pre}.${i+1} · ${b.dataset.t}`})}
+function afterRender(root){numberFigures();bindFrames(root);linkSwims(root);$$('[data-zoom]',root).forEach(b=>{if(b.dataset.bz)return;b.dataset.bz=1;b.addEventListener('click',()=>openLightbox(b.dataset.zoom))})}
 
 /* ---------- tracker ---------- */
 function modStatus(id){const done=store.get('done',{})[id];const ans=store.get('mq',{})[id]||{};const qs=MQ[id]||[];const n=Object.keys(ans).length;const right=Object.entries(ans).filter(([i,a])=>qs[i]&&qs[i].a===a).length;
@@ -1978,7 +2064,7 @@ function renderAssess(){const fin=store.get('final',{attempts:[]});const sub=sto
 
 /* ---------- report ---------- */
 function downloadReport(){const o=overall();const rows=MODULES.map(m=>{const s=modStatus(m.id);return`<tr><td>${m.n} ${esc(m.name)}</td><td>${s.st}</td><td>${s.n}/${s.total}</td><td>${s.score==null?'—':s.score+'%'}</td></tr>`}).join('');const fin=store.get('final',{attempts:[]});
-  const html=`<!doctype html><meta charset="utf-8"><title>Easy Claim learning report</title><style>body{font-family:system-ui,sans-serif;max-width:860px;margin:24px auto;padding:0 16px;color:#16232A}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:6px 8px;text-align:left}th{background:#eee}</style><h1>Easy Claim learning report</h1><p>Generated ${new Date().toLocaleString()}</p><p><b>${o.comp} of ${MODULES.length}</b> modules complete. Knowledge checks: ${o.answered}/${o.totalQ} answered, ${o.quizPct==null?'—':o.quizPct+'%'} correct. Overall assessment best: ${o.best==null?'not attempted':o.best+'% ('+(o.best>=70?'passed':'not passed')+')'}.</p><table><tr><th>Module</th><th>Status</th><th>Answered</th><th>Score</th></tr>${rows}</table><h2>Assessment attempts</h2><p>${fin.attempts.map(a=>a.date+': '+a.pct+'%').join('<br>')||'None'}</p>`;
+  const html=`<!doctype html><meta charset="utf-8"><title>InsureMO Easy Claims learning report</title><style>body{font-family:system-ui,sans-serif;max-width:860px;margin:24px auto;padding:0 16px;color:#16232A}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:6px 8px;text-align:left}th{background:#eee}</style><h1>InsureMO Easy Claims learning report</h1><p>Generated ${new Date().toLocaleString()}</p><p><b>${o.comp} of ${MODULES.length}</b> modules complete. Knowledge checks: ${o.answered}/${o.totalQ} answered, ${o.quizPct==null?'—':o.quizPct+'%'} correct. Overall assessment best: ${o.best==null?'not attempted':o.best+'% ('+(o.best>=70?'passed':'not passed')+')'}.</p><table><tr><th>Module</th><th>Status</th><th>Answered</th><th>Score</th></tr>${rows}</table><h2>Assessment attempts</h2><p>${fin.attempts.map(a=>a.date+': '+a.pct+'%').join('<br>')||'None'}</p>`;
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download='easy-claim-learning-report.html';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 
 /* ---------- role, routing, search ---------- */
@@ -1991,7 +2077,7 @@ function route(){const h=decodeURIComponent((location.hash||'#start').slice(1));
   if(v==='tasks')renderTask();if(v==='aux')renderAux();if(v==='scenarios')renderSc();if(v==='workmgmt')renderScr();if(v==='integration')renderJourney();if(v==='assess')renderAssess();if(v==='start'||v==='trace')renderTracker();
   if(MQ[v]){const vis=store.get('visited',{});if(!vis[v]){vis[v]=1;store.set('visited',vis)}renderModFoot(v)}
   afterRender($('#v-'+v));renderRail();document.body.classList.remove('nav-open');if(changed||sub)window.scrollTo({top:0});
-  document.title=(v==='start'?'':($('#v-'+v+' h1')||{}).textContent+' · ')+'Easy Claim Learning Guide'}
+  document.title=(v==='start'?'':($('#v-'+v+' h1')||{}).textContent+' · ')+'InsureMO Easy Claims Learning Guide'}
 let INDEX=[];
 function buildIndex(){INDEX=[];
   TASKS.forEach(t=>INDEX.push({k:'Task',t:t.full,x:[t.name,t.purpose,t.why,t.example,t.sections.flat().join(' '),t.buttons.flat().join(' '),t.steps.map(s=>s.t+' '+(s.m||'')).join(' ')].join(' '),h:'tasks/'+t.id}));
@@ -2002,7 +2088,7 @@ function buildIndex(){INDEX=[];
   PARTIES.forEach(p=>INDEX.push({k:'Party',t:p.n,x:Object.values(p).join(' '),h:'parties'}));
   CONFIG.forEach(c=>INDEX.push({k:'Configuration',t:c[0],x:c.join(' '),h:'config'}));
   APPROVALS.forEach(a=>INDEX.push({k:'Approval',t:a[0],x:a.join(' '),h:'approvals'}));
-  FAQ.forEach((f,i)=>INDEX.push({k:'Source Q&A',t:'Q'+(i+1)+'. '+f[0],x:f.join(' '),h:'faq'}));
+  FAQ.forEach((f,i)=>INDEX.push({k:'InsureMO Easy Claims Q&A',t:'Q'+(i+1)+'. '+f[0],x:f.join(' '),h:'faq'}));
   MODULES.forEach(m=>INDEX.push({k:'Module '+m.n,t:m.name,x:[m.learn,m.ready,m.obj.join(' ')].join(' '),h:m.id}));
   INDEX.forEach(i=>{i.x=strip(i.x).toLowerCase()})}
 function doSearch(){const q=$('#q').value.trim().toLowerCase(),box=$('#results');if(q.length<2){box.hidden=true;return}const terms=q.split(/\s+/);

@@ -2,7 +2,7 @@
 const GLOSS=[
  /* Claims */
  ['Claim','Claims','A request to the insurer for payment under a policy after an insured event, and the whole process of handling it.'],
- ['FNOL (First Notice of Loss)','Claims','The first report of a loss to the insurer. In Easy Claim, the first task, which creates the claim case.'],
+ ['FNOL (First Notice of Loss)','Claims','The first report of a loss to the insurer. In InsureMO Easy Claims, the first task, which creates the claim case.'],
  ['Claim registration','Claims','Completing claim data and setting the first reserve.'],
  ['Sub-claim','Claims','A part of a claim for one risk, damage object or claimant. Has its own reserves and, in sub-claim mode, its own tasks.'],
  ['Claim mode / sub-claim mode','Claims','Claim mode: one case holds everything (motor, property). Sub-claim mode: one main case with many sub-cases (health).'],
@@ -27,7 +27,7 @@ const GLOSS=[
  ['Prepay (interim payment)','Claims','Advance payment before final settlement, deducted from the final amount.'],
  ['Subrogation','Claims','The insurer\'s right, after paying, to recover from the party who caused the loss.'],
  ['Salvage','Claims','Damaged property the insurer owns after paying a total loss and sells to reduce cost.'],
- ['Recovery','Claims','In Easy Claim: recovering an overpaid amount. Generally: any money coming back on a claim.'],
+ ['Recovery','Claims','In InsureMO Easy Claims: recovering an overpaid amount. Generally: any money coming back on a claim.'],
  ['Total loss','Claims','Property destroyed or not worth repairing. Constructive total loss: repair cost is above a set share of insured value.'],
  ['Decline / repudiation','Claims','Refusing a claim because it is not covered or the conditions were not met.'],
  ['Cancel (claim)','Claims','Withdrawing a claim at FNOL or Registration, for example when the customer does not want to claim.'],
@@ -39,7 +39,7 @@ const GLOSS=[
  ['TAT','Claims','Turnaround time: days from report to payment or decision.'],
  ['Knock-for-knock','Claims','Agreement between insurers that each pays its own customer and does not pursue the other.'],
  ['Claims cooperation clause','Claims','Reinsurance clause requiring the insurer to involve the reinsurer in large claim decisions.'],
- ['Litigation','Claims','A claim in court or legal dispute. Easy Claim has a Litigation link on the claim summary.'],
+ ['Litigation','Claims','A claim in court or legal dispute. InsureMO Easy Claims has a Litigation link on the claim summary.'],
  /* Policy & underwriting */
  ['Policy','Policy and underwriting','The insurance contract: who and what is covered, for what, for how long, at what price.'],
  ['Policyholder','Policy and underwriting','The person or company that owns the policy and pays premium.'],
@@ -92,7 +92,7 @@ const GLOSS=[
  ['Statement','Finance and BCP','Periodic summary of transactions and balance with a party, for example an agent, coinsurer or reinsurer.'],
  ['Statement management','Finance and BCP','Generating, sending, confirming and settling statements.'],
  ['Fee type','Finance and BCP','BCP code that classifies an amount for accounting. Claims: 200100 claim ARAP, 200201 claim reserve, 200312 claim settlement.'],
- ['BizModule','Finance and BCP','Source module code in BCP: 10 PA, 20 Claims, 30 Reinsurance, 40 Sales Channel.'],
+ ['BizModule','Finance and BCP','InsureMO Easy Claims module code in BCP: 10 PA, 20 Claims, 30 Reinsurance, 40 Sales Channel.'],
  ['Refund Approval','Finance and BCP','BCP step that approves payable records (negative AP) before payment.'],
  ['General ledger (GL)','Finance and BCP','The company\'s main accounting records.'],
  ['Loss ratio','Finance and BCP','Incurred claims ÷ earned premium.'],
@@ -131,7 +131,7 @@ const GLOSS=[
  ['Hospital cash','Health','Fixed daily benefit for each day in hospital.'],
  ['Pre/post-hospitalisation','Health','Medical costs before admission and after discharge, covered for set days.'],
  /* InsureMO */
- ['Easy Claim','InsureMO system','InsureMO claims application built on the Claim API.'],
+ ['InsureMO Easy Claims','InsureMO system','InsureMO claims application built on the Claim API.'],
  ['Easy PA','InsureMO system','InsureMO policy administration application.'],
  ['BCP','InsureMO system','Billing, Collection and Payment module.'],
  ['Claim Task','InsureMO system','Workbench for workflow tasks.'],
@@ -153,7 +153,7 @@ const GLOSS=[
 ];
 
 const FAQ=[
- ['What are the recent upgrades of Easy Claim?','Cancel Settlement; a new calculation tool and version (replacing GIMO built-in rating for claim calculation); a health insurance claims baseline.','reserves'],
+ ['What are the recent upgrades of InsureMO Easy Claims?','Cancel Settlement; a new calculation tool and version (replacing GIMO built-in rating for claim calculation); a health insurance claims baseline.','reserves'],
  ['How long does a claim usually take?','With full API integration, claims can be completed within minutes. API: docs.insuremo.com/tech/pro/sdk/api/claimbusiness','config'],
  ['How to create batch claims?','Batch FNOL: download the template, fill it, upload. After validation the system creates cases; check results in Upload Monitor.','workmgmt'],
  ['Does the system support recovery?','Yes: Subrogation / Subrogation Approval, Salvage / Salvage Approval, Recovery, created with New Task.','aux'],
@@ -182,15 +182,15 @@ const GAPS=[
  ['Medium','Prepay History','"Click view, and the system will open the subrogation detail page."','Likely a copy error; it should open prepay detail.'],
  ['Medium','Settlement closure wording','"The claim changes will be closed and go to claim query to reopen the case."','Meaning: the claim is closed; reopening is done from claim query / New and Reopen. Confirm with partial settlements.'],
  ['Medium','Recovery approval','Recovery has no approval task, unlike Subrogation and Salvage.','Whether recovery needs an approval control in your tenant.'],
- ['Medium','Reserve approval at Registration','Reserve Update Approval exists, but source does not say if the first reserve at Registration can trigger it.','When reserve approval applies (first reserve or only updates).'],
+ ['Medium','Reserve approval at Registration','Reserve Update Approval exists, but InsureMO Easy Claims does not say if the first reserve at Registration can trigger it.','When reserve approval applies (first reserve or only updates).'],
  ['Medium','Escalation for reserve close/reopen','No "approve above authority" path given for Reserve Close and Reopen approvals.','Whether these can escalate.'],
  ['Low','Investigation always in chain','Standard flow always includes Investigation.','Whether investigation can be skipped by workflow configuration for simple claims.'],
  ['Low','Duplicate claim window','Screenshot shows a 24-hour duplicate warning; not described in text.','Whether the window is configurable and whether it blocks or only warns.'],
- ['Low','Reinsurance interface','The source does not describe the claim-to-reinsurance interface.','Events, timing and data sent to Reinsurance.'],
+ ['Low','Reinsurance interface','InsureMO Easy Claims does not describe the claim-to-reinsurance interface.','Events, timing and data sent to Reinsurance.'],
  ['Low','Health baseline fields','Health pages are shown only as screenshots.','Full field list and rules for the health baseline.']
 ];
 
-/* Traceability: source section → module, tested by questions (module quiz index or final index) */
+/* Traceability: InsureMO Easy Claims section → module, tested by questions (module quiz index or final index) */
 const TRACE=[
  ['Introduction: What is a claim','insurance','Module 1.1',['insurance:0']],
  ['Standard claim process','lifecycle','Module 2.1 master flow',['lifecycle:0','F:0']],
@@ -220,34 +220,34 @@ const TRACE=[
  ['New and Reopen (Subclaim, Task, Reopen, parallel)','workmgmt','Module 3.3',['workmgmt:3','F:9','F:10']],
  ['Diary Task','lifecycle','Module 2.1, 3.3',['lifecycle:3']],
  ['Party Management','parties','Module 1.2, 3.3',['parties:3']],
- ['Q&A 1–17','faq','Source Q&A page',['F:15','F:17']],
+ ['Q&A 1–17','faq','InsureMO Easy Claims Q&A page',['F:15','F:17']],
  ['Cross-module (BCP fee codes, PA, RI)','integration','Module 3.4',['integration:0','integration:1','integration:2','integration:3','F:21','F:22','F:23','F:24']]
 ];
 
 /* Module knowledge checks: q, options, answer index, why */
 const MQ={
  insurance:[
-  {q:'Which statement matches the source definition of a claim?',o:['Only the payment made to the insured','The whole process from the claim request after an insured event to review, investigation, assessment, calculation and payment','The policyholder\'s premium refund'],a:1,w:'The source defines a claim as the entire process after a covered event, from request to compensation payment.'},
+  {q:'Which statement matches the InsureMO Easy Claims definition of a claim?',o:['Only the payment made to the insured','The whole process from the claim request after an insured event to review, investigation, assessment, calculation and payment','The policyholder\'s premium refund'],a:1,w:'InsureMO Easy Claims defines a claim as the entire process after a covered event, from request to compensation payment.'},
   {q:'Earned premium 200, paid claims 110, outstanding moved from 40 to 60. What is the loss ratio?',o:['55%','65%','85%'],a:1,w:'Incurred = 110 + (60 − 40) = 130. 130 ÷ 200 = 65%.'},
   {q:'A hospital cash product pays 2,000 per day. Which type of cover is it?',o:['Indemnity','Benefit (fixed amount)','Liability'],a:1,w:'It pays a fixed amount per day, not the actual loss, so it is benefit cover.'},
-  {q:'Which module issues the policy that the claim is checked against?',o:['BCP','Easy PA','Reinsurance'],a:1,w:'Easy PA issues and maintains the policy; Easy Claim retrieves it at FNOL.'}],
+  {q:'Which module issues the policy that the claim is checked against?',o:['BCP','Easy PA','Reinsurance'],a:1,w:'Easy PA issues and maintains the policy; InsureMO Easy Claims retrieves it at FNOL.'}],
  parties:[
   {q:'An employer buys group health; an employee is treated cashless. Who is the payee?',o:['The employer','The employee','The hospital'],a:2,w:'In cashless claims the insurer (or TPA) pays the hospital directly.'},
   {q:'Who represents the customer rather than the insurer?',o:['Tied agent','Broker','Surveyor'],a:1,w:'A broker acts for the client; an agent acts for the insurer.'},
-  {q:'Where does Easy Claim record the surveyor\'s visit details?',o:['Investigation Information on the sub-claim','Party Management only','Settlement payee'],a:0,w:'Investigation Information holds Investigator Name, Contact, Arrival Date, Address and Description.'},
-  {q:'Where are garages and hospitals maintained as third parties?',o:['Claim Search','Party Management','Task Monitor'],a:1,w:'Source Q17: maintain third parties in Party Management.'}],
+  {q:'Where does InsureMO Easy Claims record the surveyor\'s visit details?',o:['Investigation Information on the sub-claim','Party Management only','Settlement payee'],a:0,w:'Investigation Information holds Investigator Name, Contact, Arrival Date, Address and Description.'},
+  {q:'Where are garages and hospitals maintained as third parties?',o:['Claim Search','Party Management','Task Monitor'],a:1,w:'InsureMO Easy Claims Q17: maintain third parties in Party Management.'}],
  concepts:[
   {q:'After paying Riya, her insurer claims from the truck owner\'s insurer. Which principle allows this?',o:['Contribution','Subrogation','Utmost good faith'],a:1,w:'Subrogation passes the insured\'s right of recovery to the insurer after payment.'},
-  {q:'Which product fits sub-claim mode best?',o:['A single motor accident','Health insurance with several bills in one case','A single fire loss'],a:1,w:'The source lists health and multiple claims for sub-claim mode.'},
+  {q:'Which product fits sub-claim mode best?',o:['A single motor accident','Health insurance with several bills in one case','A single fire loss'],a:1,w:'InsureMO Easy Claims lists health and multiple claims for sub-claim mode.'},
   {q:'Investigation fees are reserved under…',o:['Indemnity reserve','Expense reserve','IBNR'],a:1,w:'Expense reserve covers processing costs such as investigation and legal fees.'},
   {q:'Value at risk 1,000,000, sum insured 600,000, loss 200,000, no deductible. Payable with average?',o:['200,000','120,000','600,000'],a:1,w:'200,000 × 600,000 ÷ 1,000,000 = 120,000.'}],
  lifecycle:[
-  {q:'What is the correct order?',o:['FNOL → Registration → Investigation → Appraisal → Document → Calculation → Settlement','FNOL → Investigation → Registration → Document → Appraisal → Settlement → Calculation','Registration → FNOL → Appraisal → Investigation → Calculation → Document → Settlement'],a:0,w:'This is the source standard claim process.'},
+  {q:'What is the correct order?',o:['FNOL → Registration → Investigation → Appraisal → Document → Calculation → Settlement','FNOL → Investigation → Registration → Document → Appraisal → Settlement → Calculation','Registration → FNOL → Appraisal → Investigation → Calculation → Document → Settlement'],a:0,w:'This is the InsureMO Easy Claims standard claim process.'},
   {q:'Which task establishes the claim reserve?',o:['FNOL','Registration','Document'],a:1,w:'Registration: complete claim information, establish claim reserve.'},
   {q:'In Task Transfer, when is a task checkbox selectable?',o:['Always','When you own the task or it is unassigned','Only for managers'],a:1,w:'Otherwise it is read-only.'},
   {q:'Where do you find a reminder task someone assigned to you?',o:['Claim Task','Diary Task','Task Monitor only'],a:1,w:'Diary tasks are reminder tasks found in the Diary Task menu.'}],
  tasks:[
-  {q:'What happens on FNOL Submit?',o:['Claim closes','FNOL closes, Registration task is created and Task Transfer opens','Investigation task is created'],a:1,w:'Source FNOL step 5.'},
+  {q:'What happens on FNOL Submit?',o:['Claim closes','FNOL closes, Registration task is created and Task Transfer opens','Investigation task is created'],a:1,w:'InsureMO Easy Claims FNOL step 5.'},
   {q:'On Registration, which section is new compared with FNOL?',o:['Claim Reserve','Remark','Claimant Information'],a:0,w:'Registration adds Claim Reserve (and Transaction History).'},
   {q:'Document Submit with Is Qualified = No creates…',o:['Calculation task','A new Document task','Settlement Approval'],a:1,w:'The document loop repeats until qualified.'},
   {q:'Which buttons on Settlement can stop payment of a claim that is not payable?',o:['Decline','Exit','Save'],a:0,w:'Decline declines the claim.'}],
@@ -255,7 +255,7 @@ const MQ={
   {q:'Appraisal Approval: the approver rejects. What next?',o:['Document task','New Appraisal task','Claim closed'],a:1,w:'Reject returns the work to a new Appraisal task.'},
   {q:'Calculation Approval: approve, but the amount exceeds the approver\'s authority. What next?',o:['Settlement task','New Calculation Approval task','Calculation task'],a:1,w:'Escalation creates another approval task for the next level.'},
   {q:'Reserve Update Approval: Reject. What happens?',o:['New reserve task','Task closed, reserve unchanged','Reserve closed'],a:1,w:'Source: if Reject, the task is closed.'},
-  {q:'Which approval page differs by having no Prepay Information section and read-only payee?',o:['Prepay Approval','Salvage Approval','Settlement Approval'],a:0,w:'Source Prepay Approval differences.'}],
+  {q:'Which approval page differs by having no Prepay Information section and read-only payee?',o:['Prepay Approval','Salvage Approval','Settlement Approval'],a:0,w:'InsureMO Easy Claims Prepay Approval differences.'}],
  reserves:[
   {q:'Paid 40,000, outstanding 25,000. Incurred?',o:['15,000','40,000','65,000'],a:2,w:'Incurred = paid + outstanding.'},
   {q:'With full-scale calculation, first calculation 1,000; extra 500 found. What do you enter in the second calculation?',o:['500','1,500','2,500'],a:1,w:'Enter the full total; the latest version holds the total.'},
@@ -265,12 +265,12 @@ const MQ={
   {q:'Which auxiliary task sends money out?',o:['Prepay','Salvage','Subrogation'],a:0,w:'Prepay is an advance payment; the others bring money in.'},
   {q:'The at-fault driver\'s insurer should pay back what you paid. Which task?',o:['Recovery','Subrogation','Salvage'],a:1,w:'Subrogation: recovery from third parties.'},
   {q:'Selling a wrecked car after a total loss uses…',o:['Salvage','Prepay','Recovery'],a:0,w:'Salvage: disposal of damaged property.'},
-  {q:'Which auxiliary task has no approval task in the source?',o:['Salvage','Prepay','Recovery'],a:2,w:'Only Recovery lacks an approval task.'}],
+  {q:'Which auxiliary task has no approval task in InsureMO Easy Claims?',o:['Salvage','Prepay','Recovery'],a:2,w:'Only Recovery lacks an approval task.'}],
  scenarios:[
   {q:'Riya\'s repair: assessed 82,000, depreciation 13,200, deductible 1,000. Who pays the garage what?',o:['Insurer 82,000','Insurer 67,800; Riya 14,200','Insurer 68,800; Riya 13,200'],a:1,w:'82,000 − 13,200 − 1,000 = 67,800 from the insurer; Riya pays 14,200.'},
   {q:'Mr Tan: bill 3,40,000, non-payables 12,000, co-pay 10%. Insurer pays?',o:['3,06,000','2,95,200','3,28,000'],a:1,w:'(3,40,000 − 12,000) × 90% = 2,95,200.'},
   {q:'A car with a loan is a total loss. Who is usually paid first?',o:['The garage','The financier','The salvage buyer'],a:1,w:'The financier has insurable interest and is paid first.'},
-  {q:'Settlement paid to the wrong account; BCP has already paid. What do you do?',o:['Cancel payment','Recovery task, then pay again correctly','Decline the claim'],a:1,w:'Source Q16: once paid, recover, then pay again.'}],
+  {q:'Settlement paid to the wrong account; BCP has already paid. What do you do?',o:['Cancel payment','Recovery task, then pay again correctly','Decline the claim'],a:1,w:'InsureMO Easy Claims Q16: once paid, recover, then pay again.'}],
  workmgmt:[
   {q:'Which screen lets you download a list of claims to Excel?',o:['Claim Search','Diary Task','Party Management'],a:0,w:'Claim Search and Task Monitor both have Download.'},
   {q:'A manager wants to see overdue tasks of the team.',o:['My Claim','Task Monitor','New and Reopen'],a:1,w:'Task Monitor shows tasks of the user and subordinates with Pass Due.'},
@@ -303,20 +303,20 @@ const FINAL=[
  {q:'Under the new calculation tool, the first calculation was 1,000 and it should be 1,500. What is entered on reopen?',o:['500','1,500','2,500'],a:1,w:'Full-scale: the latest version holds the total.',m:'reserves'},
  {q:'Settlement Approval approves within the approver\'s authority. What happens?',o:['Document task','Claim closes; payment goes to BCP','New Settlement task'],a:1,w:'Claim closes; reopen via New and Reopen if needed.',m:'approvals'},
  {q:'A Reserve Close Approval is rejected. What is the reserve status?',o:['Closed','Still open','Reopened'],a:1,w:'Reject closes the approval task; the reserve is not closed.',m:'reserves'},
- {q:'Without parallel tasks, which tasks are offered on Reopen Task?',o:['Finished Investigation, Appraisal, Document, Calculation','Any task including Settlement','Only FNOL'],a:0,w:'Source Reopen Task rule.',m:'workmgmt'},
+ {q:'Without parallel tasks, which tasks are offered on Reopen Task?',o:['Finished Investigation, Appraisal, Document, Calculation','Any task including Settlement','Only FNOL'],a:0,w:'InsureMO Easy Claims Reopen Task rule.',m:'workmgmt'},
  {q:'With parallel tasks on, which tasks still follow the old rules on New Task?',o:['Investigation and Appraisal','Prepay, Subrogation, Salvage, Recovery','Document and Calculation'],a:1,w:'Subordinate tasks keep the current logic.',m:'workmgmt'},
  {q:'A factory needs cash before the final loss figure is agreed. Which task?',o:['Prepay','Recovery','Salvage'],a:0,w:'Prepay = advance payment before final settlement.',m:'aux'},
  {q:'Which pair are both money coming back to the insurer?',o:['Prepay and Salvage','Subrogation and Salvage','Prepay and Settlement'],a:1,w:'Both create recovery receivables.',m:'aux'},
  {q:'The truck owner\'s insurer pays back the claim. Which BCP record is collected?',o:['Claim AP 200312/200100 (−)','Recovery AR 200312/200100 (+)','Reserve fee 200201'],a:1,w:'Recoveries are AR with positive fees.',m:'integration'},
  {q:'A duplicate payment is found after BCP paid it. Which task?',o:['Recovery','Subrogation','Prepay'],a:0,w:'Recovery: recovery of overpaid amounts.',m:'aux'},
- {q:'Where does a manager find all tasks of the team, including closed ones?',o:['My Claim','Task Monitor','Diary Task'],a:1,w:'Source Q12.',m:'workmgmt'},
- {q:'A handler resigns. What is the fastest fix for their open work?',o:['Reopen each claim','Reassignment of tasks and claim owner','Cancel the claims'],a:1,w:'Source Q13.',m:'workmgmt'},
- {q:'Investigation was completed with a wrong arrival date. What now?',o:['Reopen Task: Investigation','Create a new claim','Decline'],a:0,w:'Source Q14.',m:'workmgmt'},
+ {q:'Where does a manager find all tasks of the team, including closed ones?',o:['My Claim','Task Monitor','Diary Task'],a:1,w:'InsureMO Easy Claims Q12.',m:'workmgmt'},
+ {q:'A handler resigns. What is the fastest fix for their open work?',o:['Reopen each claim','Reassignment of tasks and claim owner','Cancel the claims'],a:1,w:'InsureMO Easy Claims Q13.',m:'workmgmt'},
+ {q:'Investigation was completed with a wrong arrival date. What now?',o:['Reopen Task: Investigation','Create a new claim','Decline'],a:0,w:'InsureMO Easy Claims Q14.',m:'workmgmt'},
  {q:'Which screen shows the claimant detail, sub-claim detail, reserve history and settlement detail in one place?',o:['Case Information','Upload Monitor','Party Management'],a:0,w:'Open Claim No from Claim Search.',m:'workmgmt'},
- {q:'After a cyclone, 3,000 notices arrive in spreadsheets. Best route?',o:['Type each on FNOL','Batch FNOL with the product template; track in Upload Monitor','Diary tasks'],a:1,w:'Source Batch FNOL and Q3.',m:'workmgmt'},
+ {q:'After a cyclone, 3,000 notices arrive in spreadsheets. Best route?',o:['Type each on FNOL','Batch FNOL with the product template; track in Upload Monitor','Diary tasks'],a:1,w:'InsureMO Easy Claims Batch FNOL and Q3.',m:'workmgmt'},
  {q:'PA Docking 01, Manual Policy Docking 03, Is Manual Policy = Yes. Docking mode?',o:['Mock Data','Manual Policy','PA'],a:1,w:'User chose a manual policy and the tenant supports both.',m:'config'},
  {q:'A reinsurer asks for the total of all claims from one flood. Which field must be filled on each claim?',o:['Catastrophe Code','Cause of Loss','Accident Address'],a:0,w:'Catastrophe code aggregates event losses.',m:'integration'},
  {q:'Gross claim 1,000,000; quota share 30%; per-risk XOL 400,000 xs 300,000 on the retained share. Net to the insurer?',o:['300,000','400,000','700,000'],a:0,w:'Retained 700,000; XOL pays min(700,000 − 300,000, 400,000) = 400,000; net 300,000.',m:'integration'},
  {q:'Riya\'s claim is closed and paid. What happens at renewal in Easy PA, in most motor markets?',o:['Nothing','No-claim bonus is lost or reduced','Premium is refunded'],a:1,w:'A paid claim usually removes NCB.',m:'integration'},
- {q:'Settlement is approved in Easy Claim. Where does finance approve the payable before it is paid?',o:['BCP Refund Approval','Easy PA endorsement','Reinsurance cash call'],a:0,w:'Claim AP records appear in BCP Refund Approval, then Single or Massive Refund pays them.',m:'integration'}
+ {q:'Settlement is approved in InsureMO Easy Claims. Where does finance approve the payable before it is paid?',o:['BCP Refund Approval','Easy PA endorsement','Reinsurance cash call'],a:0,w:'Claim AP records appear in BCP Refund Approval, then Single or Massive Refund pays them.',m:'integration'}
 ];

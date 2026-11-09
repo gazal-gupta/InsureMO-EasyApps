@@ -66,7 +66,7 @@ const MODS={
  bcp:{n:'BCP',cls:'bcp',x:620,y:70,
   gives:['Payment status of claim payables (approved, paid, reversed)','Collection status of recovery receivables'],
   takes:['Claim AP for indemnity and expense payments (200312, 200100 −)','Reserve fee for accounting (200201, fee only)','Recovery AR for salvage and subrogation (200312, 200100 +)'],
-  ba:'Confirm whether a reversed payment in BCP must reopen anything in Claims; the BCP source does not describe a callback.',
+  ba:'Confirm whether a reversed payment in BCP must reopen anything in Claims; the BCP guide does not describe a callback.',
   qa:'Search Refund Approval by Claim No after settlement; check reserve creates a fee but no AR/AP.',
   dev:'BizModule 20 = Claims. ArapCate 2 = AP for payment, 1 = AR for recovery.'},
  ri:{n:'Reinsurance',cls:'ri',x:620,y:330,
@@ -87,16 +87,16 @@ const MODS={
   ba:'Which partners create claims directly, and what they can see.',qa:'API-created claims must pass the same validations as screen-created claims.',dev:'Claim Business API: docs.insuremo.com/tech/pro/sdk/api/claimbusiness'}
 };
 const XTABLE=[
- ['Easy PA → Claims','Policy, insured, coverages, sum insured, deductible, producer','New Accident Report search','New Claim / Policy Search','Source (docking)'],
- ['Claims → Easy PA','Claim count and amounts for renewal; total loss','Claim closed / total loss','Settlement','Industry practice'],
+ ['Easy PA → Claims','Policy, insured, coverages, sum insured, deductible, producer','New Accident Report search','New Claim / Policy Search','InsureMO Easy Claims (docking)'],
+ ['Claims → Easy PA','Claim count and amounts for renewal; total loss','Claim closed / total loss','Settlement','Insurance knowledge'],
  ['Claims → BCP','Claim AP (indemnity/expense)','Settlement or prepay approved','Settlement, Prepay','BCP guide'],
  ['Claims → BCP','Reserve fee 200201','Reserve set or changed','Registration, reserve update/close/reopen','BCP guide'],
  ['Claims → BCP','Recovery AR','Subrogation, salvage or recovery submitted/approved','Subrogation, Salvage, Recovery','BCP guide'],
- ['BCP → Claims','Payment status','AP approved, paid or reversed','Payment Info link; cancel payment (Q16)','Source Q16 + BCP guide'],
- ['Claims → Reinsurance','Outstanding, paid, recoveries, catastrophe code','Each financial movement','Reserve, Settlement, recovery tasks','Industry practice'],
+ ['BCP → Claims','Payment status','AP approved, paid or reversed','Payment Info link; cancel payment (Q16)','InsureMO Easy Claims Q16 + BCP guide'],
+ ['Claims → Reinsurance','Outstanding, paid, recoveries, catastrophe code','Each financial movement','Reserve, Settlement, recovery tasks','Insurance knowledge'],
  ['Reinsurance → BCP','RI receivable (reinsurer share of claim)','Claim paid on a reinsured policy / cash call','—','BCP guide (C5)'],
- ['iDocs ↔ Claims','Claim documents','Upload; Document task','Attachment, Document','Source'],
- ['Partners → Claims','FNOL, documents','API call or Batch FNOL','ECS page, Batch FNOL','Source']
+ ['iDocs ↔ Claims','Claim documents','Upload; Document task','Attachment, Document','InsureMO Easy Claims'],
+ ['Partners → Claims','FNOL, documents','API call or Batch FNOL','ECS page, Batch FNOL','InsureMO Easy Claims']
 ];
 const JOURNEYS=[
  {id:'j1',name:'Policy to payment',d:'From policy data to money in the payee\'s bank and the GL.',
@@ -112,20 +112,20 @@ const JOURNEYS=[
 const API_STEPS=[S('api','ext','Customer submits claim in app (photos, bills)'),S('sys','sys','Claim API: create claim (FNOL) with policy check',{m:'Claim Business API'}),S('pa','pa','Policy and coverage confirmed'),S('sys','sys','Registration and reserve by rule'),S('sys','dec','Rules: amount small, no fraud flags, documents complete?'),S('sys','sys','Calculation by Claim Matrix rules',{b:'Yes'}),S('sys','sys','Settlement within system authority'),S('bcp','bcp','Claim AP and payment'),S('api','ext','Customer notified: paid'),S('hand','op','Exceptions routed to handler queue',{b:'No'})];
 
 const CONFIG=[
- ['Retrieve mode','01 New Claim page; 02 Policy Search page','Which page New Accident Report opens','Platform / tenant admin','Source'],
- ['PA Docking','01 Mock; 02 PA; 03 Third Party','Where policy data comes from','Platform / tenant admin','Source'],
- ['Manual Policy Docking','01 Not supporting; 02 Only manual; 03 Both','Whether manual (off-system) policies are allowed','Platform / tenant admin','Source'],
- ['Claim Matrix version','V1 (original) or V2 (new)','Product claim configuration; V2 enables the new calculation tool','Product configurator','Source'],
- ['Calculation engine','GIMO rating or new calculation tool','Calculation page layout; Settled field; close-reserve rule; full-scale calculation','Product configurator','Source'],
- ['New calculation logic parameter','On / off','Calculation times selection on Reopen Task; full-scale calculation','Tenant admin','Source'],
- ['Claim authority configuration','Per user/role: amounts and reserve permissions','Approval routing; Update/Close/Reopen buttons','Claims operations + IT','Source'],
- ['Claim process management (workflow)','Task sequence; parallel tasks','Which tasks are created; parallel mainline tasks','Claims operations + IT','Source'],
- ['Document directory','Document types per product','Attachment and Document task lists','Claims operations','Source (iDocs)'],
- ['Notification contact method and templates','Email and other channels; templates','Unqualified document notices','Tenant admin','Source'],
- ['Task due dates','Due date per task','Overdue highlight; Task Monitor Pass Due','Claims operations','Source Q8'],
- ['Batch FNOL template','Per product','Columns in the upload file','Product configurator','Source'],
- ['Code tables','Cause of loss, catastrophe code, claimant type, subclaim type, damage object, reserve type, pay mode','Drop-down lists','Tenant admin','Screens in source'],
- ['Health baseline','Health fields and rules','Health screens on FNOL, Registration, Investigation, Appraisal, Settlement, Case Info','Product configurator','Source'],
+ ['Retrieve mode','01 New Claim page; 02 Policy Search page','Which page New Accident Report opens','Platform / tenant admin','InsureMO Easy Claims'],
+ ['PA Docking','01 Mock; 02 PA; 03 Third Party','Where policy data comes from','Platform / tenant admin','InsureMO Easy Claims'],
+ ['Manual Policy Docking','01 Not supporting; 02 Only manual; 03 Both','Whether manual (off-system) policies are allowed','Platform / tenant admin','InsureMO Easy Claims'],
+ ['Claim Matrix version','V1 (original) or V2 (new)','Product claim configuration; V2 enables the new calculation tool','Product configurator','InsureMO Easy Claims'],
+ ['Calculation engine','GIMO rating or new calculation tool','Calculation page layout; Settled field; close-reserve rule; full-scale calculation','Product configurator','InsureMO Easy Claims'],
+ ['New calculation logic parameter','On / off','Calculation times selection on Reopen Task; full-scale calculation','Tenant admin','InsureMO Easy Claims'],
+ ['Claim authority configuration','Per user/role: amounts and reserve permissions','Approval routing; Update/Close/Reopen buttons','Claims operations + IT','InsureMO Easy Claims'],
+ ['Claim process management (workflow)','Task sequence; parallel tasks','Which tasks are created; parallel mainline tasks','Claims operations + IT','InsureMO Easy Claims'],
+ ['Document directory','Document types per product','Attachment and Document task lists','Claims operations','InsureMO Easy Claims (iDocs)'],
+ ['Notification contact method and templates','Email and other channels; templates','Unqualified document notices','Tenant admin','InsureMO Easy Claims'],
+ ['Task due dates','Due date per task','Overdue highlight; Task Monitor Pass Due','Claims operations','InsureMO Easy Claims Q8'],
+ ['Batch FNOL template','Per product','Columns in the upload file','Product configurator','InsureMO Easy Claims'],
+ ['Code tables','Cause of loss, catastrophe code, claimant type, subclaim type, damage object, reserve type, pay mode','Drop-down lists','Tenant admin','InsureMO Easy Claims screens'],
+ ['Health baseline','Health fields and rules','Health screens on FNOL, Registration, Investigation, Appraisal, Settlement, Case Info','Product configurator','InsureMO Easy Claims'],
  ['Duplicate claim window','24 hours on same policy (as seen)','Red warning on Claim Summary','Tenant admin (confirm)','Screenshot']
 ];
 const DOCK=[['01','01','','Mock Data'],['02','01','','PA'],['03','01','','Third Party'],['01','02','','Manual Policy'],['02','02','','Manual Policy'],['03','02','','Manual Policy'],['01','03','Yes','Manual Policy'],['02','03','Yes','Manual Policy'],['03','03','Yes','Manual Policy'],['01','03','No','Mock Data'],['02','03','No','PA'],['03','03','No','Third Party']];
@@ -188,7 +188,7 @@ const TOOLKIT={
   ['T30','Party','Payment info','Add garage with bank account','Garage selectable as payee with bank details'],
   ['T31','Integration','Payment cancel','Cancel payment before BCP pays','AP cancelled; new settlement possible'],
   ['T32','Integration','Reserve fee','Update reserve','BCP fee 200201; no AR/AP']],
-  tips:['Always test the boundary: equal to the limit, one unit below, one unit above. The source says "exceeds"; confirm whether equal triggers approval.','Use the scenarios in Module 3.2 as end-to-end regression tests.','Reconcile money across modules: Claims settlement total = BCP claim AP total = GL paid claims for the period.','Test with users of different authority levels and permissions, not just an admin user.']},
+  tips:['Always test the boundary: equal to the limit, one unit below, one unit above. InsureMO Easy Claims says "exceeds"; confirm whether equal triggers approval.','Use the scenarios in Module 3.2 as end-to-end regression tests.','Reconcile money across modules: Claims settlement total = BCP claim AP total = GL paid claims for the period.','Test with users of different authority levels and permissions, not just an admin user.']},
  dev:{t:'Developer',sections:[
   {h:'Integration checklist',items:[
    ['Policy docking','Confirm docking mode; map policy, risk, coverage and sum insured fields; handle the policy version at the date of loss.'],

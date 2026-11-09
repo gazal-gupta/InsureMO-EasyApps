@@ -4,7 +4,7 @@
 Inputs (all in src/):
   template.html  page shell and styles
   views.html     page content for each module
-  data1-4.js     guide content (modules, tasks, scenarios, glossary, quizzes)
+  data1-5.js     guide content (modules, tasks, scenarios, glossary, quizzes)
   engine.js      rendering, diagrams, tracker, quizzes, search
   img/           source screenshots (WebP) and icons (PNG), listed in img/manifest.json
 
@@ -22,7 +22,7 @@ SRC = ROOT / "src"
 def main():
     tpl = (SRC / "template.html").read_text(encoding="utf-8")
     views = (SRC / "views.html").read_text(encoding="utf-8")
-    data = "\n".join((SRC / f"data{i}.js").read_text(encoding="utf-8") for i in range(1, 5))
+    data = "\n".join((SRC / f"data{i}.js").read_text(encoding="utf-8") for i in range(1, 6))
     engine = (SRC / "engine.js").read_text(encoding="utf-8")
 
     manifest = json.loads((SRC / "img" / "manifest.json").read_text(encoding="utf-8"))
