@@ -1,0 +1,479 @@
+<!-- ======================= START ======================= -->
+<section class="view" id="v-start">
+<header>
+  <span class="eyebrow">Start here</span>
+  <h1>InsureMO Easy Claim: learning guide</h1>
+  <p class="lede">This guide teaches the Easy Claim module from first principles to advanced configuration. Every process has a swimlane diagram with the actor for each step, a step table, a real insurance example, and links to Easy PA, BCP and Reinsurance. Your progress and scores stay in this browser, so the downloaded file works offline.</p>
+</header>
+<section class="block"><h2>Your learning dashboard</h2><div id="dashStart"></div></section>
+<section class="block">
+  <h2>How the guide is structured</h2>
+  <div class="tbl"><table><thead><tr><th>Level</th><th>Module</th><th>You will learn</th><th>You are ready when you can</th></tr></thead><tbody id="levelTable"></tbody></table></div>
+</section>
+<section class="block">
+  <h2>Pick a learning path by role</h2>
+  <p class="muted" style="max-width:80ch">The role lens at the top shows only the notes for your role (business analyst, tester or developer) on every page and dims modules outside your path. "Everyone" shows all content.</p>
+  <div class="grid g3" id="pathCards"></div>
+</section>
+<section class="block">
+  <h2>How to read the diagrams</h2>
+  <div class="grid g2">
+    <div class="card"><h4>Swimlane diagrams</h4><p class="small">Each column is an actor (a person, company or system). Steps run from top to bottom. A coloured box shows who acts. Click a box to highlight its row in the step table below the diagram. Use <b>Full screen</b> on any diagram to fit it to your screen.</p>
+      <div class="legend small" style="display:flex;gap:10px;flex-wrap:wrap">
+        <span class="pill" style="background:var(--cust-soft)">Customer side / event</span><span class="pill" style="background:var(--ins-soft)">Insurer user action</span><span class="pill" style="background:var(--sys-soft)">Easy Claim system</span><span class="pill" style="background:var(--warn-soft)">Decision</span><span class="pill" style="background:var(--ext-soft)">External party</span><span class="pill" style="border:2px solid var(--accent)">Approval</span><span class="pill" style="background:var(--pa-soft)">Easy PA</span><span class="pill" style="background:var(--bcp-soft)">BCP</span><span class="pill" style="background:var(--ri-soft)">Reinsurance</span></div></div>
+    <div class="card"><h4>Tags you will see</h4>
+      <p class="small"><span class="tag src">Source</span> fact from the InsureMO Easy Claim user guide.</p>
+      <p class="small"><span class="tag ind">Industry practice</span> general insurance knowledge or a worked example added for learning. Rules differ by country and product, so confirm before you use it in a requirement or a test.</p>
+      <p class="small"><span class="tag pa">Easy PA</span> <span class="tag bcp">BCP</span> <span class="tag ri">Reinsurance</span> cross-module link.</p></div>
+  </div>
+</section>
+<section class="block">
+  <h2>The three stories used across the guide</h2>
+  <p class="muted" style="max-width:80ch">The same three claims appear in many modules so you can follow one case from notification to payment and recovery.</p>
+  <div class="grid g3">
+    <div class="card accent"><span class="tag">Motor</span><h4>Riya's car accident</h4><p class="small">Private car, comprehensive policy, Insured Declared Value (IDV) INR 6,00,000, compulsory deductible INR 1,000. Rear-ended at a signal by a truck. Car goes to a network garage for cashless repair. The insurer later recovers from the truck owner's insurer.</p></div>
+    <div class="card accent"><span class="tag">Health</span><h4>Mr Tan's hospital stay</h4><p class="small">Family floater health policy, sum insured INR 5,00,000, 10% co-pay. Planned knee surgery at a network hospital. The TPA approves cashless treatment. A second claim (hospital cash benefit) runs as a separate sub-claim.</p></div>
+    <div class="card accent"><span class="tag">Property</span><h4>Sunrise Textiles warehouse fire</h4><p class="small">Fire policy, sum insured USD 2,000,000 on stock. A fire damages stock. A loss adjuster finds the stock was under-insured. The insurer pays an interim amount (prepay), sells the salvage, and recovers part of the loss from reinsurers.</p></div>
+  </div>
+</section>
+</section>
+
+<!-- ======================= 1.1 INSURANCE ======================= -->
+<section class="view" id="v-insurance">
+<header><span class="eyebrow">Module 1.1 · Basics</span><h1>Insurance and claims basics</h1>
+<p class="lede">A claim is the moment the insurer keeps its promise. To design, test or build a claims system, you first need to know where claims sit in the insurance business and why they drive profit.</p></header>
+<div class="objectives" data-obj></div>
+<section class="block"><h2>What a claim is</h2>
+  <div class="callout"><span class="tag src">Source</span> A claim is the entire process where, after a risk event stated in the insurance contract occurs, the insured or beneficiary submits a claim request to the insurer. The insurer then reviews, investigates, assesses the loss, calculates and pays compensation according to the contract terms.</div>
+  <div class="prose"><p>Insurance is risk transfer. Many customers pay a small, certain amount (the <b>premium</b>) so that the few who suffer a loss receive a large, uncertain amount (the <b>claim</b>). The insurer pools the premiums and pays claims out of the pool. <span class="tag ind">Industry practice</span></p>
+  <p>The insurance contract (the <b>policy</b>) defines what is covered, up to what amount, for what period and with what exclusions. Claims handling is the process of checking a loss against that contract and paying the right amount to the right person, quickly and with evidence.</p></div>
+</section>
+<section class="block"><h2>Where claims sit in the insurance value chain</h2>
+  <div id="valueChain"></div>
+  <p class="small muted">Click a box to see the related InsureMO module. Claims depend on data created upstream (product, policy, premium) and create data downstream (payments, reinsurance recoveries, accounting).</p>
+</section>
+<section class="block"><h2>Why claims drive insurer profit</h2>
+  <div class="grid g2">
+    <div class="card"><h4>Loss ratio <span class="tag ind">Industry practice</span></h4><p class="small"><b>Loss ratio = incurred claims ÷ earned premium.</b> Incurred claims = paid claims + change in outstanding reserves. In many non-life lines the loss ratio is between 55% and 80%, so claims are the largest cost of an insurer.</p></div>
+    <div class="card"><h4>Combined ratio <span class="tag ind">Industry practice</span></h4><p class="small"><b>Combined ratio = loss ratio + expense ratio.</b> Below 100% means the insurer makes an underwriting profit. Above 100% means it loses money on underwriting and depends on investment income.</p></div>
+  </div>
+  <div class="example"><b>Worked example</b>A motor portfolio earns premium of 100 million. Paid claims in the year are 52 million. Outstanding reserves rose from 20 million to 26 million. Incurred claims = 52 + (26 − 20) = 58 million. Loss ratio = 58%. With an expense ratio of 33%, the combined ratio is 91%, so the portfolio made an underwriting profit of 9 million. If claim handlers set reserves 5 million too low, the loss ratio looks like 53% and management makes pricing decisions on wrong data. This is why reserve accuracy matters in Easy Claim.</div>
+</section>
+<section class="block"><h2>Claims by line of business</h2>
+  <div class="tbl"><table><thead><tr><th>Line</th><th>Typical claim</th><th>Main external parties</th><th>Typical payable logic</th><th>Easy Claim mode</th></tr></thead><tbody id="lobTable"></tbody></table></div>
+  <div class="callout"><span class="tag ind">Industry practice</span> <b>Indemnity versus benefit.</b> Indemnity cover (motor, property, most health) pays the actual loss, so the handler must assess and calculate. Benefit cover (hospital cash, personal accident death, life) pays a fixed amount stated in the policy once the event is proved. The screenshots in this guide include a "Hospital Cash" product, which is a benefit product: the calculation is days in hospital × daily amount.</div>
+</section>
+<section class="block"><h2>The claim journey from two sides</h2>
+  <div class="tbl"><table><thead><tr><th>Stage</th><th>What the customer experiences</th><th>What the insurer does</th><th>Easy Claim task</th></tr></thead><tbody>
+    <tr><td>Notify</td><td>Calls, uses an app, tells the agent, or the hospital/garage notifies</td><td>Records the loss, checks the policy exists and was in force on the date of loss</td><td>FNOL</td></tr>
+    <tr><td>Register</td><td>Gets a claim number</td><td>Completes details, sets an initial reserve (estimate of cost)</td><td>Registration</td></tr>
+    <tr><td>Verify</td><td>May get a visit from a surveyor or investigator</td><td>Checks cause of loss, coverage and fraud signals</td><td>Investigation</td></tr>
+    <tr><td>Assess</td><td>Garage or hospital shares estimate</td><td>Values the loss item by item</td><td>Appraisal (+ approval)</td></tr>
+    <tr><td>Prove</td><td>Submits documents (bills, police report, ID)</td><td>Checks each document, asks for missing ones</td><td>Document</td></tr>
+    <tr><td>Calculate</td><td>Waits</td><td>Applies sum insured, deductible, co-pay, depreciation and limits</td><td>Calculation (+ approval)</td></tr>
+    <tr><td>Pay</td><td>Receives money, or the garage/hospital is paid directly</td><td>Chooses payees, approves, sends payment to finance</td><td>Settlement (+ approval) → BCP</td></tr>
+    <tr><td>Recover</td><td>Nothing (insurer acts in the background)</td><td>Recovers from a third party, sells salvage, collects reinsurance share</td><td>Subrogation, Salvage, Recovery; Reinsurance</td></tr>
+  </tbody></table></div>
+</section>
+<section class="block"><h2>Claims KPIs that business leaders track</h2>
+  <div class="tbl"><table><thead><tr><th>KPI</th><th>Meaning</th><th>Where Easy Claim supports it</th></tr></thead><tbody>
+    <tr><td>Turnaround time (TAT)</td><td>Days from report date to payment. Regulators often set maximum days.</td><td>Report date, task create/close dates, due date and overdue highlight (Task Monitor)</td></tr>
+    <tr><td>Claim settlement ratio</td><td>Claims paid ÷ claims reported in a period</td><td>Claim Search with status and dates; download to Excel</td></tr>
+    <tr><td>Reserve accuracy</td><td>Final paid amount compared with the first reserve</td><td>Reserve History, Transaction History</td></tr>
+    <tr><td>Claim leakage</td><td>Money paid that should not have been paid (over-assessment, missed recovery, fraud)</td><td>Appraisal price comparison (surveyor/garage/provider), approvals, recovery tasks</td></tr>
+    <tr><td>Reopen rate</td><td>Share of closed claims that reopen. A high rate signals poor first settlement.</td><td>New and Reopen menu; reopen history</td></tr>
+    <tr><td>Recovery rate</td><td>Money recovered (subrogation, salvage) ÷ paid claims</td><td>Subrogation, Salvage, Recovery histories</td></tr>
+  </tbody></table></div>
+  <p class="small muted"><span class="tag ind">Industry practice</span> KPI definitions vary by insurer. Agree the formula with finance before building a report.</p>
+</section>
+</section>
+
+<!-- ======================= 1.2 PARTIES ======================= -->
+<section class="view" id="v-parties">
+<header><span class="eyebrow">Module 1.2 · Basics</span><h1>Parties and roles in a claim</h1>
+<p class="lede">A claim involves many parties. Mixing them up is the most common cause of wrong requirements and wrong payee data. Learn who each party is, what they do, and where they appear in Easy Claim.</p></header>
+<div class="objectives" data-obj></div>
+<section class="block"><h2>Who talks to whom in a motor claim</h2><div id="partyMap"></div></section>
+<section class="block"><h2>Policyholder, insured, claimant and payee are often different people</h2>
+  <div class="grid g2">
+    <div class="example"><b>Group health example</b>An employer buys a group health policy. The <b>policyholder</b> is the employer. Each employee is an <b>insured</b> person. Mr Tan (an employee) is admitted to hospital, so he is the <b>claimant</b>. The bill is paid cashless to the hospital, so the <b>payee</b> is the hospital. The <b>TPA</b> handles the medical review for the insurer.</div>
+    <div class="example"><b>Motor third-party example</b>Riya's car is hit by a truck. For the truck's insurer, the <b>policyholder and insured</b> is the truck owner. Riya is a <b>third-party claimant</b>: she has no contract with that insurer, but the law gives her a right to claim. If Riya's own insurer pays her first, it becomes a <b>subrogating</b> insurer and claims from the truck's insurer.</div>
+  </div>
+  <div class="callout"><b>Why this matters in Easy Claim.</b> Claimant Information, Sub-Claim (each with a claimant), Payee (on Settlement and Prepay) and Party Management are separate data. One claim can have several claimants and several payees. A tester must test a claim where claimant ≠ payee, and a BA must define who can be a payee for each product.</div>
+</section>
+<section class="block"><h2>Party reference</h2>
+  <input class="filter" id="partyFilter" placeholder="Filter parties…" style="max-width:320px">
+  <div class="tbl"><table><thead><tr><th>Party</th><th>Who they are</th><th>Role in a claim</th><th>Where in Easy Claim / InsureMO</th><th>Real example</th></tr></thead><tbody id="partyTable"></tbody></table></div>
+</section>
+<section class="block"><h2>Agent versus broker in claims</h2>
+  <div class="tbl"><table><thead><tr><th></th><th>Agent</th><th>Broker</th></tr></thead><tbody>
+    <tr><td>Represents</td><td>The insurer (tied agent) or several insurers (corporate agent)</td><td>The customer</td></tr>
+    <tr><td>Paid by</td><td>Commission from the insurer (Sales Channel, paid through BCP)</td><td>Commission or brokerage from the insurer, sometimes a fee from the client</td></tr>
+    <tr><td>Claim role</td><td>Helps the customer report and collect documents</td><td>Advocates for the client, negotiates with the insurer and loss adjuster, often prepares the claim file for large commercial losses</td></tr>
+    <tr><td>Easy Claim</td><td colspan="2">Agent/Broker Code and Name fields on Claim Information (visible on health FNOL screens). The producer comes from the policy in Easy PA.</td></tr>
+  </tbody></table></div>
+  <p class="small muted"><span class="tag ind">Industry practice</span> In some markets brokers may hold claim money in a client account. Check local rules before allowing a broker as payee.</p>
+</section>
+</section>
+
+<!-- ======================= 1.3 CONCEPTS ======================= -->
+<section class="view" id="v-concepts">
+<header><span class="eyebrow">Module 1.3 · Basics</span><h1>Core claim concepts</h1>
+<p class="lede">These ideas decide how much is paid and how the claim is stored: insurance principles, payable amount rules, reserves, claim versus sub-claim mode, and the claim data structure.</p></header>
+<div class="objectives" data-obj></div>
+<section class="block"><h2>Six insurance principles every claim must respect</h2>
+  <p class="small muted"><span class="tag ind">Industry practice</span> These are taught in every insurance qualification. Each one maps to a check in the claim process.</p>
+  <div class="tbl"><table><thead><tr><th>Principle</th><th>Meaning</th><th>Effect on a claim</th><th>Where it shows in Easy Claim</th></tr></thead><tbody id="principles"></tbody></table></div>
+</section>
+<section class="block"><h2>How Easy Claim stores a claim</h2>
+  <div id="hierDiagram"></div>
+  <div class="grid g2">
+    <div class="card"><h4>Claim (case)</h4><p class="small">One loss event on one policy. Holds date of loss, report date, cause of loss, catastrophe code, contact details and claimants. Has one Claim No.</p></div>
+    <div class="card"><h4>Sub-claim</h4><p class="small">One damage object or risk inside the claim. Fields: Risk Name, Subclaim Type (for example FP-Vehicle), Damage Object, Claim Owner, Claimant Name. Reserves, investigation and loss items sit at sub-claim level.</p></div>
+    <div class="card"><h4>Reserve line</h4><p class="small">Sub-claim × Reserve Type (Loss-Indemnity or Loss-Expense) × Coverage. Shows Sum Insured, Outstanding Reserve, Settled, Status (Open / Closed) and Locked.</p></div>
+    <div class="card"><h4>Calculation and settlement</h4><p class="small">Calculation lines per reserve type and coverage (Bill Amount, Parameter, Calculated Amount, Adjusted Amount). Settlement lines per payee with Partial/Final, Indemnity Amount, Tax, Ex-Gratia Flag.</p></div>
+  </div>
+</section>
+<section class="block"><h2>Claim mode and sub-claim mode</h2>
+  <div class="tbl"><table><thead><tr><th>Mode</th><th>Description <span class="tag src">Source</span></th><th>Applicable scenarios</th><th>What changes in practice</th></tr></thead><tbody>
+    <tr><td><b>Claim mode</b></td><td>Traditional mode. One claim case contains all information.</td><td>Property, motor</td><td>The workflow runs once for the whole case. Tasks move the whole claim forward.</td></tr>
+    <tr><td><b>Sub-claim mode</b></td><td>One main case can contain multiple sub-cases.</td><td>Health, multiple claims</td><td>Each sub-claim can run its own tasks (New Subclaim generates a task "according to the configuration of the workflow"). Claim numbers carry a suffix, for example <code>CFHI001202500001155-001</code>.</td></tr>
+  </tbody></table></div>
+  <div class="example"><b>Example</b>Mr Tan's family floater: the knee surgery bill is sub-claim 001 (indemnity, cashless). Hospital cash for 5 days is sub-claim 002 (benefit). A follow-up physiotherapy bill a month later is sub-claim 003. Each can be assessed and settled on its own timeline under one case.</div>
+</section>
+<section class="block"><h2>What decides the payable amount</h2>
+  <div class="tbl"><table><thead><tr><th>Term</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
+    <tr><td>Sum insured / limit</td><td>Maximum the insurer pays for a coverage, per claim or per year</td><td>Fire policy on stock: USD 2,000,000</td></tr>
+    <tr><td>Sub-limit</td><td>Lower cap for a part of the cover</td><td>Health room rent capped at 1% of sum insured per day</td></tr>
+    <tr><td>Deductible / excess</td><td>Amount the insured bears first</td><td>Motor compulsory deductible INR 1,000</td></tr>
+    <tr><td>Co-pay</td><td>Percentage of each admissible claim the insured bears</td><td>10% co-pay on Mr Tan's health claim</td></tr>
+    <tr><td>Depreciation</td><td>Reduction for wear and tear on replaced parts</td><td>India motor: 50% on rubber, nylon and plastic parts; metal parts by vehicle age</td></tr>
+    <tr><td>Under-insurance (average)</td><td>If sum insured is below the true value at risk, the claim is cut in the same proportion</td><td>Value 2.5M insured for 2.0M: pays 80% of the loss</td></tr>
+    <tr><td>Salvage value</td><td>Value of damaged property the insurer can sell</td><td>Burnt stock sold for USD 40,000</td></tr>
+    <tr><td>Exclusion</td><td>Event or cause not covered</td><td>Driving without a valid licence; pre-existing disease inside the waiting period</td></tr>
+    <tr><td>Ex-gratia</td><td>Payment made as goodwill although not strictly payable</td><td>"Ex-Gratia Flag" on the Settlement payee line</td></tr>
+  </tbody></table></div>
+  <p class="small muted"><span class="tag ind">Industry practice</span> In Easy Claim these rules live in the calculation configuration (Claim Matrix and the calculation tool, or GIMO rating). The handler sees the result as Calculated Amount and may enter an Adjusted Amount.</p>
+</section>
+<section class="block"><h2>Try it: payable amount calculator</h2>
+  <p class="small muted">Change the values to see how each rule reduces the loss. The order used here is a common market order; your product may apply rules in a different order.</p>
+  <div class="card">
+    <div class="calc">
+      <label>Assessed loss<input id="c_loss" type="number" value="500000" min="0"></label>
+      <label>Sum insured<input id="c_si" type="number" value="2000000" min="0"></label>
+      <label>Value at risk (true value)<input id="c_var" type="number" value="2500000" min="0"></label>
+      <label>Depreciation %<input id="c_dep" type="number" value="0" min="0" max="100"></label>
+      <label>Salvage value retained by insured<input id="c_salv" type="number" value="0" min="0"></label>
+      <label>Deductible<input id="c_ded" type="number" value="10000" min="0"></label>
+      <label>Co-pay %<input id="c_cop" type="number" value="0" min="0" max="100"></label>
+      <label>Apply average clause<select id="c_avg"><option value="1">Yes</option><option value="0">No</option></select></label>
+    </div>
+    <div class="calc-out" id="calcOut"></div>
+  </div>
+</section>
+<section class="block"><h2>Reserves</h2>
+  <div class="tbl"><table><thead><tr><th>Type</th><th>Description <span class="tag src">Source</span></th><th>Industry name</th></tr></thead><tbody>
+    <tr><td>Indemnity reserve</td><td>Expected payment to the insured for losses</td><td>Case reserve for loss</td></tr>
+    <tr><td>Expense reserve</td><td>Expenses for processing the claim, for example investigation fees and legal fees</td><td>Allocated loss adjustment expense (ALAE)</td></tr>
+  </tbody></table></div>
+  <div class="prose">
+    <p><b>Reserve</b> is the insurer's estimate of what the claim will still cost. It is a liability on the balance sheet from the day the claim is registered. Reserve operations in Easy Claim are <b>Update</b>, <b>Close</b> and <b>Reopen</b>. <span class="tag src">Source</span></p>
+    <p><b>Incurred = paid to date + outstanding reserve.</b> When a payment is made, outstanding goes down and paid goes up, so incurred stays the same unless the estimate changes. <span class="tag ind">Industry practice</span></p>
+    <p><b>IBNR</b> (incurred but not reported) covers losses that happened but nobody has reported yet. Actuaries calculate it for the whole portfolio; it is not entered on an individual claim. This is why report date and date of loss are both mandatory: the gap between them feeds the IBNR model.</p>
+  </div>
+</section>
+<section class="block"><h2>Key dates on a claim</h2>
+  <div class="tbl"><table><thead><tr><th>Date</th><th>Used for</th></tr></thead><tbody>
+    <tr><td>Date of Loss</td><td>Policy retrieval: the policy must be in force on this date. Also decides which policy version (after endorsements) applies.</td></tr>
+    <tr><td>Report Date</td><td>Late-reporting checks, regulatory TAT clock, IBNR analysis</td></tr>
+    <tr><td>Task create, due and closed dates</td><td>Workload, service levels, overdue highlight</td></tr>
+    <tr><td>Settlement / payment date</td><td>TAT end point, accounting period, interest on late payment where regulation requires it</td></tr>
+  </tbody></table></div>
+</section>
+</section>
+
+<!-- ======================= 2.1 LIFECYCLE ======================= -->
+<section class="view" id="v-lifecycle">
+<header><span class="eyebrow">Module 2.1 · Core process</span><h1>End-to-end claim lifecycle</h1>
+<p class="lede">Easy Claim runs a claim as a chain of tasks. Submitting one task closes it and creates the next. Approval tasks appear only when an amount is above the user's authority. This page shows the whole chain and the task engine behind it.</p></header>
+<div class="objectives" data-obj></div>
+<section class="block"><h2>Standard claim process with approval gates</h2>
+  <div id="masterFlow"></div>
+  <p class="small muted"><span class="tag src">Source</span> Main chain: FNOL → Registration → Investigation → Appraisal [Appraisal Approval] → Document → Calculation [Calculation Approval] → Settlement [Settlement Approval]. Auxiliary tasks (Prepay, Subrogation, Salvage, Recovery) are created through New Task at any point after registration.</p>
+</section>
+<section class="block"><h2>Task by task</h2>
+  <div class="tbl"><table><thead><tr><th>Task</th><th>Description <span class="tag src">Source</span></th><th>Main actor</th><th>Key output</th><th>On Submit</th></tr></thead><tbody id="taskTable"></tbody></table></div>
+</section>
+<section class="block"><h2>How the task engine works</h2>
+  <div class="grid g2">
+    <div class="card"><h4>1. Every Submit creates the next task</h4><p class="small">After FNOL Submit, the system closes FNOL, creates a Registration task and opens the <b>Task Transfer</b> UI. The next task needs manual completion by a user. <span class="tag src">Source</span></p></div>
+    <div class="card"><h4>2. Task Transfer and Work On</h4><p class="small">Task Transfer lists pending tasks on the claim. A task checkbox is selectable only if you are the assigned owner or the task is unassigned. Select it and click <b>Work On</b> to open the task page. <span class="tag src">Source</span></p></div>
+    <div class="card"><h4>3. Two ways into a task</h4><p class="small">From Task Transfer (straight after the previous task) or from <b>Claim Task</b> search: find the claim, then click the edit icon or the Claim No link. The system opens the right page for the task type. <span class="tag src">Source</span></p></div>
+    <div class="card"><h4>4. Workflow tasks and diary tasks</h4><p class="small">Workflow tasks (FNOL, Registration…) are in Claim Task. Diary tasks are reminders a user creates from the Claim Summary "Diary Task" link and assigns to someone; they are in Diary Task. <span class="tag src">Source Q9, Q10</span></p></div>
+    <div class="card"><h4>5. Due dates</h4><p class="small">A due date is assigned when a task is created. When it expires, the workbench highlights the task. Managers see their team's tasks in Task Monitor. <span class="tag src">Source Q8, Q12</span></p></div>
+    <div class="card"><h4>6. Owners and shared pool</h4><p class="small">Tasks and claim owners can be reassigned to a named user or to a shared pool (Reassignment menu), for example when a handler is on leave. <span class="tag src">Source Q13</span></p></div>
+  </div>
+</section>
+<section class="block"><h2>Claim Summary toolbar (on every task page)</h2>
+  <p class="small muted">Seen on the source screenshots. Availability can depend on product and configuration.</p>
+  <div class="tbl"><table><thead><tr><th>Item</th><th>Use</th></tr></thead><tbody>
+    <tr><td>Policy No link</td><td>Opens the policy information page (data from Easy PA or the docked policy source)</td></tr>
+    <tr><td>Notes (under Advance)</td><td>All claim notes under that policy</td></tr>
+    <tr><td>Attachment</td><td>Claim documents, stored through InsureMO iDocs. Same directory used by the Document task.</td></tr>
+    <tr><td>Prior Claims</td><td>Earlier claims on the same policy or insured. Used for fraud and duplicate checks.</td></tr>
+    <tr><td>Task Transfer / Task Process</td><td>Pending tasks on this claim / the task history of the claim</td></tr>
+    <tr><td>Diary Task</td><td>Create a reminder task for a user</td></tr>
+    <tr><td>Print, Litigation, Payment Info, Medical Bill</td><td>Print claim forms; record legal proceedings; view payment details from finance; capture medical bills (health)</td></tr>
+    <tr><td>Pending Claim toggle</td><td>Marks the claim as pending (seen on health FNOL)</td></tr>
+    <tr><td>Red warning text</td><td>"Existed claim record in system on the same policy which reported within 24 hours" – a duplicate-claim alert</td></tr>
+  </tbody></table></div>
+  <div class="callout ind"><span class="tag ind">Industry practice</span> The 24-hour duplicate warning is a basic fraud and data-quality control. Two reports on one policy in a day are often the same loss reported twice (by the agent and by the customer), or a staged claim. The handler should check Prior Claims before registering.</div>
+</section>
+<section class="block"><h2>Claim status model</h2>
+  <div id="statusFlow"></div>
+  <p class="small muted">Status names differ by tenant. This model combines the source rules (cancel at FNOL or Registration, decline at Calculation or Settlement, close after Settlement, reopen through New and Reopen) with common market practice.</p>
+</section>
+<section class="block"><h2>Screens</h2><div class="shots" data-shots="4,16"></div></section>
+</section>
+
+<!-- ======================= 2.2 TASKS ======================= -->
+<section class="view" id="v-tasks">
+<header><span class="eyebrow">Module 2.2 · Core process</span><h1>Main tasks in depth</h1>
+<p class="lede">Pick a task. Each one shows who does what (swimlane), the screen sections, what each button does, the business reason behind the task, a real example, and notes for your role.</p></header>
+<div class="objectives" data-obj></div>
+<div class="taskgrid" id="taskPicker" role="group" aria-label="Choose a task"></div>
+<div id="taskBody" class="view" style="gap:20px"></div>
+</section>
+
+<!-- ======================= 2.3 APPROVALS ======================= -->
+<section class="view" id="v-approvals">
+<header><span class="eyebrow">Module 2.3 · Core process</span><h1>Approvals and authority</h1>
+<p class="lede">Easy Claim uses one approval pattern for nine task types. Learn the pattern once and you can design, test and configure all of them.</p></header>
+<div class="objectives" data-obj></div>
+<section class="block"><h2>The approval pattern</h2>
+  <div id="apprFlow"></div>
+  <div class="grid g3">
+    <div class="card"><h4>Trigger</h4><p class="small">The amount on Submit exceeds the submitting user's authority. Otherwise the next business task is created directly.</p></div>
+    <div class="card"><h4>Approval page</h4><p class="small">Same as the original task page, but all claim and sub-claim data is <b>read-only</b>, plus an <b>Approval Decision</b> section (Approve / Reject, Remark).</p></div>
+    <div class="card"><h4>Escalation</h4><p class="small">If the approver approves but the amount is above the approver's own authority, the system creates <b>another</b> approval task for the next level.</p></div>
+  </div>
+</section>
+<section class="block"><h2>All approval tasks</h2>
+  <div class="tbl"><table><thead><tr><th>Approval task</th><th>Created when</th><th>Reject →</th><th>Approve, within authority →</th><th>Approve, above authority →</th></tr></thead><tbody id="apprTable"></tbody></table></div>
+  <p class="small muted"><span class="tag src">Source</span> Reserve buttons (Update, Close, Reopen) are shown based on the user's reserve management permissions, configured in the claim authority configuration of the InsureMO Claim API.</p>
+</section>
+<section class="block"><h2>Designing an authority matrix</h2>
+  <p class="small muted"><span class="tag ind">Industry practice</span> The source does not give limits; these are typical. Use them as a starting point in workshops.</p>
+  <div class="tbl"><table><thead><tr><th>Level</th><th>Role</th><th>Typical motor limit</th><th>Typical property limit</th><th>Notes</th></tr></thead><tbody>
+    <tr><td>L1</td><td>Claim handler</td><td>INR 50,000</td><td>USD 10,000</td><td>Most claims close at this level (straight-through for small claims)</td></tr>
+    <tr><td>L2</td><td>Senior handler / team lead</td><td>INR 2,00,000</td><td>USD 50,000</td><td></td></tr>
+    <tr><td>L3</td><td>Claims manager</td><td>INR 10,00,000</td><td>USD 250,000</td><td>Also approves ex-gratia and reserve close with payment differences</td></tr>
+    <tr><td>L4</td><td>Head of claims</td><td>Above L3</td><td>USD 1,000,000</td><td>Large-loss committee; reinsurer notified</td></tr>
+    <tr><td>L5</td><td>Claims committee / CEO</td><td>Litigated or reputational</td><td>Above USD 1,000,000</td><td>Often also needs reinsurer agreement under treaty "claims cooperation" clauses</td></tr>
+  </tbody></table></div>
+  <div class="grid g2">
+    <div class="callout"><b>Separate limits per task type.</b> Appraisal, calculation, settlement, prepay, subrogation, salvage and reserve change can each have a different limit for the same user. A handler may be allowed to reserve INR 5,00,000 but pay only INR 50,000.</div>
+    <div class="callout"><b>Four-eyes control.</b> The person who submits should not approve the same task. Test that the approval task is not assigned back to the submitter, and that a user cannot approve above their own limit.</div>
+  </div>
+</section>
+<section class="block"><h2>Screens</h2><div class="shots" data-shots="24,31,37,63,64"></div></section>
+</section>
+
+<!-- ======================= 2.4 RESERVES ======================= -->
+<section class="view" id="v-reserves">
+<header><span class="eyebrow">Module 2.4 · Core process</span><h1>Reserves, calculation and settlement money</h1>
+<p class="lede">Reserves carry the financial truth of a claim. This module follows the money from first estimate to final payment, including the new calculation tool, full-scale calculation and the reserve close rule.</p></header>
+<div class="objectives" data-obj></div>
+<section class="block"><h2>Reserve lifecycle</h2><div id="reserveFlow"></div></section>
+<section class="block"><h2>Reserve operations by task</h2>
+  <div class="tbl"><table><thead><tr><th>Where</th><th>What you can do <span class="tag src">Source</span></th></tr></thead><tbody>
+    <tr><td>Registration</td><td>Claim Reserve section: Add a reserve line (Subclaim, Reserve Type, Coverage Name, Outstanding Reserve). Delete a line. View Transaction History.</td></tr>
+    <tr><td>Investigation, Appraisal (Claim Information tab)</td><td>Update, Close, Reopen reserve; view Reserve Summary and Reserve History. Close is also possible at claim level and sub-claim level.</td></tr>
+    <tr><td>Case Information</td><td>Reserve History and Update</td></tr>
+    <tr><td>New Subclaim</td><td>Existing reserves are read-only. Add reserves for the new sub-claim only.</td></tr>
+    <tr><td>Approval tasks</td><td>Reserve Update Approval, Reserve Close Approval, Reserve Reopen Approval</td></tr>
+  </tbody></table></div>
+</section>
+<section class="block"><h2>Follow the money: Riya's motor claim</h2>
+  <div class="tbl"><table><thead><tr><th>Day</th><th>Event</th><th>Outstanding</th><th>Paid to date</th><th>Incurred</th><th>Easy Claim action</th></tr></thead><tbody id="incurredTable"></tbody></table></div>
+  <div class="callout ind"><span class="tag ind">Industry practice</span> Good practice is to set the first reserve on known facts within 24 to 48 hours and review it at every task. Large reserve jumps late in the claim ("reserve creep") distort the loss ratio and are flagged by auditors and reinsurers.</div>
+</section>
+<section class="block"><h2>Calculation: two engines</h2>
+  <div class="grid g2">
+    <div class="card"><h4>Claim Matrix V1 + GIMO rating <span class="tag src">Source</span></h4><p class="small">The original approach. Calculation uses the built-in rating function of GIMO. Settlement and Prepay screens stay unchanged. Existing tenants need no change.</p></div>
+    <div class="card"><h4>Claim Matrix V2 + new calculation tool <span class="tag src">Source</span></h4><p class="small">A configuration tool for claim formulas and calculation logic. Products are maintained in Claim Matrix V2. Supports full-scale calculation and parallel tasks. Adds the "Settled" field on Settlement/Prepay, and "Is Reopened" / "Reopened To" in calculation history.</p></div>
+  </div>
+  <div class="callout"><b>Full-scale versus incremental calculation.</b> <span class="tag src">Source</span> Old way (incremental): first calculation 1,000; an extra 500 is found; you calculate again with 500 as a new factor; total 1,500 across two records. New way (full-scale): you enter 1,500 in the second calculation and the system treats it as the final total. The latest version always holds the full amount, which is easier to audit and to reverse.</div>
+  <div class="example"><b>Calculation screen example (source screenshot)</b>Family Inpatient Medical product. Line 1: Loss (Indemnity), Medical Treatment-Normal, Bill Amount 50,000, Parameter "Medical Fee" 60,000, Calculated 50,000, Adjusted 50,000. Line 2: Hospitalization Allowance, Parameter "Admission Days" 8, Calculated 8,000. Sum of Adjusted Amount 58,000. The bill was 60,000 but coverage capped it at 50,000; the allowance is a benefit (8 days × 1,000).</div>
+</section>
+<section class="block"><h2>Settlement money rules</h2>
+  <div class="tbl"><table><thead><tr><th>Rule</th><th>Detail</th></tr></thead><tbody>
+    <tr><td>Partial or final</td><td>Each settlement record is Partial or Final. A partial payment keeps the reserve open. <span class="tag src">Source</span></td></tr>
+    <tr><td>Multiple payees</td><td>Add Payee adds payee blocks: Payee Name, Pay Mode, Pay Currency, Exchange Rate, and lines (Subclaim, Reserve Type, Coverage, Outstanding Reserve, Partial/Final, Indemnity Amount, Tax, Total Indemnity, Ex-Gratia Flag).</td></tr>
+    <tr><td>Settled field (V2)</td><td>Shows how much of each reserve line is already settled.</td></tr>
+    <tr><td>Decline</td><td>Decline button on Settlement (and Calculation per Q6) declines the claim.</td></tr>
+    <tr><td>Cancel settlement</td><td>New feature: cancel a submitted settlement request. <span class="tag src">Source Q1</span></td></tr>
+    <tr><td>Payment already in finance</td><td>If BCP has not paid yet: cancel payment and pay again. If BCP has paid: use Recovery to recover the payment and pay again with correct data. <span class="tag src">Source Q16</span></td></tr>
+    <tr><td>Reserve close rule (V2)</td><td>When closing a reserve, the system checks whether the paid amount is not 0 and the settled amount differs from the calculation amount. If both are true, it shows a validation message. GIMO-rating tenants keep the old validation. <span class="tag src">Source</span></td></tr>
+  </tbody></table></div>
+</section>
+<section class="block"><h2>Screens</h2><div class="shots" data-shots="17,20,18,Calculation,NewCalculation,159,161,33,34,35,160"></div></section>
+</section>
+
+<!-- ======================= 3.1 AUX ======================= -->
+<section class="view" id="v-aux">
+<header><span class="eyebrow">Module 3.1 · Advanced</span><h1>Prepay and recoveries</h1>
+<p class="lede">Four auxiliary tasks run beside the main chain. Prepay sends money out early. Subrogation, Salvage and Recovery bring money back. Recoveries are often the difference between a profitable and a loss-making motor book.</p></header>
+<div class="objectives" data-obj></div>
+<section class="block"><h2>Compare the four tasks</h2>
+  <div class="tbl"><table><thead><tr><th>Task</th><th>Source definition</th><th>Money direction</th><th>Counterparty</th><th>Approval task</th><th>Effect on net claim cost</th><th>BCP record</th></tr></thead><tbody>
+    <tr><td><b>Prepay</b></td><td>Advance payment before final settlement</td><td><span class="tag bad">Out</span></td><td>Insured / payee</td><td>Prepay Approval</td><td>No change to incurred; paid goes up, outstanding goes down</td><td>Claim AP <span class="tag ind">Industry practice</span></td></tr>
+    <tr><td><b>Subrogation</b></td><td>Recovery from third parties</td><td><span class="tag ok">In</span></td><td>At-fault third party or their insurer</td><td>Subrogation Approval</td><td>Reduces net incurred</td><td>Recovery AR (200312, 200100 +)</td></tr>
+    <tr><td><b>Salvage</b></td><td>Disposal of damaged property</td><td><span class="tag ok">In</span></td><td>Salvage buyer</td><td>Salvage Approval</td><td>Reduces net incurred</td><td>Recovery AR (200312, 200100 +)</td></tr>
+    <tr><td><b>Recovery</b></td><td>Recovery of overpaid amounts</td><td><span class="tag ok">In</span></td><td>Person who was overpaid</td><td>None in source</td><td>Corrects the overpayment</td><td>Recovery AR</td></tr>
+  </tbody></table></div>
+  <p class="small muted">All four are created with <b>New Task</b> (Claim > New and Reopen). With parallel tasks on, the current logic for these subordinate tasks is unchanged. <span class="tag src">Source</span></p>
+</section>
+<div class="taskgrid" id="auxPicker" role="group" aria-label="Choose an auxiliary task"></div>
+<div id="auxBody" class="view" style="gap:20px"></div>
+</section>
+
+<!-- ======================= 3.2 SCENARIOS ======================= -->
+<section class="view" id="v-scenarios">
+<header><span class="eyebrow">Module 3.2 · Advanced</span><h1>Real-world claim scenarios</h1>
+<p class="lede">Ten end-to-end cases that join parties, Easy Claim tasks and other modules. Each one shows the full swimlane with every actor, the money result, and the lessons for business, testing and development.</p></header>
+<div class="objectives" data-obj></div>
+<div class="taskgrid" id="scPicker" role="group" aria-label="Choose a scenario"></div>
+<div id="scBody" class="view" style="gap:20px"></div>
+</section>
+
+<!-- ======================= 3.3 WORK MANAGEMENT ======================= -->
+<section class="view" id="v-workmgmt">
+<header><span class="eyebrow">Module 3.3 · Advanced</span><h1>Screens and work management</h1>
+<p class="lede">Beyond task pages, Easy Claim has screens to create claims, find them, manage workload, add tasks, reopen work and maintain third parties. Pick a screen.</p></header>
+<div class="objectives" data-obj></div>
+<section class="block"><h2>Menu map</h2>
+  <div class="tbl"><table><thead><tr><th>Menu</th><th>Screen</th><th>Main user</th><th>Use</th></tr></thead><tbody id="menuMap"></tbody></table></div>
+  <p class="small muted">Common icons in the source: <img class="ico" data-icon="Common_1" alt="search"> search, <img class="ico" data-icon="Common_6" alt="columns"> choose result columns, <img class="ico" data-icon="Common_8" alt="edit"> edit / open task, <img class="ico" data-icon="Common_5" alt="delete"> delete, <img class="ico" data-icon="Common_2" alt="view"> view detail, <img class="ico" data-icon="Common_9" alt="expand"> expand detail.</p>
+</section>
+<div class="taskgrid" id="scrPicker" role="group" aria-label="Choose a screen"></div>
+<div id="scrBody" class="view" style="gap:20px"></div>
+</section>
+
+<!-- ======================= 3.4 INTEGRATION ======================= -->
+<section class="view" id="v-integration">
+<header><span class="eyebrow">Module 3.4 · Advanced</span><h1>Cross-module links: Easy PA, BCP and Reinsurance</h1>
+<p class="lede">Easy Claim does not work alone. It reads the policy from Easy PA, sends payments and recoveries to BCP, feeds reinsurance cessions and recoveries, and ends in the general ledger. Click a module on the map.</p></header>
+<div class="objectives" data-obj></div>
+<section class="block"><h2>Integration map</h2>
+  <div id="hub"></div>
+  <div id="hubDetail"></div>
+</section>
+<section class="block"><h2>What moves between modules</h2>
+  <div class="tbl"><table><thead><tr><th>From → To</th><th>Data</th><th>Trigger</th><th>Easy Claim point</th><th>Basis</th></tr></thead><tbody id="xTable"></tbody></table></div>
+</section>
+<section class="block"><h2>BCP fee codes for claims</h2>
+  <p class="small muted">Taken from the BCP module guide (see the <a href="../bcp-learning-guide/index.html#integration">BCP learning guide</a>, which must sit in the folder next to this one for the link to work). BizModule 20 = Claims.</p>
+  <div class="tbl"><table><thead><tr><th>Claim event</th><th>BCP creates</th><th>Fee codes</th><th>BCP screens</th></tr></thead><tbody>
+    <tr><td>Indemnity payment (settlement approved)</td><td>Claim AP (ArapCate 2)</td><td><code>200312</code> (−), <code>200100</code> (−)</td><td>Refund Approval → Single / Massive Refund → Reverse Refund if needed</td></tr>
+    <tr><td>Reserve set or changed</td><td>Fee only, no AR/AP (GL booking)</td><td><code>200201</code> (+)</td><td>None (accounting only)</td></tr>
+    <tr><td>Recovery (salvage / subrogation)</td><td>Recovery AR (ArapCate 1)</td><td><code>200312</code> (+), <code>200100</code> (+)</td><td>Single Collection (ARAP Type: claim recovery)</td></tr>
+  </tbody></table></div>
+  <p class="small">Related BCP scenarios: <a href="../bcp-learning-guide/index.html#sc-P1">P1 Claim indemnity payment</a> · <a href="../bcp-learning-guide/index.html#sc-C6">C6 Claim recovery collection</a> · <a href="../bcp-learning-guide/index.html#sc-P7">P7 Batch payment</a></p>
+</section>
+<section class="block"><h2>Reinsurance in claims</h2>
+  <div class="prose">
+    <p><span class="tag ind">Industry practice</span> The insurer passes part of each risk to reinsurers. When a claim happens, the reinsurer pays its share. The claim system must therefore tell the reinsurance module about every reserve change and payment on reinsured policies.</p>
+  </div>
+  <div class="tbl"><table><thead><tr><th>Treaty type</th><th>How the claim is shared</th><th>Claim data the RI module needs</th></tr></thead><tbody>
+    <tr><td>Quota share</td><td>Fixed % of every claim (for example 40%)</td><td>Paid and outstanding per policy and coverage</td></tr>
+    <tr><td>Surplus</td><td>% based on how much of the sum insured was ceded on that risk</td><td>Policy/risk ID to find the cession %</td></tr>
+    <tr><td>Facultative</td><td>Agreed share for one specific large risk</td><td>Policy ID; reinsurer often must approve large settlements</td></tr>
+    <tr><td>Per-risk excess of loss (XOL)</td><td>Reinsurer pays above a retention per risk, up to a limit</td><td>Gross loss per risk</td></tr>
+    <tr><td>Catastrophe XOL</td><td>Reinsurer pays above a retention for all claims from one event</td><td><b>Catastrophe Code</b> on the claim, to add up all claims of one event</td></tr>
+  </tbody></table></div>
+  <div class="example"><b>Worked example: Sunrise Textiles fire</b>Gross claim USD 1,200,000. Quota share 40% → reinsurer share 480,000, net retained 720,000. A per-risk XOL treaty covers 500,000 xs 250,000 on the retained share → XOL pays min(720,000 − 250,000, 500,000) = 470,000. Net cost to the insurer = 250,000. If salvage brings in 40,000, the recovery is shared the same way (quota share reinsurer gets 16,000 back). Large losses usually trigger a <b>cash call</b>: the insurer asks the reinsurer to pay its share at once instead of waiting for the quarterly account.</div>
+</section>
+<section class="block"><h2>End-to-end journeys across modules</h2>
+  <div class="taskgrid" id="journeyPicker" role="group" aria-label="Choose a journey"></div>
+  <div id="journeyBody" class="view" style="gap:16px"></div>
+</section>
+</section>
+
+<!-- ======================= 3.5 CONFIG ======================= -->
+<section class="view" id="v-config">
+<header><span class="eyebrow">Module 3.5 · Advanced</span><h1>Configuration, APIs and the health baseline</h1>
+<p class="lede">Easy Claim behaviour is driven by parameters and configuration on the InsureMO Claim API platform. This module lists what can be configured, what it changes on screen, and the API route for straight-through claims.</p></header>
+<div class="objectives" data-obj></div>
+<section class="block"><h2>Configuration items</h2>
+  <input class="filter" id="cfgFilter" placeholder="Filter configuration…" style="max-width:320px">
+  <div class="tbl"><table><thead><tr><th>Item</th><th>Options / content</th><th>Effect</th><th>Who configures</th><th>Basis</th></tr></thead><tbody id="cfgTable"></tbody></table></div>
+</section>
+<section class="block"><h2>Policy docking: try it</h2>
+  <p class="small muted"><span class="tag src">Source</span> The New Claim page decides where the policy comes from. Choose the two parameters and the "Is Manual Policy" flag.</p>
+  <div class="card"><div class="calc" id="dockSel"></div><div class="calc-out" id="dockOut"></div></div>
+</section>
+<section class="block"><h2>APIs and straight-through processing</h2>
+  <div class="prose">
+    <p><span class="tag src">Source</span> Easy Claim is built on the InsureMO Claim API. With API integration, clients can complete claims within minutes. API reference: <a href="https://docs.insuremo.com/tech/pro/sdk/api/claimbusiness" target="_blank" rel="noopener">docs.insuremo.com · Claim Business API</a>. Claims can also be created through ECS API calls on the ECS page.</p>
+    <p><span class="tag ind">Industry practice</span> Straight-through processing (STP) is used for small, simple claims: travel delay, hospital cash, windscreen, mobile phone. A typical API sequence is below. Confirm the exact endpoints and payloads in the API documentation.</p>
+  </div>
+  <div id="apiFlow"></div>
+</section>
+<section class="block"><h2>Health insurance baseline</h2>
+  <div class="prose">
+    <p><span class="tag src">Source</span> A health insurance claims baseline is available, built on the Claim API and configuration. It adds health-specific fields and rules so the system captures richer data. Health screens exist for FNOL, Sub-Claim Information, Registration, Investigation, Appraisal, Settlement and Case Information.</p>
+    <p>From the screenshots, health FNOL adds: "Claim with other insurer?" (contribution check), "Report to police", Event Description, Agent/Broker Code and Name, Pending Claim toggle, Medical Bill and Payment Info links.</p>
+  </div>
+  <div class="callout ind"><span class="tag ind">Industry practice</span> Health claims need data that motor and property do not: diagnosis code (ICD-10), procedure code, hospital (provider) ID, admission and discharge dates, room category, pre-authorisation number, and itemised bills. Regulators in several markets set tight timelines for cashless decisions; for example India's 2024 health master circular asks for cashless authorisation within one hour and final discharge authorisation within three hours. Confirm current rules for your market.</div>
+  <div class="shots" data-shots="Health_FNOL,Health_SubClaimInformation,Health_Registration,Health_Investigation,Health_Appraisal,Health_Settlement,Health_CaseInfo"></div>
+</section>
+</section>
+
+<!-- ======================= 4 TOOLKIT ======================= -->
+<section class="view" id="v-toolkit">
+<header><span class="eyebrow">Module 4 · Apply</span><h1>Role toolkits</h1>
+<p class="lede">Ready-to-use material for project work: workshop questions and a fit-gap list for business analysts, a test scenario matrix for testers, and an integration checklist for developers.</p></header>
+<div class="objectives" data-obj></div>
+<div class="tabs" id="tkTabs" role="tablist"></div>
+<div id="tkBody"></div>
+</section>
+
+<!-- ======================= REFERENCE ======================= -->
+<section class="view" id="v-glossary">
+<header><span class="eyebrow">Reference</span><h1>Glossary</h1>
+<p class="lede">Insurance, claims, billing, finance, reinsurance and InsureMO terms in plain English.</p></header>
+<div style="display:flex;gap:10px;flex-wrap:wrap"><input class="filter" id="glFilter" placeholder="Filter terms…" style="flex:1 1 240px;max-width:360px"><select class="filter" id="glCat"></select></div>
+<div class="tbl"><table><thead><tr><th style="width:22%">Term</th><th style="width:14%">Area</th><th>Meaning</th></tr></thead><tbody id="glBody"></tbody></table></div>
+</section>
+
+<section class="view" id="v-faq">
+<header><span class="eyebrow">Reference</span><h1>Source Q&amp;A</h1>
+<p class="lede">The 17 questions and answers from the source guide, each linked to the module that explains it.</p></header>
+<div id="faqBody" class="grid"></div>
+</section>
+
+<section class="view" id="v-gaps">
+<header><span class="eyebrow">Reference</span><h1>Source gaps and assumptions</h1>
+<p class="lede">Points where the source is unclear, inconsistent or silent. Resolve them with the platform team before you lock requirements or expected test results.</p></header>
+<div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What the source says</th><th>What to confirm</th></tr></thead><tbody id="gapBody"></tbody></table></div>
+</section>
+
+<section class="view" id="v-trace">
+<header><span class="eyebrow">Reference</span><h1>Learning tracker and traceability</h1>
+<p class="lede">Each source section is traced to the module that teaches it and the questions that test it. Your status and scores update as you learn.</p></header>
+<div id="dashTrace"></div>
+<section class="block"><h2>Module scorecard</h2>
+  <div class="tbl"><table><thead><tr><th>Module</th><th>Status</th><th>Knowledge check</th><th>Score</th><th>Source sections covered</th></tr></thead><tbody id="scoreBody"></tbody></table></div>
+</section>
+<section class="block"><h2>Source-to-guide traceability</h2>
+  <div class="tbl"><table><thead><tr><th>Source section</th><th>Guide location</th><th>Tested by</th><th>Your result</th></tr></thead><tbody id="traceBody"></tbody></table></div>
+</section>
+<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="dlReport" type="button">Download progress report</button><button class="btn ghost" id="printBtn" type="button">Print guide</button><button class="btn ghost" id="resetAll" type="button">Reset all progress</button></div>
+</section>
+
+<section class="view" id="v-assess">
+<header><span class="eyebrow">Final</span><h1>Overall assessment</h1>
+<p class="lede">25 scenario questions across all modules. Answers are shown only after you submit. Pass mark is 70%. Your best score and attempts are saved in the tracker.</p></header>
+<div id="assessBody"></div>
+</section>

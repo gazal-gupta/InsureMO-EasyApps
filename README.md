@@ -28,3 +28,23 @@ Progress, quiz answers and the role lens are saved only in the viewer's browser 
 **Role lens:** the Business analyst / Tester / Developer buttons hide sections that are less relevant to that role, dim levels outside the role's path, open role-specific blocks (workshop questions, test cases, integration detail) on each scenario and screen, and switch the toolkit tab. "Show everything" turns the filter off.
 
 **Screenshots:** the 58 images from the source guide are in `bcp-learning-guide/img/` at original resolution. Keep the `img` folder next to `index.html`.
+
+## Easy Claim Learning Guide
+
+`claims-learning-guide/index.html` is a single, self-contained interactive learning guide for the InsureMO **Easy Claim** module. All 136 source screenshots are embedded, so the one file works offline after download. Fonts load from Google Fonts when online.
+
+**Audience:** business analysts, testers and developers. A role lens filters notes per role and dims modules outside the role's path.
+
+| Level | Modules |
+|---|---|
+| 1 Basics | Insurance and claims basics (value chain, loss ratio, lines of business, KPIs); parties and roles (insurer, insured, policyholder, claimant, agent, broker, TPA, garage, surveyor, third party, reinsurer); core concepts (insurance principles, claim structure, claim vs sub-claim mode, payable amount calculator, reserves) |
+| 2 Core process | End-to-end lifecycle with approval gates and status model; the seven main tasks in depth; approvals and authority; reserves, calculation (Matrix V1/V2, full-scale) and settlement |
+| 3 Advanced | Prepay and recoveries (subrogation, salvage, recovery); ten real-world scenarios (motor, health, property, catastrophe, decline, reopen, payment error); screens and work management; cross-module links to Easy PA, BCP and Reinsurance; configuration, APIs and the health baseline |
+| 4 Apply | Role toolkits: BA workshop questions and fit-gap, 32-row test matrix, developer integration checklist |
+| Reference | Glossary (~150 terms incl. billing, premium, AR/AP, refund, ARAP offset, write-off, reversal, statements, reinsurance), source Q&A, source gaps, tracker and traceability, 25-question overall assessment |
+
+Every process has a swimlane diagram (actors as columns), a step table, and a full-screen view. Each module has a knowledge check; the tracker scores each module and traces every source section to the module and questions that cover it. Progress is saved in the browser (localStorage) and can be downloaded as a report.
+
+Content tagged *Source* comes from the Easy Claim user guide; content tagged *Industry practice* is general insurance knowledge added for learning. Cross-links to BCP scenarios work when `bcp-learning-guide` sits next to `claims-learning-guide`.
+
+**Edit and rebuild:** change files in `claims-learning-guide/src/` and run `python3 claims-learning-guide/build.py`.
