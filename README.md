@@ -14,7 +14,7 @@
 | 1 Foundations | What BCP does, core terms, reversal vs cancel, menu map, payment methods, reference numbers |
 | 2 Money lifecycles | Money-in / money-out / internal patterns, status models (AR/AP, receipt, payment, commission, offset, CBC proposal), partial payment, installments |
 | 3 Business scenarios | 22 flows with swimlane diagrams, normal and reversal paths, screens, status changes, fee codes, rules and role notes |
-| 4 Screens | Purpose, prerequisites, steps, validations and full field reference for every BCP screen, including query, statistics and statement generation |
+| 4 Screens | Purpose, prerequisites, step-by-step instructions with the source screenshots placed under each step (click to enlarge to full resolution), validations and full field reference for every BCP screen, including query, statistics and statement generation |
 | 5 Cross-module | Integration map for Easy PA, Claims, Reinsurance, Sales Channel and GL; the syncDataToBCP matrix; end-to-end journeys |
 | 6 Fees, GL, offset logic | Fee attributes, sign rules, fee flow per scenario, fee and transaction type references, partial-payment offset calculator |
 | 7 Configuration and APIs | Platform vs iComposer, data tables, BCPConfig, index, data dictionary, APIs and export options |
@@ -26,3 +26,5 @@
 Progress, quiz answers and the role lens are saved only in the viewer's browser (localStorage).
 
 **Role lens:** the Business analyst / Tester / Developer buttons hide sections that are less relevant to that role, dim levels outside the role's path, open role-specific blocks (workshop questions, test cases, integration detail) on each scenario and screen, and switch the toolkit tab. "Show everything" turns the filter off.
+
+**Screenshots:** the 58 images from the source guide are in `bcp-learning-guide/img/` at original resolution. Keep the `img` folder next to `index.html`.
