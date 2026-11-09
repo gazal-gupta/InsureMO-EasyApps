@@ -9,8 +9,8 @@ const fmt=x=>(Math.round(x*100)/100).toLocaleString('en-US',{minimumFractionDigi
 
 function wrap(t,n){const w=String(t).split(/\s+/),out=[];let line='';for(const x of w){if((line+' '+x).trim().length>n&&line){out.push(line);line=x}else line=(line+' '+x).trim()}if(line)out.push(line);return out}
 
-function stepTable(steps,id){
-  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Source</th><th>Screen / menu</th><th>Status after</th><th>Output / note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}</td><td>${s.tag==='inf'?'<span class="tag inf">Industry · domain context</span>':s.k==='ext'?'<span class="tag src">External</span>':'<span class="tag int">XRI source</span>'}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
+function stepTable(steps,id,resLbl){
+  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Source</th><th>Screen / menu</th><th>${resLbl||'Status after'}</th><th>Output / note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}</td><td>${s.tag==='inf'?'<span class="tag inf">Industry · domain context</span>':s.k==='ext'?'<span class="tag src">External</span>':'<span class="tag int">XRI source</span>'}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function linkDiagram(root){
   $$('.node',root).forEach(n=>{const go=()=>{const i=n.dataset.i;$$('.node',root).forEach(x=>x.classList.toggle('hl',x===n));$$('tbody tr',root).forEach(r=>r.classList.toggle('hl',r.dataset.i===i));const r=$(`tbody tr[data-i="${i}"]`,root);if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})};n.addEventListener('click',go);n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
@@ -18,7 +18,7 @@ function linkDiagram(root){
 
 /* ---------- state diagram ---------- */
 function stateSvg(m){
-  const NW=150,NH=38,W=Math.max(...m.nodes.map(n=>n.x))+NW+30,H=Math.max(...m.nodes.map(n=>n.y))+NH+30;
+  const NW=168,NH=40,W=Math.max(...m.nodes.map(n=>n.x))+NW+30,H=Math.max(...m.nodes.map(n=>n.y))+NH+30;
   const N=Object.fromEntries(m.nodes.map(n=>[n.id,n]));
   let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(m.name)} status model"><defs><marker id="sah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
   const seen={};
@@ -31,7 +31,7 @@ function stateSvg(m){
     s+=`<path class="edge" d="M${sx},${sy} Q${cx},${cy} ${ex},${ey}" marker-end="url(#sah)"/>`;
     const lx=(sx+2*cx+ex)/4,ly=(sy+2*cy+ey)/4;const tw=l.length*5.6+8;
     s+=`<rect class="st-lblbg" x="${lx-tw/2}" y="${ly-8}" width="${tw}" height="15" rx="3"/><text class="st-lbl" x="${lx}" y="${ly+3}" text-anchor="middle">${esc(l)}</text>`});
-  m.nodes.forEach(n=>{s+=`<g class="st-node ${n.c||''}"><rect x="${n.x}" y="${n.y+5}" width="${NW}" height="${NH}" rx="19"/><text x="${n.x+NW/2}" y="${n.y+5+NH/2+4}" text-anchor="middle">${esc(n.t)}</text></g>`});
+  m.nodes.forEach((n,i)=>{s+=`<g class="st-node ${n.c||''}"><rect x="${n.x}" y="${n.y+5}" width="${NW}" height="${NH}" rx="19"/><circle class="st-num" cx="${n.x+16}" cy="${n.y+5+NH/2}" r="10"/><text class="st-numt" x="${n.x+16}" y="${n.y+5+NH/2+4}" text-anchor="middle">${i+1}</text><text x="${n.x+NW/2+9}" y="${n.y+5+NH/2+4}" text-anchor="middle">${esc(n.t)}</text></g>`});
   return s+'</svg>';
 }
 
@@ -85,7 +85,7 @@ function renderScList(){
   let h='',opt='';Object.entries(GRP).forEach(([g,[lbl,c]])=>{const items=SCEN.filter(s=>s.grp===g);h+=`<div class="grp ${c}">${lbl}</div>`;opt+=`<optgroup label="${lbl}">`;
     items.forEach(s=>{h+=`<button type="button" data-id="${s.id}" aria-current="${s.id===curSc}"><span class="id">${s.id}</span><span>${esc(s.name)}</span></button>`;opt+=`<option value="${s.id}" ${s.id===curSc?'selected':''}>${s.id} · ${esc(s.name)}</option>`});opt+='</optgroup>'});
   $('#scList').innerHTML=h;$('#scSelect').innerHTML=opt;
-  $$('#scList button').forEach(b=>b.addEventListener('click',()=>{location.hash='sc-'+b.dataset.id}));
+  $$('#scList button').forEach(b=>b.addEventListener('click',()=>{location.hash='sc-'+b.dataset.id;setTimeout(()=>{const d=$('#scDetail');if(d)d.scrollIntoView({behavior:'smooth',block:'start'})},60)}));
 }
 function renderSc(){
   const s=SCEN.find(x=>x.id===curSc)||SCEN[0];const steps=s[curMode];const [gl,gc]=GRP[s.grp];
@@ -126,7 +126,35 @@ function renderStates(){
   $('#stTabs').innerHTML=Object.entries(STATES).map(([k,m])=>`<button role="tab" type="button" data-k="${k}" aria-selected="${k===curSt}">${esc(m.name)}</button>`).join('');
   $$('#stTabs button').forEach(b=>b.addEventListener('click',()=>{curSt=b.dataset.k;renderStates()}));
   const m=STATES[curSt];$('#stDiagram').innerHTML=stateSvg(m);
-  $('#stTable').innerHTML=m.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('');
+  const num=t=>{const i=m.nodes.findIndex(n=>t.startsWith(n.t));return i>=0?(i+1)+'. ':''};
+  $('#stTable').innerHTML=m.rows.map((r,i)=>`<tr><td class="num">${i+1}</td><td>${esc(num(r[0])+r[0])}</td><td>${esc(num(r[1])+r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('');
+}
+
+/* ---------- primer, five stages, four lifecycles ---------- */
+const stepList=steps=>`<ol class="stg-steps">${steps.map(x=>`<li><span class="role ${x.tag==='inf'||x.k==='ext'?'ext':''}">${esc(LANES[x.l])}</span><span class="act">${esc(x.t)}${x.m?` <span class="muted small">(${esc(x.m)})</span>`:''}</span>${x.s?`<span class="res">→ ${esc(x.s)}</span>`:''}</li>`).join('')}</ol>`;
+function renderStages(){
+  $('#primer').innerHTML=PRIMER.map((p,i)=>`<div class="card prim"><span class="stg-n">${i+1}</span><h4>${esc(p[0])}</h4><p class="small">${esc(p[1])}</p><p class="small muted"><b>Example:</b> ${esc(p[2])}</p></div>`).join('');
+  $('#stageRibbon').innerHTML=STAGES.map(st=>`<a class="stg" href="#start" data-stg="${st.id}"><span class="stg-n">${st.n}</span><b>${esc(st.name)}</b><span class="small muted">${esc(st.menu)}</span></a>`).join('<i class="stg-arrow" aria-hidden="true">→</i>');
+  $$('#stageRibbon [data-stg]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=$('#stg-'+a.dataset.stg);if(t)t.scrollIntoView({behavior:'smooth'})}));
+  $('#stageCards').innerHTML=STAGES.map(st=>`<article class="card stg-card" id="stg-${st.id}"><div class="stg-head"><span class="stg-n big">${st.n}</span><div><span class="eyebrow">Stage ${st.n} of 5 · XRI menu: ${esc(st.menu)}</span><h3>${esc(st.name)}</h3><p>${esc(st.plain)}</p></div></div>
+   <div class="stg-cols"><div class="stg-box start"><span class="eyebrow">Starts when</span><p>${esc(st.start)}</p></div><div class="stg-box"><span class="eyebrow">Steps · who does what → result</span>${stepList(st.steps)}</div><div class="stg-box end"><span class="eyebrow">Ends with</span><p>${esc(st.end)}</p><span class="eyebrow">How often</span><p class="small">${esc(st.freq)}</p></div></div>
+   <div class="stg-foot"><p class="small"><b>Everyday comparison:</b> ${esc(st.analogy)}</p><p class="small"><b>Example:</b> ${esc(st.example)}</p><div class="filter-row"><span class="small muted">See it in detail:</span>${st.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id}</a>`).join('')}</div></div></article>`).join('');
+}
+let curLC=LIFECYCLES[0].id;
+function renderLifecycles(){
+  $('#lcCards').innerHTML=LIFECYCLES.map((l,i)=>`<article class="card lc-card"><div class="stg-head"><span class="stg-n big">${i+1}</span><div><h3>${esc(l.name)}</h3><p>${esc(l.why)}</p></div></div>
+   <dl class="kv"><dt>Starts when</dt><dd>${esc(l.start)}</dd><dt>Ends when</dt><dd>${esc(l.end)}</dd><dt>How often</dt><dd>${esc(l.freq)}</dd><dt>Who is involved</dt><dd>${esc(l.roles)}</dd><dt>XRI menu</dt><dd>${esc(l.menu)}</dd></dl>
+   ${stepList(l.steps)}
+   <div class="filter-row"><span class="small muted">Scenarios:</span>${l.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id}</a>`).join('')}<button type="button" class="btn ghost" data-lcmap="${l.id}">Show as swimlane</button></div></article>`).join('');
+  $$('[data-lcmap]').forEach(b=>b.addEventListener('click',()=>{curLC=b.dataset.lcmap;renderLcMap();$('#lcMapBlock').scrollIntoView({behavior:'smooth'})}));
+  renderLcMap();
+}
+function renderLcMap(){
+  $('#lcTabs').innerHTML=LIFECYCLES.map(l=>`<button role="tab" type="button" data-k="${l.id}" aria-selected="${l.id===curLC}">${esc(l.name)}</button>`).join('');
+  $$('#lcTabs button').forEach(b=>b.addEventListener('click',()=>{curLC=b.dataset.k;renderLcMap()}));
+  const l=LIFECYCLES.find(x=>x.id===curLC);
+  $('#lcMap').innerHTML=`<p class="small"><b>Start:</b> ${esc(l.start)} <b>End:</b> ${esc(l.end)} <b>Status model:</b> see the "${esc(STATES[l.st].name)}" tab below.</p><div id="lcDia" style="display:flex;flex-direction:column;gap:12px"><div class="diagram">${swimlane(l.steps,{uid:'lc',label:l.name})}</div>${stepTable(l.steps,'lcTbl','Result')}</div>`;
+  linkDiagram($('#lcDia'));if(typeof addFullButtons==='function')addFullButtons();
 }
 
 /* ---------- journeys ---------- */
@@ -296,7 +324,7 @@ function doSearch(){
 
 /* ---------- init ---------- */
 function init(){
-  renderStatic();renderStates();renderHub();renderJourneys();renderCalc();renderToolkit();renderAllChecks();renderFinal();renderCoverage();buildIndex();
+  renderStatic();renderStages();renderLifecycles();renderStates();renderHub();renderJourneys();renderCalc();renderToolkit();renderAllChecks();renderFinal();renderCoverage();buildIndex();
   setRole(store.get('role','all'));
   $$('.roles .chip').forEach(c=>c.addEventListener('click',()=>setRole(c.dataset.role)));
   $$('[data-done]').forEach(c=>c.addEventListener('change',()=>{const d=store.get('done',{});d[c.dataset.done]=c.checked;store.set('done',d);renderRail()}));

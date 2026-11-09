@@ -152,21 +152,21 @@ document.addEventListener('click',e=>{
 function swimlane(steps,opts={}){
  const used=new Set(steps.map(s=>s.l));(opts.extraLanes||[]).forEach(l=>used.add(l));
  const lanes=LANE_ORDER.filter(l=>used.has(l));
- const CW=150,BW=138,BH=68,RH=80,HH=44;const W=lanes.length*CW,H=HH+steps.length*RH+6;
+ const CW=196,BW=180,BH=88,RH=106,HH=56;const W=lanes.length*CW,H=HH+steps.length*RH+6;
  const li=Object.fromEntries(lanes.map((l,i)=>[l,i]));const uid=(opts.uid||'s')+Math.random().toString(36).slice(2,6);
- let s=`<svg class="sw" xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label||'Swimlane')}"><defs><marker id="ah${uid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
+ let s=`<svg class="sw" xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="max-width:${Math.round(W*1.2)}px" role="img" aria-label="${esc(opts.label||'Swimlane')}"><defs><marker id="ah${uid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
  lanes.forEach((l,i)=>{s+=`<rect class="${i%2?'lane-b':'lane-a'}" x="${i*CW}" y="0" width="${CW}" height="${H}"/><line class="lane-sep" x1="${i*CW}" y1="0" x2="${i*CW}" y2="${H}"/>`;
-  const lb=wrap(LANES[l],17);lb.forEach((t,j)=>{s+=`<text class="lane-lbl" x="${i*CW+CW/2}" y="${HH/2-(lb.length-1)*6+j*12+4}" text-anchor="middle">${esc(t.toUpperCase())}</text>`})});
+  const lb=wrap(LANES[l],20);lb.forEach((t,j)=>{s+=`<text class="lane-lbl" x="${i*CW+CW/2}" y="${HH/2-(lb.length-1)*7+j*14+5}" text-anchor="middle">${esc(t.toUpperCase())}</text>`})});
  s+=`<line class="lane-sep" x1="0" y1="${HH}" x2="${W}" y2="${HH}"/>`;
  const pos=steps.map((st,i)=>({x:li[st.l]*CW+(CW-BW)/2,y:HH+i*RH+(RH-BH)/2}));
  for(let i=0;i<steps.length-1;i++){const a=pos[i],b=pos[i+1];const x1=a.x+BW/2,y1=a.y+BH,x2=b.x+BW/2,y2=b.y;
   s+=Math.abs(x1-x2)<1?`<path class="edge" d="M${x1},${y1} V${y2-2}" marker-end="url(#ah${uid})"/>`:`<path class="edge" d="M${x1},${y1} V${y1+(y2-y1)/2} H${x2} V${y2-2}" marker-end="url(#ah${uid})"/>`}
  steps.forEach((st,i)=>{const p=pos[i];const ind=st.tag==='inf';const sub=st.s||st.f||st.m||'';
-  s+=`<g class="node k-${st.k}${ind?' ind':''}" data-i="${i}" tabindex="0"><rect x="${p.x}" y="${p.y}" width="${BW}" height="${BH}" rx="${st.k==='ev'||st.k==='end'?14:4}"/><circle class="numbg" cx="${p.x+2}" cy="${p.y+2}" r="8"/><text class="num" x="${p.x+2}" y="${p.y+5.5}" text-anchor="middle">${i+1}</text>`;
-  if(ind)s+=`<rect class="indbg" x="${p.x+BW-30}" y="${p.y-6}" width="32" height="12" rx="3"/><text class="indt" x="${p.x+BW-14}" y="${p.y+3}" text-anchor="middle">IND</text>`;
-  else if(st.k!=='ext')s+=`<rect class="xribg" x="${p.x+BW-30}" y="${p.y-6}" width="32" height="12" rx="3"/><text class="xrit" x="${p.x+BW-14}" y="${p.y+3}" text-anchor="middle">XRI</text>`;
-  const full=wrap(st.t,22);const lines=full.slice(0,3);if(full.length>3)lines[2]=lines[2].replace(/\s*\S*$/,'')+'…';const ty=p.y+(sub?17:BH/2-(lines.length-1)*6.5+4);lines.forEach((t,j)=>{s+=`<text class="t" x="${p.x+BW/2}" y="${ty+j*13}" text-anchor="middle">${esc(t)}</text>`});
-  if(sub){const w=wrap(sub,24);s+=`<text class="f" x="${p.x+BW/2}" y="${p.y+BH-6}" text-anchor="middle">${esc(w[0]+(w.length>1?'…':''))}</text>`}
+  s+=`<g class="node k-${st.k}${ind?' ind':''}" data-i="${i}" tabindex="0"><rect x="${p.x}" y="${p.y}" width="${BW}" height="${BH}" rx="${st.k==='ev'||st.k==='end'?14:4}"/><circle class="numbg" cx="${p.x+3}" cy="${p.y+3}" r="11"/><text class="num" x="${p.x+3}" y="${p.y+7.5}" text-anchor="middle">${i+1}</text>`;
+  if(ind)s+=`<rect class="indbg" x="${p.x+BW-36}" y="${p.y-7}" width="38" height="15" rx="3"/><text class="indt" x="${p.x+BW-17}" y="${p.y+4}" text-anchor="middle">IND</text>`;
+  else if(st.k!=='ext')s+=`<rect class="xribg" x="${p.x+BW-36}" y="${p.y-7}" width="38" height="15" rx="3"/><text class="xrit" x="${p.x+BW-17}" y="${p.y+4}" text-anchor="middle">XRI</text>`;
+  const full=wrap(st.t,24);const lines=full.slice(0,3);if(full.length>3)lines[2]=lines[2].replace(/\s*\S*$/,'')+'…';const ty=p.y+(sub?22:BH/2-(lines.length-1)*8+5);lines.forEach((t,j)=>{s+=`<text class="t" x="${p.x+BW/2}" y="${ty+j*16}" text-anchor="middle">${esc(t)}</text>`});
+  if(sub){const w=wrap(sub,27);s+=`<text class="f" x="${p.x+BW/2}" y="${p.y+BH-9}" text-anchor="middle">${esc(w[0]+(w.length>1?'…':''))}</text>`}
   s+=`<title>${esc((ind?'[Industry / domain context] ':'[XRI] ')+st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:'')+(st.r?' — Rule: '+st.r:''))}</title></g>`});
  return s+'</svg>';
 }
@@ -204,7 +204,6 @@ function renderBusiness(){
  $('#factBody').innerHTML=FACTS.map(f=>`<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td><td><span class="tag ${f[2]==='certain'?'in':'inf'}">${f[2]}</span></td><td class="small">${esc(f[3])}</td></tr>`).join('');
  $('#comboCards').innerHTML=COMBOS.map(c=>`<div class="card"><span class="combo">${esc(c[0])}</span><h4>${esc(c[1])}</h4><p class="small"><b>In XRI:</b> ${esc(c[2])}</p><p class="small"><b>Example:</b> ${esc(c[3])}</p></div>`).join('');
  const mt=(rows,head)=>`<div class="tbl"><table><thead><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?'mono':''}">${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
- ['contract','cession','recovery','accounting'].forEach(k=>{$('#map-'+k).innerHTML=mt(MAPSTEPS[k],['Step','Actor','What happens','Result'])});
  $('#mapOverview').innerHTML=mt(MAPSTEPS.overview,['Menu','Screens','Purpose']);
  const cats=[...new Set(GLOSS.map(g=>g[1]))];$('#glCat').innerHTML='<option value="">All categories</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join('');
 }

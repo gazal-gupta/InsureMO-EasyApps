@@ -178,8 +178,10 @@ svg .st-lblbg{fill:var(--surface)}
 .legend i{width:14px;height:10px;border-radius:2px;border:1.5px solid;display:inline-block}
 
 /* scenario explorer */
-.explorer{display:grid;grid-template-columns:260px minmax(0,1fr);gap:22px;align-items:start}
-.sc-list{display:flex;flex-direction:column;gap:2px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 74px);max-height:calc(100vh - 96px);overflow:auto;padding-right:4px}
+.explorer{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;align-items:start}
+.sc-list button{padding:5px 8px!important;font-size:13.5px}
+.sc-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px 10px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:8px}
+.sc-list .grp{grid-column:1/-1}
 .sc-list .grp{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:12px 8px 4px}
 .sc-list .grp.in{color:var(--in)} .sc-list .grp.out{color:var(--out)} .sc-list .grp.int{color:var(--int)} .sc-list .grp.cancel{color:var(--cancel)}
 .sc-list button{border:0;background:none;text-align:left;padding:6px 8px;border-radius:var(--r);cursor:pointer;font-size:13.5px;display:grid;grid-template-columns:34px 1fr;gap:4px}
@@ -277,6 +279,7 @@ ol.shotsteps>li{display:flex;flex-direction:column;gap:10px;padding-left:0}
 #dgfull .lb-bar,#dgfull .lb-cap{color:var(--ink)}
 .dg-body{flex:1;min-height:0;overflow:auto}
 .dg-body svg{width:100%;height:100%;max-width:none!important}
+.dg-body svg.sw{height:auto;max-width:1500px!important;margin:0 auto;display:block}
 .realex{border:1px solid var(--line);border-left:3px solid var(--sc);background:var(--surface);border-radius:0 var(--r) var(--r) 0;padding:12px 14px;max-width:80ch;display:flex;flex-direction:column;gap:4px}
 .combo{font-family:var(--f-mono);font-size:15px;font-weight:500;color:var(--accent);background:var(--accent-soft);padding:2px 10px;border-radius:4px;align-self:flex-start}
 .cpbox{border:1px solid var(--accent);border-radius:var(--r);background:var(--surface);padding:16px;display:flex;flex-direction:column;gap:12px;max-width:860px}
@@ -318,10 +321,46 @@ svg .node .xrit{font-family:var(--f-mono);font-size:8px;font-weight:600;fill:var
 .badge-xri,.badge-ind{font-family:var(--f-mono);font-size:10px;padding:1px 5px;border-radius:3px;border:1px solid}
 .badge-xri{color:var(--accent);background:var(--accent-soft);border-color:var(--accent)}
 .badge-ind{color:var(--warn);background:var(--warn-soft);border-color:var(--warn)}
-.diagram svg.sw{max-height:calc(100vh - 120px)}
+
 .diagram:has(>.dg-full){padding-top:42px}
 .calc #calcIn label{margin-top:2px}
 @media (max-width:900px){.calc{grid-template-columns:minmax(0,1fr)}}
+
+/* ---- v2: larger diagrams, stages, lifecycles ---- */
+svg.sw .node .t{font-size:13.5px}
+svg.sw .node .f{font-size:11px}
+svg.sw .lane-lbl{font-size:12px;font-weight:600}
+svg.sw .node .num{font-size:11px}
+svg.sw .node .indt,svg.sw .node .xrit{font-size:9.5px}
+svg .st-num{fill:var(--ink)} svg .st-numt{fill:var(--surface);font-family:var(--f-mono);font-size:11px;font-weight:600}
+.stg-ribbon{display:flex;align-items:stretch;gap:6px;flex-wrap:nowrap}
+.stg{flex:1 1 0;display:flex;flex-direction:column;gap:4px;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);text-decoration:none;color:var(--ink);min-width:0}
+.stg:hover{border-color:var(--accent)}
+.stg-arrow{align-self:center;font-style:normal;color:var(--ink-2);font-size:20px}
+.stg-n{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-family:var(--f-mono);font-weight:600;font-size:13px;flex:none}
+.stg-n.big{width:40px;height:40px;font-size:18px}
+.stg-head{display:flex;gap:14px;align-items:flex-start}
+.stg-head h3{margin:2px 0 4px}
+.stg-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr) minmax(0,1fr);gap:12px}
+.stg-box{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;background:var(--bg)}
+.stg-box.start{border-left:4px solid var(--accent)} .stg-box.end{border-left:4px solid var(--in)}
+.stg-box p{margin:4px 0 8px}
+.stg-steps{margin:6px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:7px}
+.stg-steps li{display:grid;grid-template-columns:170px minmax(0,1fr);gap:2px 10px;align-items:baseline}
+.stg-steps .res{grid-column:2}
+.stg-steps .role{justify-self:start}
+@media (max-width:640px){.stg-steps li{grid-template-columns:minmax(0,1fr)}.stg-steps .res{grid-column:1}}
+.stg-steps .role{font-family:var(--f-mono);font-size:11px;padding:1px 6px;border-radius:3px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.stg-steps .role.ext{background:var(--warn-soft);color:var(--warn)}
+.stg-steps .res{font-size:13px;color:var(--in);font-weight:500}
+.stg-foot{border-top:1px solid var(--line);padding-top:8px}
+.stg-foot p{margin:2px 0}
+.prim{position:relative}
+.lc-card .kv{grid-template-columns:130px 1fr}
+.lc-card .stg-steps{columns:2;column-gap:28px;display:block}
+.lc-card .stg-steps li{break-inside:avoid;margin-bottom:8px}
+@media (max-width:1000px){.lc-card .stg-steps{columns:1}}
+@media (max-width:1000px){.stg-ribbon{flex-direction:column}.stg-arrow{transform:rotate(90deg)}.stg-cols{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head><body>
 <div class="top"><div class="top-in">
@@ -354,16 +393,31 @@ svg .node .xrit{font-family:var(--f-mono);font-size:8px;font-weight:600;fill:var
       <p class="muted small">Built from the InsureMO XRI User Guide. Content marked <span class="tag inf">Domain context</span> or <b>IND</b> is reinsurance market practice added to help you learn. It is not in the source guide, so confirm it with your project before you rely on it. Example amounts are illustrative.</p>
     </header>
     <div class="card">
-      <span class="eyebrow">The five stages in XRI</span>
+      <span class="eyebrow">The five stages in XRI (details below)</span>
       <div class="flowstrip">
-        <div class="fs-row int"><span class="lbl">Contract</span><div class="fs-steps"><span>Treaty / facility</span><i>→</i><span>Sections</span><i>→</i><span>Subsections</span><i>→</i><span>Review Pass</span></div></div>
-        <div class="fs-row in"><span class="lbl">Cession</span><div class="fs-steps"><span>Policy issued</span><i>→</i><span>Treaty match</span><i>→</i><span>Retention / QS / surplus</span><i>→</i><span>Facultative</span></div></div>
-        <div class="fs-row out"><span class="lbl">Recovery</span><div class="fs-steps"><span>Claim paid</span><i>→</i><span>Recovery case</span><i>→</i><span>Quarterly or cash call</span><i>→</i><span>XoL layers</span></div></div>
-        <div class="fs-row int"><span class="lbl">Account</span><div class="fs-steps"><span>SOA auto / semi-auto / manual</span><i>→</i><span>Review</span><i>→</i><span>Settlement</span><i>→</i><span>Write-off</span></div></div>
+        <div class="fs-row int"><span class="lbl">1 Contract</span><div class="fs-steps"><span>Agree terms with reinsurers</span><i>→</i><span>Record in XRI</span><i>→</i><span>Review Pass</span></div></div>
+        <div class="fs-row in"><span class="lbl">2 Cession</span><div class="fs-steps"><span>Policy issued</span><i>→</i><span>Automatic split</span><i>→</i><span>Facultative for excess</span></div></div>
+        <div class="fs-row out"><span class="lbl">3 Recovery</span><div class="fs-steps"><span>Claim paid</span><i>→</i><span>Reinsurers’ share</span><i>→</i><span>Cash call if large</span></div></div>
+        <div class="fs-row int"><span class="lbl">4 Statement</span><div class="fs-steps"><span>Premium − commission − claims</span><i>→</i><span>One balance</span></div></div>
+        <div class="fs-row in"><span class="lbl">5 Settle</span><div class="fs-steps"><span>Group by payer</span><i>→</i><span>Pay or collect</span><i>→</i><span>Written off</span></div></div>
       </div>
       <p class="small muted">Almost every change is saved by a maker and approved by a checker (Review Pass) before it takes effect.</p>
     </div>
   </div>
+
+  <section class="block">
+    <h2>New to insurance? Read this first</h2>
+    <p class="muted">Seven ideas in the order you need them. Each one builds on the one before. If you know insurance already, skip to the five stages.</p>
+    <div class="grid g3" id="primer"></div>
+  </section>
+
+  <section class="block">
+    <h2>The five stages in XRI, explained</h2>
+    <p class="muted">Everything XRI does falls into five stages that follow each other. Each stage below says when it starts, who does what (role → action → result), and how it ends. Click a stage to jump to it.</p>
+    <div class="stg-ribbon" id="stageRibbon"></div>
+    <div style="display:flex;flex-direction:column;gap:16px" id="stageCards"></div>
+    <p class="small muted">Roles: <b>RI user (maker)</b> enters and submits; <b>RI reviewer (checker)</b> approves with Review Pass; <b>XRI system</b> calculates automatically. Amber role labels are steps outside XRI (market practice, domain context).</p>
+  </section>
 
   <section class="block">
     <h2>Pick your learning path</h2>
@@ -585,27 +639,23 @@ svg .node .xrit{font-family:var(--f-mono);font-size:8px;font-weight:600;fill:var
 
   <section class="block">
     <h2>The four lifecycles</h2>
-    <div class="grid g2">
-      <div class="card"><span class="tag int" style="align-self:flex-start">Contract</span><h4>Create → review → in force → adjust → renew → settle</h4><p class="small">Reinsurance Definition. Yearly, at the renewal date.</p></div>
-      <div class="card"><span class="tag in" style="align-self:flex-start">Cession</span><h4>Policy → treaty match → facultative → adjustment</h4><p class="small">Risk Allocation. Every policy and endorsement.</p></div>
-      <div class="card"><span class="tag out" style="align-self:flex-start">Recovery</span><h4>Claim change → recovery case → quarterly or cash call → review</h4><p class="small">Reinsurance Recovery. Every claim payment or appraisal change.</p></div>
-      <div class="card"><span class="tag cancel" style="align-self:flex-start">Accounting</span><h4>SOA → review → settlement → summary → write-off</h4><p class="small">Reinsurance Statement and Settlement. Monthly, quarterly, per event.</p></div>
-    </div>
+    <p class="muted">The five stages on the Start page group into four lifecycles that run at the same time on different timetables. Stages 4 and 5 (statement and settlement) form one accounting lifecycle. For each lifecycle: why it exists, when it starts and ends, how often it runs, who is involved, and the numbered steps with results.</p>
+    <div style="display:flex;flex-direction:column;gap:16px" id="lcCards"></div>
   </section>
 
-  <section class="block">
+  <section class="block" id="lcMapBlock">
     <h2>Process maps</h2>
-    <h3>Contract lifecycle</h3><div id="map-contract"></div>
-    <h3>Cession lifecycle</h3><div id="map-cession"></div>
-    <h3>Recovery lifecycle</h3><div id="map-recovery"></div>
-    <h3>Accounting lifecycle</h3><div id="map-accounting"></div>
+    <p class="muted">Each lifecycle as a swimlane: one column per actor (user, reviewer, XRI system, other modules, market parties), steps from top to bottom, and the result of every step in the table. Click a box to highlight its row; use Full screen to enlarge.</p>
+    <div class="tabs" role="tablist" id="lcTabs"></div>
+    <div id="lcMap" style="margin-top:12px"></div>
   </section>
 
   <section class="block">
     <h2>Status models</h2>
+    <p class="muted">Statuses are numbered in the order a record normally moves through them. The table lists every transition in sequence, with the trigger and screen.</p>
     <div class="tabs" role="tablist" id="stTabs"></div>
     <div class="diagram"><div id="stDiagram"></div></div>
-    <div class="tbl"><table><thead><tr><th>From</th><th>To</th><th>Trigger</th><th>Screen</th></tr></thead><tbody id="stTable"></tbody></table></div>
+    <div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>Trigger</th><th>Screen</th></tr></thead><tbody id="stTable"></tbody></table></div>
   </section>
 
   <section class="block">
@@ -929,22 +979,22 @@ const MENU=[
 
 /* ---------- status models ---------- */
 const STATES={
- treaty:{name:'Outward treaty',nodes:[{id:'N',t:'Newly built',x:20,y:110,c:'start'},{id:'R',t:'New to be Reviewed',x:260,y:110},{id:'F',t:'In force',x:500,y:110,c:'good'},{id:'M',t:'Adjustment pending',x:500,y:10},{id:'S',t:'Settlement pending',x:740,y:210},{id:'X',t:'Settled',x:740,y:110,c:'final'},{id:'D',t:'Deleted',x:20,y:210,c:'final'}],
+ treaty:{name:'Outward treaty',nodes:[{id:'N',t:'Newly built',x:22,y:110,c:'start'},{id:'R',t:'New to be Reviewed',x:292,y:110},{id:'F',t:'In force',x:562,y:110,c:'good'},{id:'M',t:'Adjustment pending',x:562,y:10},{id:'S',t:'Settlement pending',x:832,y:210},{id:'X',t:'Settled',x:832,y:110,c:'final'},{id:'D',t:'Deleted',x:22,y:210,c:'final'}],
   edges:[['N','R','Submit'],['R','F','Review Pass'],['F','M','Adjust'],['M','F','Pass'],['F','S','Settle'],['S','X','Pass'],['N','D','Delete']],
   rows:[['Newly built','New to be Reviewed','User clicks Submit on the Treaty Level page','Outwards Treaty Management > Create'],['New to be Reviewed','In force','Reviewer clicks Review Pass','Review'],['In force','Adjustment pending → In force','Modification record created, submitted and passed. Takes effect from Modification Effective Date','Adjustment'],['In force','Settlement pending → Settled','Treaty Settlement submitted and passed','Settle'],['In force','In force (renewed copy)','Renewal keeps the treaty number and adds one year; it is submitted for review','Renewal'],['Newly built (not effective)','Deleted','Only ineffective records can be deleted','Search result row'],['Note','','Labels "Newly built" and "New to be Reviewed" are from the source; "Adjustment pending", "Settlement pending" and "Settled" are descriptive. The source does not give these status names.','See Source gaps']]},
- fac:{name:'Facultative task',nodes:[{id:'T',t:'To be claimed',x:20,y:110,c:'start'},{id:'A',t:'Allocating',x:260,y:110},{id:'Q',t:'Quotation',x:260,y:10},{id:'V',t:'To review',x:500,y:110},{id:'C',t:'Complete',x:740,y:110,c:'good'},{id:'L',t:'Closed',x:500,y:210,c:'final'}],
+ fac:{name:'Facultative task',nodes:[{id:'T',t:'To be claimed',x:22,y:110,c:'start'},{id:'A',t:'Allocating',x:292,y:110},{id:'Q',t:'Quotation',x:292,y:10},{id:'V',t:'To review',x:562,y:110},{id:'C',t:'Complete',x:832,y:110,c:'good'},{id:'L',t:'Closed',x:562,y:210,c:'final'}],
   edges:[['T','A','Accept task'],['A','Q','Arrange'],['Q','V','Submission Review'],['V','C','Review Pass'],['V','A','Failed Review'],['A','L','Close + reason']],
   rows:[['To be claimed','Allocating','Accept reinsurance task (or Copy from another policy’s arrangement)','New Cession Facultative / Endorsement Facultative'],['Allocating','Quotation (task progress)','Add proportional or non-proportional facultative arrangements and feedback','Manage task'],['Quotation','To review','Submission Review records the operator','Manage task'],['To review','Complete','Review Pass. The arrangement takes effect','Review (single or batch)'],['To review','Allocating','Failed Review. The task goes back for rework','Review'],['Allocating','Closed','Close with a closing reason','Manage task']]},
- cess:{name:'Cession adjustment',nodes:[{id:'F',t:'In force',x:20,y:110,c:'start'},{id:'U',t:'Under adjustment',x:260,y:110},{id:'P',t:'Pending review',x:500,y:110},{id:'G',t:'In force (adjusted)',x:740,y:110,c:'good'}],
+ cess:{name:'Cession adjustment',nodes:[{id:'F',t:'In force',x:22,y:110,c:'start'},{id:'U',t:'Under adjustment',x:292,y:110},{id:'P',t:'Pending review',x:562,y:110},{id:'G',t:'In force (adjusted)',x:832,y:110,c:'good'}],
   edges:[['F','U','Adjust'],['U','P','Submit'],['P','G','Pass'],['P','U','Failed'],['U','F','Abandon']],
   rows:[['In force','Under adjustment','Select policy, click Adjust, choose the effective date','Cession Adjustment'],['Under adjustment','Under adjustment','Continue to keep editing a saved adjustment','Continue'],['Under adjustment','Pending review','Submission Review','Adjust page'],['Pending review','In force (adjusted)','Review Pass; batch review is possible','Review'],['Pending review','Under adjustment','Failed Review; revise and resubmit','Review'],['Under adjustment','In force','Abandon Adjustment discards the change','Adjust page']]},
- rec:{name:'Recovery case',nodes:[{id:'G',t:'Generated by claim',x:20,y:120,c:'start'},{id:'H',t:'waiting for handle',x:260,y:20},{id:'W',t:'waiting for review',x:500,y:20},{id:'R',t:'Reviewed',x:740,y:20,c:'good'},{id:'C',t:'Adjustment cancelled',x:500,y:200,c:'final'}],
+ rec:{name:'Recovery case',nodes:[{id:'G',t:'Generated by claim',x:22,y:120,c:'start'},{id:'H',t:'waiting for handle',x:292,y:20},{id:'W',t:'waiting for review',x:562,y:20},{id:'R',t:'Reviewed',x:832,y:20,c:'good'},{id:'C',t:'Adjustment cancelled',x:562,y:200,c:'final'}],
   edges:[['G','H','Cash call / manual'],['H','W','Submit'],['W','R','Review Pass'],['G','R','Auto: quarterly route'],['W','C','Recovery Adj. Cancellation']],
   rows:[['Claim paid or appraised','Generated','Every change in Appraisal Amount or Loss Paid creates a new reinsurance claim number','Claims → XRI'],['Generated','waiting for handle','Case needs manual processing (for example the Cash Call Limit is reached)','Treaty Recovery'],['waiting for handle','waiting for review','Recovery Management, then Submit','Recovery Management'],['waiting for review','Reviewed','Review Pass; Modify recovery info is possible during review','Review'],['Cash call case, no cash call SOA by quarter end','Reviewed','System merges it into the quarterly statement','Automatic'],['Adjusted case','Cancelled adjustment','Recovery Adjustment Cancellation','Treaty / Facultative Recovery']]},
- soa:{name:'Statement of account',nodes:[{id:'A',t:'Auto generated',x:20,y:20,c:'start'},{id:'M',t:'New in progress',x:20,y:200,c:'start'},{id:'T',t:'To be reviewed',x:260,y:200},{id:'E',t:'Effective',x:500,y:110,c:'good'},{id:'S',t:'Settled',x:740,y:110,c:'good'},{id:'W',t:'Withdrawn',x:740,y:230,c:'final'}],
+ soa:{name:'Statement of account',nodes:[{id:'A',t:'Auto generated',x:22,y:20,c:'start'},{id:'M',t:'New in progress',x:22,y:200,c:'start'},{id:'T',t:'To be reviewed',x:292,y:200},{id:'E',t:'Effective',x:562,y:110,c:'good'},{id:'S',t:'Settled',x:832,y:110,c:'good'},{id:'W',t:'Withdrawn',x:832,y:230,c:'final'}],
   edges:[['A','E','System'],['M','T','Submit'],['T','E','Review Pass'],['E','S','Settlement'],['E','W','Cancel (inward manual)']],
   rows:[['—','Effective','Automatic SOAs (quarterly, cash call, installment, recovery) are generated by the system','Statement search'],['New in progress','To be reviewed','Manual or semi-auto SOA is submitted','Create Manual SOA / Semi Auto SOA'],['To be reviewed','Deleted','Delete a manual or semi-auto SOA that has not been reviewed','Delete'],['To be reviewed','Effective','Review Pass (single or batch)','Review'],['Effective (Estimate = No)','Settled','Included in a settlement and summary. SOAs with Estimate = Yes cannot be settled','Settlement Statement'],['Effective (inward manual)','Withdrawn','Cancel withdraws the last reviewed account data','Treaty Inward Statement > Cancel']]},
- setl:{name:'Settlement summary',nodes:[{id:'N',t:'Not submitted',x:20,y:110,c:'start'},{id:'T',t:'To be reviewed',x:260,y:110},{id:'R',t:'Reviewed',x:500,y:110},{id:'W',t:'Written off',x:740,y:20,c:'good'},{id:'F',t:'Write-off failed',x:740,y:210},{id:'C',t:'Cancelled',x:500,y:240,c:'final'}],
+ setl:{name:'Settlement summary',nodes:[{id:'N',t:'Not submitted',x:22,y:110,c:'start'},{id:'T',t:'To be reviewed',x:292,y:110},{id:'R',t:'Reviewed',x:562,y:110},{id:'W',t:'Written off',x:832,y:20,c:'good'},{id:'F',t:'Write-off failed',x:832,y:210},{id:'C',t:'Cancelled',x:562,y:240,c:'final'}],
   edges:[['N','T','Submit'],['T','R','Review Pass'],['R','W','Write-off'],['R','F','Rejected'],['F','C','Cancel'],['N','C','Cancel']],
   rows:[['Not submitted','To be reviewed','Submission Review updates settlement status and balance to be summarized','Settlement Summary > Create'],['To be reviewed','Reviewed','Review Pass','Review'],['Reviewed','Written off','Accounts receivable / payable system writes off the item','External AR/AP (BCP or client finance)'],['Reviewed','Write-off failed','AR/AP system rejects the write-off','External'],['Write-off failed or not written off','Cancelled','Cancel (deletes the summary)','Settlement Summary > Cancel'],['Note','','The write-off status names come from the Adjustment and Cancel rules in the source. The AR/AP system is not named.','See Source gaps']]}
 };
@@ -1223,15 +1273,15 @@ const MODS={
 /* ---------- end-to-end journeys ---------- */
 const JOURNEYS=[
  {id:'j1',n:'Policy to reinsurance cash',d:'A commercial property policy with sum insured 30m: retention, quota share, surplus and facultative, then the quarterly account and settlement.',
-  steps:[S('pa','ev','Policy issued, SI 30m'),S('xri','sys','Match treaty; split retention / QS / surplus',{m:'A1'}),S('xri','sys','Excess 3m → fac task',{s:'To be claimed'}),S('uw','op','Place fac with 2 reinsurers',{m:'A2'}),S('rev','op','Review Pass',{s:'Complete'}),S('xri','sys','Quarterly bill per treaty',{m:'S1'}),S('xri','sys','Fac SOA',{f:'FacCedingEndorseBill'}),S('uw','op','Settlement Statement + Summary',{m:'S5'}),S('bcp','end','AP to reinsurers settled')]},
+  steps:[S('pa','ev','Policy issued, SI 30m'),S('xri','sys','Match treaty; split retention / QS / surplus',{m:'see scenario A1'}),S('xri','sys','Excess 3m → fac task',{s:'To be claimed'}),S('uw','op','Place fac with 2 reinsurers',{m:'see scenario A2'}),S('rev','op','Review Pass',{s:'Complete'}),S('xri','sys','Quarterly bill per treaty',{m:'see scenario S1'}),S('xri','sys','Fac SOA',{f:'FacCedingEndorseBill'}),S('uw','op','Settlement Statement + Summary',{m:'see scenario S5'}),S('bcp','end','AP to reinsurers settled')]},
  {id:'j2',n:'Large loss to cash call',d:'A factory fire on a quota share risk. The reinsurers’ share is above the cash call limit.',
-  steps:[S('clm','ev','Fire loss, paid 5m'),S('xri','sys','Recovery at QS share',{f:'2m at 40%'}),S('xri','sys','Above cash call limit',{s:'waiting for handle'}),S('uw','op','Cash call flag; Submit',{m:'R2'}),S('rev','op','Review Pass'),S('xri','sys','Cash call bill'),S('bcp','op','Collect from reinsurers',{tag:'inf'}),S('xri','end','Released in quarterly account')]},
+  steps:[S('clm','ev','Fire loss, paid 5m'),S('xri','sys','Recovery at QS share',{f:'2m at 40%'}),S('xri','sys','Above cash call limit',{s:'waiting for handle'}),S('uw','op','Cash call flag; Submit',{m:'see scenario R2'}),S('rev','op','Review Pass'),S('xri','sys','Cash call bill'),S('bcp','op','Collect from reinsurers',{tag:'inf'}),S('xri','end','Released in quarterly account')]},
  {id:'j3',n:'Catastrophe event and XoL',d:'A typhoon causes many claims. After proportional recoveries, the net retained losses exceed the cat XoL attachment point.',
-  steps:[S('clm','ev','Many claims, one CAT code'),S('xri','sys','Proportional recoveries first',{m:'R1'}),S('xri','sys','Net retained loss per event'),S('xri','sys','XoL layer recovery',{m:'R3'}),S('xri','sys','Reinstatement premium due'),S('rev','op','Review Pass'),S('xri','sys','XoL recovery bill'),S('bcp','end','Net settled')],note:'Per-event aggregation depends on a CAT code from Claims. The source shows Claim CAT Code as a search field only. Confirm how events are built.'},
+  steps:[S('clm','ev','Many claims, one CAT code'),S('xri','sys','Proportional recoveries first',{m:'see scenario R1'}),S('xri','sys','Net retained loss per event'),S('xri','sys','XoL layer recovery',{m:'see scenario R3'}),S('xri','sys','Reinstatement premium due'),S('rev','op','Review Pass'),S('xri','sys','XoL recovery bill'),S('bcp','end','Net settled')],note:'Per-event aggregation depends on a CAT code from Claims. The source shows Claim CAT Code as a search field only. Confirm how events are built.'},
  {id:'j4',n:'Endorsement mid-term',d:'Sum insured increases mid-term on a risk with facultative cover.',
-  steps:[S('pa','ev','Endorsement: SI + 5m'),S('xri','sys','New slice from effective date'),S('xri','sys','Endorsement fac task'),S('uw','op','Arrange endorsement fac',{m:'A3'}),S('rev','op','Review Pass'),S('xri','sys','Endorsement fac SOA'),S('bcp','end','Additional premium settled')]},
+  steps:[S('pa','ev','Endorsement: SI + 5m'),S('xri','sys','New slice from effective date'),S('xri','sys','Endorsement fac task'),S('uw','op','Arrange endorsement fac',{m:'see scenario A3'}),S('rev','op','Review Pass'),S('xri','sys','Endorsement fac SOA'),S('bcp','end','Additional premium settled')]},
  {id:'j5',n:'Inward treaty account',d:'The company accepts a 5% line on another insurer’s quota share and receives quarterly accounts.',
-  steps:[S('uw','op','Inward treaty recorded',{m:'N1'}),S('rev','op','Review Passed'),S('ced','ext','Cedant sends account',{tag:'inf'}),S('uw','op','Manual inward statement',{m:'N3'}),S('rev','op','Review Pass'),S('uw','op','Settle items',{m:'S5'}),S('bcp','end','Balance received or paid')]}
+  steps:[S('uw','op','Inward treaty recorded',{m:'see scenario N1'}),S('rev','op','Review Passed'),S('ced','ext','Cedant sends account',{tag:'inf'}),S('uw','op','Manual inward statement',{m:'see scenario N3'}),S('rev','op','Review Pass'),S('uw','op','Settle items',{m:'see scenario S5'}),S('bcp','end','Balance received or paid')]}
 ];
 
 /* ---------- reference tables ---------- */
@@ -1946,6 +1996,64 @@ const GLOSS=[
  ['Loss ratio','Accounting','Claims incurred divided by earned premium.','55%.','Recalculate on Loss Ratio; sliding scale'],
  ['Combined ratio','Accounting','Loss ratio plus expense ratio.','95%.','—']
 ];
+
+/* ===================== STAGES (start page) AND LIFECYCLES (level 2) =====================
+   Steps use S(lane, kind, action, {s: result, m: screen, tag:'inf' for industry steps}) */
+const PRIMER=[
+ ['Insurance','A promise: the insurer pays for a defined loss; in return the customer pays a fee called the premium.','A factory owner pays 150,000 a year so that a fire up to 30m is paid for.'],
+ ['Policy, premium, claim','The policy is the contract. The premium is the price. A claim is the request for payment after a loss.','Fire damages the factory: the owner files a claim; the insurer pays 5m.'],
+ ['The insurer’s problem','One very large loss, or one storm that hits thousands of homes, can be too big for one insurer’s capital.','A typhoon causes 250m of claims for an insurer with 300m of capital.'],
+ ['Reinsurance','The insurer shares part of its risks with other companies (reinsurers). The insurer is now called the cedant; it “cedes” risk.','The insurer passes 40% of every fire policy to reinsurers.'],
+ ['Two ways to agree, two ways to share','Agree once for a whole portfolio (treaty) or one risk at a time (facultative). Share a fixed % of everything (proportional) or only the part of a loss above a threshold (excess of loss).','Treaty: 40% of all fire policies. Facultative: one refinery. Excess of loss: reinsurer pays any loss above 10m.'],
+ ['The money','Reinsurers receive their share of premium, minus a commission for the insurer’s costs. They pay their share of claims. Both are netted in a periodic statement and settled in cash.','Quarter: premium 1,000,000 − commission 325,000 − claims 400,000 = 275,000 paid to reinsurers.'],
+ ['XRI','The InsureMO system that records the contracts, splits every policy automatically, recovers claims, produces the statements and prepares settlement.','The rest of this guide shows how, step by step.']
+];
+const STAGES=[
+ {n:1,id:'contract',name:'Agree the reinsurance contract',menu:'Reinsurance Definition',freq:'Once a year per treaty (renewal), plus mid-year changes',
+  plain:'The insurer agrees with reinsurers, usually once a year, which risks they will share and on what terms (share, limits, commission). XRI stores these terms so it can apply them automatically to every policy.',
+  analogy:'Like a framework agreement with a supplier: prices and rules are agreed once, then every order follows them.',
+  start:'The renewal date is near (often 1 January) or a new type of business needs protection.',end:'Treaty status In force in XRI. During the year it can be adjusted; next year it is renewed; when closed it is settled.',
+  example:'Sunrise Insurance agrees a 40% quota share for all its fire policies in 2026, with 32.5% commission, placed with six reinsurers.',sc:['D1','D2','D6'],
+  steps:[S('ced','ext','Decide how much risk to keep and how much cover to buy',{s:'Reinsurance need defined',tag:'inf'}),S('broker','ext','Offer the programme to reinsurers; lead sets terms, others follow',{s:'Signed slip, 100% placed',tag:'inf'}),S('uw','op','Record treaty, sections, subsections and reinsurer parties',{m:'Outwards Treaty Management',s:'Newly built'}),S('uw','op','Submit for review',{s:'New to be Reviewed'}),S('rev','op','Check against the signed slip; Review Pass',{s:'In force'}),S('xri','end','Terms ready for automatic cession',{s:'Treaty In force'})]},
+ {n:2,id:'cession',name:'Pass each policy’s risk to reinsurers (cession)',menu:'Risk Allocation, Reinsurance Query',freq:'Every policy, renewal and endorsement',
+  plain:'Each time a policy is sold or changed, XRI works out which part the insurer keeps and which part goes to each treaty. Any part too big for the treaties must be placed one-off with reinsurers (facultative).',
+  analogy:'Like splitting a group bill by agreed shares; any amount above the group budget is paid by an extra guest invited for that one dinner.',
+  start:'Easy PA issues, renews or endorses a policy.',end:'100% of the policy is either kept or ceded, and the arrangement is visible in Reinsurance Query.',
+  example:'Factory with sum insured 30m: insurer keeps 1.8m, quota share 1.2m, surplus treaty 24m, facultative 3m.',sc:['A1','A2','A3','A4'],
+  steps:[S('pa','ev','Policy issued (factory, sum insured 30m)',{s:'Policy data available'}),S('xri','sys','Match treaties by risk type and date; apply retention and shares',{s:'Keep / quota share / surplus split'}),S('xri','sys','Part above treaty capacity raises a facultative task',{s:'Task To be claimed'}),S('uw','op','Accept task; record reinsurer quotes and feedback; bind',{m:'New Cession Facultative',s:'To review'}),S('rev','op','Review Pass',{s:'Complete'}),S('xri','end','Policy reinsurance arrangement stored',{s:'Visible in Reinsurance Query'})]},
+ {n:3,id:'recovery',name:'Recover the reinsurers’ share of claims',menu:'Reinsurance Recovery',freq:'Every claim payment or estimate change',
+  plain:'When the insurer pays a claim, reinsurers owe their share. XRI calculates it with the shares that applied on the date of the loss. Very large losses are collected at once (cash call); others wait for the regular statement.',
+  analogy:'Friends who shared the cost of a holiday house also share the repair bill.',
+  start:'Claims records a payment or changes an estimate.',end:'Recovery case Reviewed and included in a statement.',
+  example:'Fire loss 5m on a 40% quota share: 2m due from reinsurers, above the 1m cash call limit, so it is called immediately.',sc:['R1','R2','R3','R4'],
+  steps:[S('clm','ev','Claim paid or estimate changed',{s:'New reinsurance claim number'}),S('xri','sys','Calculate treaty and facultative recovery at date-of-loss shares',{s:'Recovery case created'}),S('xri','sys','Small: wait for statement. Large: flag for cash call',{s:'waiting for handle (large)'}),S('uw','op','Recovery Management: tick cash call, add notes, submit',{m:'Treaty Recovery',s:'waiting for review'}),S('rev','op','Review Pass',{s:'Reviewed'}),S('xri','end','Recovery added to a statement',{s:'Amount due from reinsurers'})]},
+ {n:4,id:'statement',name:'Prepare the statement of account',menu:'Reinsurance Statement',freq:'Monthly or quarterly, plus events (cash call, XoL installment, recovery)',
+  plain:'Instead of paying for each policy and claim separately, the insurer and each reinsurer exchange one statement per period that nets premium, commission and claims to a single balance.',
+  analogy:'Like a monthly credit card statement: many transactions, one amount to pay.',
+  start:'The statement period ends (for example the quarter) or an event needs a bill.',end:'Effective statement (Estimate = No) agreed with the reinsurer and ready to settle.',
+  example:'Q2: premium 1,000,000 − commission 325,000 − claims 400,000 = 275,000 due to reinsurers.',sc:['S1','S2','S3','S4'],
+  steps:[S('xri','sys','Generate automatic statements by period or event',{s:'Effective statement'}),S('uw','op','Start semi-automatic bills or create manual ones',{m:'Reinsurance Statement',s:'To be reviewed'}),S('rev','op','Review Pass',{s:'Effective'}),S('uw','op','Print or send by payer or final recipient',{m:'SOA Printing',s:'Sent to broker / reinsurer'}),S('rein','ext','Reinsurer checks and confirms the account',{s:'Agreed balance',tag:'inf'})]},
+ {n:5,id:'settle',name:'Settle the cash',menu:'Settlement',freq:'As statements fall due (for example 45 to 90 days after the quarter)',
+  plain:'Agreed balances are paid or collected. XRI groups them by payer and currency and passes them to the receivable / payable system, which records the cash and closes the items.',
+  analogy:'Like paying the credit card bill and the bank marking it as paid.',
+  start:'Statements are effective and due.',end:'Settlement summary written off; nothing left open.',
+  example:'Net 185,000 paid to the broker for Reinsurer A after netting 275,000 owed on property against 90,000 due on motor.',sc:['S5','N3'],
+  steps:[S('uw','op','Select pending statements; Trial; Create Settlement',{m:'Settlement Statement',s:'Balance to settle reduced'}),S('uw','op','Group settlements by payer and currency; submit',{m:'Settlement Summary',s:'To be reviewed'}),S('rev','op','Review Pass',{s:'Reviewed'}),S('bcp','sys','Receivable / payable system records cash and writes off',{s:'Written off',tag:'inf'}),S('broker','ext','Broker passes cash to or from reinsurers',{s:'Cash settled',tag:'inf'})]}
+];
+const LIFECYCLES=[
+ {id:'contract',name:'Contract lifecycle',why:'Keeps the reinsurance contract terms correct for the whole period they apply, so every cession, recovery and statement uses the right version.',
+  start:'A treaty or facility is agreed with reinsurers.',end:'Treaty settled (closed) after its last claims are agreed, or renewed into the next year.',freq:'Yearly; adjustments any time',roles:'RI user (maker), RI reviewer (checker), broker, reinsurers',menu:'Reinsurance Definition',st:'treaty',sc:['D1','D2','D3','D4','D5','D6','D7'],
+  steps:[S('broker','ext','Programme placed with reinsurers',{s:'Signed slip',tag:'inf'}),S('uw','op','Create treaty: treaty level, sections, subsections',{m:'Outwards Treaty Management',s:'Newly built'}),S('uw','op','Submit',{s:'New to be Reviewed'}),S('rev','op','Review Pass',{s:'In force'}),S('uw','op','Mid-year change: Adjustment with effective date; submit',{m:'Adjustment',s:'Adjustment pending'}),S('rev','op','Review Pass',{s:'New version in force'}),S('uw','op','Next year: Renewal (same number, + 1 year)',{m:'Renewal',s:'Renewal to be reviewed'}),S('uw','op','When closing: Settle and Settlement bill',{m:'Settle',s:'Settlement pending'}),S('rev','op','Review Pass',{s:'Settled'})]},
+ {id:'cession',name:'Cession lifecycle',why:'Makes sure every policy is fully protected as agreed, with the right share for the right period, including after changes.',
+  start:'A policy is issued in Easy PA.',end:'The policy expires; all its slices have a reviewed arrangement.',freq:'Every policy event',roles:'Easy PA, XRI system, RI user, RI reviewer, broker',menu:'Risk Allocation',st:'fac',sc:['A1','A2','A3','A4'],
+  steps:[S('pa','ev','Policy issued',{s:'Policy data available'}),S('xri','sys','Automatic split: keep / treaties',{s:'Arrangement created'}),S('xri','sys','Excess over capacity → facultative task',{s:'To be claimed'}),S('uw','op','Accept, arrange, bind, submit',{m:'New Cession Facultative',s:'To review'}),S('rev','op','Review Pass',{s:'Complete'}),S('pa','ev','Endorsement changes the policy',{s:'New slice from effective date'}),S('uw','op','Endorsement facultative if needed',{m:'Endorsement Facultative',s:'Complete after review'}),S('uw','op','Correction: Cession Adjustment from a date',{m:'Cession Adjustment',s:'Pending review'}),S('rev','op','Review Pass',{s:'In force (adjusted)'})]},
+ {id:'recovery',name:'Recovery lifecycle',why:'Collects every amount reinsurers owe on claims, at the right share, and fast enough to protect the insurer’s cash.',
+  start:'Claims records a payment or estimate change.',end:'Recovery Reviewed and settled through a statement.',freq:'Every claim change',roles:'Claims, XRI system, RI user, RI reviewer, reinsurers',menu:'Reinsurance Recovery',st:'rec',sc:['R1','R2','R3','R4','R5'],
+  steps:[S('clm','ev','Claim paid or estimate changed',{s:'New reinsurance claim number'}),S('xri','sys','Proportional recovery at date-of-loss shares',{s:'Recovery case'}),S('xri','sys','Net retained loss checked against XoL layers',{s:'Layer recovery and reinstatement'}),S('xri','sys','Below cash call limit → quarterly route',{s:'Reviewed automatically'}),S('uw','op','Above limit or manual: Recovery Management, submit',{m:'Treaty Recovery',s:'waiting for review'}),S('rev','op','Review Pass (may modify amount)',{s:'Reviewed'}),S('xri','end','Recovery on cash call, quarterly or XoL bill',{s:'Due from reinsurers'})]},
+ {id:'accounting',name:'Accounting and settlement lifecycle',why:'Turns thousands of transactions into one agreed balance per reinsurer and period, then into cash.',
+  start:'A statement period ends or an event needs a bill.',end:'Settlement summary written off in the receivable / payable system.',freq:'Monthly or quarterly, plus events',roles:'XRI system, RI user, RI reviewer, reinsurers, broker, finance',menu:'Reinsurance Statement, Settlement',st:'soa',sc:['S1','S2','S3','S4','S5','S6'],
+  steps:[S('xri','sys','Automatic statements generated',{s:'Effective'}),S('uw','op','Semi-auto or manual statement; submit',{m:'Reinsurance Statement',s:'To be reviewed'}),S('rev','op','Review Pass',{s:'Effective'}),S('rein','ext','Reinsurer confirms the account',{s:'Agreed',tag:'inf'}),S('uw','op','Settlement Statement: select, trial, create, submit',{m:'Settlement Statement',s:'Balance to settle reduced'}),S('uw','op','Settlement Summary by payer and currency',{m:'Settlement Summary',s:'To be reviewed'}),S('rev','op','Review Pass',{s:'Reviewed'}),S('bcp','end','Cash recorded; items written off',{s:'Written off',tag:'inf'})]}
+];
 /* ===================== CHECKPOINTS, FINAL ASSESSMENT ===================== */
 const Q=(id,q,o,a,w)=>({id,q,o,a,w});
 const CHECKS={
@@ -2100,21 +2208,21 @@ document.addEventListener('click',e=>{
 function swimlane(steps,opts={}){
  const used=new Set(steps.map(s=>s.l));(opts.extraLanes||[]).forEach(l=>used.add(l));
  const lanes=LANE_ORDER.filter(l=>used.has(l));
- const CW=150,BW=138,BH=68,RH=80,HH=44;const W=lanes.length*CW,H=HH+steps.length*RH+6;
+ const CW=196,BW=180,BH=88,RH=106,HH=56;const W=lanes.length*CW,H=HH+steps.length*RH+6;
  const li=Object.fromEntries(lanes.map((l,i)=>[l,i]));const uid=(opts.uid||'s')+Math.random().toString(36).slice(2,6);
- let s=`<svg class="sw" xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.label||'Swimlane')}"><defs><marker id="ah${uid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
+ let s=`<svg class="sw" xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="max-width:${Math.round(W*1.2)}px" role="img" aria-label="${esc(opts.label||'Swimlane')}"><defs><marker id="ah${uid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
  lanes.forEach((l,i)=>{s+=`<rect class="${i%2?'lane-b':'lane-a'}" x="${i*CW}" y="0" width="${CW}" height="${H}"/><line class="lane-sep" x1="${i*CW}" y1="0" x2="${i*CW}" y2="${H}"/>`;
-  const lb=wrap(LANES[l],17);lb.forEach((t,j)=>{s+=`<text class="lane-lbl" x="${i*CW+CW/2}" y="${HH/2-(lb.length-1)*6+j*12+4}" text-anchor="middle">${esc(t.toUpperCase())}</text>`})});
+  const lb=wrap(LANES[l],20);lb.forEach((t,j)=>{s+=`<text class="lane-lbl" x="${i*CW+CW/2}" y="${HH/2-(lb.length-1)*7+j*14+5}" text-anchor="middle">${esc(t.toUpperCase())}</text>`})});
  s+=`<line class="lane-sep" x1="0" y1="${HH}" x2="${W}" y2="${HH}"/>`;
  const pos=steps.map((st,i)=>({x:li[st.l]*CW+(CW-BW)/2,y:HH+i*RH+(RH-BH)/2}));
  for(let i=0;i<steps.length-1;i++){const a=pos[i],b=pos[i+1];const x1=a.x+BW/2,y1=a.y+BH,x2=b.x+BW/2,y2=b.y;
   s+=Math.abs(x1-x2)<1?`<path class="edge" d="M${x1},${y1} V${y2-2}" marker-end="url(#ah${uid})"/>`:`<path class="edge" d="M${x1},${y1} V${y1+(y2-y1)/2} H${x2} V${y2-2}" marker-end="url(#ah${uid})"/>`}
  steps.forEach((st,i)=>{const p=pos[i];const ind=st.tag==='inf';const sub=st.s||st.f||st.m||'';
-  s+=`<g class="node k-${st.k}${ind?' ind':''}" data-i="${i}" tabindex="0"><rect x="${p.x}" y="${p.y}" width="${BW}" height="${BH}" rx="${st.k==='ev'||st.k==='end'?14:4}"/><circle class="numbg" cx="${p.x+2}" cy="${p.y+2}" r="8"/><text class="num" x="${p.x+2}" y="${p.y+5.5}" text-anchor="middle">${i+1}</text>`;
-  if(ind)s+=`<rect class="indbg" x="${p.x+BW-30}" y="${p.y-6}" width="32" height="12" rx="3"/><text class="indt" x="${p.x+BW-14}" y="${p.y+3}" text-anchor="middle">IND</text>`;
-  else if(st.k!=='ext')s+=`<rect class="xribg" x="${p.x+BW-30}" y="${p.y-6}" width="32" height="12" rx="3"/><text class="xrit" x="${p.x+BW-14}" y="${p.y+3}" text-anchor="middle">XRI</text>`;
-  const full=wrap(st.t,22);const lines=full.slice(0,3);if(full.length>3)lines[2]=lines[2].replace(/\s*\S*$/,'')+'…';const ty=p.y+(sub?17:BH/2-(lines.length-1)*6.5+4);lines.forEach((t,j)=>{s+=`<text class="t" x="${p.x+BW/2}" y="${ty+j*13}" text-anchor="middle">${esc(t)}</text>`});
-  if(sub){const w=wrap(sub,24);s+=`<text class="f" x="${p.x+BW/2}" y="${p.y+BH-6}" text-anchor="middle">${esc(w[0]+(w.length>1?'…':''))}</text>`}
+  s+=`<g class="node k-${st.k}${ind?' ind':''}" data-i="${i}" tabindex="0"><rect x="${p.x}" y="${p.y}" width="${BW}" height="${BH}" rx="${st.k==='ev'||st.k==='end'?14:4}"/><circle class="numbg" cx="${p.x+3}" cy="${p.y+3}" r="11"/><text class="num" x="${p.x+3}" y="${p.y+7.5}" text-anchor="middle">${i+1}</text>`;
+  if(ind)s+=`<rect class="indbg" x="${p.x+BW-36}" y="${p.y-7}" width="38" height="15" rx="3"/><text class="indt" x="${p.x+BW-17}" y="${p.y+4}" text-anchor="middle">IND</text>`;
+  else if(st.k!=='ext')s+=`<rect class="xribg" x="${p.x+BW-36}" y="${p.y-7}" width="38" height="15" rx="3"/><text class="xrit" x="${p.x+BW-17}" y="${p.y+4}" text-anchor="middle">XRI</text>`;
+  const full=wrap(st.t,24);const lines=full.slice(0,3);if(full.length>3)lines[2]=lines[2].replace(/\s*\S*$/,'')+'…';const ty=p.y+(sub?22:BH/2-(lines.length-1)*8+5);lines.forEach((t,j)=>{s+=`<text class="t" x="${p.x+BW/2}" y="${ty+j*16}" text-anchor="middle">${esc(t)}</text>`});
+  if(sub){const w=wrap(sub,27);s+=`<text class="f" x="${p.x+BW/2}" y="${p.y+BH-9}" text-anchor="middle">${esc(w[0]+(w.length>1?'…':''))}</text>`}
   s+=`<title>${esc((ind?'[Industry / domain context] ':'[XRI] ')+st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:'')+(st.r?' — Rule: '+st.r:''))}</title></g>`});
  return s+'</svg>';
 }
@@ -2152,14 +2260,13 @@ function renderBusiness(){
  $('#factBody').innerHTML=FACTS.map(f=>`<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td><td><span class="tag ${f[2]==='certain'?'in':'inf'}">${f[2]}</span></td><td class="small">${esc(f[3])}</td></tr>`).join('');
  $('#comboCards').innerHTML=COMBOS.map(c=>`<div class="card"><span class="combo">${esc(c[0])}</span><h4>${esc(c[1])}</h4><p class="small"><b>In XRI:</b> ${esc(c[2])}</p><p class="small"><b>Example:</b> ${esc(c[3])}</p></div>`).join('');
  const mt=(rows,head)=>`<div class="tbl"><table><thead><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?'mono':''}">${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
- ['contract','cession','recovery','accounting'].forEach(k=>{$('#map-'+k).innerHTML=mt(MAPSTEPS[k],['Step','Actor','What happens','Result'])});
  $('#mapOverview').innerHTML=mt(MAPSTEPS.overview,['Menu','Screens','Purpose']);
  const cats=[...new Set(GLOSS.map(g=>g[1]))];$('#glCat').innerHTML='<option value="">All categories</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join('');
 }
 /* ===================== LENS + EXTRA RENDERING ===================== */
 const ROLE_NAME={ba:'Business analyst',qa:'Tester',dev:'Developer'};
 const ROLE_LEVELS={ba:['business','basics','lifecycle','scenarios','integration','screens','config','toolkit','gaps'],qa:['business','basics','lifecycle','scenarios','screens','fees','toolkit','gaps'],dev:['business','basics','integration','fees','config','scenarios','toolkit','gaps']};
-const BLOCK_ROLES={'Why insurers buy reinsurance':'ba qa dev','Treaty or facultative?':'ba qa','Agent, broker or reinsurance broker?':'ba qa','Rules from real markets':'ba qa','Anatomy of a cession':'ba qa dev','Architecture: insureMO and partner':'dev ba','Menu map':'ba qa','Maker-checker review':'qa dev','Reference numbers you will see':'qa dev','Proportional or non-proportional?':'ba qa','Process maps':'ba qa','Treaty types at a glance':'ba qa','Effective dates, versions and slices':'qa dev','Data XRI needs from other modules':'dev qa','End-to-end journeys across modules':'ba qa','Statement of account anatomy':'ba qa','SOA types in XRI':'qa dev','Sign rules':'qa dev','Typical GL entries':'dev ba','IFRS 17 view of reinsurance held':'ba dev','Platform or partner build?':'ba dev','What you can configure in XRI':'ba dev','Drop-down values seen in the source':'dev qa','Architecture services':'dev','Status vocabulary':'qa dev'};
+const BLOCK_ROLES={'Why insurers buy reinsurance':'ba qa dev','Treaty or facultative?':'ba qa','Agent, broker or reinsurance broker?':'ba qa','Rules from real markets':'ba qa','Anatomy of a cession':'ba qa dev','Architecture: insureMO and partner':'dev ba','Menu map':'ba qa','Maker-checker review':'qa dev','Reference numbers you will see':'qa dev','Proportional or non-proportional?':'ba qa','Process maps':'ba qa dev','Treaty types at a glance':'ba qa','Effective dates, versions and slices':'qa dev','Data XRI needs from other modules':'dev qa','End-to-end journeys across modules':'ba qa','Statement of account anatomy':'ba qa','SOA types in XRI':'qa dev','Sign rules':'qa dev','Typical GL entries':'dev ba','IFRS 17 view of reinsurance held':'ba dev','Platform or partner build?':'ba dev','What you can configure in XRI':'ba dev','Drop-down values seen in the source':'dev qa','Architecture services':'dev','Status vocabulary':'qa dev'};
 const curRole=()=>document.body.dataset.role||'';
 
 function applyLens(){
@@ -2222,8 +2329,8 @@ const fmt=x=>(Math.round(x*100)/100).toLocaleString('en-US',{minimumFractionDigi
 
 function wrap(t,n){const w=String(t).split(/\s+/),out=[];let line='';for(const x of w){if((line+' '+x).trim().length>n&&line){out.push(line);line=x}else line=(line+' '+x).trim()}if(line)out.push(line);return out}
 
-function stepTable(steps,id){
-  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Source</th><th>Screen / menu</th><th>Status after</th><th>Output / note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}</td><td>${s.tag==='inf'?'<span class="tag inf">Industry · domain context</span>':s.k==='ext'?'<span class="tag src">External</span>':'<span class="tag int">XRI source</span>'}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
+function stepTable(steps,id,resLbl){
+  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Source</th><th>Screen / menu</th><th>${resLbl||'Status after'}</th><th>Output / note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}</td><td>${s.tag==='inf'?'<span class="tag inf">Industry · domain context</span>':s.k==='ext'?'<span class="tag src">External</span>':'<span class="tag int">XRI source</span>'}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function linkDiagram(root){
   $$('.node',root).forEach(n=>{const go=()=>{const i=n.dataset.i;$$('.node',root).forEach(x=>x.classList.toggle('hl',x===n));$$('tbody tr',root).forEach(r=>r.classList.toggle('hl',r.dataset.i===i));const r=$(`tbody tr[data-i="${i}"]`,root);if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})};n.addEventListener('click',go);n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
@@ -2231,7 +2338,7 @@ function linkDiagram(root){
 
 /* ---------- state diagram ---------- */
 function stateSvg(m){
-  const NW=150,NH=38,W=Math.max(...m.nodes.map(n=>n.x))+NW+30,H=Math.max(...m.nodes.map(n=>n.y))+NH+30;
+  const NW=168,NH=40,W=Math.max(...m.nodes.map(n=>n.x))+NW+30,H=Math.max(...m.nodes.map(n=>n.y))+NH+30;
   const N=Object.fromEntries(m.nodes.map(n=>[n.id,n]));
   let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(m.name)} status model"><defs><marker id="sah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
   const seen={};
@@ -2244,7 +2351,7 @@ function stateSvg(m){
     s+=`<path class="edge" d="M${sx},${sy} Q${cx},${cy} ${ex},${ey}" marker-end="url(#sah)"/>`;
     const lx=(sx+2*cx+ex)/4,ly=(sy+2*cy+ey)/4;const tw=l.length*5.6+8;
     s+=`<rect class="st-lblbg" x="${lx-tw/2}" y="${ly-8}" width="${tw}" height="15" rx="3"/><text class="st-lbl" x="${lx}" y="${ly+3}" text-anchor="middle">${esc(l)}</text>`});
-  m.nodes.forEach(n=>{s+=`<g class="st-node ${n.c||''}"><rect x="${n.x}" y="${n.y+5}" width="${NW}" height="${NH}" rx="19"/><text x="${n.x+NW/2}" y="${n.y+5+NH/2+4}" text-anchor="middle">${esc(n.t)}</text></g>`});
+  m.nodes.forEach((n,i)=>{s+=`<g class="st-node ${n.c||''}"><rect x="${n.x}" y="${n.y+5}" width="${NW}" height="${NH}" rx="19"/><circle class="st-num" cx="${n.x+16}" cy="${n.y+5+NH/2}" r="10"/><text class="st-numt" x="${n.x+16}" y="${n.y+5+NH/2+4}" text-anchor="middle">${i+1}</text><text x="${n.x+NW/2+9}" y="${n.y+5+NH/2+4}" text-anchor="middle">${esc(n.t)}</text></g>`});
   return s+'</svg>';
 }
 
@@ -2298,7 +2405,7 @@ function renderScList(){
   let h='',opt='';Object.entries(GRP).forEach(([g,[lbl,c]])=>{const items=SCEN.filter(s=>s.grp===g);h+=`<div class="grp ${c}">${lbl}</div>`;opt+=`<optgroup label="${lbl}">`;
     items.forEach(s=>{h+=`<button type="button" data-id="${s.id}" aria-current="${s.id===curSc}"><span class="id">${s.id}</span><span>${esc(s.name)}</span></button>`;opt+=`<option value="${s.id}" ${s.id===curSc?'selected':''}>${s.id} · ${esc(s.name)}</option>`});opt+='</optgroup>'});
   $('#scList').innerHTML=h;$('#scSelect').innerHTML=opt;
-  $$('#scList button').forEach(b=>b.addEventListener('click',()=>{location.hash='sc-'+b.dataset.id}));
+  $$('#scList button').forEach(b=>b.addEventListener('click',()=>{location.hash='sc-'+b.dataset.id;setTimeout(()=>{const d=$('#scDetail');if(d)d.scrollIntoView({behavior:'smooth',block:'start'})},60)}));
 }
 function renderSc(){
   const s=SCEN.find(x=>x.id===curSc)||SCEN[0];const steps=s[curMode];const [gl,gc]=GRP[s.grp];
@@ -2339,7 +2446,35 @@ function renderStates(){
   $('#stTabs').innerHTML=Object.entries(STATES).map(([k,m])=>`<button role="tab" type="button" data-k="${k}" aria-selected="${k===curSt}">${esc(m.name)}</button>`).join('');
   $$('#stTabs button').forEach(b=>b.addEventListener('click',()=>{curSt=b.dataset.k;renderStates()}));
   const m=STATES[curSt];$('#stDiagram').innerHTML=stateSvg(m);
-  $('#stTable').innerHTML=m.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('');
+  const num=t=>{const i=m.nodes.findIndex(n=>t.startsWith(n.t));return i>=0?(i+1)+'. ':''};
+  $('#stTable').innerHTML=m.rows.map((r,i)=>`<tr><td class="num">${i+1}</td><td>${esc(num(r[0])+r[0])}</td><td>${esc(num(r[1])+r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('');
+}
+
+/* ---------- primer, five stages, four lifecycles ---------- */
+const stepList=steps=>`<ol class="stg-steps">${steps.map(x=>`<li><span class="role ${x.tag==='inf'||x.k==='ext'?'ext':''}">${esc(LANES[x.l])}</span><span class="act">${esc(x.t)}${x.m?` <span class="muted small">(${esc(x.m)})</span>`:''}</span>${x.s?`<span class="res">→ ${esc(x.s)}</span>`:''}</li>`).join('')}</ol>`;
+function renderStages(){
+  $('#primer').innerHTML=PRIMER.map((p,i)=>`<div class="card prim"><span class="stg-n">${i+1}</span><h4>${esc(p[0])}</h4><p class="small">${esc(p[1])}</p><p class="small muted"><b>Example:</b> ${esc(p[2])}</p></div>`).join('');
+  $('#stageRibbon').innerHTML=STAGES.map(st=>`<a class="stg" href="#start" data-stg="${st.id}"><span class="stg-n">${st.n}</span><b>${esc(st.name)}</b><span class="small muted">${esc(st.menu)}</span></a>`).join('<i class="stg-arrow" aria-hidden="true">→</i>');
+  $$('#stageRibbon [data-stg]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=$('#stg-'+a.dataset.stg);if(t)t.scrollIntoView({behavior:'smooth'})}));
+  $('#stageCards').innerHTML=STAGES.map(st=>`<article class="card stg-card" id="stg-${st.id}"><div class="stg-head"><span class="stg-n big">${st.n}</span><div><span class="eyebrow">Stage ${st.n} of 5 · XRI menu: ${esc(st.menu)}</span><h3>${esc(st.name)}</h3><p>${esc(st.plain)}</p></div></div>
+   <div class="stg-cols"><div class="stg-box start"><span class="eyebrow">Starts when</span><p>${esc(st.start)}</p></div><div class="stg-box"><span class="eyebrow">Steps · who does what → result</span>${stepList(st.steps)}</div><div class="stg-box end"><span class="eyebrow">Ends with</span><p>${esc(st.end)}</p><span class="eyebrow">How often</span><p class="small">${esc(st.freq)}</p></div></div>
+   <div class="stg-foot"><p class="small"><b>Everyday comparison:</b> ${esc(st.analogy)}</p><p class="small"><b>Example:</b> ${esc(st.example)}</p><div class="filter-row"><span class="small muted">See it in detail:</span>${st.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id}</a>`).join('')}</div></div></article>`).join('');
+}
+let curLC=LIFECYCLES[0].id;
+function renderLifecycles(){
+  $('#lcCards').innerHTML=LIFECYCLES.map((l,i)=>`<article class="card lc-card"><div class="stg-head"><span class="stg-n big">${i+1}</span><div><h3>${esc(l.name)}</h3><p>${esc(l.why)}</p></div></div>
+   <dl class="kv"><dt>Starts when</dt><dd>${esc(l.start)}</dd><dt>Ends when</dt><dd>${esc(l.end)}</dd><dt>How often</dt><dd>${esc(l.freq)}</dd><dt>Who is involved</dt><dd>${esc(l.roles)}</dd><dt>XRI menu</dt><dd>${esc(l.menu)}</dd></dl>
+   ${stepList(l.steps)}
+   <div class="filter-row"><span class="small muted">Scenarios:</span>${l.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id}</a>`).join('')}<button type="button" class="btn ghost" data-lcmap="${l.id}">Show as swimlane</button></div></article>`).join('');
+  $$('[data-lcmap]').forEach(b=>b.addEventListener('click',()=>{curLC=b.dataset.lcmap;renderLcMap();$('#lcMapBlock').scrollIntoView({behavior:'smooth'})}));
+  renderLcMap();
+}
+function renderLcMap(){
+  $('#lcTabs').innerHTML=LIFECYCLES.map(l=>`<button role="tab" type="button" data-k="${l.id}" aria-selected="${l.id===curLC}">${esc(l.name)}</button>`).join('');
+  $$('#lcTabs button').forEach(b=>b.addEventListener('click',()=>{curLC=b.dataset.k;renderLcMap()}));
+  const l=LIFECYCLES.find(x=>x.id===curLC);
+  $('#lcMap').innerHTML=`<p class="small"><b>Start:</b> ${esc(l.start)} <b>End:</b> ${esc(l.end)} <b>Status model:</b> see the "${esc(STATES[l.st].name)}" tab below.</p><div id="lcDia" style="display:flex;flex-direction:column;gap:12px"><div class="diagram">${swimlane(l.steps,{uid:'lc',label:l.name})}</div>${stepTable(l.steps,'lcTbl','Result')}</div>`;
+  linkDiagram($('#lcDia'));if(typeof addFullButtons==='function')addFullButtons();
 }
 
 /* ---------- journeys ---------- */
@@ -2509,7 +2644,7 @@ function doSearch(){
 
 /* ---------- init ---------- */
 function init(){
-  renderStatic();renderStates();renderHub();renderJourneys();renderCalc();renderToolkit();renderAllChecks();renderFinal();renderCoverage();buildIndex();
+  renderStatic();renderStages();renderLifecycles();renderStates();renderHub();renderJourneys();renderCalc();renderToolkit();renderAllChecks();renderFinal();renderCoverage();buildIndex();
   setRole(store.get('role','all'));
   $$('.roles .chip').forEach(c=>c.addEventListener('click',()=>setRole(c.dataset.role)));
   $$('[data-done]').forEach(c=>c.addEventListener('change',()=>{const d=store.get('done',{});d[c.dataset.done]=c.checked;store.set('done',d);renderRail()}));

@@ -29,16 +29,31 @@
       <p class="muted small">Built from the InsureMO XRI User Guide. Content marked <span class="tag inf">Domain context</span> or <b>IND</b> is reinsurance market practice added to help you learn. It is not in the source guide, so confirm it with your project before you rely on it. Example amounts are illustrative.</p>
     </header>
     <div class="card">
-      <span class="eyebrow">The five stages in XRI</span>
+      <span class="eyebrow">The five stages in XRI (details below)</span>
       <div class="flowstrip">
-        <div class="fs-row int"><span class="lbl">Contract</span><div class="fs-steps"><span>Treaty / facility</span><i>→</i><span>Sections</span><i>→</i><span>Subsections</span><i>→</i><span>Review Pass</span></div></div>
-        <div class="fs-row in"><span class="lbl">Cession</span><div class="fs-steps"><span>Policy issued</span><i>→</i><span>Treaty match</span><i>→</i><span>Retention / QS / surplus</span><i>→</i><span>Facultative</span></div></div>
-        <div class="fs-row out"><span class="lbl">Recovery</span><div class="fs-steps"><span>Claim paid</span><i>→</i><span>Recovery case</span><i>→</i><span>Quarterly or cash call</span><i>→</i><span>XoL layers</span></div></div>
-        <div class="fs-row int"><span class="lbl">Account</span><div class="fs-steps"><span>SOA auto / semi-auto / manual</span><i>→</i><span>Review</span><i>→</i><span>Settlement</span><i>→</i><span>Write-off</span></div></div>
+        <div class="fs-row int"><span class="lbl">1 Contract</span><div class="fs-steps"><span>Agree terms with reinsurers</span><i>→</i><span>Record in XRI</span><i>→</i><span>Review Pass</span></div></div>
+        <div class="fs-row in"><span class="lbl">2 Cession</span><div class="fs-steps"><span>Policy issued</span><i>→</i><span>Automatic split</span><i>→</i><span>Facultative for excess</span></div></div>
+        <div class="fs-row out"><span class="lbl">3 Recovery</span><div class="fs-steps"><span>Claim paid</span><i>→</i><span>Reinsurers’ share</span><i>→</i><span>Cash call if large</span></div></div>
+        <div class="fs-row int"><span class="lbl">4 Statement</span><div class="fs-steps"><span>Premium − commission − claims</span><i>→</i><span>One balance</span></div></div>
+        <div class="fs-row in"><span class="lbl">5 Settle</span><div class="fs-steps"><span>Group by payer</span><i>→</i><span>Pay or collect</span><i>→</i><span>Written off</span></div></div>
       </div>
       <p class="small muted">Almost every change is saved by a maker and approved by a checker (Review Pass) before it takes effect.</p>
     </div>
   </div>
+
+  <section class="block">
+    <h2>New to insurance? Read this first</h2>
+    <p class="muted">Seven ideas in the order you need them. Each one builds on the one before. If you know insurance already, skip to the five stages.</p>
+    <div class="grid g3" id="primer"></div>
+  </section>
+
+  <section class="block">
+    <h2>The five stages in XRI, explained</h2>
+    <p class="muted">Everything XRI does falls into five stages that follow each other. Each stage below says when it starts, who does what (role → action → result), and how it ends. Click a stage to jump to it.</p>
+    <div class="stg-ribbon" id="stageRibbon"></div>
+    <div style="display:flex;flex-direction:column;gap:16px" id="stageCards"></div>
+    <p class="small muted">Roles: <b>RI user (maker)</b> enters and submits; <b>RI reviewer (checker)</b> approves with Review Pass; <b>XRI system</b> calculates automatically. Amber role labels are steps outside XRI (market practice, domain context).</p>
+  </section>
 
   <section class="block">
     <h2>Pick your learning path</h2>
@@ -260,27 +275,23 @@
 
   <section class="block">
     <h2>The four lifecycles</h2>
-    <div class="grid g2">
-      <div class="card"><span class="tag int" style="align-self:flex-start">Contract</span><h4>Create → review → in force → adjust → renew → settle</h4><p class="small">Reinsurance Definition. Yearly, at the renewal date.</p></div>
-      <div class="card"><span class="tag in" style="align-self:flex-start">Cession</span><h4>Policy → treaty match → facultative → adjustment</h4><p class="small">Risk Allocation. Every policy and endorsement.</p></div>
-      <div class="card"><span class="tag out" style="align-self:flex-start">Recovery</span><h4>Claim change → recovery case → quarterly or cash call → review</h4><p class="small">Reinsurance Recovery. Every claim payment or appraisal change.</p></div>
-      <div class="card"><span class="tag cancel" style="align-self:flex-start">Accounting</span><h4>SOA → review → settlement → summary → write-off</h4><p class="small">Reinsurance Statement and Settlement. Monthly, quarterly, per event.</p></div>
-    </div>
+    <p class="muted">The five stages on the Start page group into four lifecycles that run at the same time on different timetables. Stages 4 and 5 (statement and settlement) form one accounting lifecycle. For each lifecycle: why it exists, when it starts and ends, how often it runs, who is involved, and the numbered steps with results.</p>
+    <div style="display:flex;flex-direction:column;gap:16px" id="lcCards"></div>
   </section>
 
-  <section class="block">
+  <section class="block" id="lcMapBlock">
     <h2>Process maps</h2>
-    <h3>Contract lifecycle</h3><div id="map-contract"></div>
-    <h3>Cession lifecycle</h3><div id="map-cession"></div>
-    <h3>Recovery lifecycle</h3><div id="map-recovery"></div>
-    <h3>Accounting lifecycle</h3><div id="map-accounting"></div>
+    <p class="muted">Each lifecycle as a swimlane: one column per actor (user, reviewer, XRI system, other modules, market parties), steps from top to bottom, and the result of every step in the table. Click a box to highlight its row; use Full screen to enlarge.</p>
+    <div class="tabs" role="tablist" id="lcTabs"></div>
+    <div id="lcMap" style="margin-top:12px"></div>
   </section>
 
   <section class="block">
     <h2>Status models</h2>
+    <p class="muted">Statuses are numbered in the order a record normally moves through them. The table lists every transition in sequence, with the trigger and screen.</p>
     <div class="tabs" role="tablist" id="stTabs"></div>
     <div class="diagram"><div id="stDiagram"></div></div>
-    <div class="tbl"><table><thead><tr><th>From</th><th>To</th><th>Trigger</th><th>Screen</th></tr></thead><tbody id="stTable"></tbody></table></div>
+    <div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>Trigger</th><th>Screen</th></tr></thead><tbody id="stTable"></tbody></table></div>
   </section>
 
   <section class="block">
