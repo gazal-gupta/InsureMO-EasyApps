@@ -199,8 +199,9 @@ function renderBusiness(){
  $('#factBody').innerHTML=FACTS.map(f=>`<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td><td><span class="tag ${f[2]==='certain'?'in':'inf'}">${f[2]}</span></td><td class="small">${esc(f[3])}</td></tr>`).join('');
  $('#comboCards').innerHTML=COMBOS.map(c=>`<div class="card"><span class="combo">${esc(c[0])}</span><h4>${esc(c[1])}</h4><p class="small"><b>Result:</b> ${esc(c[2])}</p><p class="small"><b>Example:</b> ${esc(c[3])}</p></div>`).join('');
  const mt=(rows,head)=>`<div class="tbl"><table><thead><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td class="${i===0?'mono':''}">${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
- $('#mapCollection').innerHTML=mt(MAPSTEPS.collection,['Step','Actor','What happens','Result']);
- $('#mapPayment').innerHTML=mt(MAPSTEPS.payment,['Step','Actor','What happens','Result']);
+ const pm=(id,steps,label)=>{const el=$(id);el.innerHTML=`<div class="diagram">${swimlane(steps,{uid:id.slice(1),label})}</div>${stepTable(steps,id.slice(1)+'Tbl')}`;el.style.cssText='display:flex;flex-direction:column;gap:12px';if(typeof linkDiagram==='function')linkDiagram(el)};
+ pm('#mapCollection',PMAP.nb,'New business proposal: end-to-end process');
+ pm('#mapPayment',PMAP.endo,'Endorsement: end-to-end process');
  $('#mapOverview').innerHTML=mt(MAPSTEPS.overview,['Function group','Screens / blocks','Purpose']);
  const cats=[...new Set(GLOSS.map(g=>g[1]))];$('#glCat').innerHTML='<option value="">All categories</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join('');
 }

@@ -270,16 +270,17 @@
 
   <section class="block">
     <h2>Process maps step by step</h2>
+    <p class="muted">Each column is one actor; read from top to bottom. Click a box to highlight its row in the step table. Branches (for example "rule hit → Underwriting") are shown in the status and rule notes of the step where the decision is made; the full branches are in the status models below and in the Level 3 scenarios.</p>
     <h3>New business proposal</h3><div id="mapCollection"></div>
     <h3>Endorsement</h3><div id="mapPayment"></div>
   </section>
 
   <section class="block">
     <h2>Status models</h2>
-    <p class="muted">Pick a record type to see its statuses and what moves it from one to the next. Testers: every arrow is at least one test case.</p>
+    <p class="muted">Pick a record type. Each arrow carries a number in process order: the main path first, then loops back, then exits (Decline, Reject). The same number appears in the table, so arrow 7 is row 7. Click a numbered label to highlight its row. Testers: every numbered arrow is at least one test case.</p>
     <div class="tabs" role="tablist" id="stTabs"></div>
     <div class="diagram" id="stDiagram"></div>
-    <div class="tbl"><table><thead><tr><th>From</th><th>To</th><th>Trigger</th><th>Screen / team</th></tr></thead><tbody id="stTable"></tbody></table></div>
+    <div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>Trigger</th><th>Screen / team</th></tr></thead><tbody id="stTable"></tbody></table></div>
     <p class="small muted">The source names statuses differently from the system: Quote = Entry, Declined = Rejected, Prepayment = Waiting For Payment. Both names are shown where they differ.</p>
   </section>
 

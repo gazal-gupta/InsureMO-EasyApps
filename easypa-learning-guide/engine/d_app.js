@@ -45,18 +45,19 @@ function stateSvg(m){
   const NW=150,NH=38,W=Math.max(...m.nodes.map(n=>n.x))+NW+30,H=Math.max(...m.nodes.map(n=>n.y))+NH+30;
   const N=Object.fromEntries(m.nodes.map(n=>[n.id,n]));
   let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(m.name)} status model"><defs><marker id="sah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
-  const seen={};
-  m.edges.forEach(([a,b,l])=>{const A=N[a],B=N[b];const ax=A.x+NW/2,ay=A.y+NH/2+5,bx=B.x+NW/2,by=B.y+NH/2+5;
-    const key=[a,b].sort().join();const back=seen[key];seen[key]=1;
-    const dx=bx-ax,dy=by-ay,len=Math.hypot(dx,dy)||1;const nx=-dy/len,ny=dx/len;const off=m.edges.some(e=>e[0]===b&&e[1]===a)?30:0;
+  let lbls='';
+  const lbl=(lx,ly,l,n)=>{const tw=l.length*5.6+30;lbls+=`<g class="st-step" data-i="${n-1}"><rect class="st-lblbg" x="${lx-tw/2}" y="${ly-9}" width="${tw}" height="17" rx="3"/><circle class="st-num" cx="${lx-tw/2+9}" cy="${ly-0.5}" r="7.5"/><text class="st-numt" x="${lx-tw/2+9}" y="${ly+3}" text-anchor="middle">${n}</text><text class="st-lbl" x="${lx+9}" y="${ly+3.5}" text-anchor="middle">${esc(l)}</text></g>`};
+  m.steps.forEach(([a,b,l],i)=>{const A=N[a],B=N[b];const n=i+1;
+    if(a===b){const x=A.lp==='tl'?A.x+48:A.x+NW-22,y=A.y+5;s+=`<path class="edge" d="M${x-26},${y} C${x-30},${y-38} ${x+22},${y-38} ${x+4},${y}" marker-end="url(#sah)"/>`;lbl(A.lp==='tl'?x-50:x+30,y-32,l,n);return}
+    const ax=A.x+NW/2,ay=A.y+NH/2+5,bx=B.x+NW/2,by=B.y+NH/2+5;
+    const dx=bx-ax,dy=by-ay,len=Math.hypot(dx,dy)||1;const nx=-dy/len,ny=dx/len;const off=m.steps.some(e=>e[0]===b&&e[1]===a)?30:0;
     const cx=(ax+bx)/2+nx*off,cy=(ay+by)/2+ny*off;
     const clip=(px,py,tx,ty)=>{const ddx=tx-px,ddy=ty-py;const tX=Math.abs(ddx)>0?(NW/2)/Math.abs(ddx):1e9,tY=Math.abs(ddy)>0?(NH/2)/Math.abs(ddy):1e9;const t=Math.min(tX,tY);return[px+ddx*t,py+ddy*t]};
     const [sx,sy]=clip(ax,ay,cx,cy),[ex,ey]=clip(bx,by,cx,cy);
     s+=`<path class="edge" d="M${sx},${sy} Q${cx},${cy} ${ex},${ey}" marker-end="url(#sah)"/>`;
-    const lx=(sx+2*cx+ex)/4,ly=(sy+2*cy+ey)/4;const tw=l.length*5.6+8;
-    s+=`<rect class="st-lblbg" x="${lx-tw/2}" y="${ly-8}" width="${tw}" height="15" rx="3"/><text class="st-lbl" x="${lx}" y="${ly+3}" text-anchor="middle">${esc(l)}</text>`});
+    lbl((sx+2*cx+ex)/4,(sy+2*cy+ey)/4,l,n)});
   m.nodes.forEach(n=>{s+=`<g class="st-node ${n.c||''}"><rect x="${n.x}" y="${n.y+5}" width="${NW}" height="${NH}" rx="19"/><text x="${n.x+NW/2}" y="${n.y+5+NH/2+4}" text-anchor="middle">${esc(n.t)}</text></g>`});
-  return s+'</svg>';
+  return s+lbls+'</svg>';
 }
 
 /* ---------- ecosystem diagram ---------- */
@@ -145,7 +146,9 @@ function renderStates(){
   $('#stTabs').innerHTML=Object.entries(STATES).map(([k,m])=>`<button role="tab" type="button" data-k="${k}" aria-selected="${k===curSt}">${esc(m.name)}</button>`).join('');
   $$('#stTabs button').forEach(b=>b.addEventListener('click',()=>{curSt=b.dataset.k;renderStates()}));
   const m=STATES[curSt];$('#stDiagram').innerHTML=stateSvg(m);
-  $('#stTable').innerHTML=m.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('');
+  const nm=Object.fromEntries(m.nodes.map(n=>[n.id,n.t]));
+  $('#stTable').innerHTML=m.steps.map((r,i)=>`<tr data-i="${i}"><td class="num"><span class="st-badge">${i+1}</span></td><td>${esc(nm[r[0]])}</td><td>${esc(r[0]===r[1]?nm[r[1]]+' (same status)':nm[r[1]])}</td><td>${esc(r[3])}</td><td class="small">${esc(r[4])}</td></tr>`).join('');
+  $$('#stDiagram .st-step').forEach(g=>{g.style.cursor='pointer';g.addEventListener('click',()=>{const i=g.dataset.i;$$('#stTable tr').forEach(r=>r.classList.toggle('hl',r.dataset.i===i));$$('#stDiagram .st-step').forEach(x=>x.classList.toggle('on',x===g));const r=$(`#stTable tr[data-i="${i}"]`);if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})})});
 }
 
 /* ---------- journeys ---------- */

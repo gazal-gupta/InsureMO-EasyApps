@@ -64,16 +64,41 @@ const PM=[
 ];
 
 /* ---------- status models ---------- */
+/* Status models. steps: [from, to, arrow label, trigger, screen / team] in process order; the step number is shown on the arrow and in the table. */
 const STATES={
- proposal:{name:'Proposal (new business)',nodes:[{id:'F',t:'Fac Out',x:20,y:10},{id:'U',t:'Underwriting',x:290,y:90},{id:'Q',t:'Quote',x:20,y:230,c:'start'},{id:'B',t:'Bound',x:560,y:230},{id:'I',t:'Issued',x:830,y:230,c:'good'},{id:'P',t:'Prepayment',x:830,y:370},{id:'D',t:'Declined',x:20,y:380,c:'final'}],
-  edges:[['Q','U','Send to UW / rule hit'],['U','Q','Requote'],['Q','B','Buy: auto UW pass'],['B','Q','Re-Quote'],['U','B','Approve'],['U','F','Facultative'],['F','U','RI response'],['B','I','Issue'],['B','P','Send to BCP'],['P','I','Paid in BCP: auto-issue'],['Q','D','Decline'],['U','D','Decline'],['B','D','Decline']],
-  rows:[['Quote','Underwriting (level 1)','Send to UW with reason category and comments','Proposal entry, Ops team'],['Quote','Bound','Submit / Buy: validation, premium calculation and auto UW check pass','Proposal entry'],['Quote','Underwriting (level 1 or 2)','Submit / Buy: an underwriting rule is triggered; level comes from the rule','Proposal entry; "Send to Underwriting" dialog'],['Underwriting','Underwriting (level 2)','Escalate: status stays Underwriting, UW level set to 2','UW team'],['Underwriting','Bound','Approve with reason category and comments','UW Decision panel'],['Underwriting','Quote','Requote: back to the original operator for correction','UW team'],['Underwriting','Fac Out','Facultative: request to XRI with reason and suggested fac rate','UW team'],['Fac Out','Underwriting','XRI response arrives; case returns to the originating underwriter automatically','No manual action'],['Bound','Issued','Issue: official Policy No. generated','Bound stage, Ops team'],['Bound','Prepayment','Send to BCP (button "Send Prepayment" in the system)','Bound stage'],['Prepayment','Issued','Finance collects premium in BCP; Easy PA auto-issues','BCP Premium Pre-Paid, FN team'],['Bound','Quote','Re-Quote to change data','Bound stage'],['Quote / Underwriting / Bound','Declined','Decline with reason category and comments. Terminal','Any stage (system button "Reject")']]},
- endo:{name:'Endorsement',nodes:[{id:'Q',t:'Quote (Entry)',x:20,y:120,c:'start'},{id:'U',t:'Underwriting',x:290,y:20},{id:'B',t:'Bound',x:560,y:120},{id:'I',t:'Issued',x:830,y:120,c:'good'},{id:'R',t:'Rejected',x:290,y:240,c:'final'},{id:'N',t:'Undo',x:830,y:250,c:'final'}],
-  edges:[['Q','U','UW rule triggered'],['U','B','Approve'],['U','Q','Requote'],['Q','B','No UW rule'],['B','Q','Re-Quote'],['B','I','Issue Endorsement'],['I','N','Undo (last only)'],['Q','R','Reject'],['U','R','Decline'],['B','R','Reject']],
-  rows:[['—','Quote','New Endorsement: Policy No., type, sub type, effective date; Save gives Endorsement No. {PolicyNo}-{Seq}','Worklist > New Endorsement'],['Quote','Underwriting','Calculate or Submit triggers a UW rule (e.g. War SI above 200,000 → UW level 2)','Send to Underwriting dialog'],['Quote','Bound','No UW rule triggered','Endorsement page'],['Underwriting','Bound','Approve; underwriter may overwrite the additional / refund premium','UW Decision panel'],['Bound','Issued','Issue Endorsement: "Issue successfully! Endorsement No.: {EndoNo}"','Bound stage'],['Bound','Quote','Re-Quote to modify','Bound stage'],['Any open status','Rejected','Reject / Decline','Any stage'],['Issued','Undo','Endorsement Undo of the last endorsement only; policy data rolls back','Endorsement Undo (URP-controlled)']]},
- policy:{name:'Policy',nodes:[{id:'N',t:'Not Effective',x:20,y:100,c:'start'},{id:'E',t:'Effective',x:290,y:100,c:'good'},{id:'C',t:'Cancelled',x:560,y:20,c:'final'},{id:'X',t:'Expired',x:560,y:190,c:'final'},{id:'R',t:'Renewal proposal',x:830,y:190}],
-  edges:[['N','E','Issued'],['E','C','Cancellation endorsement'],['C','E','Undo cancellation'],['E','X','Expiry date passed'],['X','R','New Renewal']],
-  rows:[['(blank)','Not Effective','Proposal saved; no policy yet','Policy Information'],['Not Effective','Effective','Policy issued (Issue or auto-issue after prepayment)','Bound stage / BCP'],['Effective','Cancelled','Cancellation endorsement issued; expiry date set to inception (from inception) or to the cancellation date 23:59:59 (mid-term)','Endorsement'],['Cancelled','Effective','Endorsement Undo of the cancellation (policy must not have expired)','Endorsement Undo'],['Effective','Expired','Expiry date passes. No undo after expiry. Domain context: the source names the state but not the trigger','—'],['Expired / about to expire','Renewal proposal','New Renewal copies the policy with dates one year later','Worklist > New Proposal > New Renewal']]}
+ proposal:{name:'Proposal (new business)',nodes:[{id:'F',t:'Fac Out',x:20,y:10},{id:'U',t:'Underwriting',x:290,y:110},{id:'Q',t:'Quote',x:20,y:250,c:'start'},{id:'B',t:'Bound',x:560,y:250},{id:'I',t:'Issued',x:830,y:250,c:'good'},{id:'P',t:'Prepayment',x:830,y:390},{id:'D',t:'Declined',x:20,y:430,c:'final'}],
+  steps:[['Q','B','Buy: auto UW pass','Buy (Submit) runs validation rules, premium calculation and the auto UW check; no rule is hit','Proposal entry, Ops team'],
+   ['Q','U','Send to UW / rule hit','Send to UW manually (level 1, with reason), or Buy hits a UW rule (level 1 or 2 from the rule)','Proposal entry; "Send to Underwriting" dialog'],
+   ['U','U','Escalate','Escalate: status stays Underwriting; UW level set to 2; task moves to the UW2 pool','UW team (UW1)'],
+   ['U','F','Facultative','Facultative request to XRI with reason and suggested fac rate','UW team'],
+   ['F','U','RI response','XRI response arrives; the case returns to the originating underwriter automatically','No manual action; RI team'],
+   ['U','B','Approve','UW Decision: Approve with reason; all data becomes read-only','UW Decision panel'],
+   ['B','I','Issue','Issue: official Policy No. generated; Policy Status Effective','Bound stage, Ops team'],
+   ['B','P','Send to BCP','Send to BCP (system button "Send Prepayment"); prepayment order to BCP; Query tab "Waiting For Payment"','Bound stage, Ops team'],
+   ['P','I','Paid in BCP: auto-issue','Finance collects the premium in BCP; Easy PA issues the policy automatically','BCP Premium Pre-Paid, FN team'],
+   ['U','Q','Requote','Requote with reason: back to the original operator for correction','UW team'],
+   ['B','Q','Re-Quote','Re-Quote with reason to change data','Bound stage'],
+   ['Q','D','Decline','Decline with reason category and comments. Terminal (system button "Reject")','Proposal entry'],
+   ['U','D','Decline','UW Decision: Decline; Reason mandatory. Terminal','UW Decision panel'],
+   ['B','D','Decline','Decline from Bound. Terminal','Bound stage']]},
+ endo:{name:'Endorsement',nodes:[{id:'Q',t:'Quote (Entry)',x:20,y:140,c:'start'},{id:'U',t:'Underwriting',x:290,y:20},{id:'B',t:'Bound',x:560,y:140},{id:'I',t:'Issued',x:880,y:140,c:'good'},{id:'R',t:'Rejected',x:20,y:300,c:'final'},{id:'N',t:'Undo',x:880,y:290,c:'final'}],
+  steps:[['Q','B','No UW rule','Calculate / Submit: no UW rule triggered; data read-only','Endorsement page'],
+   ['Q','U','UW rule triggered','Calculate or Submit triggers a UW rule (e.g. War SI ≥ 200,000 → level 2)','"Send to Underwriting" dialog'],
+   ['U','B','Approve','Approve; an authorised underwriter may overwrite the additional / refund premium','UW Decision panel'],
+   ['B','I','Issue Endorsement','"Issue successfully! Endorsement No.: {EndoNo}"; policy updated; deltas to BCP and XRI','Bound stage'],
+   ['I','N','Undo (last only)','Endorsement Undo of the last endorsement; policy data, premium, GST and commission roll back','Endorsement Undo (URP-controlled)'],
+   ['U','Q','Requote','Requote for correction','UW team'],
+   ['B','Q','Re-Quote','Re-Quote to modify','Bound stage'],
+   ['Q','R','Reject','Reject at entry','Endorsement page'],
+   ['U','R','Decline','UW Decision: Decline (Endorsement Query tab "Underwriting Decline")','UW Decision panel'],
+   ['B','R','Reject','Reject from Bound','Bound stage']]},
+ policy:{name:'Policy',nodes:[{id:'N',t:'Not Effective',x:20,y:110,c:'start'},{id:'E',t:'Effective',x:290,y:110,c:'good',lp:'tl'},{id:'C',t:'Cancelled',x:560,y:20,c:'final'},{id:'X',t:'Expired',x:560,y:200,c:'final'},{id:'R',t:'Renewal proposal',x:830,y:200}],
+  steps:[['N','E','Issued','Policy issued (Issue, or auto-issue after prepayment). Before issue the proposal shows Not Effective','Bound stage / BCP'],
+   ['E','E','Endorsed','Basic information, POI extension / shortening / move endorsements change the policy; status stays Effective','Endorsement'],
+   ['E','C','Cancellation','Cancellation endorsement issued; expiry set to inception (from inception) or to the cancellation date 23:59:59 (mid-term)','Endorsement'],
+   ['C','E','Undo cancellation','Endorsement Undo of the cancellation, while it is the last endorsement and the policy has not expired','Endorsement Undo'],
+   ['E','X','Expiry date passed','Expiry date passes; no undo after expiry. Domain context: the source names the state, not the trigger','—'],
+   ['X','R','New Renewal','New Renewal copies the policy with dates one year later; then the new business flow','Worklist > New Proposal > New Renewal']]}
 };
 
 /* ---------- swimlanes ---------- */
@@ -90,6 +115,45 @@ const ENTRY=[
 const BUY=S('ops','op','Buy (Submit): validation rules, premium calculation, auto UW check, send to RI',{m:'Proposal entry'});
 const BCP_NB=S('bcp','ev','Premium AR and commission fee created',{f:'100101, 100501, 100400 (+); 100600 (−)'});
 const ENDO_NEW=S('ops','op','Worklist > New Endorsement: Policy No., type, sub type, effective date',{m:'Worklist > New Endorsement'});
+
+/* ---------- process maps as swimlanes ---------- */
+const PMAP={
+ nb:[S('cust','ext','Client asks for cover through an agent, broker or online',{tag:'inf'}),
+  S('agent','ext','Agent / broker gathers risk details and documents',{tag:'inf'}),
+  S('ops','op','Worklist > New Proposal; choose the product',{m:'Worklist > New Proposal',r:'Product is locked once chosen'}),
+  S('ops','op','Enter common sections, then product sections (insured persons, coverages, SI)',{m:'Proposal entry',r:'Sales channel must be active with a valid product agreement'}),
+  S('ops','op','Save',{s:'Quote; Proposal No. assigned',r:'No mandatory-field check on Save'}),
+  S('ops','op','Calculate',{f:'Premium per coverage → risk → PolicyLob → policy; installment plan'}),
+  S('ops','op','Buy (Submit)',{m:'Proposal entry'}),
+  S('pa','sys','Validation rules check',{r:'Fail → process stops; status stays Quote'}),
+  S('pa','sys','Premium calculation and auto UW rule check',{s:'Pass → Bound; rule hit → Underwriting (level 1 or 2)'}),
+  S('uw','op','Underwriter picks the case from the UW pool and decides',{m:'Worklist > NB UW1 / UW2; UW Decision',s:'Approve → Bound',r:'Also Requote, Escalate (level 2), Facultative, Decline'}),
+  S('ri','ev','If Facultative: XRI places the excess; response returns the case',{s:'Fac Out → Underwriting'}),
+  S('ri','ev','Treaty placement at bind',{f:'Only if isEnabledRI'}),
+  S('ops','op','Review read-only data; choose Issue or Send to BCP',{m:'Bound stage',s:'Bound',r:'Re-Quote or Decline also possible'}),
+  S('fn','op','If Send to BCP: Finance collects the premium',{m:'BCP > Premium Pre-Paid',s:'Prepayment → auto-issue'}),
+  S('pa','sys','Policy issued; official Policy No. generated',{s:'Issued; Policy Effective'}),
+  S('ri','ev','Treaty placement finalised at issue'),
+  S('bcp','ev','Premium receivable and commission fee created',{f:'100101, 100501, 100400 (+); 100600 (−)'}),
+  S('gl','gl','Fees posted to the GL'),
+  S('pa','end','Policy in force; documents printed and delivered')],
+ endo:[S('cust','ext','Policyholder asks for a change (cover, dates, details or cancellation)',{tag:'inf'}),
+  S('ops','op','Worklist > New Endorsement: Policy No., type, sub type, effective date',{m:'Worklist > New Endorsement'}),
+  S('pa','sys','Entry checks',{r:'No endorsement in progress; date within POI; on or after the last endorsement; POI Move only as first endorsement'}),
+  S('ops','op','Change the data the endorsement type allows',{m:'Endorsement page',r:'Policy Information is read-only'}),
+  S('ops','op','Save',{s:'Endo Quote; Endorsement No. {PolicyNo}-{Seq}'}),
+  S('ops','op','Calculate',{f:'Re-rate; delta; pro-rata / short-rate; Endo Premium, Commission, Total'}),
+  S('clm','ev','Claim checks',{r:'New POI must cover reported claims; claims before a cancellation date stay valid'}),
+  S('pa','sys','UW rule check',{s:'Rule hit → Endo Underwriting; else Endo Bound'}),
+  S('uw','op','Underwriter approves (may overwrite premium) or declines',{m:'Worklist > Endo UW1 / UW2; UW Decision',s:'Endo Bound'}),
+  S('ops','op','Issue Endorsement',{m:'Bound stage',s:'Endo Issued; policy updated'}),
+  S('bcp','ev','Delta fees: additional receivable or refund payable; commission or clawback',{f:'100101, 100501, 100400 (±); 100600 (∓)'}),
+  S('ri','ev','SumInsuredDelta and BeforeVatPremiumDelta sent to XRI'),
+  S('cm','ev','Customer changes synchronised to the Customer module'),
+  S('gl','gl','Fees posted to the GL'),
+  S('ops','rev','If issued in error: Endorsement Undo of the last endorsement',{m:'Endorsement Undo',s:'Endo Undo; values rolled back',r:'Last in, first out; not after expiry'}),
+  S('pa','end','Policy reflects the change from the endorsement date')]
+};
 
 /* ---------- scenarios ---------- */
 const SCEN=[
