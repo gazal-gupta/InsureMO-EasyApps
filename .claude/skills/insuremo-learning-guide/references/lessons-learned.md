@@ -36,3 +36,12 @@ In the BCP source: two fee codes for the same step (700009 vs 403000), opposite 
 - **Grid columns must be `minmax(0,1fr)`**, not `1fr`, or wide tables inside push the page sideways at 390 px.
 - **Money flow pairs:** stagger the two labels along the line (26% and 74%, measured in a canonical direction), not only sideways.
 - **Swimlane boxes:** allow 3 text lines plus a sub line and add an ellipsis; the full text lives in the step table and tooltip.
+
+## From the v2 readability round (Reinsurance)
+- **"Make diagrams bigger" is half the fix.** The user who cannot read a diagram usually also lacks the concepts. Add the primer and stage cards first, then enlarge.
+- **The side list shrinks the diagram.** A 260 px scenario list beside the diagram left about 780 px; moving the list above gave about 1060 px and readable text.
+- **Do not cap swimlane height to the viewport.** It shrinks long flows until text is unreadable. Use Full screen for a one-screen view.
+- **Cap width for narrow diagrams.** Without `max-width: 1.2 × viewBox`, a three-lane swimlane scales to 1.8× and looks broken.
+- **Stage step lists need a fixed role column** (grid 170 px + 1fr), or long actions wrap under the role label.
+- **Long inline Python heredocs can trip the delete safety check** even with no `rm`. Write patch scripts to the scratchpad with the Write tool, then run them.
+- **Artifact viewer blocks downloads.** Keep copy-as-text as the working path and tell the user.

@@ -6,7 +6,7 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 - `bcp-learning-guide/index.html`: the finished BCP guide. A single self-contained file (about 5.5 MB, 58 screenshots embedded) that works offline when downloaded.
 - `bcp-learning-guide/img/`: the original screenshots from the source BCP guide, at full resolution.
 - `reinsurance-learning-guide/index.html`: the finished Reinsurance (XRI) guide, about 2.9 MB, 64 screenshots embedded. Source in `reinsurance-learning-guide/src/` (a fork of the engine adapted for reinsurance: XRI vs industry process toggle, RI calculators, RI money flow). Images in `reinsurance-learning-guide/img/`. Shareable artifact: https://claude.ai/artifact/Q3LqqcJvLVLntmFCZATymY (private until shared; republish from the `--artifact` build output).
-- `.claude/skills/insuremo-learning-guide/`: the product-manager skill and the build engine. Use it to update the BCP guide or build guides for other modules.
+- `.claude/skills/insuremo-learning-guide/`: the product-manager skill. Its `engine/` rebuilds the BCP guide (v1). New module guides start from the v2 engine in `reinsurance-learning-guide/src/` (see SKILL.md).
 
 ## How to work on it
 - To change the BCP guide, edit the files in `.claude/skills/insuremo-learning-guide/engine/`, then rebuild:
@@ -19,6 +19,7 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 - Single HTML file with images embedded, so a download works offline (user requirement).
 - Structure: Start → 0 Insurance business basics → 1 Foundations → 2 Lifecycles → 3 Scenarios → 4 Screens → 5 Cross-module → 6 Fees/GL → 7 Config → 8 Toolkits → Reference (gaps, coverage, glossary) → Assess (tracker, checkpoints, final assessment).
 - Swimlanes run top to bottom so they fit the page width; every diagram has a full-screen view.
+- v2 (Reinsurance): plain-English primer and stage cards on Start; lifecycle cards and swimlane process maps; numbered status models; larger diagrams at full content width. Target reader includes people with no insurance knowledge.
 - The role lens hides less relevant sections and opens role-specific blocks.
 - Added insurance knowledge is labelled "Domain context"; market rules carry a confidence tag; example amounts are illustrative.
 - `main` was created from an empty initial commit and merged into the feature branch (force-push was blocked).

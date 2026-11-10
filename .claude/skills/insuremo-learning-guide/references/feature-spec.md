@@ -71,8 +71,22 @@ Release state (BCP v4): all features below shipped and tested.
 - Keyboard: swimlane nodes and module map nodes respond to Enter; Esc closes overlays.
 - Browser storage is wrapped in try/catch with an in-memory fallback.
 
+## F11. Reader with no insurance knowledge (v2)
+- Start page opens with a plain-English primer: about seven ideas in the order a newcomer needs them, each with one example.
+- The module's stages appear as a full-width ribbon (click to jump) and one card each: plain meaning, starts when, numbered steps as role → action → result, ends with, how often, everyday comparison, worked example, links to scenarios.
+- Level 2 has one full-width card per lifecycle and a swimlane process map per lifecycle with a Result column.
+- **Accept when:** a colleague outside insurance can read Start and Level 0 and score at least 3 of 4 on the Level 0 checkpoint.
+
+## F12. Diagram readability (v2)
+- Swimlane boxes at least 180 px wide in the viewBox, 13.5 px step text, 3 lines plus a result line, ellipsis when cut; full text in the step table and tooltip.
+- No height cap on in-page swimlanes; width capped at 1.2 × the viewBox so a three-lane diagram does not blow up; full screen fits the width and scrolls vertically.
+- Scenario list sits above the diagram, so the diagram uses the full content width.
+- Every step is badged by source (system step from the source, or industry / domain context).
+- Status models number every status in sequence; the transition table is numbered and repeats those numbers.
+- **Accept when:** step text in a 5-lane scenario swimlane renders at 12 px or more at 1366 px, and no label overlaps in any status model tab.
+
 ## Backlog (not built)
-1. Claims, Easy PA and Reinsurance guides from the same engine.
+1. Easy PA guide from the v2 engine; port the v2 features back to the BCP guide. (Reinsurance is built; Claims exists on a separate branch.)
 2. A shared cross-module index page linking all module guides.
 3. A certificate summary view (it cannot use print; show a page the learner can screenshot).
 4. Question banks with random question order on retake.
