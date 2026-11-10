@@ -1,0 +1,108 @@
+{
+  "order": ["pa", "bcp", "clm", "ri"],
+  "mods": {
+    "pa": {
+      "name": "Easy PA", "full": "Policy administration (Easy PA)", "short": "Policy", "col": "pa",
+      "what": "Quote, underwrite, issue, endorse, renew and cancel policies.",
+      "money": "Creates the premium that every other module depends on.",
+      "art": "https://claude.ai/artifact/6knf7mwoDjGiwThXqNok9q",
+      "branch": "claude/eager-thompson-37yl3k",
+      "groups": {
+        "nb": "New business and renewal",
+        "uw": "Underwriting and facultative referral",
+        "endo": "Endorsements (mid-term changes)",
+        "cancel": "Cancellation and undo"
+      },
+      "lanes": {"cust": "ext", "agent": "ext", "sur": "ext", "gar": "ext", "rein": "ext", "ops": "pa", "uw": "pa", "pa": "pa", "cm": "pa", "fn": "bcp", "bcp": "bcp", "ri": "ri", "clm": "clm", "gl": "gl"}
+    },
+    "bcp": {
+      "name": "BCP", "full": "Billing, Collection and Payment (BCP)", "short": "Billing", "col": "sys",
+      "what": "Bill, collect, refund, pay, offset and settle every amount, then feed the General Ledger.",
+      "money": "Turns receivables and payables from all modules into cash and GL entries.",
+      "art": "https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR",
+      "branch": "claude/adoring-cerf-5m89jr",
+      "groups": {
+        "in": "Collection (money in)",
+        "out": "Payment and refund (money out)",
+        "int": "Internal settlement and offset",
+        "cancel": "Cancellation of receivables and payables"
+      },
+      "lanes": {"cust": "ext", "prod": "ext", "coin": "ext", "rein": "ext", "tp": "ext", "clmt": "ext", "bank": "ext", "pa": "pa", "clm": "clm", "ri": "ri", "sc": "sc", "fin": "bcp", "appr": "bcp", "sys": "bcp", "gl": "gl"}
+    },
+    "clm": {
+      "name": "Easy Claim", "full": "Claims (Easy Claim)", "short": "Claims", "col": "clm",
+      "what": "Run a claim as a chain of tasks from first notice of loss to settlement, reserve and recovery.",
+      "money": "Sets reserves, pays indemnity through BCP and recovers from third parties.",
+      "art": "https://claude.ai/artifact/CM4Zi8GHUscx1H6NuPd2KM",
+      "branch": "claude/festive-heisenberg-ia4e0n",
+      "groups": {
+        "main": "Claim handling (main line)",
+        "rsv": "Reserves and approvals",
+        "aux": "Recovery and advance payment",
+        "maint": "Case maintenance",
+        "end": "Cancel and decline"
+      },
+      "lanes": {"clmt": "ext", "tp": "ext", "cust": "ext", "agent": "ext", "broker": "ext", "tpa": "ext", "bank": "ext", "reg": "ext", "pa": "pa", "uw": "pa", "ops": "pa", "hdl": "clm", "appr": "clm", "mgr": "clm", "sys": "clm", "docs": "clm", "bcp": "bcp", "ri": "ri", "gl": "gl", "sc": "sc"}
+    },
+    "ri": {
+      "name": "XRI", "full": "Reinsurance (XRI)", "short": "Reinsurance", "col": "ri",
+      "what": "Hold treaties and facilities, cede each policy, recover claims, and account and settle with reinsurers.",
+      "money": "Passes part of the premium and part of every loss to reinsurers.",
+      "art": "https://claude.ai/artifact/Q3LqqcJvLVLntmFCZATymY",
+      "branch": "claude/adoring-cerf-5m89jr",
+      "groups": {
+        "def": "Contract set-up (treaties and facilities)",
+        "alloc": "Risk allocation (cession)",
+        "rec": "Claim recovery",
+        "acc": "Accounting and settlement",
+        "inw": "Inward reinsurance"
+      },
+      "lanes": {"ins": "ext", "ced": "ext", "broker": "ext", "rein": "ext", "pa": "pa", "clm": "clm", "uw": "ri", "rev": "ri", "xri": "ri", "bcp": "bcp"}
+    }
+  },
+  "ext": {
+    "sc": "Sales Channel", "gl": "GL / accounting", "cm": "Customer module", "urp": "URP (users, roles, branch)",
+    "pf": "Product factory", "doc": "Documents and print", "ext": "Brokers and reinsurers"
+  },
+  "extAlias": {"docs": "doc", "dms": "doc"},
+  "chain": [
+    {"n": "Distribution", "d": "Agents, brokers and digital partners bring the business.", "mod": "sc", "sys": "Sales Channel (no guide yet; covered where it touches Easy PA and BCP)", "go": "pa--scr-saleschan"},
+    {"n": "Underwriting", "d": "Assess, price, accept or decline the risk.", "mod": "pa", "sys": "Easy PA: rating, UW rules, UW levels", "go": "pa--sc-N3"},
+    {"n": "Policy administration", "d": "Issue, endorse, renew and cancel the policy.", "mod": "pa", "sys": "Easy PA", "go": "pa--scenarios"},
+    {"n": "Billing and collection", "d": "Bill, collect, refund and pay commission.", "mod": "bcp", "sys": "BCP", "go": "bcp--scenarios"},
+    {"n": "Claims", "d": "First notice of loss to settlement and recovery.", "mod": "clm", "sys": "Easy Claim", "go": "clm--flows"},
+    {"n": "Reinsurance", "d": "Cede the risk and recover part of each claim.", "mod": "ri", "sys": "XRI", "go": "ri--scenarios"},
+    {"n": "Finance", "d": "GL vouchers, reserves, reports and IFRS 17 data.", "mod": "gl", "sys": "BCP and XRI feed the GL; actuarial work is outside InsureMO", "go": "bcp--fees"}
+  ],
+  "pairs": [
+    {"a": "pa", "b": "bcp", "tag": "certain", "verdict": "agree",
+     "note": "Both guides describe the same interface. Easy PA sends premium on issue and endorsement, a prepay order on Send To BCP, and refund amounts on cancellation. BCP books these as AR (fee codes 100501 and 100101) or AP. When BCP collects a prepaid premium, the policy is issued automatically."},
+    {"a": "clm", "b": "bcp", "tag": "certain", "verdict": "agree",
+     "note": "Both guides use BizModule 20 and the same fee codes: 200201 for reserve (GL only, no payment), 200312 and 200100 for indemnity AP and recovery AR. Payment status (Approved, Paid, Reversed) is visible in BCP by claim number."},
+    {"a": "ri", "b": "bcp", "tag": "certain", "verdict": "agree",
+     "note": "Both guides say settlement summaries reach BCP as AR (reinsurer owes) or AP (company owes), under BizModule 30. The XRI guide adds that payment and receipt results come back to XRI. Neither guide gives RI fee codes."},
+    {"a": "pa", "b": "ri", "tag": "likely", "verdict": "one-sided",
+     "note": "The Easy PA guide gives field-level detail (PolicyRiskList with SumInsured and BeforeVatPremium, endorsement deltas, facultative request and removal). The XRI guide describes the same data in business terms but states that its source has no API, event or payload specification. Treat the Easy PA field list as the working contract and confirm it with the platform team."},
+    {"a": "clm", "b": "ri", "tag": "certain", "verdict": "gap",
+     "note": "This is the weakest interface. The Claims source says nothing about reinsurance, so the Claims guide marks its side as Domain context only. The XRI guide lists what it needs from Claims (case number, date of loss, CAT code, outstanding and paid amounts) but also has no interface specification. Get the claim-to-RI interface and its timing in writing before any requirement or test is signed off."},
+    {"a": "pa", "b": "clm", "tag": "certain", "verdict": "agree",
+     "note": "Claims reads policy, risk and coverage data from Easy PA (docking mode 02-PA) and shows prior claims under the policy. Easy PA uses reported claims to block POI changes that would no longer cover the loss date, and alerts on Endorsement Undo. RiskName is mandatory for Claims and XRI."},
+    {"a": "sc", "b": "bcp", "tag": "certain", "verdict": "one-sided",
+     "note": "Only the BCP guide describes this interface: commission fee 100600 per policy, settlement through Single or Massive Commission Settlement, and the commission status chain from 1 Pending to 5 Paid. No Sales Channel guide exists yet."},
+    {"a": "sc", "b": "pa", "tag": "certain", "verdict": "one-sided",
+     "note": "Only the Easy PA guide describes this: Easy PA reads active channels with a valid product agreement and the commission rate, and sends back the chosen channel and share rate."},
+    {"a": "bcp", "b": "gl", "tag": "certain", "verdict": "one-sided",
+     "note": "Every BCP fee becomes a GL voucher through GLIntegrationMappingRule. The account mapping itself is configuration and is not in the source."},
+    {"a": "ri", "b": "gl", "tag": "likely", "verdict": "one-sided",
+     "note": "The XRI guide says ceded premium, commission, recoveries and reserves go to the GL by treaty and period, with IFRS 17 grouping data. It does not say whether this goes through BCP or directly."}
+  ],
+  "path": [
+    {"mod": "clm", "lv": ["insure", "industry"], "why": "Broad insurance basics and the whole policy lifecycle, before any one module."},
+    {"mod": "pa", "lv": ["business", "basics", "lifecycle", "scenarios"], "why": "The policy is where premium, risk data and customer data are created."},
+    {"mod": "bcp", "lv": ["business", "basics", "lifecycle", "scenarios"], "why": "Every amount from every module ends up in BCP as AR, AP or a fee."},
+    {"mod": "clm", "lv": ["basics", "lifecycle", "flows", "calc"], "why": "The largest outflow: reserves, payments and recoveries."},
+    {"mod": "ri", "lv": ["business", "basics", "lifecycle", "scenarios"], "why": "Protects the balance sheet; depends on policy and claim data."},
+    {"mod": "hub", "lv": ["cross"], "why": "Join the four modules: interfaces, end-to-end journeys and the gaps between them."},
+    {"mod": "all", "lv": ["toolkit", "gaps", "assessment"], "why": "Role toolkits, source gaps and the final assessment in each guide."}
+  ]
+}

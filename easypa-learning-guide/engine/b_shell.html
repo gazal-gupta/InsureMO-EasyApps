@@ -1,0 +1,606 @@
+<div class="top"><div class="top-in">
+  <a class="brand" href="#start"><div class="brand-mark">EPA</div><div><b>InsureMO Easy PA Learning Guide</b><span>Policy Administration — Easy Apps</span></div></a>
+  <div class="search"><label for="q" class="eyebrow" hidden>Search</label><input id="q" type="search" placeholder="Search terms, screens, scenarios, statuses, fee codes…" autocomplete="off"><div class="results" id="results" hidden></div></div>
+  <div class="roles" role="group" aria-label="Role lens"><span class="eyebrow">Lens</span>
+    <button class="chip" data-role="all" aria-pressed="true">All</button>
+    <button class="chip" data-role="ba" aria-pressed="false">Business analyst</button>
+    <button class="chip" data-role="qa" aria-pressed="false">Tester</button>
+    <button class="chip" data-role="dev" aria-pressed="false">Developer</button>
+  </div>
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme">Theme</button>
+</div></div>
+
+<div class="shell">
+<aside class="rail">
+  <div class="progress" title="Levels marked complete"><i id="progBar"></i></div>
+  <nav id="railNav"></nav>
+  <div class="rolepath" id="rolePath"></div>
+</aside>
+<main id="main">
+
+<!-- START -->
+<section class="view" id="v-start" data-title="Start here">
+  <div class="hero">
+    <header>
+      <span class="eyebrow">Learning guide · basic to advanced</span>
+      <h1>Follow the policy through InsureMO</h1>
+      <p class="lede">Easy PA (Policy Administration) is where a policy is born and lives. It records the proposal, prices it, routes it to underwriting, issues the policy, and then handles every change: endorsements, cancellations, undo and renewal. Each step sends data to BCP (money), Reinsurance (XRI) and the Customer module, and Claims depends on the policy it creates.</p>
+      <p class="muted small">Built from the InsureMO Easy PA module guide (New Business and Renewal, Endorsement, Common Function, Underwriting, Group Policy, PA Installment Fee, Reinsurance Integration, Policy Authority). Content marked <span class="tag inf">Domain context</span> is general insurance practice added to help you learn. It is not in the source guide, so confirm it with your project before you rely on it. Example amounts are illustrative unless they say "source example".</p>
+    </header>
+    <div class="card">
+      <span class="eyebrow">The three journeys in Easy PA</span>
+      <div class="flowstrip">
+        <div class="fs-row in"><span class="lbl">New business</span><div class="fs-steps"><span>Quote</span><i>→</i><span>Underwriting</span><i>→</i><span>Bound</span><i>→</i><span>Prepayment</span><i>→</i><span>Issued</span></div></div>
+        <div class="fs-row out"><span class="lbl">Change</span><div class="fs-steps"><span>Endorsement</span><i>→</i><span>Calculate</span><i>→</i><span>UW if needed</span><i>→</i><span>Issue</span><i>→</i><span>Undo</span></div></div>
+        <div class="fs-row int"><span class="lbl">Renewal</span><div class="fs-steps"><span>New Renewal</span><i>→</i><span>Copy policy</span><i>→</i><span>New business flow</span><i>→</i><span>Issued</span></div></div>
+      </div>
+      <p class="small muted">Underwriting and Prepayment are optional stages. Decline can happen from Quote, Underwriting or Bound and is final.</p>
+    </div>
+  </div>
+
+  <section class="block">
+    <h2>Pick your learning path</h2>
+    <p class="muted">Use the <b>Lens</b> buttons at the top to filter content for your role. Everyone should start with Level 0 (insurance business basics) and finish levels 1 to 3. Each level ends with a 4-question checkpoint; track scores in <a href="#tracker">My progress</a> and finish with the <a href="#assessment">final assessment</a>. Everything works offline in the downloaded HTML file.</p>
+    <div class="paths" id="pathCards"></div>
+  </section>
+
+  <section class="block">
+    <h2>How the guide is organised</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Level</th><th>What you learn</th><th>You are ready to move on when you can…</th></tr></thead>
+      <tbody id="levelTable"></tbody>
+    </table></div>
+  </section>
+
+  <section class="block">
+    <h2>How to read the swimlane diagrams</h2>
+    <div class="legend">
+      <span><i style="border-color:var(--pa)"></i>Event from another module (BCP, XRI, Claims, Customer)</span>
+      <span><i style="border-color:var(--ink-2);border-style:dashed"></i>External party action (client, agent, garage, TPA)</span>
+      <span><i style="border-color:var(--accent);background:var(--accent-soft)"></i>User action on a screen</span>
+      <span><i style="border-color:var(--sys)"></i>System action</span>
+      <span><i style="border-color:var(--gl);background:var(--surface-2)"></i>GL posting</span>
+      <span><i style="border-color:var(--in);background:var(--in-soft)"></i>End state</span>
+      <span><i style="border-color:var(--out);background:var(--out-soft)"></i>Exception step</span>
+      <span><i style="border-color:var(--cancel);background:var(--cancel-soft)"></i>Final step (decline, cancel)</span>
+    </div>
+    <p class="muted small">Each column is one actor; read the numbered boxes from top to bottom. Click a box to highlight its row in the step table under the diagram. The small grey text in a box shows the status after the step, a fee code or a note. Use <b>Full screen</b> on any diagram to see it at full width and height.</p>
+  </section>
+</section>
+
+<!-- L0 INSURANCE BUSINESS -->
+<section class="view" id="v-business" data-title="Insurance business basics" hidden>
+  <header><span class="eyebrow">Level 0 · Insurance business basics</span><h1>Who does what in insurance</h1>
+  <p class="lede">Insurance is a promise paid for in advance: the client pays premium now, and the insurer pays claims later if a covered event happens. Before the promise is made, someone must sell it, price it and accept the risk. After it is made, it changes, ends or renews. Easy PA records that whole life of the promise.</p></header>
+
+  <section class="block">
+    <h2>The parties</h2>
+    <div class="grid g3" id="partyCards"></div>
+  </section>
+
+  <section class="block">
+    <h2>Money flow map</h2>
+    <p class="muted">Green arrows bring money into the insurer; rust arrows take money out. Easy PA creates the premium, refund and commission amounts; BCP moves the money; Claims and XRI create the claim and reinsurance amounts.</p>
+    <div class="diagram"><div id="moneyFlow"></div></div>
+    <div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>What</th><th>Direction</th></tr></thead><tbody id="flowBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>The policy lifecycle in business words</h2>
+    <p class="muted">Each Easy PA process explained with the parties involved, a real example, and where it lives in the system.</p>
+    <div class="tbl"><table><thead><tr><th>Process</th><th>Who pays whom</th><th>In plain words</th><th>Real example</th><th>In Easy PA</th></tr></thead><tbody id="procBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>The insurance value chain and InsureMO</h2>
+    <div class="tbl"><table><thead><tr><th>#</th><th>Stage</th><th>What happens</th><th>Money effect</th><th>InsureMO module</th></tr></thead><tbody>
+      <tr><td class="num">1</td><td>Product</td><td>Insurer designs cover, rating, underwriting rules and clauses.</td><td>None yet</td><td>Product factory, configuration tables</td></tr>
+      <tr><td class="num">2</td><td>Distribution</td><td>Agent, broker, bank or online channel brings the client.</td><td>Commission rate agreed</td><td>Sales Channel</td></tr>
+      <tr><td class="num">3</td><td>Quote</td><td>Proposal captured and priced; options compared.</td><td>Premium calculated</td><td><b>Easy PA</b> (Quote, Proposal Version)</td></tr>
+      <tr><td class="num">4</td><td>Underwriting</td><td>Risk reviewed; accepted, loaded, escalated or declined.</td><td>Loading may raise premium</td><td><b>Easy PA</b> (Underwriting) + XRI</td></tr>
+      <tr><td class="num">5</td><td>Bind and issue</td><td>Terms fixed; policy number and documents created.</td><td>Premium receivable, commission payable</td><td><b>Easy PA</b> → BCP, XRI, iDoc</td></tr>
+      <tr><td class="num">6</td><td>Collection</td><td>Premium collected, before or after issue.</td><td>Cash in</td><td>BCP</td></tr>
+      <tr><td class="num">7</td><td>Servicing</td><td>Endorsements, cancellations, undo.</td><td>Extra premium or refund; commission adjusts</td><td><b>Easy PA</b> → BCP, XRI</td></tr>
+      <tr><td class="num">8</td><td>Claims</td><td>Loss reported, surveyed, reserved, paid; recoveries.</td><td>Claim payments out; recoveries in</td><td>Claims → BCP (uses Easy PA policy data)</td></tr>
+      <tr><td class="num">9</td><td>Reinsurance</td><td>Risk ceded by treaty or facultative; claims recovered.</td><td>Ceded premium out; recoveries in</td><td>XRI → BCP</td></tr>
+      <tr><td class="num">10</td><td>Renewal</td><td>Policy offered for a new period.</td><td>New premium</td><td><b>Easy PA</b> (New Renewal)</td></tr>
+      <tr><td class="num">11</td><td>Finance and reporting</td><td>Books, tax, solvency and IFRS 17 reporting.</td><td>GL entries from fees</td><td>BCP → GL</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Anatomy of a premium</h2>
+    <p class="prose">One worked example from rating to accounts. A travel policy, gross premium 1,000, campaign discount 10%, GST 7% (the rate used in the source), commission 10% through an agent. Account names are typical; your chart of accounts decides the real ones.</p>
+    <div class="grid g2">
+      <div class="tbl"><table><thead><tr><th>Layer</th><th class="num">Amount</th><th>Easy PA field / BCP fee</th></tr></thead><tbody>
+        <tr><td>Annual (formula) premium × POI rate = gross premium</td><td class="num">1,000.00</td><td class="mono small">GrossPremium</td></tr>
+        <tr><td>Campaign −10%</td><td class="num">−100.00</td><td class="mono small">Discount/Loading</td></tr>
+        <tr><td>Before-VAT (final) premium</td><td class="num">900.00</td><td class="mono small">BeforeVatPremium · 100501</td></tr>
+        <tr><td>GST 7%</td><td class="num">63.00</td><td class="mono small">100400</td></tr>
+        <tr><td><b>Due premium billed to client</b></td><td class="num"><b>963.00</b></td><td class="mono small">DuePremium · 100101</td></tr>
+        <tr><td>Agent commission 10% of before-VAT</td><td class="num">90.00</td><td class="mono small">100600</td></tr>
+        <tr><td>Insurer keeps after commission and tax</td><td class="num">810.00</td><td></td></tr>
+      </tbody></table></div>
+      <div class="tbl"><table><thead><tr><th>Event</th><th>Debit</th><th>Credit</th></tr></thead><tbody>
+        <tr><td>Policy issued</td><td>Premium receivable 963</td><td>Premium written 900; GST payable 63</td></tr>
+        <tr><td>Commission</td><td>Commission expense 90</td><td>Commission payable 90</td></tr>
+        <tr><td>Client pays (BCP)</td><td>Bank 963</td><td>Premium receivable 963</td></tr>
+        <tr><td>Mid-term cancellation, 214 days left, pro-rata</td><td>Premium written 527.67; GST payable 36.94</td><td>Refund payable 564.61</td></tr>
+        <tr><td>Commission clawback</td><td>Commission payable 52.77</td><td>Commission expense 52.77</td></tr>
+      </tbody></table></div>
+    </div>
+    <p class="small muted">Cancellation line: 900 × 214 ÷ 365 = 527.67; GST 36.94; clawback 52.77. This is the pro-rata version of the source Policy C (which uses short-rate 80% and refunds 422.14).</p>
+  </section>
+
+  <section class="block">
+    <h2>Agent or broker?</h2>
+    <div class="tbl"><table><thead><tr><th></th><th>Agent</th><th>Broker</th></tr></thead><tbody>
+      <tr><td><b>Represents</b></td><td>The insurer</td><td>The client</td></tr>
+      <tr><td><b>Products</b></td><td>One insurer (tied) or a few</td><td>Whole market</td></tr>
+      <tr><td><b>Paid by</b></td><td>Commission from the insurer</td><td>Brokerage from the insurer, sometimes fees from the client</td></tr>
+      <tr><td><b>Premium handling</b></td><td>Client often pays the insurer directly</td><td>Often collects from clients and remits within credit terms</td></tr>
+      <tr><td><b>In Easy PA</b></td><td>Primary Sales Channel; Billing Type Direct Billing</td><td>Primary Sales Channel; often Billing Type Agent Billing</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>How underwriting decides</h2>
+    <p class="prose">An underwriter asks three questions: how likely is a loss, how big could it be, and is the price right for it? Rules in the product factory handle standard cases automatically; people handle the rest. <span class="tag inf">Domain context</span></p>
+    <div class="grid g2">
+      <div class="card"><h3>What underwriters look at</h3><ul class="clean small"><li><b>Travel / personal accident:</b> age, destination, trip length, war or dangerous activities, sum insured.</li><li><b>Health:</b> age, medical history (questionnaire), pre-existing conditions, waiting periods.</li><li><b>Motor:</b> driver age and history, vehicle value and use, claims history (no-claim discount).</li><li><b>Property:</b> construction, fire protection, location (flood), sum insured against treaty capacity.</li></ul></div>
+      <div class="card"><h3>What they can decide</h3><ul class="clean small"><li><b>Accept</b> on standard terms (Approve).</li><li><b>Accept with a loading</b> (Underwriting Loading +%) or an exclusion clause.</li><li><b>Ask for more information</b> or correction (Requote).</li><li><b>Refer upwards</b> (Escalate to level 2).</li><li><b>Buy reinsurance first</b> (Facultative).</li><li><b>Decline</b> (final).</li></ul></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Claims: who does what</h2>
+    <p class="prose">Easy PA does not run claims, but every claim starts from the policy it issued. Knowing the claim process explains why Easy PA blocks some endorsements. <span class="tag inf">Domain context</span></p>
+    <div class="tbl"><table><thead><tr><th>#</th><th>Step</th><th>Who</th><th>Motor example</th><th>Health example</th><th>Link to Easy PA</th></tr></thead><tbody>
+      <tr><td class="num">1</td><td>Notification (FNOL)</td><td>Insured / claimant</td><td>Driver reports a crash on 15 May</td><td>Patient admitted to a network hospital</td><td>Policy must be in force on the date of loss</td></tr>
+      <tr><td class="num">2</td><td>Coverage check</td><td>Claims handler / TPA</td><td>Is the driver named? Is own damage covered?</td><td>Is the member active? Waiting period over?</td><td>Coverages, insured persons, POI from Easy PA</td></tr>
+      <tr><td class="num">3</td><td>Assessment</td><td>Surveyor / loss adjuster; TPA doctor</td><td>Surveyor agrees repair cost 8,000</td><td>TPA approves pre-authorisation</td><td>Sum insured limits</td></tr>
+      <tr><td class="num">4</td><td>Reserve</td><td>Claims handler</td><td>Reserve 8,000</td><td>Reserve the approved amount</td><td>Reinsurance share from XRI cession</td></tr>
+      <tr><td class="num">5</td><td>Repair / treatment</td><td>Garage / hospital</td><td>Panel garage repairs the car</td><td>Hospital treats and bills the TPA</td><td>—</td></tr>
+      <tr><td class="num">6</td><td>Payment</td><td>Insurer via BCP</td><td>7,500 to garage (500 excess paid by driver)</td><td>Covered items to hospital</td><td>Cancelled policies still pay losses before the cancellation date</td></tr>
+      <tr><td class="num">7</td><td>Recovery</td><td>Insurer</td><td>Subrogation from the at-fault driver; salvage</td><td>Rare</td><td>Cancellation reason "Total Loss Cancellation"</td></tr>
+      <tr><td class="num">8</td><td>Reinsurance recovery</td><td>Reinsurer</td><td>Treaty share of a large loss</td><td>Treaty share</td><td>Risk units sent by Easy PA</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Reinsurance and co-insurance in practice</h2>
+    <div class="grid g3">
+      <div class="card"><h3>Treaty</h3><ul class="clean small"><li>Automatic for every policy in a portfolio.</li><li><b>Quota share 30%:</b> reinsurer takes 30% of every premium and pays 30% of every claim, plus a ceding commission.</li><li><b>Surplus:</b> reinsurer takes the part of each risk above the insurer's retention, up to a limit (capacity).</li><li>Easy PA sends each risk unit to XRI at bind and issue.</li></ul></div>
+      <div class="card"><h3>Facultative</h3><ul class="clean small"><li>One risk placed on its own, negotiated each time.</li><li>Used when SI exceeds treaty capacity or the risk is excluded from the treaty.</li><li>Example: factory 80 million, capacity 50 million → 30 million placed facultatively.</li><li>Easy PA: Facultative button → Fac Out → RI response.</li></ul></div>
+      <div class="card"><h3>Co-insurance</h3><ul class="clean small"><li>Several insurers share a risk directly with the client; no reinsurance contract.</li><li>The leader issues the policy, collects premium, handles claims, and charges followers a co-fee.</li><li>Example: leader 60%, follower 40%, co-fee 2% of the follower's premium.</li><li>Easy PA: Coinsurance Information tab; BCP fee scenarios 3 to 6.</li></ul></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Rules from real markets</h2>
+    <p class="muted">Facts that shape Easy PA requirements. "certain" = well-established public rule; "likely" = common practice or recent change, confirm locally.</p>
+    <div class="tbl"><table><thead><tr><th>Market</th><th>Rule or practice</th><th>Confidence</th><th>Where it shows up in Easy PA</th></tr></thead><tbody id="factBody"></tbody></table></div>
+  </section>
+  <div data-cp="business"></div>
+  <label class="mark-done"><input type="checkbox" data-done="business"> I can explain who does what in a policy lifecycle and how money moves between the parties.</label>
+</section>
+
+<!-- L1 FOUNDATIONS -->
+<section class="view" id="v-basics" data-title="Foundations" hidden>
+  <header><span class="eyebrow">Level 1</span><h1>Foundations</h1>
+  <p class="lede">What Easy PA does, the words it uses, and where it sits in the InsureMO landscape.</p></header>
+
+  <section class="block">
+    <h2>What Easy PA does</h2>
+    <div class="grid g3">
+      <div class="card"><h3>1. New business and renewal</h3><p>Captures the proposal, rates it, runs validation and underwriting rules, routes it to underwriters and reinsurance, and issues the policy. Renewal copies an expiring policy into a new proposal.</p></div>
+      <div class="card"><h3>2. Policy servicing</h3><p>Endorsements change the issued policy: customer and coverage changes, period changes, cancellation, and undo of the last endorsement. Each one recalculates the premium difference.</p></div>
+      <div class="card"><h3>3. Common functions</h3><p>Worklist, sales channel, customer, clause, discount and loading, installments, delivery, documents, notes, versions and print work the same for every product. The source calls these the hardest part to implement.</p></div>
+    </div>
+    <div id="mapOverview"></div>
+    <div class="callout"><b>Why it matters:</b> Easy PA is the source of truth for the policy. BCP bills from its fees, XRI cedes from its risk units, and Claims checks cover against its dates and coverages. A wrong field here becomes a wrong bill, a wrong reinsurance share or a wrong claim decision.</div>
+  </section>
+
+  <section class="block">
+    <h2>Where Easy PA sits</h2>
+    <div class="diagram" id="ecoDiagram"></div>
+  </section>
+
+  <section class="block">
+    <h2>Core concepts</h2>
+    <div class="grid g3" id="conceptCards"></div>
+  </section>
+
+  <section class="block">
+    <h2>Decline, cancel and undo are different</h2>
+    <div class="tbl"><table>
+      <thead><tr><th></th><th>Decline (Reject)</th><th>Cancellation</th><th>Endorsement Undo</th></tr></thead>
+      <tbody>
+        <tr><td><b>Acts on</b></td><td>A proposal or endorsement not yet issued</td><td>An issued policy</td><td>The last issued endorsement</td></tr>
+        <tr><td><b>Used when</b></td><td>Client walks away, or the risk is refused</td><td>Cover must end early (free look, sale of car, non-payment)</td><td>An endorsement was a mistake</td></tr>
+        <tr><td><b>Result</b></td><td>Declined / Rejected; case closed</td><td>Policy Cancelled; expiry date moved; refund and clawback</td><td>Policy data, premium, GST and commission return to before the endorsement</td></tr>
+        <tr><td><b>Can it be reversed?</b></td><td><b>No. Terminal.</b></td><td>Yes, by Endorsement Undo while it is the last endorsement and the policy has not expired</td><td>No undo of an undo is described</td></tr>
+        <tr><td><b>Premium</b></td><td>None billed</td><td>Full (inception) or unearned (mid-term) refund</td><td>No new calculation; reverses the impact</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="block">
+    <h2>Proposal, policy and endorsement numbers</h2>
+    <div class="tbl"><table><thead><tr><th>Record</th><th>Example from the guide</th><th>Created when</th></tr></thead><tbody>
+      <tr><td>Proposal No. (single policy)</td><td class="mono">PABTBTI0001298157</td><td>First Save of a new business or renewal proposal</td></tr>
+      <tr><td>Proposal No. (group)</td><td class="mono">PARG0010000001011</td><td>First Save of an RG001 proposal</td></tr>
+      <tr><td>Policy No.</td><td class="mono">POTBTI01229187 / PORG00100002507</td><td>Issue (or auto-issue after prepayment)</td></tr>
+      <tr><td>Endorsement No.</td><td class="mono">POTBTI01229187-001</td><td>First Save of an endorsement: {PolicyNo}-{Seq}</td></tr>
+      <tr><td>Sales channel</td><td class="mono">PTY10000043050011</td><td>Sales Channel module</td></tr>
+      <tr><td>Clause No.</td><td class="mono">F0000015-2023</td><td>Product clause configuration</td></tr>
+      <tr><td>Coverage code</td><td class="mono">C101392 (War)</td><td>Product configuration; shown in UW messages</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Menu map</h2>
+    <p class="muted">Level 4 explains each screen in detail.</p>
+    <div class="tbl"><table><thead><tr><th>Menu</th><th>Screen</th><th>Purpose</th></tr></thead><tbody id="menuMapBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Endorsement type matrix</h2>
+    <div class="tbl"><table><thead><tr><th>Type</th><th>Sub type / variant</th><th>Changes premium</th><th>Installment allowed</th><th>UW may apply</th><th>Can be undone</th><th>Claim check</th></tr></thead><tbody id="pmBody"></tbody></table></div>
+    <p class="small muted">"Claim check" means the system checks reported claims or claim dates: POI changes must cover reported claims; cancellation keeps claims before the cancellation date valid; undo alerts on claims in the date range.</p>
+  </section>
+  <div data-cp="basics"></div>
+  <label class="mark-done"><input type="checkbox" data-done="basics"> I can explain proposal, bound, issued, endorsement, POI and sum insured to a colleague.</label>
+</section>
+
+<!-- L2 LIFECYCLE -->
+<section class="view" id="v-lifecycle" data-title="Policy lifecycles" hidden>
+  <header><span class="eyebrow">Level 2</span><h1>Policy lifecycles and status models</h1>
+  <p class="lede">Every scenario in Easy PA is a variation of three journeys. Learn the journeys and the status changes, and the scenarios become easy.</p></header>
+
+  <section class="block">
+    <h2>The three journeys</h2>
+    <div class="grid g3">
+      <div class="card"><span class="tag in">New business</span><h3>Quote → Bound → Issued</h3><ol class="steps"><li>Ops team records and saves the proposal (Quote).</li><li>Buy runs validation, rating, auto UW and the RI call.</li><li>Rule hit → Underwriting (and maybe Fac Out). No hit → Bound.</li><li>From Bound: Issue, or Send to BCP → Prepayment → auto-issue.</li></ol></div>
+      <div class="card"><span class="tag out">Endorsement</span><h3>Quote → Bound → Issued</h3><ol class="steps"><li>New Endorsement with type, sub type and effective date.</li><li>Change data, Save (Endorsement No.), Calculate (deltas).</li><li>UW rule hit → Underwriting; otherwise Bound.</li><li>Issue Endorsement. If wrong, Endorsement Undo (last only).</li></ol></div>
+      <div class="card"><span class="tag int">Renewal</span><h3>Copy → new business</h3><ol class="steps"><li>New Proposal → Policy No. → New Renewal.</li><li>Data copied; dates one year later.</li><li>Any field can change.</li><li>Then the new business journey.</li></ol></div>
+    </div>
+    <div class="callout"><b>Permission rule across statuses:</b> when a case moves to the next status and the same user has authority for it, they can continue. If not, the case goes back to the sharing pool for someone who has.</div>
+  </section>
+
+  <section class="block">
+    <h2>Process maps step by step</h2>
+    <p class="muted">Each column is one actor; read from top to bottom. Click a box to highlight its row in the step table. Branches (for example "rule hit → Underwriting") are shown in the status and rule notes of the step where the decision is made; the full branches are in the status models below and in the Level 3 scenarios.</p>
+    <h3>New business proposal</h3><div id="mapCollection"></div>
+    <h3>Endorsement</h3><div id="mapPayment"></div>
+  </section>
+
+  <section class="block">
+    <h2>Status models</h2>
+    <p class="muted">Pick a record type. Each arrow carries a number in process order: the main path first, then loops back, then exits (Decline, Reject). The same number appears in the table, so arrow 7 is row 7. Click a numbered label to highlight its row. Testers: every numbered arrow is at least one test case.</p>
+    <div class="tabs" role="tablist" id="stTabs"></div>
+    <div class="diagram" id="stDiagram"></div>
+    <div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>Trigger</th><th>Screen / team</th></tr></thead><tbody id="stTable"></tbody></table></div>
+    <p class="small muted">The source names statuses differently from the system: Quote = Entry, Declined = Rejected, Prepayment = Waiting For Payment. Both names are shown where they differ.</p>
+  </section>
+
+  <section class="block">
+    <h2>Who works the case: pools and permissions</h2>
+    <div class="tbl"><table><thead><tr><th>Status</th><th>Team</th><th>Where the task sits</th><th>Actions</th></tr></thead><tbody>
+      <tr><td>Quote</td><td>Ops team</td><td>NB Entry / Endo Entry. A case sent back from UW or Bound goes to the original operator, not the pool.</td><td>Save, Calculate, Print Proposal Form, Send to UW, Submit (Buy), Decline</td></tr>
+      <tr><td>Underwriting</td><td>UW team</td><td>NB UW1 / UW2, Endo UW1 / UW2 sharing pool. Once someone opens it, it moves to their list and others no longer see it.</td><td>Save, Calculate, Print, Approve, Requote, Escalate, Facultative, Decline</td></tr>
+      <tr><td>Fac Out</td><td>RI team</td><td>Waiting for XRI. Worklist column Fac RI.</td><td>None</td></tr>
+      <tr><td>Bound</td><td>Ops team</td><td>NB Bound / Endo Bound sharing pool, same pick-up rule.</td><td>Save, Print, Issue, Re-Quote, Send to BCP, Decline</td></tr>
+      <tr><td>Prepayment</td><td>FN team</td><td>BCP premium prepayment. Worklist column Prepayment.</td><td>Collect premium in BCP → auto-issue</td></tr>
+      <tr><td>Issued / Declined</td><td>—</td><td>Closed task</td><td>None</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Installments and billing modes</h2>
+    <p>Payment Information decides who is billed and in how many parts. The installment schedule is built from the POI and the frequency: number of periods and due dates, then total premium ÷ periods, rounded. The number of periods can be entered manually.</p>
+    <div class="grid g2" id="comboCards"></div>
+  </section>
+  <div data-cp="lifecycle"></div>
+  <label class="mark-done"><input type="checkbox" data-done="lifecycle"> I can draw the proposal status model and name the action behind every arrow.</label>
+</section>
+
+<!-- L3 SCENARIOS -->
+<section class="view" id="v-scenarios" data-title="Business scenarios" hidden>
+  <header><span class="eyebrow">Level 3</span><h1>Business scenarios</h1>
+  <p class="lede">All flows in the source guide as 18 scenarios. Each one shows a top-to-bottom swimlane for the normal path and an exception path, the screens used, status changes, fee codes, business rules, a real example and notes for each role.</p></header>
+  <div class="explorer">
+    <div class="sc-list" id="scList"></div>
+    <div class="sc-detail">
+      <label for="scSelect" hidden>Scenario</label><select id="scSelect" class="sc-select"></select>
+      <div id="scDetail"></div>
+    </div>
+  </div>
+  <div data-cp="scenarios"></div>
+  <label class="mark-done"><input type="checkbox" data-done="scenarios"> I can walk through the normal and exception flow for each scenario group.</label>
+</section>
+
+<!-- L4 SCREENS -->
+<section class="view" id="v-screens" data-title="Screens" hidden>
+  <header><span class="eyebrow">Level 4</span><h1>Screens and operations</h1>
+  <p class="lede">What each Easy PA screen and section is for, what must be true before you use it, the steps with the screenshot under each step, the rules, and the full field reference from the source (every field, column and button). Pick a screen.</p></header>
+  <div class="menu-tree" id="menuTree"></div>
+  <div id="screenDetail"></div>
+  <div data-cp="screens"></div>
+  <label class="mark-done"><input type="checkbox" data-done="screens"> I know which screen to use for each step and what it checks.</label>
+</section>
+
+<!-- L5 INTEGRATION -->
+<section class="view" id="v-integration" data-title="Cross-module integration" hidden>
+  <header><span class="eyebrow">Level 5</span><h1>Cross-module integration</h1>
+  <p class="lede">Easy PA creates the policy; other modules act on it. BCP bills and collects the money, XRI shares the risk with reinsurers, Claims pays losses against the policy, Customer keeps the central party record, Sales Channel supplies commission, and URP decides who can do what. Click a module.</p></header>
+  <div class="hub-wrap">
+    <div class="diagram" id="hubDiagram"></div>
+    <div id="hubPanel"></div>
+  </div>
+
+  <section class="block">
+    <h2>The Easy PA → BCP fee contract</h2>
+    <p>Every issue and endorsement produces fee records for BCP. The fee type, the ARAP flag (receivable or payable total), the payer and the sign decide what BCP creates. Full detail by scenario is in Level 6.</p>
+    <div class="tbl"><table><thead><tr><th>Easy PA event</th><th>What BCP gets</th><th>Billed to</th><th>ARAP fee</th><th>Detail fees</th><th>NB / add sign</th><th>Refund sign</th><th>Result</th></tr></thead><tbody id="syncBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Easy PA ↔ Reinsurance (XRI)</h2>
+    <div class="grid g2">
+      <div class="card"><h3>When Easy PA calls XRI</h3><ol class="steps"><li><b>Underwriting:</b> opening the Reinsurance tab shows treaty information.</li><li><b>Bind:</b> automatic treaty placement.</li><li><b>Issue:</b> automatic final treaty placement.</li><li><b>Facultative:</b> request sent; status Fac Out until the response returns.</li><li><b>Rejection after fac:</b> XRI is told to remove the proposal.</li></ol><p class="small muted">The policy is issued whether or not a treaty matched.</p></div>
+      <div class="card"><h3>What XRI needs from each policy</h3><ul class="clean small"><li>One risk unit per entry in PolicyRiskList.</li><li>Risk and coverage: SumInsured, BeforeVatPremium, PolicyStatus; on endorsement also SumInsuredDelta and BeforeVatPremiumDelta.</li><li>Coverage: ProductElementCode, CoverageName.</li><li>Risk: InsuredNo (or PolicyElementId), RiskName, RiskLevel (via PARIRiskCategoryMapping).</li><li>Policyholder with IsPolicyHolder = Y (name, address).</li><li>Co-insurance: CoInsuranceInfoList with IsLeader and OurShare.</li></ul></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Easy PA ↔ Claims rules</h2>
+    <div class="tbl"><table><thead><tr><th>Easy PA action</th><th>Claims rule from the source</th><th>Why it matters (business)</th></tr></thead><tbody>
+      <tr><td>Cancellation</td><td>A claim can still be submitted on a cancelled policy if the loss date is within the POI and before the cancellation date.</td><td>Cover was in force when the loss happened; cancelling later cannot remove it.</td></tr>
+      <tr><td>POI extension / shortening</td><td>The new POI must cover every reported claim (date of loss).</td><td>Shortening must not leave a reported loss outside cover.</td></tr>
+      <tr><td>Endorsement Undo</td><td>Alert (not block) if a registered claim has an accident date between the endorsement date and the undo date.</td><td>The claim may have been assessed on the endorsed terms; teams must agree how to handle it.</td></tr>
+      <tr><td>Issue</td><td>RiskName is mandatory for Claims and RI; RiskNameMapping fills it when the product has none.</td><td>Claims needs to identify what was damaged (a car, an address, a person).</td></tr>
+      <tr><td>Cancellation reason</td><td>Reasons include "Total Loss Cancellation" and "Discontent with Claim Amount Paid".</td><td>After a total loss the policy ends; the claim payment often uses up the sum insured.</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>End-to-end journeys across modules</h2>
+    <p class="muted">These journeys join Easy PA with BCP, XRI, Claims and outside parties (garage, surveyor, TPA, hospital) in one business story. Use them for end-to-end and regression testing, and to explain insurance to new joiners.</p>
+    <div class="tabs" role="tablist" id="jTabs"></div>
+    <div id="jDetail"></div>
+  </section>
+  <div data-cp="integration"></div>
+  <label class="mark-done"><input type="checkbox" data-done="integration"> I can explain what Easy PA sends to each module and what comes back.</label>
+</section>
+
+<!-- L6 FEES -->
+<section class="view" id="v-fees" data-title="Premium and fee logic" hidden>
+  <header><span class="eyebrow">Level 6 · Advanced</span><h1>Premium and fee logic</h1>
+  <p class="lede">How Easy PA calculates premium at four levels, how endorsements and cancellations change it, and which fee records it sends to BCP for accounting.</p></header>
+
+  <section class="block">
+    <h2>Premium structure</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Per coverage (new business)</h3><ol class="steps"><li><b>AnnualPremium</b> = rated risk premium (formula premium).</li><li><b>GrossPremium</b> = AnnualPremium × POI rate.</li><li><b>Before-VAT premium</b>, first matching case wins: (1) no discount, no adjust → GrossPremium; (2) discount / loading only → GrossPremium × (1 + Σ signed rates); (3) AdjustedPremium set → AdjustedPremium.</li><li><b>Due premium</b> = before-VAT premium + all GST / taxes.</li></ol></div>
+      <div class="card"><h3>Roll-up and allocation</h3><ul class="clean small"><li>Risk = Σ coverages; PolicyLob = Σ risks; Policy = Σ PolicyLobs (gross, before-VAT and due).</li><li>An AdjustedPremium at risk, PolicyLob or policy level overrides the sum at that level.</li><li>The adjustment is allocated back down so each level still sums to the level above.</li><li>These steps create no BCP fee records; they only fill the premium fields BCP posting reads.</li></ul></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Endorsement calculation in three steps</h2>
+    <ol class="steps"><li>Calculate new business premium again on the latest policy version (key field AnnualPremium).</li><li>Calculate the delta between new and old premium with the POI rate (GrossPremiumDelta, BeforeVatPremiumDelta, DuePremiumDelta).</li><li>Add the delta to the prior version to get the new GrossPremium, BeforeVatPremium and DuePremium.</li></ol>
+    <div class="tbl"><table><thead><tr><th>Field</th><th>Meaning</th></tr></thead><tbody id="txRefBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Formulas and worked examples</h2>
+    <div class="tbl"><table><thead><tr><th>Type</th><th>Formula</th><th>Source example</th><th class="num">Result</th></tr></thead><tbody>
+      <tr><td>Basic information endorsement</td><td>(New final − Original final) × unexpired days ÷ POI days; unexpired = expiry − endorsement date + 1</td><td>250 → 375; 01/04/2021; 275 ÷ 365</td><td class="num">94.18; due 100.77; comm 9.42</td></tr>
+      <tr><td>Cancel from inception</td><td>Refund = −final premium; due = refund + GST + admin fee + GST on fee; commission = refund × rate</td><td>Policy A: 800, fee 25</td><td class="num">−829.25; comm −120</td></tr>
+      <tr><td>Mid-term, pro-rata</td><td>−Final × unexpired ÷ original POI</td><td>Policy B: 1,000; 214 days</td><td class="num">−586.30; due −627.34; comm −58.63</td></tr>
+      <tr><td>Mid-term, short-rate</td><td>−X% × final × unexpired ÷ original POI</td><td>Policy C: 900; 80%; 214 days</td><td class="num">−422.14; due −451.69; comm −42.21</td></tr>
+      <tr><td>POI extension</td><td>Original final × (new expiry − original expiry) ÷ original POI</td><td>Policy D: 900; 31 days</td><td class="num">76.44; due 81.79; comm 7.64</td></tr>
+      <tr><td>POI shortening</td><td>Original final × (new expiry − original expiry) ÷ original POI (negative)</td><td>Policy E: 900; 61 days</td><td class="num">−150.41; GST −10.53; comm −15.04</td></tr>
+      <tr><td>POI shortening, short-period rate</td><td>New final (from product premium table) − original final</td><td>Not given</td><td class="num">—</td></tr>
+      <tr><td>Endorsement undo</td><td>No calculation; values return to before the endorsement</td><td>—</td><td class="num">—</td></tr>
+    </tbody></table></div>
+    <p class="small muted">All source examples were recomputed for this guide and are correct. Rounding: premium is rounded to 2 decimals first; GST and commission are calculated on the rounded premium. Original POI means the POI in force just before this endorsement, after any earlier extension or shortening.</p>
+  </section>
+
+  <section class="block">
+    <h2>Endorsement premium calculator</h2>
+    <p class="prose">Pick a source example or enter your own values. The calculator applies the formulas above. Use it to build test oracles.</p>
+    <div class="calc">
+      <div class="card">
+        <h3>Inputs</h3>
+        <div class="filter-row"><label class="small" for="cType">Type</label><select id="cType"><option value="bie">Basic information endorsement</option><option value="inc">Cancel from inception</option><option value="pro">Mid-term cancel, pro-rata</option><option value="sr">Mid-term cancel, short-rate</option><option value="ext">POI extension</option><option value="sho">POI shortening</option></select></div>
+        <div class="filter-row"><label class="small" for="cPreset">Source example</label><select id="cPreset"><option value="">Choose…</option><option value="E1">BIE: SI 100k → 150k</option><option value="A">Policy A: inception</option><option value="B">Policy B: pro-rata</option><option value="C">Policy C: short-rate 80%</option><option value="D">Policy D: extension</option><option value="E">Policy E: shortening</option></select></div>
+        <div class="tbl"><table><tbody>
+          <tr><td><label for="cOrig">Original final premium</label></td><td><input id="cOrig" type="number" step="0.01" value="250"></td></tr>
+          <tr><td><label for="cNew">New final premium (BIE)</label></td><td><input id="cNew" type="number" step="0.01" value="375"></td></tr>
+          <tr><td><label for="cStart">POI start</label></td><td><input id="cStart" type="date" value="2021-01-01"></td></tr>
+          <tr><td><label for="cEnd">POI end (expiry)</label></td><td><input id="cEnd" type="date" value="2021-12-31"></td></tr>
+          <tr><td><label for="cEndo">Endorsement effective date</label></td><td><input id="cEndo" type="date" value="2021-04-01"></td></tr>
+          <tr><td><label for="cNewEnd">New expiry (extension / shortening)</label></td><td><input id="cNewEnd" type="date" value="2022-01-31"></td></tr>
+          <tr><td><label for="cGst">GST %</label></td><td><input id="cGst" type="number" step="0.01" value="7"></td></tr>
+          <tr><td><label for="cComm">Commission %</label></td><td><input id="cComm" type="number" step="0.01" value="10"></td></tr>
+          <tr><td><label for="cSr">Short-rate factor %</label></td><td><input id="cSr" type="number" step="0.01" value="80"></td></tr>
+          <tr><td><label for="cFee">Admin fee</label></td><td><input id="cFee" type="number" step="0.01" value="0"></td></tr>
+        </tbody></table></div>
+        <button class="btn" type="button" id="calcRun">Calculate</button>
+      </div>
+      <div class="card"><h3>Result</h3><div id="calcOut"></div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Amount sign and billing modes</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Sign</h3><ul class="clean small"><li><b>+</b> when the insurer receives, <b>−</b> when it pays.</li><li>New business and endorsement additional premium share the same sign; an endorsement refund reverses it.</li><li>Commission is − on new business (payable to the channel) and + on refunds (clawback).</li><li>Co-insurance: the follower's premium is − on the leader's books and + on the follower's; commission and co-fee flow follower → leader.</li></ul></div>
+      <div class="card"><h3>Billing modes</h3><ul class="clean small"><li><b>Customer billing</b> (default): own-premium fees billed to the policyholder.</li><li><b>Agent billing:</b> own-premium fees billed to the agent / sales channel, who collects from the client.</li><li><b>Leader billing</b> (co-insurance follower only): settled through the leader with one consolidated ARAP.</li><li>Commission always goes to the sales channel, except the follower's co-commission, billed to the other co-insurer. Co-insurance fees always go to the counterparty co-insurer.</li></ul></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Multiple currency, FNLOB and installments</h2>
+    <div class="grid g3">
+      <div class="card"><h3>Three currencies</h3><p class="small">Every fee is produced in transaction, local and booking currency. Local = transaction ÷ transaction→local rate; booking = transaction ÷ transaction→booking rate. Local and booking currencies come from the CurrencyCode table.</p></div>
+      <div class="card"><h3>Finance LOB (FNLOB)</h3><p class="small">Coverages can map to different finance LOBs (Product_Finance_LOB_Category), so one fee type can produce several records. ARAP totals, taxes, stamp duty, co-fee and interest are not split. Before-VAT premium and commission are split.</p></div>
+      <div class="card"><h3>Installments</h3><p class="small">Single payment or installments (yearly, half-yearly, quarterly, monthly). Periods and due dates come from the POI and plan; per-period amount = total ÷ periods, rounded. Periods can be entered manually.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>BCP posting scenarios</h2>
+    <p class="muted">From the PA Installment Fee chapter. Pick a scenario to see every fee record Easy PA produces. Co-insurance: if we lead and collect full premium = Yes → scenario 3; = No → scenario 4. If we follow with customer / agent billing → scenario 5; with leader billing → scenario 6.</p>
+    <div class="tabs" role="tablist" id="ffTabs"></div>
+    <div id="ffDetail"></div>
+    <div class="callout warn"><b>Scenario 6 warning from the source:</b> detail rows intentionally overlap the consolidated ARAP, so BCP must not simply add up all fee rows.</div>
+  </section>
+
+  <section class="block">
+    <h2>Fee type reference</h2>
+    <div class="tbl"><table><thead><tr><th>Fee type</th><th>Name</th><th>Notes</th></tr></thead><tbody id="feeRefBody"></tbody></table></div>
+  </section>
+  <div data-cp="fees"></div>
+  <label class="mark-done"><input type="checkbox" data-done="fees"> I can calculate any additional or refund premium and predict the BCP fee records.</label>
+</section>
+
+<!-- L7 CONFIG -->
+<section class="view" id="v-config" data-title="Configuration and authority" hidden>
+  <header><span class="eyebrow">Level 7 · Advanced</span><h1>Configuration, authority and extension</h1>
+  <p class="lede">What is configured per product, what the platform does by itself, which permissions control each screen and task, and what each implementation must build.</p></header>
+
+  <section class="block">
+    <h2>Configuration tables and rules</h2>
+    <div class="filter-row"><label for="dtFilter" class="small">Filter</label><input id="dtFilter" type="search" placeholder="e.g. tax, RI, clause"></div>
+    <div class="tbl"><table><thead><tr><th>Name</th><th>Kind</th><th>What it controls</th><th>Used in</th></tr></thead><tbody id="dtBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Policy Admin menu authority</h2>
+    <p class="small muted">URP subsystem: Easy Policy Admin (tenant). Controls which menus and pages a role can open.</p>
+    <div class="tbl"><table><thead><tr><th>Category</th><th>Name</th><th>Code</th><th>Description</th></tr></thead><tbody>
+      <tr><td>Both</td><td>Policy Task</td><td class="mono">PTCommon</td><td>Work inbox / task list</td></tr>
+      <tr><td>New Business</td><td>Policy Query</td><td class="mono">PQCommon</td><td>Search and open policies (search only)</td></tr>
+      <tr><td>Endorsement</td><td>Endorsement Query</td><td class="mono">EQCommon</td><td>Search and open endorsements (search only)</td></tr>
+      <tr><td>Both</td><td>UW Management</td><td class="mono">UWCommon</td><td>Underwriting work queue</td></tr>
+      <tr><td>Both</td><td>UW Follow-up Tasks</td><td class="mono">UWFollowTasks</td><td>Follow-up items routed back to underwriting</td></tr>
+      <tr><td>New Business</td><td>New Proposal Details 5.0</td><td class="mono">NPD50</td><td>Create / edit a proposal</td></tr>
+      <tr><td>New Business</td><td>New Proposal View</td><td class="mono">NPV50</td><td>Open a proposal read-only</td></tr>
+      <tr><td>Endorsement</td><td>Endo Details 5.0</td><td class="mono">ED50</td><td>Create / edit an endorsement</td></tr>
+      <tr><td>Endorsement</td><td>Endo View</td><td class="mono">EV50</td><td>Open an endorsement read-only</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Policy Admin data authority</h2>
+    <p class="small muted">Controls which lifecycle steps a role can see, pick up and act on in the Policy Task worklist. The UW level is decided by rule configuration; for example an SI-based level needs a rule.</p>
+    <div class="tbl"><table><thead><tr><th>Category</th><th>Name</th><th>Code</th><th>Description</th></tr></thead><tbody>
+      <tr><td>New Business</td><td>NB Entry</td><td class="mono">NB_Entry</td><td>Data-entry step</td></tr>
+      <tr><td>New Business</td><td>NB UnderWriting1 … 5</td><td class="mono">NB_UnderWriting1 … NB_UnderWriting5</td><td>Underwriting authority levels 1 to 5</td></tr>
+      <tr><td>New Business</td><td>NB Bound</td><td class="mono">NB_Bound</td><td>Bind a proposal</td></tr>
+      <tr><td>Endorsement</td><td>Endo Entry</td><td class="mono">Endo_Entry</td><td>Data-entry step</td></tr>
+      <tr><td>Endorsement</td><td>Endo UnderWriting1 … 5</td><td class="mono">Endo_UnderWriting1 … Endo_UnderWriting5</td><td>Underwriting authority levels 1 to 5</td></tr>
+      <tr><td>Endorsement</td><td>Endo Bound</td><td class="mono">Endo_Bound</td><td>Bind an endorsement</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Other authority</h2>
+    <div class="tbl"><table><thead><tr><th>Subsystem</th><th>Name</th><th>Code</th><th>Description</th></tr></thead><tbody>
+      <tr><td>Sales Channel (platform)</td><td>Maintain Producer</td><td class="mono">PA-XSQD-CJSCS</td><td>Query and maintain all sales channels / producers</td></tr>
+      <tr><td>Sales Channel (platform)</td><td>Producer Agreement Approval</td><td class="mono">PA-XSQD-DCXY</td><td>Approve producer agreements</td></tr>
+      <tr><td>Party (platform)</td><td>Maintain Party</td><td class="mono">PartyManagement</td><td>All parties except customer and sales channel</td></tr>
+      <tr><td>Party (platform)</td><td>Maintain Customer</td><td class="mono">CustomerMaintenance</td><td>All customers</td></tr>
+      <tr><td>Public Service (platform)</td><td>Print</td><td class="mono">Portal_Group1_PRINT</td><td>Query print tasks; batch print or re-print</td></tr>
+    </tbody></table></div>
+    <p class="small muted">No data authority is configured yet for Sales Channel, Party, Customer or Print.</p>
+  </section>
+
+  <section class="block">
+    <h2>RI and integration fields</h2>
+    <div class="tbl"><table><thead><tr><th>Field / table</th><th>Purpose</th></tr></thead><tbody id="apiBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Platform, configuration or tenant build?</h2>
+    <div class="tbl"><table><thead><tr><th>Need</th><th>Platform (standard)</th><th>Configure</th><th>Tenant build</th></tr></thead><tbody>
+      <tr><td>Proposal statuses, worklist, pools, re-routing</td><td>Yes</td><td>URP roles</td><td>—</td></tr>
+      <tr><td>Rating, UW rules, validation rules, clauses</td><td>Engine</td><td>Product factory</td><td>Special formulas</td></tr>
+      <tr><td>Tax, stamp duty, interest, admin fee</td><td>Engine</td><td>Configuration tables</td><td>—</td></tr>
+      <tr><td>Short-rate tables, pro-rata vs short-rate per product</td><td>Engine</td><td>Endorsement rating</td><td>—</td></tr>
+      <tr><td>POI Move expiry calculation</td><td>No API validation</td><td>Rating or rules</td><td>UI or tenant code</td></tr>
+      <tr><td>Fac Out validation against treaty capacity</td><td>Not provided</td><td>Possibly a UW rule</td><td>Yes, if required</td></tr>
+      <tr><td>Automatic customer synchronisation</td><td>Manual only</td><td>—</td><td>Needs design</td></tr>
+      <tr><td>Renewal extraction, auto decline batch</td><td>Referenced, not described</td><td>Confirm</td><td>Confirm</td></tr>
+      <tr><td>Documents and templates</td><td>Print Management, iDoc</td><td>Templates</td><td>—</td></tr>
+    </tbody></table></div>
+  </section>
+  <div data-cp="config"></div>
+  <label class="mark-done"><input type="checkbox" data-done="config"> I know what is configuration, what is platform behaviour, and what is tenant build.</label>
+</section>
+
+<!-- L8 TOOLKIT -->
+<section class="view" id="v-toolkit" data-title="Role toolkits" hidden>
+  <header><span class="eyebrow">Level 8 · Apply</span><h1>Role toolkits</h1>
+  <p class="lede">Ready-to-use material for workshops, test design and build. All of it comes from the source rules.</p></header>
+  <div class="tabs" role="tablist" id="tkTabs">
+    <button role="tab" aria-selected="true" data-tk="ba">Business analyst</button>
+    <button role="tab" aria-selected="false" data-tk="qa">Tester</button>
+    <button role="tab" aria-selected="false" data-tk="dev">Developer</button>
+  </div>
+  <div id="tkDetail"></div>
+  <div data-cp="toolkit"></div>
+  <label class="mark-done"><input type="checkbox" data-done="toolkit"> I have used the toolkit for my role on a real requirement or test.</label>
+</section>
+
+<!-- GAPS -->
+<section class="view" id="v-gaps" data-title="Source gaps" hidden>
+  <header><span class="eyebrow">Consultant review</span><h1>Source gaps to resolve</h1>
+  <p class="lede">While building this guide I found places where the source guide contradicts itself, differs from its own screenshots, or is incomplete. Close these with the InsureMO platform team before you sign off requirements or lock expected test results.</p></header>
+  <div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What the source says</th><th>Recommended action</th></tr></thead><tbody id="gapBody"></tbody></table></div>
+</section>
+
+<!-- COVERAGE -->
+<section class="view" id="v-coverage" data-title="Source coverage" hidden>
+  <header><span class="eyebrow">Completeness check</span><h1>Source coverage</h1>
+  <p class="lede">Every chapter of the source Easy PA guide and where it sits in this learning guide. Use it to confirm nothing is missing.</p></header>
+  <div class="tbl"><table><thead><tr><th>#</th><th>Source chapter / content</th><th>Where in this guide</th><th>Coverage</th></tr></thead><tbody id="covBody"></tbody></table></div>
+</section>
+
+<!-- TRACKER -->
+<section class="view" id="v-tracker" data-title="My progress" hidden>
+  <header><span class="eyebrow">Assess</span><h1>My progress and traceability</h1>
+  <p class="lede">See where you are on every module: what you opened, how long you spent, checkpoint scores, final assessment results, and how each learning objective is evidenced.</p></header>
+  <div id="trackerBody"></div>
+</section>
+
+<!-- ASSESSMENT -->
+<section class="view" id="v-assessment" data-title="Final assessment" hidden>
+  <header><span class="eyebrow">Assess</span><h1>Final assessment</h1>
+  <p class="lede">20 case-based questions that mix insurance business, Easy PA statuses, screens, cross-module rules and premium calculation. No feedback until you submit. Pass mark 70%. Each question maps to a module in the traceability table.</p></header>
+  <div class="grid" id="finalBody" style="max-width:860px"></div>
+</section>
+
+<!-- QUIZ -->
+<section class="view" id="v-quiz" data-title="Knowledge check" hidden>
+  <header><span class="eyebrow">Assess</span><h1>All checkpoints</h1>
+  <p class="lede">Four questions per level with instant feedback. The same checkpoints appear at the end of each level page. Scores feed My progress.</p>
+  <div class="score" id="quizScore"></div></header>
+  <div class="grid" id="quizBody" style="max-width:820px"></div>
+  <div><button class="btn ghost" type="button" id="quizReset">Reset all checkpoint answers</button></div>
+</section>
+
+<!-- GLOSSARY -->
+<section class="view" id="v-glossary" data-title="Glossary" hidden>
+  <header><span class="eyebrow">Reference</span><h1>Glossary</h1></header>
+  <p class="lede">Insurance and Easy PA terms in plain English, with an example and where each one appears in InsureMO Easy PA. Covers the full policy lifecycle: new business, underwriting, endorsement, cancellation, renewal, reinsurance, co-insurance and claims.</p>
+  <div class="filter-row"><label for="glFilter" class="small">Filter</label><input id="glFilter" type="search" placeholder="Type a term"><label for="glCat" class="small">Category</label><select id="glCat"></select></div>
+  <div class="tbl"><table><thead><tr><th>Term</th><th>Category</th><th>Meaning</th><th>Example</th><th>In InsureMO Easy PA</th></tr></thead><tbody id="glBody"></tbody></table></div>
+</section>
+
+<p class="foot">Source: InsureMO Easy PA module guide (New Business and Renewal Flow, Endorsement Flow, Common Function, Underwriting History, Group Policy Flow, PA Installment Fee, Reinsurance Integration, Policy Authority). Items marked Domain context are general insurance practice. Confirm project-specific behaviour with the platform team.</p>
+</main>
+</div>
