@@ -5,7 +5,7 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 
 - `bcp-learning-guide/index.html`: the finished BCP guide. A single self-contained file (about 5.5 MB, 58 screenshots embedded) that works offline when downloaded.
 - `bcp-learning-guide/img/`: the original screenshots from the source BCP guide, at full resolution.
-- `reinsurance-learning-guide/index.html`: the finished Reinsurance (XRI) guide, about 2.9 MB, 64 screenshots embedded. Source in `reinsurance-learning-guide/src/` (a fork of the engine adapted for reinsurance: XRI vs industry process toggle, RI calculators, RI money flow). Images in `reinsurance-learning-guide/img/`.
+- `reinsurance-learning-guide/index.html`: the finished Reinsurance (XRI) guide, about 2.9 MB, 64 screenshots embedded. Source in `reinsurance-learning-guide/src/` (a fork of the engine adapted for reinsurance: XRI vs industry process toggle, RI calculators, RI money flow). Images in `reinsurance-learning-guide/img/`. Shareable artifact: https://claude.ai/artifact/Q3LqqcJvLVLntmFCZATymY (private until shared; republish from the `--artifact` build output).
 - `.claude/skills/insuremo-learning-guide/`: the product-manager skill and the build engine. Use it to update the BCP guide or build guides for other modules.
 
 ## How to work on it
