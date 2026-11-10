@@ -28,3 +28,10 @@ In the BCP source: two fee codes for the same step (700009 vs 403000), opposite 
 - `rm` with a relative glob after `cd` is blocked. Overwrite with `cp -f` or use an exact absolute path.
 - A force-push or history rewrite is blocked. To create a base branch when the repo has only the feature branch: make an empty commit with `git commit-tree $(git hash-object -t tree /dev/null) -m "Initialize repository"`, push it to `main`, then `git merge --allow-unrelated-histories` it into the feature branch and push normally.
 - The first branch pushed becomes the GitHub default branch. Tell the user to switch the default to `main`.
+
+## Easy PA build
+- **Check image extensions.** Pandoc keeps the original type; the Easy PA group screenshots were .png while the map said .jpeg, so 5 images broke. Compare SHOTS file names with the img folder before QA.
+- **Two-way arrows in status diagrams.** The offset must keep the same sign for both directions, because the normal vector flips with the direction. Fixed in the Easy PA engine (`stateSvg`).
+- **Long unbroken names** (Product_Vat_Rate, PTY…) overflow cards; add `overflow-wrap:anywhere`.
+- **Pipe characters inside field-reference rows** split the columns. Never put `|` inside an `f` row description.
+- **Add a source-example check to any calculator.** All six Easy PA worked examples reproduce exactly; this is the strongest proof for testers.
