@@ -5,7 +5,8 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 
 - `bcp-learning-guide/index.html`: the finished BCP guide. A single self-contained file (about 5.5 MB, 58 screenshots embedded) that works offline when downloaded.
 - `bcp-learning-guide/img/`: the original screenshots from the source BCP guide, at full resolution.
-- `.claude/skills/insuremo-learning-guide/`: the product-manager skill and the build engine. Use it to update the BCP guide or build guides for other modules.
+- `easypa-learning-guide/index.html`: the finished Easy PA guide (about 6.8 MB, 52 screenshots embedded, 18 scenarios, 25 screens, 6 cross-module journeys, premium calculator). Built from its own engine copy in `easypa-learning-guide/engine/`; originals in `easypa-learning-guide/img/`.
+- `.claude/skills/insuremo-learning-guide/`: the product-manager skill. Its `engine/` rebuilds the BCP guide; for new modules the skill says to start from `easypa-learning-guide/engine/` (newer: numbered status models, swimlane process maps, source-checked calculator).
 
 - `easyapps-learning-guide/`: the combined Easy Apps guide (one 12 MB offline file). A hub (capability map, cross-module interfaces and journeys, combined gaps, glossary, search) with the four module guides embedded unchanged. See its README for the rebuild and QA steps. Shareable artifact: https://claude.ai/artifact/D4YUYkPsfJHucPw8yUpiW7 (republish from the `--artifact` output).
 
@@ -13,13 +14,17 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 - To change the BCP guide, edit the files in `.claude/skills/insuremo-learning-guide/engine/`, then rebuild:
   `python3 -I .claude/skills/insuremo-learning-guide/engine/build.py --img bcp-learning-guide/img --out bcp-learning-guide/index.html`
 - Before committing, copy the built HTML alone into an empty folder and run `node .claude/skills/insuremo-learning-guide/engine/qa.js <absolute path>`. It must print ALL PASSED.
-- Never edit `bcp-learning-guide/index.html` by hand; it is generated.
+- To change the Easy PA guide, edit `easypa-learning-guide/engine/`, then rebuild:
+  `python3 -I easypa-learning-guide/engine/build.py --img easypa-learning-guide/img --out easypa-learning-guide/index.html`
+- Never edit either `index.html` by hand; they are generated. `engine/g_shots.js` is a build output; do not commit it.
 - The shareable artifact is https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR (private until shared from its Share menu). Republish from the `--artifact` build output.
+- The Easy PA artifact is https://claude.ai/artifact/6knf7mwoDjGiwThXqNok9q (private until shared). Republish to that URL from the Easy PA `--artifact` build output.
 
 ## Decisions made
 - Single HTML file with images embedded, so a download works offline (user requirement).
 - Structure: Start → 0 Insurance business basics → 1 Foundations → 2 Lifecycles → 3 Scenarios → 4 Screens → 5 Cross-module → 6 Fees/GL → 7 Config → 8 Toolkits → Reference (gaps, coverage, glossary) → Assess (tracker, checkpoints, final assessment).
 - Swimlanes run top to bottom so they fit the page width; every diagram has a full-screen view.
+- Process maps are swimlanes with a step table. Status-model arrows are numbered in process order (main path, loops back, exits) with a matching numbered table; not a single numbered chain, because status models have loops and several exits.
 - The role lens hides less relevant sections and opens role-specific blocks.
 - Added insurance knowledge is labelled "Domain context"; market rules carry a confidence tag; example amounts are illustrative.
 - `main` was created from an empty initial commit and merged into the feature branch (force-push was blocked).
@@ -29,7 +34,9 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 ## Open items
 - PR: https://github.com/gazal-gupta/InsureMO-EasyApps/pull/2 (draft). The user should mark it ready and switch the GitHub default branch to `main`.
 - Source gaps in the BCP guide (fee codes 700009 vs 403000, sign of 401100, collection confirmation fee, arithmetic errors in the offset examples, no RI fee codes) need confirmation from the InsureMO platform team before requirements or test expectations are locked.
-- Next candidates: Claims, Easy PA and Reinsurance guides from the same engine.
+- Easy PA source gaps needing platform-team answers: SI editable in BIE or not; status / button names differ between text and UI (Quote/Entry, Declined/Rejected, Send to BCP/Send Prepayment, Prepayment/Waiting For Payment); no Fac Out control above treaty limit; UW levels 1-2 vs authority 1-5; Auto Decline Batch has no content; co-insurance fee codes 100103/100503 shared by leader and follower; screenshot premium totals do not reconcile.
+- Easy PA engine fixed a status-diagram bug (two-way arrows drew on top of each other). The BCP engine in the skill still has it.
+- Next candidates: Claims and Reinsurance guides from the same engine.
 
 ## Working with the user (Gazal)
 - Act as a senior insurance consultant and advisor, not an assistant. Challenge assumptions first, and give a recommendation rather than a list of options.
