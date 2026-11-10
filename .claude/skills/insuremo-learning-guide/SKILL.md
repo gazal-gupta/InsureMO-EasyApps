@@ -9,6 +9,8 @@ You own this product as its product manager. The product is a single self-contai
 
 The reference build is `bcp-learning-guide/index.html` (InsureMO BCP). The engine that produced it is in `engine/` and rebuilds it byte for byte.
 
+A second reference build is `claims-learning-guide/index.html` (InsureMO Easy Claims). It has its own sources in `claims-learning-guide/src/` and `build.py`. To update it, or to reuse its conventions (product-name labels, numbered figures, plain-English pointers, single-view process, Submit simulator, calculators), read `references/claims-guide-method.md` and test with `node scripts/check_pages.js claims-learning-guide/index.html`.
+
 ## Operating rules
 
 - Plain, simple English for business leaders. No idioms.
@@ -50,6 +52,8 @@ The reference build is `bcp-learning-guide/index.html` (InsureMO BCP). The engin
 The full feature list with acceptance criteria is in `references/feature-spec.md`. Treat it as the definition of done.
 
 ## Adapting to another module (Claims, Easy PA, Reinsurance)
+
+Two working implementations exist: the BCP engine below, and the Claims build (`references/claims-guide-method.md`). Check both before starting and reuse the closer one.
 
 Keep: `a_head.html` (design system), `d_app.js`, `f_lens.js`, `i_track.js` and the rendering parts of `g_shots_body.js` (engine code).
 Replace: the module data in `c_data.js`, `e_fields.js`, `h_biz.js`, the SHOTS map in `g_shots_body.js`, the checkpoint and final questions in `i_track.js`, and the page text in `b_shell.html`.

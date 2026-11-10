@@ -4,6 +4,7 @@
 Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsurance) for business analysts, testers and developers.
 
 - `bcp-learning-guide/index.html`: the finished BCP guide. A single self-contained file (about 5.5 MB, 58 screenshots embedded) that works offline when downloaded.
+- `claims-learning-guide/index.html`: the finished InsureMO Easy Claims guide (single file, 136 screenshots embedded). Sources in `claims-learning-guide/src/`; rebuild with `python3 claims-learning-guide/build.py`; test with `node .claude/skills/insuremo-learning-guide/scripts/check_pages.js claims-learning-guide/index.html`. Labels: "InsureMO Easy Claims" for source facts, "Insurance knowledge" for added explanation (the user asked for this naming).
 - `bcp-learning-guide/img/`: the original screenshots from the source BCP guide, at full resolution.
 - `.claude/skills/insuremo-learning-guide/`: the product-manager skill and the build engine. Use it to update the BCP guide or build guides for other modules.
 
