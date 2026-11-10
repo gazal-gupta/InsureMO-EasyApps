@@ -49,3 +49,7 @@ Every process has a swimlane diagram (actors as columns), a step table, and a fu
 Content tagged *Source* comes from the Easy Claim user guide; content tagged *Industry practice* is general insurance knowledge added for learning. Cross-links to BCP scenarios work when `bcp-learning-guide` sits next to `claims-learning-guide`.
 
 **Edit and rebuild:** change files in `claims-learning-guide/src/` and run `python3 claims-learning-guide/build.py`.
+
+## Skill: build a learning guide for another module
+
+`.claude/skills/insuremo-learning-guide/` captures how these guides are built: structure, writing rules ("InsureMO <module>" naming, Insurance knowledge tags, plain-English pointers), numbered diagrams, build steps and a smoke test (`scripts/check_pages.js`). Claude Code loads it automatically in this repository; ask it to "build a learning guide" for Easy PA, Reinsurance or Sales Channel from the module's user guide.
