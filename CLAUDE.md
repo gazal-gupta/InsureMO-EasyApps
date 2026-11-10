@@ -7,6 +7,8 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 - `bcp-learning-guide/img/`: the original screenshots from the source BCP guide, at full resolution.
 - `.claude/skills/insuremo-learning-guide/`: the product-manager skill and the build engine. Use it to update the BCP guide or build guides for other modules.
 
+- `easyapps-learning-guide/`: the combined Easy Apps guide (one 12 MB offline file). A hub (capability map, cross-module interfaces and journeys, combined gaps, glossary, search) with the four module guides embedded unchanged. See its README for the rebuild and QA steps.
+
 ## How to work on it
 - To change the BCP guide, edit the files in `.claude/skills/insuremo-learning-guide/engine/`, then rebuild:
   `python3 -I .claude/skills/insuremo-learning-guide/engine/build.py --img bcp-learning-guide/img --out bcp-learning-guide/index.html`
@@ -21,6 +23,8 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 - The role lens hides less relevant sections and opens role-specific blocks.
 - Added insurance knowledge is labelled "Domain context"; market rules carry a confidence tag; example amounts are illustrative.
 - `main` was created from an empty initial commit and merged into the feature branch (force-push was blocked).
+
+- Combined guide: module guides stay separate builds on their own branches; the hub embeds them in iframes (srcdoc) and talks to them by postMessage, so it also works in the artifact sandbox. Hierarchy: Main module > Sub module (business area) > Capability (source scenario or flow) > Feature (screens, flow). A System menu view shows the real menu.
 
 ## Open items
 - PR: https://github.com/gazal-gupta/InsureMO-EasyApps/pull/2 (draft). The user should mark it ready and switch the GitHub default branch to `main`.
