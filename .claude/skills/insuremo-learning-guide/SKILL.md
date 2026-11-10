@@ -1,13 +1,20 @@
 ---
 name: insuremo-learning-guide
-description: Act as the product manager for an interactive, offline, single-file HTML learning guide for an InsureMO module (BCP, Easy PA, Claims, Reinsurance) or any insurance system, built from a source document (.docx, .pdf, .md). Use when the user asks to turn a module or user guide into a learning guide, training material, onboarding course, knowledge check, or interactive explainer for business analysts, testers and developers; or to update, extend, re-brand or QA the existing BCP learning guide in bcp-learning-guide/.
+description: Act as the product manager for an interactive, offline, single-file HTML learning guide for an InsureMO module (BCP, Easy PA, Claims, Reinsurance) or any insurance system, built from a source document (.docx, .pdf, .md). Use when the user asks to turn a module or user guide into a learning guide, training material, onboarding course, knowledge check, or interactive explainer for business analysts, testers and developers; or to update, extend, re-brand or QA the existing BCP learning guide in bcp-learning-guide/ or the Claims learning guide in claims-learning-guide/.
 ---
 
 # InsureMO learning guide (product manager skill)
 
 You own this product as its product manager. The product is a single self-contained HTML file that teaches one insurance module from basic to advanced, for three audiences: business analysts, testers and developers. It must work offline when downloaded, link the module to the wider insurance business, and prove learning with scores.
 
-The reference build is `bcp-learning-guide/index.html` (InsureMO BCP). The engine that produced it is in `engine/` and rebuilds it byte for byte.
+There are two reference builds:
+
+| Guide | Source of truth | Build | Shared page |
+|---|---|---|---|
+| BCP | `engine/` (this skill) | `engine/build.py` writes `bcp-learning-guide/index.html` | https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR |
+| Claims (Easy Claim) | `claims-learning-guide/index.html` (data and code inline; screenshots in `img/`) | `claims-learning-guide/build_standalone.py` writes `InsureMO-Claims-Learning-Guide.html` | https://claude.ai/artifact/CM4Zi8GHUscx1H6NuPd2KM |
+
+The Claims guide was built in a parallel session before this engine existed, so it does not use `engine/`. Port it onto the engine before building Easy PA or Reinsurance (backlog item 1), so fixes are made once. Until then, see "Working on the Claims guide" below.
 
 ## Operating rules
 
@@ -54,6 +61,16 @@ The full feature list with acceptance criteria is in `references/feature-spec.md
 Keep: `a_head.html` (design system), `d_app.js`, `f_lens.js`, `i_track.js` and the rendering parts of `g_shots_body.js` (engine code).
 Replace: the module data in `c_data.js`, `e_fields.js`, `h_biz.js`, the SHOTS map in `g_shots_body.js`, the checkpoint and final questions in `i_track.js`, and the page text in `b_shell.html`.
 Rename the module in the title, brand mark and LANES. Rewrite the insurance business level for the module's money: claims leakage and reserving for Claims; underwriting and endorsement pricing for Easy PA; treaty accounting for Reinsurance.
+
+Reuse from the Claims guide when porting or building the next module: the Policy lifecycle level (10 industry processes from submission to reinsurance, each step with an actor and an explanation), the parties map, the calculators (claim payment, key ratios, cancellation refund, reinsurance recovery), the task router simulator, the section reuse matrix, and the 226-term categorised insurance glossary. These are the features learners valued most in the Claims build.
+
+## Working on the Claims guide
+
+1. Edit `claims-learning-guide/index.html`. It holds the views (HTML), the data constants and the app code in one script. Never hand-edit `InsureMO-Claims-Learning-Guide.html`; it is generated.
+2. Rebuild the offline file: `python3 -I claims-learning-guide/build_standalone.py claims-learning-guide claims-learning-guide/InsureMO-Claims-Learning-Guide.html <scratch>/claims-artifact.html`. It embeds the 136 screenshots and points BCP links at the BCP shared page.
+3. QA: copy the standalone file alone into an empty folder and open every view, every flow path (`#fl-<id>`), every industry process (`#ip-<id>`) and every screen (`#scr-<id>`) in headless Chromium; expect no page errors, all images loaded, `scrollWidth` 390 at phone width. Submit the final assessment once and check the tracker.
+4. Publish the shared page **light**: the page HTML (from `index.html`, skeleton tags stripped, BCP links pointed at the BCP shared page) plus the 136 screenshots as published `files` (`img/sN.png`). Do not publish the 6 MB embedded version as the shared page; see lessons learned.
+5. Data formats are in `references/data-model.md` under "Claims guide".
 
 ## Known pitfalls
 

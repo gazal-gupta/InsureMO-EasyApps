@@ -2,7 +2,7 @@
 
 Product: an interactive learning guide for one InsureMO module, delivered as one HTML file.
 Users: business analysts, testers, developers, and new joiners who are learning insurance.
-Release state (BCP v4): all features below shipped and tested.
+Release state (BCP v4): features F1–F10 shipped and tested. F11 describes the Claims guide (v2), which is built outside the engine.
 
 ## F1. Single self-contained file
 - Works when downloaded and opened from any folder with no internet: all images are embedded as data URIs.
@@ -71,8 +71,18 @@ Release state (BCP v4): all features below shipped and tested.
 - Keyboard: swimlane nodes and module map nodes respond to Enter; Esc closes overlays.
 - Browser storage is wrapped in try/catch with an in-memory fallback.
 
+## F11. Claims guide (v2) features not yet in the engine
+- **Policy lifecycle level:** 10 industry processes (commercial new business via broker, online motor, endorsement, renewal, cancellation, lapse and reinstatement, billing, commission, claims, reinsurance), each with paths, actor-per-step explanations, a real example, industry points, InsureMO mapping and key terms that jump to the glossary.
+- **Parties map:** clickable graph of client, agent, broker, insurer, reinsurer, regulator, TPA and bank, with a who's-who table (acts for, paid by, example, InsureMO role).
+- **Calculators:** key ratios (earned premium, loss, expense, combined), claim payment (average, sub-limit, deductible, co-pay, prepay), cancellation refund (pro-rata, short-rate, flat), reinsurance recovery (quota share then excess of loss).
+- **Banded swimlanes:** steps wrap into bands that fit the page width; each band shows only its lanes; "Wide view" hides the menu.
+- **Task router simulator and section reuse matrix** (what Submit creates for any task, amount and authority; which sections are editable on each task page).
+- **Objective traceability:** 24 objectives; each objective lists its checkpoint and final question IDs coloured by result; status Proven / Partly / Not tested.
+- **Glossary:** 226 terms in 14 categories with a category filter; search results jump to the term.
+- **Accept when:** a 13-step, 7-lane flow needs no sideways scroll at 1366 px and is under 900 px tall; every calculator recomputes on input; the tracker report copies or selects.
+
 ## Backlog (not built)
-1. Claims, Easy PA and Reinsurance guides from the same engine.
+1. Port the Claims guide (`claims-learning-guide/index.html`, built outside the engine) onto the engine, then build Easy PA and Reinsurance from it. Carry over the Claims-only features listed in F11.
 2. A shared cross-module index page linking all module guides.
 3. A certificate summary view (it cannot use print; show a page the learner can screenshot).
 4. Question banks with random question order on retake.
