@@ -9,10 +9,13 @@ Script order is fixed in `build.py`: c_data → e_fields → g_shots → h_biz �
 - `CONCEPTS`: `[name, text, tone]`, where tone is in, out, int or cancel.
 - `MENU`: `[group, screen, purpose]`.
 - `PM`: payment methods by business, `[business, record, cash, cheque, dd, transfer, card]` with 1 or 0 flags.
-- `STATES`: `{key: {name, nodes:[{id,t,x,y,c}], edges:[[from,to,label]], rows:[[from,to,trigger,screen]]}}`. Node class `c` is start, good or final.
+- `STATES` (BCP engine): `{key: {name, nodes:[{id,t,x,y,c}], edges:[[from,to,label]], rows:[[from,to,trigger,screen]]}}`. Node class `c` is start, good or final.
+- `STATES` (Easy PA engine, use for new modules): `{key: {name, nodes:[{id,t,x,y,c,lp?}], steps:[[from,to,arrowLabel,trigger,screen]]}}`. Steps are listed in process order; step index + 1 is the number drawn on the arrow and in the table. `from === to` draws a loop; `lp:'tl'` puts the loop at the node's top left (default top right). Two opposite steps between the same nodes curve to opposite sides.
+- `PMAP` (Easy PA engine): `{nb:[S(...)], endo:[S(...)]}` process maps rendered as swimlanes into `#mapCollection` and `#mapPayment` by `renderBusiness()`.
+- `GRP` and `MODTAG` live in `d_app.js`: scenario group keys (Easy PA: nb, uw, endo, cancel) and module tag keys (bcp, ri, clm, cm, sc). Add a `.tag.<key>` colour in `a_head.html` for any new module key.
 - `LANES` and `LANE_ORDER`: lane key → label, and the column order.
 - `S(lane, kind, text, {m, s, f, r, tag})`: one swimlane step. Kinds: ev (event from another module), ext (external party), op (user action), sys (system), gl (GL posting), end, rev (reversal), x (irreversible). `m` screen, `s` status, `f` fee or note, `r` rule, `tag:'inf'` marks domain context.
-- `SCEN`: `{id, grp:'in'|'out'|'int'|'cancel', name, mods[], src, desc, normal[], reversal[], rules[], ba, qa, dev, variants?, cancels?}`.
+- `SCEN`: `{id, grp:<GRP key>, name, mods[], src, desc, normal[], reversal[], rules[], ba, qa, dev, variants?, cancels?}`.
 - `SCREENS`: `{id, g, n, p, pre, steps[], fields[[f,d]], rules[], sc[]}`.
 - `MODS`: integration hub nodes `{n, code, col, x, y, sends[], gets[], screens, sc[], ba, qa, dev}`.
 - `JOURNEYS`: `{id, n, d, steps[], note?}`.
@@ -44,7 +47,7 @@ Script order is fixed in `build.py`: c_data → e_fields → g_shots → h_biz �
 ## i_track.js
 - `CHECKS[levelId] = [Q(id, question, options[], answerIndex, why)]`, 4 per level.
 - `FINAL = [Q(...)]` and `FINAL_MAP[qid] = levelId` for traceability.
-- Storage keys (prefix `bcpguide:`): cp, final, time, visited, done, role, theme. The export format is `{app:'insuremo-bcp-guide', version:1, ...keys}`. Change `app` and the prefix for a new module so progress from two guides does not mix.
+- Storage keys (prefix `bcpguide:` in BCP, `easypaguide:` in Easy PA; set in `store` in d_app.js): cp, final, time, visited, done, role, theme. The export format is `{app:'insuremo-bcp-guide', version:1, ...keys}`. Change `app` and the prefix for a new module so progress from two guides does not mix.
 - Also holds the vertical `swimlane()`, the full-screen viewer, `moneyFlowSvg()` and `renderBusiness()`.
 
 ## f_lens.js

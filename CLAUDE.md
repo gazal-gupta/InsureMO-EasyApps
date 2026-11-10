@@ -6,7 +6,7 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 - `bcp-learning-guide/index.html`: the finished BCP guide. A single self-contained file (about 5.5 MB, 58 screenshots embedded) that works offline when downloaded.
 - `bcp-learning-guide/img/`: the original screenshots from the source BCP guide, at full resolution.
 - `easypa-learning-guide/index.html`: the finished Easy PA guide (about 6.8 MB, 52 screenshots embedded, 18 scenarios, 25 screens, 6 cross-module journeys, premium calculator). Built from its own engine copy in `easypa-learning-guide/engine/`; originals in `easypa-learning-guide/img/`.
-- `.claude/skills/insuremo-learning-guide/`: the product-manager skill and the build engine. Use it to update the BCP guide or build guides for other modules.
+- `.claude/skills/insuremo-learning-guide/`: the product-manager skill. Its `engine/` rebuilds the BCP guide; for new modules the skill says to start from `easypa-learning-guide/engine/` (newer: numbered status models, swimlane process maps, source-checked calculator).
 
 ## How to work on it
 - To change the BCP guide, edit the files in `.claude/skills/insuremo-learning-guide/engine/`, then rebuild:
@@ -22,6 +22,7 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 - Single HTML file with images embedded, so a download works offline (user requirement).
 - Structure: Start → 0 Insurance business basics → 1 Foundations → 2 Lifecycles → 3 Scenarios → 4 Screens → 5 Cross-module → 6 Fees/GL → 7 Config → 8 Toolkits → Reference (gaps, coverage, glossary) → Assess (tracker, checkpoints, final assessment).
 - Swimlanes run top to bottom so they fit the page width; every diagram has a full-screen view.
+- Process maps are swimlanes with a step table. Status-model arrows are numbered in process order (main path, loops back, exits) with a matching numbered table; not a single numbered chain, because status models have loops and several exits.
 - The role lens hides less relevant sections and opens role-specific blocks.
 - Added insurance knowledge is labelled "Domain context"; market rules carry a confidence tag; example amounts are illustrative.
 - `main` was created from an empty initial commit and merged into the feature branch (force-push was blocked).

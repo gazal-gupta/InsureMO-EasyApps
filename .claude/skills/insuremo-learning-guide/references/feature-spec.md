@@ -2,7 +2,7 @@
 
 Product: an interactive learning guide for one InsureMO module, delivered as one HTML file.
 Users: business analysts, testers, developers, and new joiners who are learning insurance.
-Release state (BCP v4): all features below shipped and tested.
+Release state: BCP v4 and Easy PA v1 shipped all features below; Easy PA also ships F4a and F11.
 
 ## F1. Single self-contained file
 - Works when downloaded and opened from any folder with no internet: all images are embedded as data URIs.
@@ -31,6 +31,11 @@ Release state (BCP v4): all features below shipped and tested.
 - Clicking a swimlane box highlights its row in the step table.
 - Source process maps (images) get a step table with columns Step | Actor | What happens | Result.
 - **Accept when:** no swimlane needs sideways scrolling at 1366 px.
+
+## F4a. Process maps and numbered status models (Easy PA onward)
+- Process maps render as swimlanes with a linked step table (actor, action, screen, status after, fee / note, rule).
+- Each status-model arrow shows a number in process order; the table below has a matching # column; clicking a numbered label highlights its row.
+- **Accept when:** no arrow label overlaps another label or node at 1366 px, and arrow N matches table row N.
 
 ## F5. Scenarios
 - One entry per source scenario, with normal and reversal views; a cancel scenario says it is irreversible.
@@ -71,8 +76,15 @@ Release state (BCP v4): all features below shipped and tested.
 - Keyboard: swimlane nodes and module map nodes respond to Enter; Esc closes overlays.
 - Browser storage is wrapped in try/catch with an in-memory fallback.
 
+## F11. Calculator checked against the source
+- One calculator for the module's formulas (Easy PA: BIE, cancellation from inception, pro-rata, short-rate, POI extension and shortening).
+- One preset per worked example in the source; the result shows a "check against the source" line with the source figures.
+- Shows "Blocked" messages for the source validation rules (for example new expiry not later than the original).
+- **Accept when:** every preset reproduces its source example to the cent, or the mismatch is logged on the Source gaps page.
+
 ## Backlog (not built)
-1. Claims, Easy PA and Reinsurance guides from the same engine.
+1. Claims and Reinsurance guides from the Easy PA engine.
+1a. Port the numbered status models and the two-way-arrow fix into the BCP engine (changes the BCP data format; rebuild and re-QA BCP).
 2. A shared cross-module index page linking all module guides.
 3. A certificate summary view (it cannot use print; show a page the learner can screenshot).
 4. Question banks with random question order on retake.
