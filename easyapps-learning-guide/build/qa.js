@@ -46,7 +46,7 @@ async function state(fr){return fr.evaluate(()=>{const v=document.querySelector(
       let s;for(let i=0;i<20;i++){await sleep(60);s=await state(fr);if((h==='start'&&s.v==='start')||s.h===h)break}
       const want=h.startsWith('sc-')?'scenarios':h.startsWith('scr-')?'screens':h.startsWith('fl-')?'flows':h.startsWith('ip-')?'industry':h;
       if(s.v!==want)bad.push(h+' -> '+s.v);
-      if(h.startsWith('scr-')){const r=await fr.evaluate(async()=>{const im=[...document.querySelectorAll('#v-screens img')];await Promise.all(im.map(i=>i.decode().catch(()=>0)));return {n:im.length,bad:im.filter(i=>!i.naturalWidth).length}});img.n+=r.n;img.bad+=r.bad;if(r.n)img.scr++}
+      if(h.startsWith('scr-')){const r=await fr.evaluate(async()=>{const im=[...document.querySelectorAll('#v-screens img')];im.forEach(i=>{i.loading='eager'});await Promise.race([Promise.all(im.map(i=>i.decode().catch(()=>0))),new Promise(r=>setTimeout(r,3000))]);return {n:im.length,bad:im.filter(i=>!i.naturalWidth).length}});img.n+=r.n;img.bad+=r.bad;if(r.n)img.scr++}
     }
     ok(bad.length===0,`module ${k}: ${links[k].size} map links land on the right page${bad.length?' '+bad.slice(0,5).join(', '):''}`);
     ok(img.n>20&&img.bad===0,`module ${k}: ${img.n} screenshots on ${img.scr} screens decode, ${img.bad} broken`);
