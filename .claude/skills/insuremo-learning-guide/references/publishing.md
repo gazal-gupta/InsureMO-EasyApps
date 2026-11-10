@@ -8,9 +8,26 @@
 | Standalone HTML file | Offline training, people without Claude, LMS upload, email | Build with `--out`; send with SendUserFile or commit to the repo |
 | Repository (PR) | Version control, review, the source of truth | Commit the engine change and the rebuilt `index.html` together |
 
-The BCP guide's artifact is https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR.
+## Shared pages (one per guide)
 
-## Publish or update the artifact
+| Guide | URL | How it is published |
+|---|---|---|
+| Easy Apps (combined) | https://claude.ai/artifact/D4YUYkPsfJHucPw8yUpiW7 | Light page `modules/share/index.html` plus files `m/pa.html`, `m/bcp.html`, `m/clm.html`, `m/ri.html` |
+| Easy PA | https://claude.ai/artifact/6knf7mwoDjGiwThXqNok9q | Single page, images embedded (6.8 MB) |
+| BCP | https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR | Single page, images embedded (5.6 MB); older image files still published alongside |
+| Easy Claim | https://claude.ai/artifact/CM4Zi8GHUscx1H6NuPd2KM | Light page (350 KB) plus `img/sN.png` files |
+| XRI | https://claude.ai/artifact/Q3LqqcJvLVLntmFCZATymY | Single page, images embedded (2.9 MB) |
+
+**Size rule.** A 6 MB embedded page failed to load for a viewer of the Claims guide. Keep a shared page under about 3 MB and publish anything heavier as files next to it. [likely] The 5.6 MB and 6.8 MB embedded pages are at the same risk; move them to the light pattern if anyone reports a page that does not load.
+
+## Publish or update the combined guide
+
+1. Rebuild the module guide you changed, then: `bash easyapps-learning-guide/build/fetch_modules.sh`, `node easyapps-learning-guide/build/harvest.js easyapps-learning-guide/modules easyapps-learning-guide/modules/harvest.json`, `python3 -I easyapps-learning-guide/build/build.py --modules easyapps-learning-guide/modules --out easyapps-learning-guide/index.html --artifact-dir easyapps-learning-guide/modules/share`.
+2. Run `qa.js` on `index.html` copied alone into an empty folder. It must print ALL PASSED.
+3. Commit and push. Then publish with the Artifact tool: `url` = the combined guide's URL (read it first in a new conversation), `file_path` = `easyapps-learning-guide/modules/share/index.html`, `files` = the four `m/<key>.html` files. No `icon` on updates.
+4. If you changed a module guide, republish that guide's own shared page too, so the two links never disagree.
+
+## Publish or update a module guide
 
 1. Build both outputs from the same engine state:
    `python3 -I engine/build.py --img <img dir> --out <repo>/bcp-learning-guide/index.html --artifact <scratchpad>/bcp-learning-guide.html`

@@ -1,5 +1,19 @@
 # InsureMO Easy Apps — learning material
 
+Interactive, offline learning guides for the four InsureMO Easy Apps modules, for business analysts, testers and developers. Each guide is one HTML file: download it and open it in any modern browser.
+
+| Guide | Offline file | Shared page |
+|---|---|---|
+| **Easy Apps (all four modules)** | `easyapps-learning-guide/index.html` | https://claude.ai/artifact/D4YUYkPsfJHucPw8yUpiW7 |
+| Policy (Easy PA) | `easypa-learning-guide/index.html` | https://claude.ai/artifact/6knf7mwoDjGiwThXqNok9q |
+| Billing (BCP) | `bcp-learning-guide/index.html` | https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR |
+| Claims (Easy Claim) | `claims-learning-guide/InsureMO-Claims-Learning-Guide.html` | https://claude.ai/artifact/CM4Zi8GHUscx1H6NuPd2KM |
+| Reinsurance (XRI) | `reinsurance-learning-guide/index.html` | https://claude.ai/artifact/Q3LqqcJvLVLntmFCZATymY |
+
+Start with the **Easy Apps guide**. It holds all four module guides and adds a capability map (Main module › Sub module › Capability › Feature), the interfaces between modules seen from both sides, end-to-end journeys as swimlanes, and one list of source gaps, glossary terms and search. See `easyapps-learning-guide/README.md` to rebuild it.
+
+Shared pages are private until the owner shares them. To change or build a guide, use the skill in `.claude/skills/insuremo-learning-guide/`; its SKILL.md has the rebuild command for every guide.
+
 ## BCP Learning Guide
 
 `bcp-learning-guide/index.html` is a single, self-contained, interactive learning guide for the InsureMO **BCP (Billing, Collection and Payment)** module. Download the one file and open it in any modern browser: it needs no server, no build and no internet (all 58 screenshots are embedded). Online, it uses Google Fonts; offline, it falls back to system fonts.

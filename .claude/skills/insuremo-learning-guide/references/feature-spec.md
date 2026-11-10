@@ -1,8 +1,8 @@
 # Feature specification and acceptance criteria
 
-Product: an interactive learning guide for one InsureMO module, delivered as one HTML file.
+Product: the InsureMO Easy Apps learning suite. One interactive learning guide per module (Easy PA, BCP, Easy Claim, XRI), each delivered as one HTML file, plus the combined Easy Apps guide (F15).
 Users: business analysts, testers, developers, and new joiners who are learning insurance.
-Release state (BCP v4): all features below shipped and tested.
+Release state: F1-F10 shipped in every module guide. F11-F12 ship in XRI and BCP (v2); F13 in Easy PA; F14 in Claims; F15 is the combined guide. Bringing every module to all features is backlog item 1.
 
 ## F1. Single self-contained file
 - Works when downloaded and opened from any folder with no internet: all images are embedded as data URIs.
@@ -85,10 +85,32 @@ Release state (BCP v4): all features below shipped and tested.
 - Status models number every status in sequence; the transition table is numbered and repeats those numbers.
 - **Accept when:** step text in a 5-lane scenario swimlane renders at 12 px or more at 1366 px, and no label overlaps in any status model tab.
 
+## F13. Numbered status models, process maps and source-checked calculator (Easy PA)
+- Process maps render as swimlanes with a linked step table (actor, action, screen, status after, fee or note, rule).
+- Each status-model arrow shows a number in process order; the table has a matching # column; clicking a numbered label highlights its row.
+- One calculator for the module's formulas, with one preset per worked example in the source and a "check against the source" line; "Blocked" messages for the source validation rules.
+- **Accept when:** no arrow label overlaps another label or node at 1366 px, arrow N matches table row N, and every preset reproduces its source example to the cent or the mismatch is logged as a source gap.
+
+## F14. Claims guide features (built outside the engines)
+- Policy lifecycle level: 10 industry processes with paths, actor-per-step explanations, a real example, InsureMO mapping and key terms.
+- Parties map with a who's-who table; calculators for key ratios, claim payment, cancellation refund and reinsurance recovery.
+- Banded swimlanes that fit the page width; task router simulator and section reuse matrix.
+- Objective traceability (24 objectives) and a 226-term glossary in 14 categories.
+- **Accept when:** a 13-step, 7-lane flow needs no sideways scroll at 1366 px and is under 900 px tall; every calculator recomputes on input; the tracker report copies or selects.
+
+## F15. Combined Easy Apps guide
+- One offline file that embeds every module guide unchanged; one light shared page that loads each guide on demand.
+- Capability map: Main module > Sub module > Capability > Feature, where every capability and feature opens the exact page in the module guide; a System menu view of the real menus; filters by module and by "touches another module".
+- Cross-module page: integration map with each interface shown as both guides describe it, an agreement verdict (agree, one side only, gap in both) and a confidence-tagged note; every journey and industry process drawn as a top-to-bottom swimlane.
+- Combined source gaps (filter by module and severity), combined glossary (terms defined in more than one module flagged), one search across all modules.
+- One role picker and one theme switch that reach every embedded guide; links between guides stay inside the hub.
+- **Accept when:** `qa.js` prints ALL PASSED: every capability-map link lands on the right page, every screenshot on every screen decodes, no horizontal scroll at 390 px, and the guide works in a sandboxed frame with no same-origin access.
+
 ## Backlog (not built)
-1. Easy PA guide from the v2 engine. (Reinsurance is built; BCP has the v2 features; Claims exists on a separate branch and still needs the v2 port.)
-2. A shared cross-module index page linking all module guides.
-3. A certificate summary view (it cannot use print; show a page the learner can screenshot).
-4. Question banks with random question order on retake.
-5. Team progress roll-up through an artifact database capability (needs the user's runtime capabilities).
-6. Arabic, Thai or Chinese copy (the export API already supports several languages).
+1. Bring every module guide to one engine with all features F1-F14 (start from XRI v2; port Easy PA F13 and Claims F14), so fixes are made once.
+2. Sales Channel guide (agreements, commission rates, commission settlement); it is the missing stage in the Easy Apps value chain.
+3. Combined progress in the Easy Apps hub (each guide keeps its own tracker today).
+4. A certificate summary view (it cannot use print; show a page the learner can screenshot).
+5. Question banks with random question order on retake.
+6. Team progress roll-up through an artifact database capability (needs the user's runtime capabilities and approval to store learner data).
+7. Arabic, Thai or Chinese copy.
