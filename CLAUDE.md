@@ -14,7 +14,7 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
   `python3 -I .claude/skills/insuremo-learning-guide/engine/build.py --img bcp-learning-guide/img --out bcp-learning-guide/index.html`
 - Before committing, copy the built HTML alone into an empty folder and run `node .claude/skills/insuremo-learning-guide/engine/qa.js <absolute path>`. It must print ALL PASSED.
 - Never edit `bcp-learning-guide/index.html` by hand; it is generated.
-- The shareable artifact is https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR (private until shared from its Share menu). Republish from the `--artifact` build output.
+- The shareable artifact is https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR (private until the user shares it from its Share menu). It matches the current build exactly. To update it, rebuild with `--artifact <scratchpad>/bcp-learning-guide.html` and publish that file; see `.claude/skills/insuremo-learning-guide/references/publishing.md`.
 - Claims guide: edit `claims-learning-guide/index.html`, rebuild the single file, QA the single file alone in an empty folder. Shared page: https://claude.ai/artifact/CM4Zi8GHUscx1H6NuPd2KM. Publish it light (page about 350 KB plus `img/sN.png` as published files); the 6 MB embedded version failed to load as a shared page.
 
 ## Decisions made
@@ -26,7 +26,8 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 - `main` was created from an empty initial commit and merged into the feature branch (force-push was blocked).
 
 ## Open items
-- PR: https://github.com/gazal-gupta/InsureMO-EasyApps/pull/2 (draft). The user should mark it ready and switch the GitHub default branch to `main`.
+- PR: https://github.com/gazal-gupta/InsureMO-EasyApps/pull/2 (draft, mergeable, no comments). The user should mark it ready, merge it, and switch the GitHub default branch to `main`.
+- Sharing the artifact is the user's step (Share menu). Team results are collected by learners pasting their CSV score report; a live team dashboard is a backlog item.
 - Source gaps in the BCP guide (fee codes 700009 vs 403000, sign of 401100, collection confirmation fee, arithmetic errors in the offset examples, no RI fee codes) need confirmation from the InsureMO platform team before requirements or test expectations are locked.
 - Claims PR: https://github.com/gazal-gupta/InsureMO-EasyApps/pull/1 (draft, base `claude/loving-rubin-hv650g`). Claims source gaps (19, for example Cash pay mode vs BCP claim pay modes, Calculation routing not stated, prepay deduction not described, no Reinsurance content) need the platform team.
 - Next: port the Claims guide onto the engine (skill backlog item 1), then Easy PA and Reinsurance from the same engine. Both BCP and Claims now teach insurance basics; consider one shared basics guide linked from each.

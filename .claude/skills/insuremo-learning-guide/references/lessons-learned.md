@@ -29,6 +29,12 @@ In the BCP source: two fee codes for the same step (700009 vs 403000), opposite 
 - A force-push or history rewrite is blocked. To create a base branch when the repo has only the feature branch: make an empty commit with `git commit-tree $(git hash-object -t tree /dev/null) -m "Initialize repository"`, push it to `main`, then `git merge --allow-unrelated-histories` it into the feature branch and push normally.
 - The first branch pushed becomes the GitHub default branch. Tell the user to switch the default to `main`.
 
+## Session and delivery
+- **A worker restart keeps files on disk.** After a restart, check `git status` and the scratchpad before redoing work.
+- **"Publish as a shareable link" usually means "make it shareable".** The artifact already exists; open it, then explain the Share menu. Claude cannot change who sees it.
+- **The build writes `engine/g_shots.js`.** It is generated and ignored by git; never commit it.
+- **PR watching:** after three quiet check-ins in a row, stop scheduling new ones and say so once.
+
 # Lessons learned from the Claims build
 
 ## Product
