@@ -71,3 +71,19 @@ Swimlanes wrap to the page width instead of scrolling sideways; "Wide view" hide
 **Source:** the InsureMO Easy Claim Function User Guide. Labels show where each statement comes from: *Source*, *Screenshot*, *BCP guide* or *Domain context* (general insurance practice; confirm with your project). The Claims source does not describe Reinsurance. Industry facts cited (for example India's Section 64VB cash-before-cover rule and IRDAI health cashless timelines) should be re-checked against current regulation before use in client deliverables.
 
 Progress, answers and preferences are stored only in the learner's browser.
+
+## Reusable skill and build engine
+
+`.claude/skills/insuremo-learning-guide/` is a Claude Code skill. It acts as the product manager for this guide and holds the build engine, so the same guide can be updated or built for other modules (Claims, Easy PA, Reinsurance).
+
+- `SKILL.md`: role, workflow, curriculum, how to adapt to another module.
+- `references/feature-spec.md`: every feature with acceptance criteria, and the backlog.
+- `references/data-model.md`: formats of all data files.
+- `references/lessons-learned.md`: issues found while building and how to avoid them.
+- `engine/`: source files, `build.py` (embeds images, writes the standalone and artifact versions) and `qa.js` (offline, layout, lens, assessment and persistence checks).
+
+Rebuild the BCP guide:
+
+```bash
+python3 -I .claude/skills/insuremo-learning-guide/engine/build.py --img bcp-learning-guide/img --out bcp-learning-guide/index.html
+```
