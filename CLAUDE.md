@@ -16,6 +16,7 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
   `python3 -I easypa-learning-guide/engine/build.py --img easypa-learning-guide/img --out easypa-learning-guide/index.html`
 - Never edit either `index.html` by hand; they are generated. `engine/g_shots.js` is a build output; do not commit it.
 - The shareable artifact is https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR (private until shared from its Share menu). Republish from the `--artifact` build output.
+- The Easy PA artifact is https://claude.ai/artifact/6knf7mwoDjGiwThXqNok9q (private until shared). Republish to that URL from the Easy PA `--artifact` build output.
 
 ## Decisions made
 - Single HTML file with images embedded, so a download works offline (user requirement).
