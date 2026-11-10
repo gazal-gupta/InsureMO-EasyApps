@@ -63,23 +63,23 @@ const PM=[['Policy Admin','New business AR',1,1,1,1,1],['Policy Admin','Endorsem
 
 /* ---------- status models ---------- */
 const STATES={
- arap:{name:'AR / AP',nodes:[{id:'O',t:'Outstanding',x:60,y:90,c:'start'},{id:'P',t:'Outstanding (part paid)',x:300,y:20},{id:'S',t:'Settled',x:540,y:90,c:'good'},{id:'C',t:'Canceled',x:300,y:170,c:'final'}],
+ arap:{name:'AR / AP',nodes:[{id:'O',t:'Outstanding',x:79,y:90,c:'start'},{id:'P',t:'Outstanding (part paid)',x:396,y:20},{id:'S',t:'Settled',x:713,y:90,c:'good'},{id:'C',t:'Canceled',x:396,y:170,c:'final'}],
   edges:[['O','P','Partial offset'],['P','S','Remaining offset'],['O','S','Full offset'],['S','O','Reverse offset'],['O','C','Cancel (final)']],
   rows:[['Outstanding','Settled','Offset of the full balance (application, ARAP offset, tolerance, write-off, payment confirmation)','Application, Policy Premium Collection, Single Refund, ARAP Offset, Tolerance Offset'],['Outstanding','Outstanding, lower balance','Partial offset. Status does not change','Any collection or application'],['Settled','Outstanding','Reversal restores the original balance','Reverse Application & Offset, Reverse Refund'],['Outstanding','Canceled','Cancel. Irreversible','ARAP Management (delete)']]},
- receipt:{name:'Receipt (collection)',nodes:[{id:'Co',t:'Collected',x:60,y:90,c:'start'},{id:'Cf',t:'Confirmed',x:300,y:20,c:'good'},{id:'R',t:'Reversed',x:300,y:170,c:'final'},{id:'Rf',t:'Refund',x:540,y:90}],
+ receipt:{name:'Receipt (collection)',nodes:[{id:'Co',t:'Collected',x:40,y:120,c:'start'},{id:'Cf',t:'Confirmed',x:330,y:20,c:'good'},{id:'R',t:'Reversed',x:330,y:220,c:'final'},{id:'Rf',t:'Refund',x:640,y:120}],
   edges:[['Co','Cf','Funds verified'],['Co','R','Reverse (balance = amount)'],['Co','Rf','Receipt Refund'],['Cf','Rf','Receipt Refund']],
   rows:[['Collected','Confirmed','Funds clear (cheque, bank transfer, e-payment)','Same collection screen, confirmation step'],['Collected','Reversed','Receipt never applied: receipt balance equals receipt amount','Reverse Collection'],['Collected / Confirmed','Refund','Remaining balance refunded to payer','Receipt Refund'],['Applied receipt','(blocked)','Reverse the application first, then the collection','Reverse Application & Offset → Reverse Collection']]},
- payment:{name:'Payment',nodes:[{id:'A',t:'Approved',x:60,y:90,c:'start'},{id:'Pd',t:'Paid',x:300,y:20,c:'good'},{id:'Rv',t:'Reversed',x:540,y:90,c:'final'}],
+ payment:{name:'Payment',nodes:[{id:'A',t:'Approved',x:40,y:120,c:'start'},{id:'Pd',t:'Paid',x:330,y:20,c:'good'},{id:'Rv',t:'Reversed',x:640,y:120,c:'final'}],
   edges:[['A','Pd','Confirm payment'],['Pd','Rv','Reverse Refund'],['A','Rv','Reverse Refund']],
   rows:[['(AP Outstanding)','Approved','Refund Approval, Statement Refund, or Receipt Refund (already approved)','Refund Approval / Statement Refund / Receipt Refund'],['Approved','Paid','Payment date and company bank account entered','Single Refund / Massive Refund'],['Approved or Paid','Reversed','Mistake in refund; AP goes back to Outstanding','Reverse Refund']]},
- commission:{name:'Commission',nodes:[{id:'1',t:'1 Pending',x:40,y:100,c:'start'},{id:'2',t:'2 Waiting for Issue',x:300,y:20},{id:'4',t:'4 Offset',x:300,y:180,c:'good'},{id:'3',t:'3 Settled',x:680,y:20},{id:'5',t:'5 Paid',x:680,y:180,c:'good'}],
-  edges:[['1','2','Premium collected'],['1','4','Collected with Use Commission'],['2','3','Single / Massive Settlement'],['3','5','Approved and paid']],
+ commission:{name:'Commission',nodes:[{id:'1',t:'Pending (code 1)',x:20,y:120,c:'start'},{id:'2',t:'Waiting for Issue (2)',x:320,y:120},{id:'3',t:'Settled (code 3)',x:620,y:120},{id:'5',t:'Paid (code 5)',x:920,y:120,c:'good'},{id:'4',t:'Offset (code 4)',x:320,y:240,c:'good'}],
+  edges:[['1','2','Premium collected'],['1','4','Collected with Use Commission'],['2','3','Settlement'],['3','5','Approved and paid']],
   rows:[['1 Pending','2 Waiting for Issue','Premium for the policy is collected in BCP','Any premium collection'],['1 Pending','4 Offset','Collection ticks "Use Commission", so commission is netted from premium','Policy Premium Collection / Application'],['2 Waiting for Issue','3 Settled','Commission settled and sent to BCP as AP or AR','Commission > Single / Massive Settlement'],['3 Settled','5 Paid','Settlement AP approved and paid','Refund Approval → Single / Massive Refund']]},
- offset:{name:'Offset record',nodes:[{id:'Of',t:'Offset',x:60,y:90,c:'start'},{id:'Rv',t:'Reversed',x:480,y:90,c:'final'}],
+ offset:{name:'Offset record',nodes:[{id:'Of',t:'Offset',x:198,y:90,c:'start'},{id:'Rv',t:'Reversed',x:594,y:90,c:'final'}],
   edges:[['Of','Rv','Reverse Application & Offset']],
   rows:[['Offset','Reversed','Reverse by type: ARAP, Application, Tolerance Offset, Write Off, Commission. Reversal date and user are stored','Reverse Application & Offset']]},
- proposal:{name:'Proposal (CBC)',nodes:[{id:'B',t:'Bound',x:40,y:90,c:'start'},{id:'W',t:'Waiting For Payment',x:330,y:90},{id:'I',t:'Issued',x:680,y:90,c:'good'},{id:'X',t:'Prepay cancelled',x:330,y:180,c:'final'}],
-  edges:[['B','W','Send To BCP'],['W','I','Premium Pre-Paid submitted'],['W','X','Cancel prepay order']],
+ proposal:{name:'Proposal (CBC)',nodes:[{id:'B',t:'Bound',x:20,y:100,c:'start'},{id:'W',t:'Waiting For Payment',x:320,y:100},{id:'I',t:'Issued',x:620,y:100,c:'good'},{id:'X',t:'Prepay cancelled',x:320,y:220,c:'final'}],
+  edges:[['B','W','Send To BCP'],['W','I','Pre-Paid submitted'],['W','X','Cancel prepay order']],
   rows:[['Bound (PA)','Waiting For Payment','User clicks Send To BCP in PA. A prepay order is created in BCP','Easy PA'],['Waiting For Payment','Issued','Premium Pre-Paid submitted; integration issues the policy, creates AR and settles it','Collection > Premium Pre-Paid'],['Waiting For Payment','Prepay cancelled','Unused prepay order is cancelled. Irreversible','ARAP Management (cancel)']]}
 };
 

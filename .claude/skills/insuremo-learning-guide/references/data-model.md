@@ -53,3 +53,13 @@ Script order is fixed in `build.py`: c_data → e_fields → g_shots → h_biz �
 ## b_shell.html
 - One `<section class="view" id="v-<id>" hidden>` per level. Each level ends with `<div data-cp="<id>"></div>` and a `mark-done` checkbox.
 - Static images use `src="img/<file>"`; build.py swaps them for data URIs.
+
+## v2 additions (Reinsurance engine in reinsurance-learning-guide/src/)
+- `SCEN` steps are `xri` (process from the source) and `ind` (industry process). Rename both keys together in `d_app.js`, `f_lens.js` and the toolkit if a module needs normal / reversal instead.
+- `I(lane, kind, text, opts)` = `S(...)` with `tag:'inf'`: the step gets an IND badge and an amber role label; other steps get an XRI badge.
+- `GRP` in `d_app.js`: scenario groups → `[label, tag class]`.
+- `h_biz.js` adds `PRIMER` (`[idea, plain words, example]`), `STAGES` (`{n, id, name, menu, freq, plain, analogy, start, end, example, sc[], steps[]}`) and `LIFECYCLES` (`{id, name, why, start, end, freq, roles, menu, st (STATES key), sc[], steps[]}`). In steps, `s` is shown as the result.
+- `stepTable(steps, id, resultLabel)`: pass `'Result'` for process maps.
+- `STATES` node order is the sequence number shown on the diagram; keep at least 240 px between node x positions.
+- Reference tables: `CONTRACT` (data needed from other modules), `SOATYPES`, `STATUSREF`, `DTABLES` (`[field, values, screen]`), `APIS` (architecture services).
+- Storage prefix `xriguide:`; export app id `insuremo-xri-guide`.

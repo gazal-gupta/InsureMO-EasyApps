@@ -28,3 +28,26 @@ In the BCP source: two fee codes for the same step (700009 vs 403000), opposite 
 - `rm` with a relative glob after `cd` is blocked. Overwrite with `cp -f` or use an exact absolute path.
 - A force-push or history rewrite is blocked. To create a base branch when the repo has only the feature branch: make an empty commit with `git commit-tree $(git hash-object -t tree /dev/null) -m "Initialize repository"`, push it to `main`, then `git merge --allow-unrelated-histories` it into the feature branch and push normally.
 - The first branch pushed becomes the GitHub default branch. Tell the user to switch the default to `main`.
+
+## From the Reinsurance (XRI) build
+- **Fork the engine when the module money model differs.** BCP code hard-codes the landscape, hub label, calculator and toolkit. For XRI these were rewritten in `reinsurance-learning-guide/src/`; data files alone were not enough.
+- **Show source process and industry process separately.** Each scenario has `xri` and `ind` step lists; steps with `tag:'inf'` get an IND badge, others an XRI badge.
+- **State diagram bidirectional edges:** the normal flips with edge direction, so both curves of an A→B / B→A pair need the same offset sign, or they land on one side and labels overlap.
+- **Grid columns must be `minmax(0,1fr)`**, not `1fr`, or wide tables inside push the page sideways at 390 px.
+- **Money flow pairs:** stagger the two labels along the line (26% and 74%, measured in a canonical direction), not only sideways.
+- **Swimlane boxes:** allow 3 text lines plus a sub line and add an ellipsis; the full text lives in the step table and tooltip.
+
+## From the v2 readability round (Reinsurance)
+- **"Make diagrams bigger" is half the fix.** The user who cannot read a diagram usually also lacks the concepts. Add the primer and stage cards first, then enlarge.
+- **The side list shrinks the diagram.** A 260 px scenario list beside the diagram left about 780 px; moving the list above gave about 1060 px and readable text.
+- **Do not cap swimlane height to the viewport.** It shrinks long flows until text is unreadable. Use Full screen for a one-screen view.
+- **Cap width for narrow diagrams.** Without `max-width: 1.2 × viewBox`, a three-lane swimlane scales to 1.8× and looks broken.
+- **Stage step lists need a fixed role column** (grid 170 px + 1fr), or long actions wrap under the role label.
+- **Long inline Python heredocs can trip the delete safety check** even with no `rm`. Write patch scripts to the scratchpad with the Write tool, then run them.
+- **Artifact viewer blocks downloads.** Keep copy-as-text as the working path and tell the user.
+
+## From the BCP v2 port
+- **Status-model labels need room.** With 168 px nodes, keep about 300 px between node x positions on a row, or shorten the edge label (for example "Settlement" instead of "Single / Massive Settlement").
+- **A long edge must not pass through or under another node or edge label.** Put the target off the row (diagonal layout) so the direct edge runs in clear space.
+- **Do not number over business codes.** BCP commission statuses have codes 1 to 5 in a different order from the flow. Keep the code in the label ("Paid (code 5)") and let the circle show the sequence.
+- **Port by script, not by hand.** The v2 swimlane, stage and lifecycle renderers were copied from `reinsurance-learning-guide/src/` with exact-string replacements and asserts; any miss stopped the script before it changed a file.
