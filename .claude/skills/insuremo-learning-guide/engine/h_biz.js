@@ -210,3 +210,65 @@ const GLOSS=[
  ['DN / CN No.','InsureMO','Debit / credit note number of an ARAP.','DR2022…','Search key on most screens.'],
  ['Producer','InsureMO','Agent or broker record in Sales Channel.','PTY100000015880.','Producer Master.']
 ];
+
+/* ===================== v2: PRIMER, STAGES (start page) AND LIFECYCLES (level 2) =====================
+   Steps use S(lane, kind, action, {s: result, m: screen, tag:'inf' for steps outside BCP or general practice}) */
+const PRIMER=[
+ ['Insurance','A promise: the insurer pays for a defined loss; in return the customer pays a fee called the premium.','Mr Tan pays 1,090 a year (premium 1,000 + tax 90) so that damage to his car is paid for.'],
+ ['A bill is a receivable (AR)','When a policy is issued, the insurer is owed the premium. Money owed to the company is an account receivable (AR).','Policy issued: an AR of 1,090 is created against Mr Tan.'],
+ ['Who pays the insurer','The customer pays directly, or an agent or broker collects from many customers and pays the insurer one amount, often after deducting its commission.','A broker sends one transfer of 85,000 for ten policies.'],
+ ['Money owed by the insurer is a payable (AP)','Claims, refunds of premium and commission are money the company owes: accounts payable (AP). Paying money out needs approval.','A claim of 7,500 creates an AP to the workshop.'],
+ ['Matching money to bills','Money that arrives is first recorded as a receipt. It is then matched (offset) against the bills it pays. Money not yet matched waits in a suspense account.','The broker’s 85,000 waits in suspense, then is applied to the ten ARs.'],
+ ['Fees and the books','Every amount is also recorded as a fee record with a type code. Fees become accounting entries (vouchers) in the General Ledger (GL).','Receipt fee 700009 → a GL voucher debiting bank, crediting suspense.'],
+ ['BCP','BCP (Billing, Collection, Payment) is the InsureMO module that holds every AR and AP, collects and pays money, matches it, and feeds the GL.','The rest of this guide shows how, step by step.']
+];
+const STAGES=[
+ {n:1,id:'bill',name:'Bill: receive AR and AP from business modules',menu:'Billing (AR/AP Generation, Update, Statements)',freq:'Every policy, endorsement, claim, reinsurance and commission transaction with an amount',
+  plain:'Other modules (Easy PA, Claims, Reinsurance, Sales Channel) send BCP every amount owed to or by the company. BCP creates a receivable (AR) or payable (AP) with its fee breakdown.',
+  analogy:'Like a shop till receiving every sale and every supplier invoice into one ledger.',
+  start:'A business module completes a transaction with money: policy issued, endorsement, claim settled, reinsurance account, commission settled.',end:'AR or AP in status Outstanding, with fee records ready for the GL.',
+  example:'Mr Tan’s car policy is issued: AR 1,090 (premium 1,000 + GST 90) with commission fee 150 for the agent.',sc:['C1','C3','P1','X1'],
+  steps:[S('pa','ev','Policy issued or endorsed; claim or RI amount due',{s:'Bill sent to BCP'}),S('sys','sys','Create AR (money in) or AP (money out) per installment and payer',{s:'AR / AP Outstanding'}),S('sys','sys','Create fee records for each amount type',{s:'Fees ready for GL'}),S('fin','op','Correct or group bills if needed',{m:'AR/AP Update, Statement',s:'Bill ready to collect or pay'})]},
+ {n:2,id:'collect',name:'Collect money in',menu:'Collection',freq:'Every customer, producer, coinsurer or reinsurer payment',
+  plain:'Money arrives from a customer, an agent or broker, a coinsurer or a reinsurer. BCP records it as a receipt. When the payer and the bill are known, it is collected and matched in one step; otherwise it waits in suspense.',
+  analogy:'Like a cashier taking payment: either for a known invoice at the counter, or into a holding account when it arrives without a reference.',
+  start:'The payer sends money (cash, cheque, transfer, card, direct debit).',end:'Receipt created; either the AR is settled at once, or the money waits in suspense.',
+  example:'Mr Tan pays 1,090 by card at the counter: Policy Premium Collection settles his AR immediately.',sc:['C1','C2','C4','C5','C6','C8'],
+  steps:[S('cust','ext','Payer sends money',{s:'Money in the bank',tag:'inf'}),S('fin','op','Known bill: Policy Premium / Single Collection',{m:'Collection',s:'Receipt + AR Settled'}),S('fin','op','Unknown or bulk: Suspense Collection',{m:'Collection (Producer Collection)',s:'Receipt in suspense'}),S('sys','sys','Receipt fee recorded',{s:'Fee 700009'}),S('fin','op','Cheque or transfer: confirm when funds clear',{s:'Receipt Confirmed'})]},
+ {n:3,id:'match',name:'Match and settle (apply and offset)',menu:'Collection > Application; Internal Offset',freq:'Daily or as money arrives; month-end for small differences',
+  plain:'Money in suspense is applied to the bills it pays. Amounts owed in both directions with the same party are netted. Tiny differences are cleared, and bad debts are written off. No cash moves in this stage.',
+  analogy:'Like ticking off invoices on a bank statement and cancelling out what two parties owe each other.',
+  start:'A receipt waits in suspense, or a party has both AR and AP, or a small balance remains.',end:'AR and AP balances at zero, status Settled.',
+  example:'Broker sends 85,000 net for ten policies worth 100,000 with 15,000 commission: Application with Use Commission settles all ten ARs and the commission.',sc:['C4','O1','O2','O3','C10','C11'],
+  steps:[S('fin','op','Application: pick receipt, select ARs',{m:'Application',s:'AR Settled'}),S('fin','op','ARAP Offset: net AR and AP of one party',{m:'ARAP Offset',s:'Both Settled'}),S('fin','op','Tolerance Offset or Write Off for small or bad debts',{m:'Tolerance Offset',s:'AR Settled'}),S('sys','sys','Offset fees recorded',{s:'Fees for GL'}),S('fin','rev','Mistake: Reverse Application & Offset',{s:'AR Outstanding again'})]},
+ {n:4,id:'pay',name:'Pay money out',menu:'Refund (Approve, Confirm, Reverse)',freq:'Payment runs, often daily or weekly',
+  plain:'Payables (claims, premium refunds, commission, reinsurance) are approved by an authorised person, then paid through the bank. Approval comes first because money leaving the company is the higher-risk direction.',
+  analogy:'Like accounts payable in any company: approve the invoice, then release the bank payment.',
+  start:'An AP is Outstanding and due.',end:'Payment Paid and AP Settled.',
+  example:'A motor claim AP of 7,500 is approved in Refund Approval and paid to the workshop in a Massive Payment run.',sc:['P1','P2','P4','P6','P7'],
+  steps:[S('appr','op','Refund Approval (or Statement Refund)',{m:'Refund Approval',s:'Payment Approved'}),S('fin','op','Single or Massive Payment: date and company bank account',{m:'Single / Massive Payment',s:'Payment Paid'}),S('sys','sys','AP settled; payment fees recorded',{s:'AP Settled'}),S('bank','ext','Bank transfers the money',{s:'Payee paid',tag:'inf'}),S('fin','rev','Mistake: Reverse Refund',{s:'AP Outstanding again'})]},
+ {n:5,id:'books',name:'Post to the books and report',menu:'Query (GL Entry, BizTransaction); BCP Fee & GL Fee',freq:'Continuous; checked at month-end close',
+  plain:'Every step above created fee records. BCP turns them into GL vouchers using the mapping configured for each fee type, so the accounts, tax returns and solvency reports match the money.',
+  analogy:'Like the bookkeeper posting every till slip and supplier payment into the company ledger.',
+  start:'Fee records exist from billing, collection, offset or payment.',end:'GL vouchers posted; queries reconcile with the bank and the ledger.',
+  example:'Mr Tan’s payment creates receipt fee 700009 and offset fees; the GL shows Dr Bank 1,090, Cr Premium receivable 1,090.',sc:['C1','P1'],
+  steps:[S('sys','sys','Fee records from every stage',{s:'Fees by type code'}),S('sys','sys','Map fee types to GL accounts',{m:'GLIntegrationMappingRule',s:'GL entries'}),S('gl','gl','Vouchers posted',{s:'Books updated'}),S('fin','op','Check with Query BizTransaction and Query GL',{m:'Query',s:'Reconciled'})]}
+];
+const LIFECYCLES=[
+ {id:'in',name:'Money in (receivables)',why:'Turns every amount owed to the company into cash, matched to the right bill, so customers are not chased for premium they already paid.',
+  start:'A business module sends an AR.',end:'AR Settled; receipt fully used or refunded.',freq:'Every bill and payment',roles:'Payer, BCP finance user, BCP system, GL',menu:'Billing, Collection',st:'arap',sc:['C1','C2','C3','C4','C5','C6','C8','C10','C11'],
+  rev:'Reverse in the opposite order: Reverse Application & Offset first, then Reverse Collection.',
+  steps:[S('pa','ev','Policy issued: AR sent to BCP',{s:'AR Outstanding'}),S('cust','ext','Customer or producer pays',{s:'Money received',tag:'inf'}),S('fin','op','Collection (direct) or Suspense Collection',{m:'Collection',s:'Receipt created'}),S('fin','op','Application of the receipt to the AR',{m:'Application',s:'AR Settled'}),S('sys','sys','Receipt and offset fees',{s:'Fees 700009 and offset'}),S('gl','gl','GL vouchers',{s:'Posted'})]},
+ {id:'out',name:'Money out (payables)',why:'Pays only what is approved, to the right payee, and keeps a trail for every payment.',
+  start:'A business module sends an AP (claim, refund, commission, reinsurance).',end:'Payment Paid; AP Settled.',freq:'Payment runs',roles:'Approver, BCP finance user, BCP system, bank, GL',menu:'Billing, Refund',st:'payment',sc:['P1','P2','P3','P4','P6','P7'],
+  rev:'One step: Reverse Refund returns the AP to Outstanding.',
+  steps:[S('clm','ev','Claim settled: AP sent to BCP',{s:'AP Outstanding'}),S('appr','op','Refund Approval',{m:'Refund Approval',s:'Payment Approved'}),S('fin','op','Single or Massive Payment',{m:'Single / Massive Payment',s:'Payment Paid'}),S('sys','sys','AP settled; payment fees',{s:'AP Settled'}),S('bank','ext','Bank pays the payee',{s:'Cash out',tag:'inf'}),S('gl','gl','GL vouchers',{s:'Posted'})]},
+ {id:'int',name:'Internal settlement (no cash)',why:'Clears balances without moving money: netting, small differences and bad debt.',
+  start:'A party has AR and AP, a small balance remains, or a debt cannot be collected.',end:'Balances Settled.',freq:'As needed; month-end',roles:'BCP finance user, BCP system, GL',menu:'Internal Offset',st:'offset',sc:['O1','O2','O3'],
+  rev:'Reverse Application & Offset.',
+  steps:[S('sys','sys','Party has open AR and AP',{s:'Both Outstanding'}),S('fin','op','ARAP Offset: equal amounts both sides',{m:'ARAP Offset',s:'Both Settled'}),S('fin','op','Tolerance Offset for small differences',{m:'Tolerance Offset',s:'AR Settled'}),S('fin','op','Write Off for bad debt',{m:'Tolerance Offset > Write Off',s:'AR Settled'}),S('gl','gl','Offset and write-off fees to GL',{s:'Posted'})]},
+ {id:'comm',name:'Commission',why:'Pays agents and brokers only for premium the company has actually collected.',
+  start:'A policy is issued and commission is generated.',end:'Commission Paid (code 5) or netted at collection (code 4).',freq:'Every policy; settlement runs monthly',roles:'Sales Channel, BCP finance user, approver, BCP system',menu:'Commission, Refund',st:'commission',sc:['C4','C9','P5'],
+  rev:'Settlement AP: Reverse Refund. Netted commission: Reverse Application & Offset.',
+  steps:[S('sc','ev','Commission generated on policy issue',{s:'Code 1 Pending'}),S('fin','op','Premium collected',{m:'Collection',s:'Code 2 Waiting for Issue'}),S('fin','op','Single or Massive Settlement',{m:'Commission',s:'Code 3 Settled; AP created'}),S('appr','op','Refund Approval',{s:'Payment Approved'}),S('fin','op','Single or Massive Payment',{s:'Code 5 Paid'})]}
+];

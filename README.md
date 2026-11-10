@@ -1,5 +1,19 @@
 # InsureMO Easy Apps — learning material
 
+Interactive, offline learning guides for the four InsureMO Easy Apps modules, for business analysts, testers and developers. Each guide is one HTML file: download it and open it in any modern browser.
+
+| Guide | Offline file | Shared page |
+|---|---|---|
+| **Easy Apps (all four modules)** | `easyapps-learning-guide/index.html` | https://claude.ai/artifact/D4YUYkPsfJHucPw8yUpiW7 |
+| Policy (Easy PA) | `easypa-learning-guide/index.html` | https://claude.ai/artifact/6knf7mwoDjGiwThXqNok9q |
+| Billing (BCP) | `bcp-learning-guide/index.html` | https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR |
+| Claims (Easy Claim) | `claims-learning-guide/InsureMO-Claims-Learning-Guide.html` | https://claude.ai/artifact/CM4Zi8GHUscx1H6NuPd2KM |
+| Reinsurance (XRI) | `reinsurance-learning-guide/index.html` | https://claude.ai/artifact/Q3LqqcJvLVLntmFCZATymY |
+
+Start with the **Easy Apps guide**. It holds all four module guides and adds a capability map (Main module › Sub module › Capability › Feature), the interfaces between modules seen from both sides, end-to-end journeys as swimlanes, and one list of source gaps, glossary terms and search. See `easyapps-learning-guide/README.md` to rebuild it.
+
+Shared pages are private until the owner shares them. To change or build a guide, use the skill in `.claude/skills/insuremo-learning-guide/`; its SKILL.md has the rebuild command for every guide.
+
 ## BCP Learning Guide
 
 `bcp-learning-guide/index.html` is a single, self-contained, interactive learning guide for the InsureMO **BCP (Billing, Collection and Payment)** module. Download the one file and open it in any modern browser: it needs no server, no build and no internet (all 58 screenshots are embedded). Online, it uses Google Fonts; offline, it falls back to system fonts.
@@ -31,28 +45,46 @@ Progress (levels visited, time spent, checkpoint and final scores) is saved in t
 
 **Screenshots:** the 58 images from the source guide are embedded in `index.html`. The originals are also kept in `bcp-learning-guide/img/` at full resolution for reuse.
 
-## InsureMO Easy Claims Learning Guide
+## Claims Learning Guide
 
-`claims-learning-guide/index.html` is a single, self-contained interactive learning guide for the **InsureMO Easy Claims** module. All 136 source screenshots are embedded, so the one file works offline after download. Fonts load from Google Fonts when online.
+Two ways to use it:
 
-**Audience:** business analysts, testers and developers. A role lens filters notes per role and dims modules outside the role's path.
+- `claims-learning-guide/InsureMO-Claims-Learning-Guide.html` is a **single file with all 136 screenshots embedded** (about 6 MB). Download it and open it in any browser; it works offline. Links to the BCP guide open its shared web page.
+- `claims-learning-guide/index.html` is the editable source. It loads screenshots from the `img/` folder next to it and links to the BCP guide in this repo.
 
-| Level | Modules |
+After editing `index.html`, rebuild the single file:
+
+```bash
+python3 claims-learning-guide/build_standalone.py claims-learning-guide claims-learning-guide/InsureMO-Claims-Learning-Guide.html /tmp/claims-guide-artifact.html
+```
+
+**Audience:** business analysts, testers and developers learning insurance and InsureMO Easy Claim.
+
+**Structure (basic to advanced)**
+
+| Level | Content |
 |---|---|
-| 1 Basics | Insurance and claims basics (value chain, loss ratio, lines of business, KPIs); parties and roles (insurer, insured, policyholder, claimant, agent, broker, TPA, garage, surveyor, third party, reinsurer); core concepts (insurance principles, claim structure, claim vs sub-claim mode, payable amount calculator, reserves) |
-| 2 Core process | End-to-end lifecycle with approval gates and status model; the seven main tasks in depth; approvals and authority; reserves, calculation (Matrix V1/V2, full-scale) and settlement |
-| 3 Advanced | Prepay and recoveries (subrogation, salvage, recovery); ten real-world scenarios (motor, health, property, catastrophe, decline, reopen, payment error); screens and work management; cross-module links to Easy PA, BCP and Reinsurance; configuration, APIs and the health baseline |
-| 4 Apply | Role toolkits: BA workshop questions and fit-gap, 32-row test matrix, developer integration checklist |
-| Tools | Submit routing simulator and full routing table, section read/edit matrix, ten industry process flows (new business, endorsement, renewal, cancellation, lapse, billing, commission, claims, reinsurance), calculators for payable amount, key ratios, cancellation refund, reinsurance recovery, incremental vs full-scale calculation and reserve close validation |
-| Reference | Glossary (~150 terms incl. billing, premium, AR/AP, refund, ARAP offset, write-off, reversal, statements, reinsurance), source Q&A, source gaps, tracker and traceability, 25-question overall assessment |
+| 0 Start here | Learning paths by role, source labels, how to read the swimlanes |
+| 1 Insurance basics | The parties (insurer, client, insured, agent, broker, MGA, TPA, surveyor, reinsurer, regulator) with a clickable map; how insurers make money; the six principles; policy anatomy; deductible, co-pay, average and depreciation; lines of business; value chain mapped to InsureMO modules; metric and claim payment calculators |
+| 2 Policy lifecycle | 10 industry processes with every actor and step explained: broker submission to quote, bind and issue; online motor sale; endorsement; renewal; cancellation (pro-rata, short-rate, flat); lapse and reinstatement; billing; commission; claims (motor, health cashless, third-party); reinsurance. Real examples, InsureMO mapping, cancellation and reinsurance calculators |
+| 3 Claims foundations | The seven Easy Claim tasks, claim vs sub-claim mode, reserves, auxiliary tasks, the authority rule, menu map, icons |
+| 4 Lifecycle and task engine | Claim process flowchart, routing rules, task router simulator, status models, section reuse matrix |
+| 5 Claims process flows | 24 swimlane flows with alternate paths, step-by-step tables, a real example and industry practice for each |
+| 6 Screens | 41 screens with sections, buttons, fields, rules and all source screenshots (click to enlarge) |
+| 7 Calculation and reserve logic | GIMO rating vs new calculation tool, Claim Matrix V1 / V2, full-scale calculator, reserve close checker |
+| 8 Cross-module | Easy PA policy docking, Claims-to-BCP money map, Reinsurance (domain context), journeys |
+| 9 Configuration and APIs | Parameters, authority, workflow, code lists, APIs, configure-or-build |
+| 10 Role toolkits | BA questions and fit-gap, test matrix, boundary and validation tests, developer checklists |
+| Reference | 17 source Q&As, source gaps, insurance glossary (226 terms in 14 categories) |
+| Progress | Learning tracker (content covered, checkpoint scores, objective-to-question traceability, copyable report) and a 20-question final assessment (pass mark 70%) |
 
-Every process has a swimlane diagram (actors as columns), a step table, and a full-screen view. Each module has a knowledge check; the tracker scores each module and traces every source section to the module and questions that cover it. Progress is saved in the browser (localStorage) and can be downloaded as a report.
+Every module from 1 to 9 ends with a 4-question checkpoint. Each question is linked to one of 24 learning objectives, so the tracker shows which objectives are proven.
 
-Content tagged *InsureMO Easy Claims* comes from the InsureMO Easy Claims user guide; content tagged *Insurance knowledge* is general insurance knowledge added to explain it, with plain-English pointers for non-insurance readers. Every diagram is numbered (Figure module.n). Cross-links to BCP scenarios work when `bcp-learning-guide` sits next to `claims-learning-guide`.
+Swimlanes wrap to the page width instead of scrolling sideways; "Wide view" hides the side menu for more room.
 
-**Edit and rebuild:** change files in `claims-learning-guide/src/` and run `python3 claims-learning-guide/build.py`.
+**Source:** the InsureMO Easy Claim Function User Guide. Labels show where each statement comes from: *Source*, *Screenshot*, *BCP guide* or *Domain context* (general insurance practice; confirm with your project). The Claims source does not describe Reinsurance. Industry facts cited (for example India's Section 64VB cash-before-cover rule and IRDAI health cashless timelines) should be re-checked against current regulation before use in client deliverables.
 
-Test: `node .claude/skills/insuremo-learning-guide/scripts/check_pages.js claims-learning-guide/index.html` must print PASS. Build method: `.claude/skills/insuremo-learning-guide/references/claims-guide-method.md`.
+Progress, answers and preferences are stored only in the learner's browser.
 
 ## Reusable skill and build engine
 
@@ -62,7 +94,6 @@ Test: `node .claude/skills/insuremo-learning-guide/scripts/check_pages.js claims
 - `references/feature-spec.md`: every feature with acceptance criteria, and the backlog.
 - `references/data-model.md`: formats of all data files.
 - `references/lessons-learned.md`: issues found while building and how to avoid them.
-- `references/claims-guide-method.md` and `scripts/check_pages.js`: how the Claims guide was built and its page-check script.
 - `engine/`: source files, `build.py` (embeds images, writes the standalone and artifact versions) and `qa.js` (offline, layout, lens, assessment and persistence checks).
 
 Rebuild the BCP guide:

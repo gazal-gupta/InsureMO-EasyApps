@@ -1,33 +1,43 @@
-# Project memory: InsureMO Easy Apps learning material
+# Project memory: InsureMO Easy Apps learning suite
 
 ## What this repo is
-Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsurance) for business analysts, testers and developers.
+Learning material for the InsureMO Easy Apps modules for business analysts, testers and developers: one offline guide per module, and one combined Easy Apps guide that joins them.
 
-- `bcp-learning-guide/index.html`: the finished BCP guide. A single self-contained file (about 5.5 MB, 58 screenshots embedded) that works offline when downloaded.
-- `claims-learning-guide/index.html`: the finished InsureMO Easy Claims guide (single file, 136 screenshots embedded). Sources in `claims-learning-guide/src/`; rebuild with `python3 claims-learning-guide/build.py`; test with `node .claude/skills/insuremo-learning-guide/scripts/check_pages.js claims-learning-guide/index.html`. Labels: "InsureMO Easy Claims" for source facts, "Insurance knowledge" for added explanation (the user asked for this naming).
-- `bcp-learning-guide/img/`: the original screenshots from the source BCP guide, at full resolution.
-- `.claude/skills/insuremo-learning-guide/`: the product-manager skill and the build engine. Use it to update the BCP guide or build guides for other modules.
+| Main module | Folder | Engine | Shared page |
+|---|---|---|---|
+| Policy (Easy PA) | `easypa-learning-guide/` | `easypa-learning-guide/engine/` | https://claude.ai/artifact/6knf7mwoDjGiwThXqNok9q |
+| Billing (BCP) | `bcp-learning-guide/` | `.claude/skills/insuremo-learning-guide/engine/` (v2) | https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR |
+| Claims (Easy Claim) | `claims-learning-guide/` | `claims-learning-guide/index.html` + `build_standalone.py` | https://claude.ai/artifact/CM4Zi8GHUscx1H6NuPd2KM |
+| Reinsurance (XRI) | `reinsurance-learning-guide/` | `reinsurance-learning-guide/src/` (v2 template) | https://claude.ai/artifact/Q3LqqcJvLVLntmFCZATymY |
+| **Easy Apps (all four)** | `easyapps-learning-guide/` | `easyapps-learning-guide/src/` + `build/` | https://claude.ai/artifact/D4YUYkPsfJHucPw8yUpiW7 |
+
+- `.claude/skills/insuremo-learning-guide/`: the product-manager skill for the whole suite. SKILL.md has the rebuild command for every guide; `references/` has the data model, feature spec (definition of done), lessons learned, publishing rules and the combined-guide architecture (`easyapps-hub.md`).
+- Every shared page is private to the owner until shared from its Share menu. The Easy Apps page is currently set to "Anyone with the link".
 
 ## How to work on it
-- To change the BCP guide, edit the files in `.claude/skills/insuremo-learning-guide/engine/`, then rebuild:
-  `python3 -I .claude/skills/insuremo-learning-guide/engine/build.py --img bcp-learning-guide/img --out bcp-learning-guide/index.html`
-- Before committing, copy the built HTML alone into an empty folder and run `node .claude/skills/insuremo-learning-guide/engine/qa.js <absolute path>`. It must print ALL PASSED.
-- Never edit `bcp-learning-guide/index.html` by hand; it is generated.
-- The shareable artifact is https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR (private until the user shares it from its Share menu). It matches the current build exactly. To update it, rebuild with `--artifact <scratchpad>/bcp-learning-guide.html` and publish that file; see `.claude/skills/insuremo-learning-guide/references/publishing.md`.
+- Change a module guide's engine or data, rebuild it with the command in SKILL.md, run its QA, then rebuild the combined guide (it embeds every module guide). Never edit a generated HTML file by hand.
+- Combined guide: `fetch_modules.sh` → `harvest.js` → `build.py --artifact-dir` → `qa.js` (must print ALL PASSED) → commit → republish the light page with its four `m/<key>.html` files to the same URL.
+- Before committing a module guide, copy the built HTML alone into an empty folder and run its QA script.
+- The BCP engine writes `engine/g_shots.js`; it is generated and ignored by git.
 
 ## Decisions made
-- Single HTML file with images embedded, so a download works offline (user requirement).
-- Structure: Start → 0 Insurance business basics → 1 Foundations → 2 Lifecycles → 3 Scenarios → 4 Screens → 5 Cross-module → 6 Fees/GL → 7 Config → 8 Toolkits → Reference (gaps, coverage, glossary) → Assess (tracker, checkpoints, final assessment).
-- Swimlanes run top to bottom so they fit the page width; every diagram has a full-screen view.
-- The role lens hides less relevant sections and opens role-specific blocks.
+- Single HTML file per guide with images embedded, so a download works offline (user requirement).
+- Shared pages heavier than about 3 MB are published light (page plus separate files): a 6 MB embedded page failed for a Claims viewer. The combined guide's shared page is 0.6 MB and loads each module guide on demand; its offline file is 12 MB with screenshots in WebP.
+- Module levels: Start → 0 Insurance business basics → 1 Foundations → 2 Lifecycles → 3 Scenarios → 4 Screens → 5 Cross-module → 6 Fees/GL → 7 Config → 8 Toolkits → Reference (gaps, coverage, glossary) → Assess (tracker, checkpoints, final assessment).
+- Combined guide hierarchy: Main module > Sub module (business area) > Capability (source scenario or flow) > Feature (screens and flow), plus a System menu view of the real menus. Module guides run unchanged in iframes and talk to the hub by postMessage, so it works in the artifact sandbox.
+- Swimlanes run top to bottom; every diagram has a full-screen view; status-model arrows are numbered in process order; two-way arrows curve on opposite sides.
+- The role lens hides less relevant sections and opens role-specific blocks. One role picker in the combined guide drives all four guides.
 - Added insurance knowledge is labelled "Domain context"; market rules carry a confidence tag; example amounts are illustrative.
-- `main` was created from an empty initial commit and merged into the feature branch (force-push was blocked).
+- All guides live on one branch (merged from their build branches and from `main` on 2026-11-10). Each engine rebuilds its guide byte for byte.
+- One Claims guide: the published build (`index.html` + `build_standalone.py`) is master. The second build that was on `main` (PR #3) was ported into it and its files removed; it remains in git history.
+- `main` was created from an empty initial commit and merged into the first feature branch (force-push was blocked).
 
 ## Open items
-- PR: https://github.com/gazal-gupta/InsureMO-EasyApps/pull/2 (draft, mergeable, no comments). The user should mark it ready, merge it, and switch the GitHub default branch to `main`.
-- Sharing the artifact is the user's step (Share menu). Team results are collected by learners pasting their CSV score report; a live team dashboard is a backlog item.
-- Source gaps in the BCP guide (fee codes 700009 vs 403000, sign of 401100, collection confirmation fee, arithmetic errors in the offset examples, no RI fee codes) need confirmation from the InsureMO platform team before requirements or test expectations are locked.
-- Next candidates: Claims, Easy PA and Reinsurance guides from the same engine.
+- **Claims shared page not yet republished.** The published Claims guide now includes the content ported from the second Claims build (10 real-world scenarios, the standard process in one view, plain-words task cards and more). The combined Easy Apps link carries it. To update the Claims link itself: `python3 -I claims-learning-guide/build_light.py claims-learning-guide <scratch>/claims-light.html`, read the live page in full (the publisher requires it; it is 337 KB, so do it in a fresh turn), then publish to its URL.
+- **Interfaces to confirm with the InsureMO platform team** before requirements or tests are locked: Claims to XRI (no specification in either source), Easy PA to XRI (only the Easy PA guide has fields), XRI to GL (direct or through BCP not stated), RI fee codes in BCP.
+- **Source gaps:** 72 across the four guides (15 high), listed on the combined guide's Source gaps page. BCP examples: fee codes 700009 vs 403000, sign of 401100, arithmetic errors in the offset examples.
+- **PRs:** https://github.com/gazal-gupta/InsureMO-EasyApps/pull/6 (this branch: combined guide, suite merge, skill). It includes the work of drafts #1 (Claims), #4 (XRI, BCP v2) and #5 (Easy PA), which can be closed once #6 merges into its base `claude/loving-rubin-hv650g`; #2 then carries everything to `main`. The user should switch the GitHub default branch to `main`.
+- **Backlog:** one engine for all modules (start from XRI v2, port Easy PA numbered status models and Claims lifecycle features); Sales Channel guide (the missing value-chain stage); combined progress in the hub; move the 5.6 MB BCP and 6.8 MB Easy PA shared pages to the light pattern if anyone reports a load failure.
 
 ## Working with the user (Gazal)
 - Act as a senior insurance consultant and advisor, not an assistant. Challenge assumptions first, and give a recommendation rather than a list of options.
