@@ -48,7 +48,7 @@ function stateSvg(m){
   const seen={};
   m.edges.forEach(([a,b,l])=>{const A=N[a],B=N[b];const ax=A.x+NW/2,ay=A.y+NH/2+5,bx=B.x+NW/2,by=B.y+NH/2+5;
     const key=[a,b].sort().join();const back=seen[key];seen[key]=1;
-    const dx=bx-ax,dy=by-ay,len=Math.hypot(dx,dy)||1;const nx=-dy/len,ny=dx/len;const off=back?-34:(m.edges.some(e=>e[0]===b&&e[1]===a)?34:0);
+    const dx=bx-ax,dy=by-ay,len=Math.hypot(dx,dy)||1;const nx=-dy/len,ny=dx/len;const off=m.edges.some(e=>e[0]===b&&e[1]===a)?30:0;
     const cx=(ax+bx)/2+nx*off,cy=(ay+by)/2+ny*off;
     const clip=(px,py,tx,ty)=>{const ddx=tx-px,ddy=ty-py;const tX=Math.abs(ddx)>0?(NW/2)/Math.abs(ddx):1e9,tY=Math.abs(ddy)>0?(NH/2)/Math.abs(ddy):1e9;const t=Math.min(tX,tY);return[px+ddx*t,py+ddy*t]};
     const [sx,sy]=clip(ax,ay,cx,cy),[ex,ey]=clip(bx,by,cx,cy);
