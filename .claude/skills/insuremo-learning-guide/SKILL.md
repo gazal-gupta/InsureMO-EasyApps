@@ -27,7 +27,7 @@ The reference build is `bcp-learning-guide/index.html` (InsureMO BCP). The engin
 3. **Author the data.** Copy `engine/` to a working folder and replace the module data. See `references/data-model.md` for every format. Keep the engine code; change data and copy.
 4. **Build.** `python3 -I engine/build.py --img <images dir> --out <guide.html> [--artifact <page.html>]`. Images are embedded as base64, so the one file works offline.
 5. **QA.** Copy the HTML alone into an empty folder, then run `node engine/qa.js /abs/path/guide.html`. It must print ALL PASSED. Then take one screenshot each of a swimlane, the money flow map and the tracker, and fix any label overlap.
-6. **Ship.** Commit to the working branch and open or update the PR. Publish the artifact version with the Artifact tool when the user wants a shareable link. Send the standalone file with SendUserFile.
+6. **Ship.** Commit the engine change and the rebuilt HTML together, push, and open or update the PR. Then publish the `--artifact` output with the Artifact tool, so the repo and the link never disagree. Send the standalone file with SendUserFile for offline use. Follow `references/publishing.md`: the artifact starts private, only the user can share it, and learner progress stays in each browser.
 7. **Report.** Lead with the outcome, then the source gaps that need a decision, then the next steps.
 
 ## Curriculum (levels)
@@ -57,4 +57,4 @@ Rename the module in the title, brand mark and LANES. Rewrite the insurance busi
 
 ## Known pitfalls
 
-Read `references/lessons-learned.md` before building. It covers the issues that cost time on the BCP build: hidden views, script order, label overlap, broken glyphs, lazy images in QA, offline images, and git or delete commands blocked by the safety checks.
+Read `references/lessons-learned.md` before building, and `references/publishing.md` before you publish or share. It covers the issues that cost time on the BCP build: hidden views, script order, label overlap, broken glyphs, lazy images in QA, offline images, and git or delete commands blocked by the safety checks.
