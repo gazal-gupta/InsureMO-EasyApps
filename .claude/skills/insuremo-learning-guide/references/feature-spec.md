@@ -86,7 +86,7 @@ Release state (BCP v4): all features below shipped and tested.
 - **Accept when:** step text in a 5-lane scenario swimlane renders at 12 px or more at 1366 px, and no label overlaps in any status model tab.
 
 ## Backlog (not built)
-1. Easy PA guide from the v2 engine; port the v2 features back to the BCP guide. (Reinsurance is built; Claims exists on a separate branch.)
+1. Easy PA guide from the v2 engine. (Reinsurance is built; BCP has the v2 features; Claims exists on a separate branch and still needs the v2 port.)
 2. A shared cross-module index page linking all module guides.
 3. A certificate summary view (it cannot use print; show a page the learner can screenshot).
 4. Question banks with random question order on retake.

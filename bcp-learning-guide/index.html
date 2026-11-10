@@ -178,8 +178,10 @@ svg .st-lblbg{fill:var(--surface)}
 .legend i{width:14px;height:10px;border-radius:2px;border:1.5px solid;display:inline-block}
 
 /* scenario explorer */
-.explorer{display:grid;grid-template-columns:260px minmax(0,1fr);gap:22px;align-items:start}
-.sc-list{display:flex;flex-direction:column;gap:2px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 74px);max-height:calc(100vh - 96px);overflow:auto;padding-right:4px}
+.explorer{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;align-items:start}
+.sc-list button{padding:5px 8px!important;font-size:13.5px}
+.sc-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px 10px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:8px}
+.sc-list .grp{grid-column:1/-1}
 .sc-list .grp{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:12px 8px 4px}
 .sc-list .grp.in{color:var(--in)} .sc-list .grp.out{color:var(--out)} .sc-list .grp.int{color:var(--int)} .sc-list .grp.cancel{color:var(--cancel)}
 .sc-list button{border:0;background:none;text-align:left;padding:6px 8px;border-radius:var(--r);cursor:pointer;font-size:13.5px;display:grid;grid-template-columns:34px 1fr;gap:4px}
@@ -277,6 +279,7 @@ ol.shotsteps>li{display:flex;flex-direction:column;gap:10px;padding-left:0}
 #dgfull .lb-bar,#dgfull .lb-cap{color:var(--ink)}
 .dg-body{flex:1;min-height:0;overflow:auto}
 .dg-body svg{width:100%;height:100%;max-width:none!important}
+.dg-body svg.sw{height:auto;max-width:1500px!important;margin:0 auto;display:block}
 .realex{border:1px solid var(--line);border-left:3px solid var(--sc);background:var(--surface);border-radius:0 var(--r) var(--r) 0;padding:12px 14px;max-width:80ch;display:flex;flex-direction:column;gap:4px}
 .combo{font-family:var(--f-mono);font-size:15px;font-weight:500;color:var(--accent);background:var(--accent-soft);padding:2px 10px;border-radius:4px;align-self:flex-start}
 .cpbox{border:1px solid var(--accent);border-radius:var(--r);background:var(--surface);padding:16px;display:flex;flex-direction:column;gap:12px;max-width:860px}
@@ -306,6 +309,48 @@ tr.offp td{opacity:.55}
 }
 @media (max-width:560px){ .brand span{display:none} .roles .eyebrow{display:none} body{font-size:14.5px} }
 @media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
+
+/* ---- v2 port ---- */
+svg .node.ind>rect:first-of-type{stroke-dasharray:5 3}
+svg .node .indbg{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1}
+svg .node .indt{font-family:var(--f-mono);font-size:8px;font-weight:600;fill:var(--warn)}
+.badge-ind{font-family:var(--f-mono);font-size:10px;padding:1px 5px;border-radius:3px;border:1px solid;color:var(--warn);background:var(--warn-soft);border-color:var(--warn)}
+.diagram:has(>.dg-full){padding-top:42px}
+/* ---- v2: larger diagrams, stages, lifecycles ---- */
+svg.sw .node .t{font-size:13.5px}
+svg.sw .node .f{font-size:11px}
+svg.sw .lane-lbl{font-size:12px;font-weight:600}
+svg.sw .node .num{font-size:11px}
+svg.sw .node .indt,svg.sw .node .xrit{font-size:9.5px}
+svg .st-num{fill:var(--ink)} svg .st-numt{fill:var(--surface);font-family:var(--f-mono);font-size:11px;font-weight:600}
+.stg-ribbon{display:flex;align-items:stretch;gap:6px;flex-wrap:nowrap}
+.stg{flex:1 1 0;display:flex;flex-direction:column;gap:4px;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);text-decoration:none;color:var(--ink);min-width:0}
+.stg:hover{border-color:var(--accent)}
+.stg-arrow{align-self:center;font-style:normal;color:var(--ink-2);font-size:20px}
+.stg-n{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-family:var(--f-mono);font-weight:600;font-size:13px;flex:none}
+.stg-n.big{width:40px;height:40px;font-size:18px}
+.stg-head{display:flex;gap:14px;align-items:flex-start}
+.stg-head h3{margin:2px 0 4px}
+.stg-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr) minmax(0,1fr);gap:12px}
+.stg-box{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;background:var(--bg)}
+.stg-box.start{border-left:4px solid var(--accent)} .stg-box.end{border-left:4px solid var(--in)}
+.stg-box p{margin:4px 0 8px}
+.stg-steps{margin:6px 0 0;padding-left:22px;display:flex;flex-direction:column;gap:7px}
+.stg-steps li{display:grid;grid-template-columns:170px minmax(0,1fr);gap:2px 10px;align-items:baseline}
+.stg-steps .res{grid-column:2}
+.stg-steps .role{justify-self:start}
+@media (max-width:640px){.stg-steps li{grid-template-columns:minmax(0,1fr)}.stg-steps .res{grid-column:1}}
+.stg-steps .role{font-family:var(--f-mono);font-size:11px;padding:1px 6px;border-radius:3px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.stg-steps .role.ext{background:var(--warn-soft);color:var(--warn)}
+.stg-steps .res{font-size:13px;color:var(--in);font-weight:500}
+.stg-foot{border-top:1px solid var(--line);padding-top:8px}
+.stg-foot p{margin:2px 0}
+.prim{position:relative}
+.lc-card .kv{grid-template-columns:130px 1fr}
+.lc-card .stg-steps{columns:2;column-gap:28px;display:block}
+.lc-card .stg-steps li{break-inside:avoid;margin-bottom:8px}
+@media (max-width:1000px){.lc-card .stg-steps{columns:1}}
+@media (max-width:1000px){.stg-ribbon{flex-direction:column}.stg-arrow{transform:rotate(90deg)}.stg-cols{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head><body><div class="top"><div class="top-in">
   <a class="brand" href="#start"><div class="brand-mark">BCP</div><div><b>InsureMO BCP Learning Guide</b><span>Billing · Collection · Payment — Easy Apps</span></div></a>
@@ -348,6 +393,20 @@ tr.offp td{opacity:.55}
   </div>
 
   <section class="block">
+    <h2>New to insurance? Read this first</h2>
+    <p class="muted">Seven ideas in the order you need them. Each one builds on the one before. If you know insurance already, skip to the five stages.</p>
+    <div class="grid g3" id="primer"></div>
+  </section>
+
+  <section class="block">
+    <h2>The five stages in BCP, explained</h2>
+    <p class="muted">Everything BCP does falls into five stages. Each stage below says when it starts, who does what (role → action → result), and how it ends. Click a stage to jump to it.</p>
+    <div class="stg-ribbon" id="stageRibbon"></div>
+    <div style="display:flex;flex-direction:column;gap:16px" id="stageCards"></div>
+    <p class="small muted">Roles: <b>BCP finance user</b> collects, applies and pays; <b>BCP approver</b> approves payments; <b>BCP system</b> creates records and fees automatically. Amber role labels are steps outside BCP (payer, bank) or general practice.</p>
+  </section>
+
+  <section class="block">
     <h2>Pick your learning path</h2>
     <p class="muted">Use the <b>Lens</b> buttons at the top to filter content for your role. Everyone should start with Level 0 (insurance business basics) and finish levels 1 to 3. Each level ends with a 4-question checkpoint; track scores in <a href="#tracker">My progress</a> and finish with the <a href="#assessment">final assessment</a>. Everything works offline in the downloaded HTML file.</p>
     <div class="paths" id="pathCards"></div>
@@ -372,8 +431,9 @@ tr.offp td{opacity:.55}
       <span><i style="border-color:var(--in);background:var(--in-soft)"></i>End state</span>
       <span><i style="border-color:var(--out);background:var(--out-soft)"></i>Reversal step</span>
       <span><i style="border-color:var(--cancel);background:var(--cancel-soft)"></i>Irreversible step</span>
+      <span><b class="badge-ind">IND</b> step outside BCP or general practice (domain context)</span>
     </div>
-    <p class="muted small">Each row (lane) is one actor. Read the numbered boxes left to right. Click a box to highlight its row in the step table under the diagram. The small grey text in a box shows the status change or fee code.</p>
+    <p class="muted small">Each row (lane) is one actor. Steps run from top to bottom; read the numbered boxes in order. Click a box to highlight its row in the step table under the diagram. The small grey text in a box shows the status change or fee code.</p>
   </section>
 </section>
 
@@ -554,13 +614,17 @@ tr.offp td{opacity:.55}
   <p class="lede">Every scenario in BCP is a variation of three patterns. Learn the patterns and the status changes, and the scenarios become easy.</p></header>
 
   <section class="block">
-    <h2>The three patterns</h2>
-    <div class="grid g3">
-      <div class="card"><span class="tag in">Money in</span><h3>Collect → Suspense → Offset</h3><ol class="steps"><li>Source module bills BCP. AR is created as Outstanding.</li><li>Money is received. A receipt is created and held in suspense.</li><li>The receipt is offset against the AR. AR balance becomes 0 and status Settled.</li></ol><p class="small muted"><b>Reverse in the opposite order:</b> reverse the offset first, then reverse the collection.</p></div>
-      <div class="card"><span class="tag out">Money out</span><h3>Approve → Confirm</h3><ol class="steps"><li>Source module bills BCP. AP is created as Outstanding.</li><li>Finance approves. A payment record is created as Approved.</li><li>Payment is confirmed after the bank transfer. Payment becomes Paid and AP is settled.</li></ol><p class="small muted"><b>Reverse:</b> one step, Reverse Refund. AP returns to Outstanding.</p></div>
-      <div class="card"><span class="tag int">Internal</span><h3>Net, tolerate or write off</h3><ol class="steps"><li>ARAP Offset nets AR and AP of the same party. No money moves.</li><li>Tolerance Offset clears small differences.</li><li>Write-off closes bad debt.</li></ol><p class="small muted"><b>Reverse:</b> Reverse Application &amp; Offset.</p></div>
-    </div>
+    <h2>The four lifecycles</h2>
+    <p class="muted">Every BCP scenario is a variation of these four lifecycles. For each: why it exists, when it starts and ends, how often it runs, who is involved, how to reverse it, and the numbered steps with results.</p>
+    <div style="display:flex;flex-direction:column;gap:16px" id="lcCards"></div>
     <div class="callout"><b>Why payments need approval and collections do not:</b> paying money out is the higher-risk direction. Finance staff decide which APs can be paid and which are in dispute before money leaves the company. The guide calls refund "a very sensitive process".</div>
+  </section>
+
+  <section class="block" id="lcMapBlock">
+    <h2>Lifecycle swimlanes</h2>
+    <p class="muted">Each lifecycle as a swimlane: one column per actor, steps from top to bottom, and the result of every step in the table. Click a box to highlight its row; use Full screen to enlarge.</p>
+    <div class="tabs" role="tablist" id="lcTabs"></div>
+    <div id="lcMap" style="margin-top:12px"></div>
   </section>
 
   <section class="block">
@@ -576,10 +640,10 @@ tr.offp td{opacity:.55}
 
   <section class="block">
     <h2>Status models</h2>
-    <p class="muted">Pick a record type to see its statuses and what moves it from one to the next. Testers: every arrow is at least one test case.</p>
+    <p class="muted">Pick a record type. Statuses are numbered in the order a record normally moves through them, and the table lists every transition in sequence. Testers: every arrow is at least one test case.</p>
     <div class="tabs" role="tablist" id="stTabs"></div>
     <div class="diagram" id="stDiagram"></div>
-    <div class="tbl"><table><thead><tr><th>From</th><th>To</th><th>Trigger</th><th>Screen / process</th></tr></thead><tbody id="stTable"></tbody></table></div>
+    <div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>Trigger</th><th>Screen / process</th></tr></thead><tbody id="stTable"></tbody></table></div>
   </section>
 
   <section class="block">
@@ -920,23 +984,23 @@ const PM=[['Policy Admin','New business AR',1,1,1,1,1],['Policy Admin','Endorsem
 
 /* ---------- status models ---------- */
 const STATES={
- arap:{name:'AR / AP',nodes:[{id:'O',t:'Outstanding',x:60,y:90,c:'start'},{id:'P',t:'Outstanding (part paid)',x:300,y:20},{id:'S',t:'Settled',x:540,y:90,c:'good'},{id:'C',t:'Canceled',x:300,y:170,c:'final'}],
+ arap:{name:'AR / AP',nodes:[{id:'O',t:'Outstanding',x:79,y:90,c:'start'},{id:'P',t:'Outstanding (part paid)',x:396,y:20},{id:'S',t:'Settled',x:713,y:90,c:'good'},{id:'C',t:'Canceled',x:396,y:170,c:'final'}],
   edges:[['O','P','Partial offset'],['P','S','Remaining offset'],['O','S','Full offset'],['S','O','Reverse offset'],['O','C','Cancel (final)']],
   rows:[['Outstanding','Settled','Offset of the full balance (application, ARAP offset, tolerance, write-off, payment confirmation)','Application, Policy Premium Collection, Single Refund, ARAP Offset, Tolerance Offset'],['Outstanding','Outstanding, lower balance','Partial offset. Status does not change','Any collection or application'],['Settled','Outstanding','Reversal restores the original balance','Reverse Application & Offset, Reverse Refund'],['Outstanding','Canceled','Cancel. Irreversible','ARAP Management (delete)']]},
- receipt:{name:'Receipt (collection)',nodes:[{id:'Co',t:'Collected',x:60,y:90,c:'start'},{id:'Cf',t:'Confirmed',x:300,y:20,c:'good'},{id:'R',t:'Reversed',x:540,y:90,c:'final'},{id:'Rf',t:'Refund',x:300,y:170}],
+ receipt:{name:'Receipt (collection)',nodes:[{id:'Co',t:'Collected',x:40,y:120,c:'start'},{id:'Cf',t:'Confirmed',x:330,y:20,c:'good'},{id:'R',t:'Reversed',x:330,y:220,c:'final'},{id:'Rf',t:'Refund',x:640,y:120}],
   edges:[['Co','Cf','Funds verified'],['Co','R','Reverse (balance = amount)'],['Co','Rf','Receipt Refund'],['Cf','Rf','Receipt Refund']],
   rows:[['Collected','Confirmed','Funds clear (cheque, bank transfer, e-payment)','Same collection screen, confirmation step'],['Collected','Reversed','Receipt never applied: receipt balance equals receipt amount','Reverse Collection'],['Collected / Confirmed','Refund','Remaining balance refunded to payer','Receipt Refund'],['Applied receipt','(blocked)','Reverse the application first, then the collection','Reverse Application & Offset → Reverse Collection']]},
- payment:{name:'Payment',nodes:[{id:'A',t:'Approved',x:60,y:90,c:'start'},{id:'Pd',t:'Paid',x:300,y:90,c:'good'},{id:'Rv',t:'Reversed',x:540,y:90,c:'final'}],
+ payment:{name:'Payment',nodes:[{id:'A',t:'Approved',x:40,y:120,c:'start'},{id:'Pd',t:'Paid',x:330,y:20,c:'good'},{id:'Rv',t:'Reversed',x:640,y:120,c:'final'}],
   edges:[['A','Pd','Confirm payment'],['Pd','Rv','Reverse Refund'],['A','Rv','Reverse Refund']],
   rows:[['(AP Outstanding)','Approved','Refund Approval, Statement Refund, or Receipt Refund (already approved)','Refund Approval / Statement Refund / Receipt Refund'],['Approved','Paid','Payment date and company bank account entered','Single Refund / Massive Refund'],['Approved or Paid','Reversed','Mistake in refund; AP goes back to Outstanding','Reverse Refund']]},
- commission:{name:'Commission',nodes:[{id:'1',t:'1 Pending',x:40,y:90,c:'start'},{id:'2',t:'2 Waiting for Issue',x:230,y:90},{id:'4',t:'4 Offset',x:230,y:180,c:'good'},{id:'3',t:'3 Settled',x:420,y:90},{id:'5',t:'5 Paid',x:600,y:90,c:'good'}],
-  edges:[['1','2','Premium collected'],['1','4','Collected with Use Commission'],['2','3','Single / Massive Settlement'],['3','5','Approved and paid']],
+ commission:{name:'Commission',nodes:[{id:'1',t:'Pending (code 1)',x:20,y:120,c:'start'},{id:'2',t:'Waiting for Issue (2)',x:320,y:120},{id:'3',t:'Settled (code 3)',x:620,y:120},{id:'5',t:'Paid (code 5)',x:920,y:120,c:'good'},{id:'4',t:'Offset (code 4)',x:320,y:240,c:'good'}],
+  edges:[['1','2','Premium collected'],['1','4','Collected with Use Commission'],['2','3','Settlement'],['3','5','Approved and paid']],
   rows:[['1 Pending','2 Waiting for Issue','Premium for the policy is collected in BCP','Any premium collection'],['1 Pending','4 Offset','Collection ticks "Use Commission", so commission is netted from premium','Policy Premium Collection / Application'],['2 Waiting for Issue','3 Settled','Commission settled and sent to BCP as AP or AR','Commission > Single / Massive Settlement'],['3 Settled','5 Paid','Settlement AP approved and paid','Refund Approval → Single / Massive Refund']]},
- offset:{name:'Offset record',nodes:[{id:'Of',t:'Offset',x:150,y:90,c:'start'},{id:'Rv',t:'Reversed',x:450,y:90,c:'final'}],
+ offset:{name:'Offset record',nodes:[{id:'Of',t:'Offset',x:198,y:90,c:'start'},{id:'Rv',t:'Reversed',x:594,y:90,c:'final'}],
   edges:[['Of','Rv','Reverse Application & Offset']],
   rows:[['Offset','Reversed','Reverse by type: ARAP, Application, Tolerance Offset, Write Off, Commission. Reversal date and user are stored','Reverse Application & Offset']]},
- proposal:{name:'Proposal (CBC)',nodes:[{id:'B',t:'Bound',x:40,y:90,c:'start'},{id:'W',t:'Waiting For Payment',x:250,y:90},{id:'I',t:'Issued',x:480,y:90,c:'good'},{id:'X',t:'Prepay cancelled',x:250,y:180,c:'final'}],
-  edges:[['B','W','Send To BCP'],['W','I','Premium Pre-Paid submitted'],['W','X','Cancel prepay order']],
+ proposal:{name:'Proposal (CBC)',nodes:[{id:'B',t:'Bound',x:20,y:100,c:'start'},{id:'W',t:'Waiting For Payment',x:320,y:100},{id:'I',t:'Issued',x:620,y:100,c:'good'},{id:'X',t:'Prepay cancelled',x:320,y:220,c:'final'}],
+  edges:[['B','W','Send To BCP'],['W','I','Pre-Paid submitted'],['W','X','Cancel prepay order']],
   rows:[['Bound (PA)','Waiting For Payment','User clicks Send To BCP in PA. A prepay order is created in BCP','Easy PA'],['Waiting For Payment','Issued','Premium Pre-Paid submitted; integration issues the policy, creates AR and settles it','Collection > Premium Pre-Paid'],['Waiting For Payment','Prepay cancelled','Unused prepay order is cancelled. Irreversible','ARAP Management (cancel)']]}
 };
 
@@ -1773,6 +1837,68 @@ const GLOSS=[
  ['DN / CN No.','InsureMO','Debit / credit note number of an ARAP.','DR2022…','Search key on most screens.'],
  ['Producer','InsureMO','Agent or broker record in Sales Channel.','PTY100000015880.','Producer Master.']
 ];
+
+/* ===================== v2: PRIMER, STAGES (start page) AND LIFECYCLES (level 2) =====================
+   Steps use S(lane, kind, action, {s: result, m: screen, tag:'inf' for steps outside BCP or general practice}) */
+const PRIMER=[
+ ['Insurance','A promise: the insurer pays for a defined loss; in return the customer pays a fee called the premium.','Mr Tan pays 1,090 a year (premium 1,000 + tax 90) so that damage to his car is paid for.'],
+ ['A bill is a receivable (AR)','When a policy is issued, the insurer is owed the premium. Money owed to the company is an account receivable (AR).','Policy issued: an AR of 1,090 is created against Mr Tan.'],
+ ['Who pays the insurer','The customer pays directly, or an agent or broker collects from many customers and pays the insurer one amount, often after deducting its commission.','A broker sends one transfer of 85,000 for ten policies.'],
+ ['Money owed by the insurer is a payable (AP)','Claims, refunds of premium and commission are money the company owes: accounts payable (AP). Paying money out needs approval.','A claim of 7,500 creates an AP to the workshop.'],
+ ['Matching money to bills','Money that arrives is first recorded as a receipt. It is then matched (offset) against the bills it pays. Money not yet matched waits in a suspense account.','The broker’s 85,000 waits in suspense, then is applied to the ten ARs.'],
+ ['Fees and the books','Every amount is also recorded as a fee record with a type code. Fees become accounting entries (vouchers) in the General Ledger (GL).','Receipt fee 700009 → a GL voucher debiting bank, crediting suspense.'],
+ ['BCP','BCP (Billing, Collection, Payment) is the InsureMO module that holds every AR and AP, collects and pays money, matches it, and feeds the GL.','The rest of this guide shows how, step by step.']
+];
+const STAGES=[
+ {n:1,id:'bill',name:'Bill: receive AR and AP from business modules',menu:'Billing (AR/AP Generation, Update, Statements)',freq:'Every policy, endorsement, claim, reinsurance and commission transaction with an amount',
+  plain:'Other modules (Easy PA, Claims, Reinsurance, Sales Channel) send BCP every amount owed to or by the company. BCP creates a receivable (AR) or payable (AP) with its fee breakdown.',
+  analogy:'Like a shop till receiving every sale and every supplier invoice into one ledger.',
+  start:'A business module completes a transaction with money: policy issued, endorsement, claim settled, reinsurance account, commission settled.',end:'AR or AP in status Outstanding, with fee records ready for the GL.',
+  example:'Mr Tan’s car policy is issued: AR 1,090 (premium 1,000 + GST 90) with commission fee 150 for the agent.',sc:['C1','C3','P1','X1'],
+  steps:[S('pa','ev','Policy issued or endorsed; claim or RI amount due',{s:'Bill sent to BCP'}),S('sys','sys','Create AR (money in) or AP (money out) per installment and payer',{s:'AR / AP Outstanding'}),S('sys','sys','Create fee records for each amount type',{s:'Fees ready for GL'}),S('fin','op','Correct or group bills if needed',{m:'AR/AP Update, Statement',s:'Bill ready to collect or pay'})]},
+ {n:2,id:'collect',name:'Collect money in',menu:'Collection',freq:'Every customer, producer, coinsurer or reinsurer payment',
+  plain:'Money arrives from a customer, an agent or broker, a coinsurer or a reinsurer. BCP records it as a receipt. When the payer and the bill are known, it is collected and matched in one step; otherwise it waits in suspense.',
+  analogy:'Like a cashier taking payment: either for a known invoice at the counter, or into a holding account when it arrives without a reference.',
+  start:'The payer sends money (cash, cheque, transfer, card, direct debit).',end:'Receipt created; either the AR is settled at once, or the money waits in suspense.',
+  example:'Mr Tan pays 1,090 by card at the counter: Policy Premium Collection settles his AR immediately.',sc:['C1','C2','C4','C5','C6','C8'],
+  steps:[S('cust','ext','Payer sends money',{s:'Money in the bank',tag:'inf'}),S('fin','op','Known bill: Policy Premium / Single Collection',{m:'Collection',s:'Receipt + AR Settled'}),S('fin','op','Unknown or bulk: Suspense Collection',{m:'Collection (Producer Collection)',s:'Receipt in suspense'}),S('sys','sys','Receipt fee recorded',{s:'Fee 700009'}),S('fin','op','Cheque or transfer: confirm when funds clear',{s:'Receipt Confirmed'})]},
+ {n:3,id:'match',name:'Match and settle (apply and offset)',menu:'Collection > Application; Internal Offset',freq:'Daily or as money arrives; month-end for small differences',
+  plain:'Money in suspense is applied to the bills it pays. Amounts owed in both directions with the same party are netted. Tiny differences are cleared, and bad debts are written off. No cash moves in this stage.',
+  analogy:'Like ticking off invoices on a bank statement and cancelling out what two parties owe each other.',
+  start:'A receipt waits in suspense, or a party has both AR and AP, or a small balance remains.',end:'AR and AP balances at zero, status Settled.',
+  example:'Broker sends 85,000 net for ten policies worth 100,000 with 15,000 commission: Application with Use Commission settles all ten ARs and the commission.',sc:['C4','O1','O2','O3','C10','C11'],
+  steps:[S('fin','op','Application: pick receipt, select ARs',{m:'Application',s:'AR Settled'}),S('fin','op','ARAP Offset: net AR and AP of one party',{m:'ARAP Offset',s:'Both Settled'}),S('fin','op','Tolerance Offset or Write Off for small or bad debts',{m:'Tolerance Offset',s:'AR Settled'}),S('sys','sys','Offset fees recorded',{s:'Fees for GL'}),S('fin','rev','Mistake: Reverse Application & Offset',{s:'AR Outstanding again'})]},
+ {n:4,id:'pay',name:'Pay money out',menu:'Refund (Approve, Confirm, Reverse)',freq:'Payment runs, often daily or weekly',
+  plain:'Payables (claims, premium refunds, commission, reinsurance) are approved by an authorised person, then paid through the bank. Approval comes first because money leaving the company is the higher-risk direction.',
+  analogy:'Like accounts payable in any company: approve the invoice, then release the bank payment.',
+  start:'An AP is Outstanding and due.',end:'Payment Paid and AP Settled.',
+  example:'A motor claim AP of 7,500 is approved in Refund Approval and paid to the workshop in a Massive Payment run.',sc:['P1','P2','P4','P6','P7'],
+  steps:[S('appr','op','Refund Approval (or Statement Refund)',{m:'Refund Approval',s:'Payment Approved'}),S('fin','op','Single or Massive Payment: date and company bank account',{m:'Single / Massive Payment',s:'Payment Paid'}),S('sys','sys','AP settled; payment fees recorded',{s:'AP Settled'}),S('bank','ext','Bank transfers the money',{s:'Payee paid',tag:'inf'}),S('fin','rev','Mistake: Reverse Refund',{s:'AP Outstanding again'})]},
+ {n:5,id:'books',name:'Post to the books and report',menu:'Query (GL Entry, BizTransaction); BCP Fee & GL Fee',freq:'Continuous; checked at month-end close',
+  plain:'Every step above created fee records. BCP turns them into GL vouchers using the mapping configured for each fee type, so the accounts, tax returns and solvency reports match the money.',
+  analogy:'Like the bookkeeper posting every till slip and supplier payment into the company ledger.',
+  start:'Fee records exist from billing, collection, offset or payment.',end:'GL vouchers posted; queries reconcile with the bank and the ledger.',
+  example:'Mr Tan’s payment creates receipt fee 700009 and offset fees; the GL shows Dr Bank 1,090, Cr Premium receivable 1,090.',sc:['C1','P1'],
+  steps:[S('sys','sys','Fee records from every stage',{s:'Fees by type code'}),S('sys','sys','Map fee types to GL accounts',{m:'GLIntegrationMappingRule',s:'GL entries'}),S('gl','gl','Vouchers posted',{s:'Books updated'}),S('fin','op','Check with Query BizTransaction and Query GL',{m:'Query',s:'Reconciled'})]}
+];
+const LIFECYCLES=[
+ {id:'in',name:'Money in (receivables)',why:'Turns every amount owed to the company into cash, matched to the right bill, so customers are not chased for premium they already paid.',
+  start:'A business module sends an AR.',end:'AR Settled; receipt fully used or refunded.',freq:'Every bill and payment',roles:'Payer, BCP finance user, BCP system, GL',menu:'Billing, Collection',st:'arap',sc:['C1','C2','C3','C4','C5','C6','C8','C10','C11'],
+  rev:'Reverse in the opposite order: Reverse Application & Offset first, then Reverse Collection.',
+  steps:[S('pa','ev','Policy issued: AR sent to BCP',{s:'AR Outstanding'}),S('cust','ext','Customer or producer pays',{s:'Money received',tag:'inf'}),S('fin','op','Collection (direct) or Suspense Collection',{m:'Collection',s:'Receipt created'}),S('fin','op','Application of the receipt to the AR',{m:'Application',s:'AR Settled'}),S('sys','sys','Receipt and offset fees',{s:'Fees 700009 and offset'}),S('gl','gl','GL vouchers',{s:'Posted'})]},
+ {id:'out',name:'Money out (payables)',why:'Pays only what is approved, to the right payee, and keeps a trail for every payment.',
+  start:'A business module sends an AP (claim, refund, commission, reinsurance).',end:'Payment Paid; AP Settled.',freq:'Payment runs',roles:'Approver, BCP finance user, BCP system, bank, GL',menu:'Billing, Refund',st:'payment',sc:['P1','P2','P3','P4','P6','P7'],
+  rev:'One step: Reverse Refund returns the AP to Outstanding.',
+  steps:[S('clm','ev','Claim settled: AP sent to BCP',{s:'AP Outstanding'}),S('appr','op','Refund Approval',{m:'Refund Approval',s:'Payment Approved'}),S('fin','op','Single or Massive Payment',{m:'Single / Massive Payment',s:'Payment Paid'}),S('sys','sys','AP settled; payment fees',{s:'AP Settled'}),S('bank','ext','Bank pays the payee',{s:'Cash out',tag:'inf'}),S('gl','gl','GL vouchers',{s:'Posted'})]},
+ {id:'int',name:'Internal settlement (no cash)',why:'Clears balances without moving money: netting, small differences and bad debt.',
+  start:'A party has AR and AP, a small balance remains, or a debt cannot be collected.',end:'Balances Settled.',freq:'As needed; month-end',roles:'BCP finance user, BCP system, GL',menu:'Internal Offset',st:'offset',sc:['O1','O2','O3'],
+  rev:'Reverse Application & Offset.',
+  steps:[S('sys','sys','Party has open AR and AP',{s:'Both Outstanding'}),S('fin','op','ARAP Offset: equal amounts both sides',{m:'ARAP Offset',s:'Both Settled'}),S('fin','op','Tolerance Offset for small differences',{m:'Tolerance Offset',s:'AR Settled'}),S('fin','op','Write Off for bad debt',{m:'Tolerance Offset > Write Off',s:'AR Settled'}),S('gl','gl','Offset and write-off fees to GL',{s:'Posted'})]},
+ {id:'comm',name:'Commission',why:'Pays agents and brokers only for premium the company has actually collected.',
+  start:'A policy is issued and commission is generated.',end:'Commission Paid (code 5) or netted at collection (code 4).',freq:'Every policy; settlement runs monthly',roles:'Sales Channel, BCP finance user, approver, BCP system',menu:'Commission, Refund',st:'commission',sc:['C4','C9','P5'],
+  rev:'Settlement AP: Reverse Refund. Netted commission: Reverse Application & Offset.',
+  steps:[S('sc','ev','Commission generated on policy issue',{s:'Code 1 Pending'}),S('fin','op','Premium collected',{m:'Collection',s:'Code 2 Waiting for Issue'}),S('fin','op','Single or Massive Settlement',{m:'Commission',s:'Code 3 Settled; AP created'}),S('appr','op','Refund Approval',{s:'Payment Approved'}),S('fin','op','Single or Massive Payment',{s:'Code 5 Paid'})]}
+];
 /* ===================== CHECKPOINTS, FINAL ASSESSMENT, TRACKER ===================== */
 const Q=(id,q,o,a,w)=>({id,q,o,a,w});
 const CHECKS={
@@ -1918,24 +2044,25 @@ document.addEventListener('click',e=>{
  if(e.target.closest('[data-imp]')){try{const o=JSON.parse($('#impTxt').value);if(o.app!=='insuremo-bcp-guide')throw 0;PKEYS.forEach(k=>{if(o[k])store.set(k,o[k])});renderAllChecks();renderFinal();renderRail();$('#trkMsg').textContent='Progress imported.'}catch(err){$('#trkMsg').textContent='That text is not a progress export from this guide.'}}
 });
 
-/* ---------- vertical swimlane (replaces horizontal version) ---------- */
+/* ---------- vertical swimlane: lanes are columns, steps run top to bottom ---------- */
 function swimlane(steps,opts={}){
  const used=new Set(steps.map(s=>s.l));(opts.extraLanes||[]).forEach(l=>used.add(l));
  const lanes=LANE_ORDER.filter(l=>used.has(l));
- const CW=158,BW=140,BH=60,RH=80,HH=48;const W=lanes.length*CW,H=HH+steps.length*RH+6;
+ const CW=196,BW=180,BH=88,RH=106,HH=56;const W=lanes.length*CW,H=HH+steps.length*RH+6;
  const li=Object.fromEntries(lanes.map((l,i)=>[l,i]));const uid=(opts.uid||'s')+Math.random().toString(36).slice(2,6);
- let s=`<svg class="sw" xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="max-width:${Math.round(W*1.3)}px" role="img" aria-label="${esc(opts.label||'Swimlane')}"><defs><marker id="ah${uid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
+ let s=`<svg class="sw" xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="max-width:${Math.round(W*1.2)}px" role="img" aria-label="${esc(opts.label||'Swimlane')}"><defs><marker id="ah${uid}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
  lanes.forEach((l,i)=>{s+=`<rect class="${i%2?'lane-b':'lane-a'}" x="${i*CW}" y="0" width="${CW}" height="${H}"/><line class="lane-sep" x1="${i*CW}" y1="0" x2="${i*CW}" y2="${H}"/>`;
-  const lb=wrap(LANES[l],18);lb.forEach((t,j)=>{s+=`<text class="lane-lbl" x="${i*CW+CW/2}" y="${HH/2-(lb.length-1)*6+j*12+4}" text-anchor="middle">${esc(t.toUpperCase())}</text>`})});
+  const lb=wrap(LANES[l],20);lb.forEach((t,j)=>{s+=`<text class="lane-lbl" x="${i*CW+CW/2}" y="${HH/2-(lb.length-1)*7+j*14+5}" text-anchor="middle">${esc(t.toUpperCase())}</text>`})});
  s+=`<line class="lane-sep" x1="0" y1="${HH}" x2="${W}" y2="${HH}"/>`;
  const pos=steps.map((st,i)=>({x:li[st.l]*CW+(CW-BW)/2,y:HH+i*RH+(RH-BH)/2}));
  for(let i=0;i<steps.length-1;i++){const a=pos[i],b=pos[i+1];const x1=a.x+BW/2,y1=a.y+BH,x2=b.x+BW/2,y2=b.y;
   s+=Math.abs(x1-x2)<1?`<path class="edge" d="M${x1},${y1} V${y2-2}" marker-end="url(#ah${uid})"/>`:`<path class="edge" d="M${x1},${y1} V${y1+(y2-y1)/2} H${x2} V${y2-2}" marker-end="url(#ah${uid})"/>`}
- steps.forEach((st,i)=>{const p=pos[i];const tl=wrap(st.t,23).slice(0,3);const sub=st.s||st.f||st.m||'';
-  s+=`<g class="node k-${st.k}" data-i="${i}" tabindex="0"><rect x="${p.x}" y="${p.y}" width="${BW}" height="${BH}" rx="${st.k==='ev'||st.k==='end'?14:4}"/><circle class="numbg" cx="${p.x+2}" cy="${p.y+2}" r="8"/><text class="num" x="${p.x+2}" y="${p.y+5.5}" text-anchor="middle">${i+1}</text>`;
-  const ty=p.y+(sub?15:BH/2-(tl.length-1)*6.5+4);tl.forEach((t,j)=>{s+=`<text class="t" x="${p.x+BW/2}" y="${ty+j*13}" text-anchor="middle">${esc(t)}</text>`});
-  if(sub){const w=wrap(sub,28);s+=`<text class="f" x="${p.x+BW/2}" y="${p.y+BH-7}" text-anchor="middle">${esc(w[0]+(w.length>1?'…':''))}</text>`}
-  s+=`<title>${esc(st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:''))}</title></g>`});
+ steps.forEach((st,i)=>{const p=pos[i];const ind=st.tag==='inf';const sub=st.s||st.f||st.m||'';
+  s+=`<g class="node k-${st.k}${ind?' ind':''}" data-i="${i}" tabindex="0"><rect x="${p.x}" y="${p.y}" width="${BW}" height="${BH}" rx="${st.k==='ev'||st.k==='end'?14:4}"/><circle class="numbg" cx="${p.x+3}" cy="${p.y+3}" r="11"/><text class="num" x="${p.x+3}" y="${p.y+7.5}" text-anchor="middle">${i+1}</text>`;
+  if(ind)s+=`<rect class="indbg" x="${p.x+BW-36}" y="${p.y-7}" width="38" height="15" rx="3"/><text class="indt" x="${p.x+BW-17}" y="${p.y+4}" text-anchor="middle">IND</text>`;
+  const full=wrap(st.t,24);const lines=full.slice(0,3);if(full.length>3)lines[2]=lines[2].replace(/\s*\S*$/,'')+'…';const ty=p.y+(sub?22:BH/2-(lines.length-1)*8+5);lines.forEach((t,j)=>{s+=`<text class="t" x="${p.x+BW/2}" y="${ty+j*16}" text-anchor="middle">${esc(t)}</text>`});
+  if(sub){const w=wrap(sub,27);s+=`<text class="f" x="${p.x+BW/2}" y="${p.y+BH-9}" text-anchor="middle">${esc(w[0]+(w.length>1?'…':''))}</text>`}
+  s+=`<title>${esc((ind?'[Domain context] ':'')+st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:'')+(st.r?' — Rule: '+st.r:''))}</title></g>`});
  return s+'</svg>';
 }
 
@@ -1981,7 +2108,7 @@ function renderBusiness(){
 /* ===================== LENS + EXTRA RENDERING ===================== */
 const ROLE_NAME={ba:'Business analyst',qa:'Tester',dev:'Developer'};
 const ROLE_LEVELS={ba:['business','basics','lifecycle','scenarios','integration','screens','config','toolkit','gaps'],qa:['business','basics','lifecycle','scenarios','screens','fees','toolkit','gaps'],dev:['business','basics','integration','fees','config','scenarios','toolkit','gaps']};
-const BLOCK_ROLES={'Two ways to collect money':'ba qa','Menu map':'ba qa','Payment methods by business':'ba qa','Reference numbers you will see':'qa dev','Partial and over payment':'ba qa','Installments, multiple payers and multiple payees':'qa dev','The billing contract: syncDataToBCP':'qa dev','End-to-end journeys across modules':'ba qa','The three "generate" actions':'qa dev','Sign rules':'qa dev','Fee flow by scenario':'qa dev','Fee type reference':'qa dev','Platform API or iComposer?':'ba dev','What you can configure':'ba dev','Data and code tables':'dev','APIs named in the guide':'dev','Query and statistics screens':'ba qa','Agent or broker?':'ba qa','Anatomy of a premium bill':'ba dev qa','Rules from real markets':'ba qa'};
+const BLOCK_ROLES={'Two ways to collect money':'ba qa','Menu map':'ba qa','Payment methods by business':'ba qa','Reference numbers you will see':'qa dev','Partial and over payment':'ba qa','Lifecycle swimlanes':'ba qa dev','Installments, multiple payers and multiple payees':'qa dev','The billing contract: syncDataToBCP':'qa dev','End-to-end journeys across modules':'ba qa','The three "generate" actions':'qa dev','Sign rules':'qa dev','Fee flow by scenario':'qa dev','Fee type reference':'qa dev','Platform API or iComposer?':'ba dev','What you can configure':'ba dev','Data and code tables':'dev','APIs named in the guide':'dev','Query and statistics screens':'ba qa','Agent or broker?':'ba qa','Anatomy of a premium bill':'ba dev qa','Rules from real markets':'ba qa'};
 const curRole=()=>document.body.dataset.role||'';
 
 function applyLens(){
@@ -2069,8 +2196,8 @@ function swimlaneH(steps,opts={}){
     s+=`<title>${esc(st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:''))}</title></g>`});
   return s+'</svg>';
 }
-function stepTable(steps,id){
-  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Screen / menu</th><th>Status after</th><th>Fee / note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}${s.tag==='inf'?' <span class="tag inf">Domain context</span>':''}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
+function stepTable(steps,id,resLbl){
+  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Screen / menu</th><th>${resLbl||'Status after'}</th><th>Fee / note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}${s.tag==='inf'?' <span class="tag inf">Domain context</span>':''}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function linkDiagram(root){
   $$('.node',root).forEach(n=>{const go=()=>{const i=n.dataset.i;$$('.node',root).forEach(x=>x.classList.toggle('hl',x===n));$$('tbody tr',root).forEach(r=>r.classList.toggle('hl',r.dataset.i===i));const r=$(`tbody tr[data-i="${i}"]`,root);if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})};n.addEventListener('click',go);n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
@@ -2078,20 +2205,20 @@ function linkDiagram(root){
 
 /* ---------- state diagram ---------- */
 function stateSvg(m){
-  const NW=150,NH=38,W=Math.max(...m.nodes.map(n=>n.x))+NW+30,H=Math.max(...m.nodes.map(n=>n.y))+NH+30;
+  const NW=168,NH=40,W=Math.max(...m.nodes.map(n=>n.x))+NW+30,H=Math.max(...m.nodes.map(n=>n.y))+NH+30;
   const N=Object.fromEntries(m.nodes.map(n=>[n.id,n]));
   let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(m.name)} status model"><defs><marker id="sah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
   const seen={};
   m.edges.forEach(([a,b,l])=>{const A=N[a],B=N[b];const ax=A.x+NW/2,ay=A.y+NH/2+5,bx=B.x+NW/2,by=B.y+NH/2+5;
     const key=[a,b].sort().join();const back=seen[key];seen[key]=1;
-    const dx=bx-ax,dy=by-ay,len=Math.hypot(dx,dy)||1;const nx=-dy/len,ny=dx/len;const off=back?-34:(m.edges.some(e=>e[0]===b&&e[1]===a)?34:0);
+    const dx=bx-ax,dy=by-ay,len=Math.hypot(dx,dy)||1;const nx=-dy/len,ny=dx/len;const off=m.edges.some(e=>e[0]===b&&e[1]===a)?34:0;
     const cx=(ax+bx)/2+nx*off,cy=(ay+by)/2+ny*off;
     const clip=(px,py,tx,ty)=>{const ddx=tx-px,ddy=ty-py;const tX=Math.abs(ddx)>0?(NW/2)/Math.abs(ddx):1e9,tY=Math.abs(ddy)>0?(NH/2)/Math.abs(ddy):1e9;const t=Math.min(tX,tY);return[px+ddx*t,py+ddy*t]};
     const [sx,sy]=clip(ax,ay,cx,cy),[ex,ey]=clip(bx,by,cx,cy);
     s+=`<path class="edge" d="M${sx},${sy} Q${cx},${cy} ${ex},${ey}" marker-end="url(#sah)"/>`;
     const lx=(sx+2*cx+ex)/4,ly=(sy+2*cy+ey)/4;const tw=l.length*5.6+8;
     s+=`<rect class="st-lblbg" x="${lx-tw/2}" y="${ly-8}" width="${tw}" height="15" rx="3"/><text class="st-lbl" x="${lx}" y="${ly+3}" text-anchor="middle">${esc(l)}</text>`});
-  m.nodes.forEach(n=>{s+=`<g class="st-node ${n.c||''}"><rect x="${n.x}" y="${n.y+5}" width="${NW}" height="${NH}" rx="19"/><text x="${n.x+NW/2}" y="${n.y+5+NH/2+4}" text-anchor="middle">${esc(n.t)}</text></g>`});
+  m.nodes.forEach((n,i)=>{s+=`<g class="st-node ${n.c||''}"><rect x="${n.x}" y="${n.y+5}" width="${NW}" height="${NH}" rx="19"/><circle class="st-num" cx="${n.x+16}" cy="${n.y+5+NH/2}" r="10"/><text class="st-numt" x="${n.x+16}" y="${n.y+5+NH/2+4}" text-anchor="middle">${i+1}</text><text x="${n.x+NW/2+9}" y="${n.y+5+NH/2+4}" text-anchor="middle">${esc(n.t)}</text></g>`});
   return s+'</svg>';
 }
 
@@ -2141,7 +2268,7 @@ function renderScList(){
   let h='',opt='';Object.entries(GRP).forEach(([g,[lbl,c]])=>{const items=SCEN.filter(s=>s.grp===g);h+=`<div class="grp ${c}">${lbl}</div>`;opt+=`<optgroup label="${lbl}">`;
     items.forEach(s=>{h+=`<button type="button" data-id="${s.id}" aria-current="${s.id===curSc}"><span class="id">${s.id}</span><span>${esc(s.name)}</span></button>`;opt+=`<option value="${s.id}" ${s.id===curSc?'selected':''}>${s.id} · ${esc(s.name)}</option>`});opt+='</optgroup>'});
   $('#scList').innerHTML=h;$('#scSelect').innerHTML=opt;
-  $$('#scList button').forEach(b=>b.addEventListener('click',()=>{location.hash='sc-'+b.dataset.id}));
+  $$('#scList button').forEach(b=>b.addEventListener('click',()=>{location.hash='sc-'+b.dataset.id;setTimeout(()=>{const d=$('#scDetail');if(d)d.scrollIntoView({behavior:'smooth',block:'start'})},60)}));
 }
 function renderSc(){
   const s=SCEN.find(x=>x.id===curSc)||SCEN[0];const steps=s[curMode];const [gl,gc]=GRP[s.grp];
@@ -2183,7 +2310,34 @@ function renderStates(){
   $('#stTabs').innerHTML=Object.entries(STATES).map(([k,m])=>`<button role="tab" type="button" data-k="${k}" aria-selected="${k===curSt}">${esc(m.name)}</button>`).join('');
   $$('#stTabs button').forEach(b=>b.addEventListener('click',()=>{curSt=b.dataset.k;renderStates()}));
   const m=STATES[curSt];$('#stDiagram').innerHTML=stateSvg(m);
-  $('#stTable').innerHTML=m.rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('');
+  $('#stTable').innerHTML=m.rows.map((r,i)=>`<tr><td class="num">${i+1}</td>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('');
+}
+
+/* ---------- primer, five stages, four lifecycles ---------- */
+const stepList=steps=>`<ol class="stg-steps">${steps.map(x=>`<li><span class="role ${x.tag==='inf'||x.k==='ext'?'ext':''}">${esc(LANES[x.l])}</span><span class="act">${esc(x.t)}${x.m?` <span class="muted small">(${esc(x.m)})</span>`:''}</span>${x.s?`<span class="res">→ ${esc(x.s)}</span>`:''}</li>`).join('')}</ol>`;
+function renderStages(){
+  $('#primer').innerHTML=PRIMER.map((p,i)=>`<div class="card prim"><span class="stg-n">${i+1}</span><h4>${esc(p[0])}</h4><p class="small">${esc(p[1])}</p><p class="small muted"><b>Example:</b> ${esc(p[2])}</p></div>`).join('');
+  $('#stageRibbon').innerHTML=STAGES.map(st=>`<a class="stg" href="#start" data-stg="${st.id}"><span class="stg-n">${st.n}</span><b>${esc(st.name)}</b><span class="small muted">${esc(st.menu)}</span></a>`).join('<i class="stg-arrow" aria-hidden="true">→</i>');
+  $$('#stageRibbon [data-stg]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=$('#stg-'+a.dataset.stg);if(t)t.scrollIntoView({behavior:'smooth'})}));
+  $('#stageCards').innerHTML=STAGES.map(st=>`<article class="card stg-card" id="stg-${st.id}"><div class="stg-head"><span class="stg-n big">${st.n}</span><div><span class="eyebrow">Stage ${st.n} of 5 · BCP menu: ${esc(st.menu)}</span><h3>${esc(st.name)}</h3><p>${esc(st.plain)}</p></div></div>
+   <div class="stg-cols"><div class="stg-box start"><span class="eyebrow">Starts when</span><p>${esc(st.start)}</p></div><div class="stg-box"><span class="eyebrow">Steps · who does what → result</span>${stepList(st.steps)}</div><div class="stg-box end"><span class="eyebrow">Ends with</span><p>${esc(st.end)}</p><span class="eyebrow">How often</span><p class="small">${esc(st.freq)}</p></div></div>
+   <div class="stg-foot"><p class="small"><b>Everyday comparison:</b> ${esc(st.analogy)}</p><p class="small"><b>Example:</b> ${esc(st.example)}</p><div class="filter-row"><span class="small muted">See it in detail:</span>${st.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id}</a>`).join('')}</div></div></article>`).join('');
+}
+let curLC=LIFECYCLES[0].id;
+function renderLifecycles(){
+  $('#lcCards').innerHTML=LIFECYCLES.map((l,i)=>`<article class="card lc-card"><div class="stg-head"><span class="stg-n big">${i+1}</span><div><h3>${esc(l.name)}</h3><p>${esc(l.why)}</p></div></div>
+   <dl class="kv"><dt>Starts when</dt><dd>${esc(l.start)}</dd><dt>Ends when</dt><dd>${esc(l.end)}</dd><dt>How often</dt><dd>${esc(l.freq)}</dd><dt>Who is involved</dt><dd>${esc(l.roles)}</dd><dt>BCP menu</dt><dd>${esc(l.menu)}</dd>${l.rev?`<dt>To reverse</dt><dd>${esc(l.rev)}</dd>`:''}</dl>
+   ${stepList(l.steps)}
+   <div class="filter-row"><span class="small muted">Scenarios:</span>${l.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id}</a>`).join('')}<button type="button" class="btn ghost" data-lcmap="${l.id}">Show as swimlane</button></div></article>`).join('');
+  $$('[data-lcmap]').forEach(b=>b.addEventListener('click',()=>{curLC=b.dataset.lcmap;renderLcMap();$('#lcMapBlock').scrollIntoView({behavior:'smooth'})}));
+  renderLcMap();
+}
+function renderLcMap(){
+  $('#lcTabs').innerHTML=LIFECYCLES.map(l=>`<button role="tab" type="button" data-k="${l.id}" aria-selected="${l.id===curLC}">${esc(l.name)}</button>`).join('');
+  $$('#lcTabs button').forEach(b=>b.addEventListener('click',()=>{curLC=b.dataset.k;renderLcMap()}));
+  const l=LIFECYCLES.find(x=>x.id===curLC);
+  $('#lcMap').innerHTML=`<p class="small"><b>Start:</b> ${esc(l.start)} <b>End:</b> ${esc(l.end)} <b>Status model:</b> see the "${esc(STATES[l.st].name)}" tab below.</p><div id="lcDia" style="display:flex;flex-direction:column;gap:12px"><div class="diagram">${swimlane(l.steps,{uid:'lc',label:l.name})}</div>${stepTable(l.steps,'lcTbl','Result')}</div>`;
+  linkDiagram($('#lcDia'));if(typeof addFullButtons==='function')addFullButtons();
 }
 
 /* ---------- journeys ---------- */
@@ -2349,7 +2503,7 @@ function doSearch(){
 
 /* ---------- init ---------- */
 function init(){
-  renderStatic();renderStates();renderHub();renderJourneys();renderFF();drawCalcFees();runCalc();renderToolkit();renderAllChecks();renderFinal();renderCoverage();buildIndex();
+  renderStatic();renderStages();renderLifecycles();renderStates();renderHub();renderJourneys();renderFF();drawCalcFees();runCalc();renderToolkit();renderAllChecks();renderFinal();renderCoverage();buildIndex();
   setRole(store.get('role','all'));
   $$('.roles .chip').forEach(c=>c.addEventListener('click',()=>setRole(c.dataset.role)));
   $$('[data-done]').forEach(c=>c.addEventListener('change',()=>{const d=store.get('done',{});d[c.dataset.done]=c.checked;store.set('done',d);renderRail()}));

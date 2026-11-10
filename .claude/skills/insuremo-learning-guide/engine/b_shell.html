@@ -39,6 +39,20 @@
   </div>
 
   <section class="block">
+    <h2>New to insurance? Read this first</h2>
+    <p class="muted">Seven ideas in the order you need them. Each one builds on the one before. If you know insurance already, skip to the five stages.</p>
+    <div class="grid g3" id="primer"></div>
+  </section>
+
+  <section class="block">
+    <h2>The five stages in BCP, explained</h2>
+    <p class="muted">Everything BCP does falls into five stages. Each stage below says when it starts, who does what (role → action → result), and how it ends. Click a stage to jump to it.</p>
+    <div class="stg-ribbon" id="stageRibbon"></div>
+    <div style="display:flex;flex-direction:column;gap:16px" id="stageCards"></div>
+    <p class="small muted">Roles: <b>BCP finance user</b> collects, applies and pays; <b>BCP approver</b> approves payments; <b>BCP system</b> creates records and fees automatically. Amber role labels are steps outside BCP (payer, bank) or general practice.</p>
+  </section>
+
+  <section class="block">
     <h2>Pick your learning path</h2>
     <p class="muted">Use the <b>Lens</b> buttons at the top to filter content for your role. Everyone should start with Level 0 (insurance business basics) and finish levels 1 to 3. Each level ends with a 4-question checkpoint; track scores in <a href="#tracker">My progress</a> and finish with the <a href="#assessment">final assessment</a>. Everything works offline in the downloaded HTML file.</p>
     <div class="paths" id="pathCards"></div>
@@ -63,8 +77,9 @@
       <span><i style="border-color:var(--in);background:var(--in-soft)"></i>End state</span>
       <span><i style="border-color:var(--out);background:var(--out-soft)"></i>Reversal step</span>
       <span><i style="border-color:var(--cancel);background:var(--cancel-soft)"></i>Irreversible step</span>
+      <span><b class="badge-ind">IND</b> step outside BCP or general practice (domain context)</span>
     </div>
-    <p class="muted small">Each row (lane) is one actor. Read the numbered boxes left to right. Click a box to highlight its row in the step table under the diagram. The small grey text in a box shows the status change or fee code.</p>
+    <p class="muted small">Each row (lane) is one actor. Steps run from top to bottom; read the numbered boxes in order. Click a box to highlight its row in the step table under the diagram. The small grey text in a box shows the status change or fee code.</p>
   </section>
 </section>
 
@@ -245,13 +260,17 @@
   <p class="lede">Every scenario in BCP is a variation of three patterns. Learn the patterns and the status changes, and the scenarios become easy.</p></header>
 
   <section class="block">
-    <h2>The three patterns</h2>
-    <div class="grid g3">
-      <div class="card"><span class="tag in">Money in</span><h3>Collect → Suspense → Offset</h3><ol class="steps"><li>Source module bills BCP. AR is created as Outstanding.</li><li>Money is received. A receipt is created and held in suspense.</li><li>The receipt is offset against the AR. AR balance becomes 0 and status Settled.</li></ol><p class="small muted"><b>Reverse in the opposite order:</b> reverse the offset first, then reverse the collection.</p></div>
-      <div class="card"><span class="tag out">Money out</span><h3>Approve → Confirm</h3><ol class="steps"><li>Source module bills BCP. AP is created as Outstanding.</li><li>Finance approves. A payment record is created as Approved.</li><li>Payment is confirmed after the bank transfer. Payment becomes Paid and AP is settled.</li></ol><p class="small muted"><b>Reverse:</b> one step, Reverse Refund. AP returns to Outstanding.</p></div>
-      <div class="card"><span class="tag int">Internal</span><h3>Net, tolerate or write off</h3><ol class="steps"><li>ARAP Offset nets AR and AP of the same party. No money moves.</li><li>Tolerance Offset clears small differences.</li><li>Write-off closes bad debt.</li></ol><p class="small muted"><b>Reverse:</b> Reverse Application &amp; Offset.</p></div>
-    </div>
+    <h2>The four lifecycles</h2>
+    <p class="muted">Every BCP scenario is a variation of these four lifecycles. For each: why it exists, when it starts and ends, how often it runs, who is involved, how to reverse it, and the numbered steps with results.</p>
+    <div style="display:flex;flex-direction:column;gap:16px" id="lcCards"></div>
     <div class="callout"><b>Why payments need approval and collections do not:</b> paying money out is the higher-risk direction. Finance staff decide which APs can be paid and which are in dispute before money leaves the company. The guide calls refund "a very sensitive process".</div>
+  </section>
+
+  <section class="block" id="lcMapBlock">
+    <h2>Lifecycle swimlanes</h2>
+    <p class="muted">Each lifecycle as a swimlane: one column per actor, steps from top to bottom, and the result of every step in the table. Click a box to highlight its row; use Full screen to enlarge.</p>
+    <div class="tabs" role="tablist" id="lcTabs"></div>
+    <div id="lcMap" style="margin-top:12px"></div>
   </section>
 
   <section class="block">
@@ -267,10 +286,10 @@
 
   <section class="block">
     <h2>Status models</h2>
-    <p class="muted">Pick a record type to see its statuses and what moves it from one to the next. Testers: every arrow is at least one test case.</p>
+    <p class="muted">Pick a record type. Statuses are numbered in the order a record normally moves through them, and the table lists every transition in sequence. Testers: every arrow is at least one test case.</p>
     <div class="tabs" role="tablist" id="stTabs"></div>
     <div class="diagram" id="stDiagram"></div>
-    <div class="tbl"><table><thead><tr><th>From</th><th>To</th><th>Trigger</th><th>Screen / process</th></tr></thead><tbody id="stTable"></tbody></table></div>
+    <div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>Trigger</th><th>Screen / process</th></tr></thead><tbody id="stTable"></tbody></table></div>
   </section>
 
   <section class="block">

@@ -12,7 +12,7 @@ There are two reference builds. Start every new module from the newer one.
 | Build | Engine | Use it for |
 |---|---|---|
 | `reinsurance-learning-guide/index.html` (XRI, v2) | `reinsurance-learning-guide/src/` | **Template for new modules** (Easy PA, Claims, others). Has the plain-English primer, five-stage walkthrough, lifecycle cards and swimlane process maps, system vs industry process toggle, numbered status models, larger diagrams, three calculators. |
-| `bcp-learning-guide/index.html` (BCP, v1) | `engine/` in this skill | Maintaining the BCP guide only. Rebuilds it byte for byte. |
+| `bcp-learning-guide/index.html` (BCP, v2 port) | `engine/` in this skill | Maintaining the BCP guide. Has the v2 primer, five stages (Bill, Collect, Match and settle, Pay out, Post to the books), four lifecycle cards with swimlanes, numbered status models and larger diagrams. Keeps normal / reversal scenario views and the fee calculator. |
 
 Shareable links: BCP https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR, Reinsurance https://claude.ai/artifact/Q3LqqcJvLVLntmFCZATymY (both private until shared from the Share menu).
 

@@ -45,3 +45,9 @@ In the BCP source: two fee codes for the same step (700009 vs 403000), opposite 
 - **Stage step lists need a fixed role column** (grid 170 px + 1fr), or long actions wrap under the role label.
 - **Long inline Python heredocs can trip the delete safety check** even with no `rm`. Write patch scripts to the scratchpad with the Write tool, then run them.
 - **Artifact viewer blocks downloads.** Keep copy-as-text as the working path and tell the user.
+
+## From the BCP v2 port
+- **Status-model labels need room.** With 168 px nodes, keep about 300 px between node x positions on a row, or shorten the edge label (for example "Settlement" instead of "Single / Massive Settlement").
+- **A long edge must not pass through or under another node or edge label.** Put the target off the row (diagonal layout) so the direct edge runs in clear space.
+- **Do not number over business codes.** BCP commission statuses have codes 1 to 5 in a different order from the flow. Keep the code in the label ("Paid (code 5)") and let the circle show the sequence.
+- **Port by script, not by hand.** The v2 swimlane, stage and lifecycle renderers were copied from `reinsurance-learning-guide/src/` with exact-string replacements and asserts; any miss stopped the script before it changed a file.
