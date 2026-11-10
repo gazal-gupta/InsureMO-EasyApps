@@ -1,0 +1,36 @@
+# Lessons learned from the BCP build
+
+Each item cost a rebuild. Check them before you ship.
+
+## Product
+- **A lens that filters only small notes looks broken.** The user reported "lens not working" when it only hid note boxes. Filtering must be visible: whole sections, the menu, opened role blocks and a banner.
+- **"Have you included everything?" needs proof.** Ship the Source coverage table, and say plainly what was summarised.
+- **Field tables matter to testers.** Summaries of "key fields" were not enough; include every field, column and button.
+- **Screenshots belong under the step they show**, with a caption saying what to look at. Several images sit under a misleading nearest heading, so view them before placing them.
+- **The system UI labels can differ from the document text** (Producer Collection vs Suspense Collection; Payment vs Refund). Show both and log the difference as a gap.
+- **Business context is the most valued addition.** Explain each process with the parties and a real example; tag market facts by confidence.
+- **Downloaded file = offline.** Linked images break when the HTML is downloaded alone, so embed them.
+
+## Source review
+In the BCP source: two fee codes for the same step (700009 vs 403000), opposite signs for payment approval (401100), arithmetic errors (270.5 × 0.3993 = 108.01, not 107.81; a split that summed to 60.5, not 100), and a format description the sample contradicts. Recompute every worked example.
+
+## Engineering
+- **`[hidden]` needs `display:none!important`.** The artifact skeleton adds it but a standalone file does not, so `.view{display:flex}` showed every view at once.
+- **Long inline `<code>` strings overflow the page.** Use `overflow-wrap:anywhere`.
+- **Script order and duplicate function names.** Constants used at startup must be declared before `init()` runs; the later of two same-named functions wins.
+- **Circled-number glyphs (①❶) did not render** in the chosen fonts. Use plain text such as "1 × 1".
+- **Money flow arrow pairs:** compute the offset from a fixed direction for each pair, otherwise both arrows and labels land on the same side. Put the two labels on opposite sides of the line.
+- **Horizontal swimlanes forced sideways scrolling.** Top-to-bottom lanes scale to the page width.
+- **QA and lazy images:** images with `loading="lazy"` are not loaded off-screen. Set them to eager and await `decode()` before checking `naturalWidth`.
+- **Artifact downloads are blocked.** Keep the download button for the local file, but always offer copy-as-text.
+
+## Git and safety checks in this environment
+- `rm` with a relative glob after `cd` is blocked. Overwrite with `cp -f` or use an exact absolute path.
+- A force-push or history rewrite is blocked. To create a base branch when the repo has only the feature branch: make an empty commit with `git commit-tree $(git hash-object -t tree /dev/null) -m "Initialize repository"`, push it to `main`, then `git merge --allow-unrelated-histories` it into the feature branch and push normally.
+- The first branch pushed becomes the GitHub default branch. Tell the user to switch the default to `main`.
+
+## Session and delivery
+- **A worker restart keeps files on disk.** After a restart, check `git status` and the scratchpad before redoing work.
+- **"Publish as a shareable link" usually means "make it shareable".** The artifact already exists; open it, then explain the Share menu. Claude cannot change who sees it.
+- **The build writes `engine/g_shots.js`.** It is generated and ignored by git; never commit it.
+- **PR watching:** after three quiet check-ins in a row, stop scheduling new ones and say so once.
