@@ -323,6 +323,15 @@ figure.shot.tall .shot-open{max-height:640px}
 .q .opts button.picked{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
 .cp-block{border-top:2px solid var(--accent);padding-top:14px}
 .termlink{cursor:pointer}
+
+/* ported from the parallel Claims guide */
+.explain{border:1px solid var(--line);border-left:4px solid var(--int);background:var(--surface);border-radius:var(--r);padding:10px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.explain .ex-h{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--int);font-weight:500}
+.explain ul{margin:0;padding-left:18px}
+.explain dl{display:grid;grid-template-columns:minmax(0,1fr);gap:2px;margin:0;font-size:13.5px}
+.explain dt{color:var(--ink-2);font-weight:600;font-size:12px;margin-top:6px}.explain dt:first-child{margin-top:0}.explain dd{margin:0}
+.example{border:1px dashed var(--ink-2);border-radius:var(--r);padding:10px 14px;background:var(--surface-2);font-size:14px}
+.example > b:first-child{display:block;margin-bottom:4px}
 </style>
 </head><body>
 <div class="top"><div class="top-in">
@@ -381,6 +390,16 @@ figure.shot.tall .shot-open{max-height:640px}
       <tbody id="levelTable"></tbody>
     </table></div>
   </section>
+<section class="block">
+  <h2>The three stories used across the guide</h2>
+  <p class="muted" style="max-width:80ch">Three running stories appear in the real-world scenarios at the end of Level 5 (Claims process flows), so you can follow one case from notification to payment and recovery. Priya is the same motor customer used elsewhere in this guide.</p>
+  <div class="grid g3">
+    <div class="card"><span class="tag">Motor</span><h4>Priya's car accident</h4><p class="small">Private car, comprehensive policy, Insured Declared Value (IDV) INR 6,00,000, compulsory deductible INR 1,000. Rear-ended at a signal by a truck. Car goes to a network garage for cashless repair. The insurer later recovers from the truck owner's insurer.</p></div>
+    <div class="card"><span class="tag">Health</span><h4>Mr Tan's hospital stay</h4><p class="small">Family floater health policy, sum insured INR 5,00,000, 10% co-pay. Planned knee surgery at a network hospital. The TPA approves cashless treatment. A second claim (hospital cash benefit) runs as a separate sub-claim.</p></div>
+    <div class="card"><span class="tag">Property</span><h4>Sunrise Textiles warehouse fire</h4><p class="small">Fire policy, sum insured USD 2,000,000 on stock. A fire damages stock. A loss adjuster finds the stock was under-insured. The insurer pays an interim amount (prepay), sells the salvage, and recovers part of the loss from reinsurers.</p></div>
+  </div>
+</section>
+
 
   <section class="block">
     <h2>How to read the swimlane diagrams</h2>
@@ -415,6 +434,23 @@ figure.shot.tall .shot-open{max-height:640px}
       <div id="partyPanel"></div>
     </div>
   </section>
+<section class="block"><h2>Policyholder, insured, claimant and payee are often different people</h2>
+  <div class="grid g2">
+    <div class="example"><b>Group health example</b>An employer buys a group health policy. The <b>policyholder</b> is the employer. Each employee is an <b>insured</b> person. Mr Tan (an employee) is admitted to hospital, so he is the <b>claimant</b>. The bill is paid cashless to the hospital, so the <b>payee</b> is the hospital. The <b>TPA</b> handles the medical review for the insurer.</div>
+    <div class="example"><b>Motor third-party example</b>Priya's car is hit by a truck. For the truck's insurer, the <b>policyholder and insured</b> is the truck owner. Priya is a <b>third-party claimant</b>: she has no contract with that insurer, but the law gives her a right to claim. If Priya's own insurer pays her first, it becomes a <b>subrogating</b> insurer and claims from the truck's insurer.</div>
+  </div>
+  <div class="callout"><b>Why this matters in Easy Claim.</b> Claimant Information, Sub-Claim (each with a claimant), Payee (on Settlement and Prepay) and Party Management are separate data. One claim can have several claimants and several payees. A tester must test a claim where claimant ≠ payee, and a BA must define who can be a payee for each product.</div>
+</section>
+<section class="block"><h2>Agent versus broker in claims</h2>
+  <div class="tbl"><table><thead><tr><th></th><th>Agent</th><th>Broker</th></tr></thead><tbody>
+    <tr><td>Represents</td><td>The insurer (tied agent) or several insurers (corporate agent)</td><td>The customer</td></tr>
+    <tr><td>Paid by</td><td>Commission from the insurer (Sales Channel, paid through BCP)</td><td>Commission or brokerage from the insurer, sometimes a fee from the client</td></tr>
+    <tr><td>Claim role</td><td>Helps the customer report and collect documents</td><td>Advocates for the client, negotiates with the insurer and loss adjuster, often prepares the claim file for large commercial losses</td></tr>
+    <tr><td>Easy Claim</td><td colspan="2">Agent/Broker Code and Name fields on Claim Information (visible on health FNOL screens). The producer comes from the policy in Easy PA.</td></tr>
+  </tbody></table></div>
+  <p class="small muted"><span class="tag inf">Domain context</span> In some markets brokers may hold claim money in a client account. Check local rules before allowing a broker as payee.</p>
+</section>
+
 
   <section class="block">
     <h2>Who's who</h2>
@@ -441,6 +477,14 @@ figure.shot.tall .shot-open{max-height:640px}
         <p class="small">Why this matters for claims staff: every claim paid and every reserve set moves the loss ratio. Accurate reserves let management price the next year correctly; reserves that are too low make the book look profitable until the claims arrive.</p></div>
     </div>
   </section>
+<section class="block"><h2>Why claims drive insurer profit</h2>
+  <div class="grid g2">
+    <div class="card"><h4>Loss ratio <span class="tag inf">Domain context</span></h4><p class="small"><b>Loss ratio = incurred claims ÷ earned premium.</b> Incurred claims = paid claims + change in outstanding reserves. In many non-life lines the loss ratio is between 55% and 80%, so claims are the largest cost of an insurer.</p></div>
+    <div class="card"><h4>Combined ratio <span class="tag inf">Domain context</span></h4><p class="small"><b>Combined ratio = loss ratio + expense ratio.</b> Below 100% means the insurer makes an underwriting profit. Above 100% means it loses money on underwriting and depends on investment income.</p></div>
+  </div>
+  <div class="example"><b>Worked example</b>A motor portfolio earns premium of 100 million. Paid claims in the year are 52 million. Outstanding reserves rose from 20 million to 26 million. Incurred claims = 52 + (26 − 20) = 58 million. Loss ratio = 58%. With an expense ratio of 33%, the combined ratio is 91%, so the portfolio made an underwriting profit of 9 million. If claim handlers set reserves 5 million too low, the loss ratio looks like 53% and management makes pricing decisions on wrong data. This is why reserve accuracy matters in Easy Claim.</div>
+</section>
+
 
   <section class="block">
     <h2>Key metrics calculator</h2>
@@ -506,6 +550,30 @@ figure.shot.tall .shot-open{max-height:640px}
     <h2>Lines of business</h2>
     <div class="tbl"><table><thead><tr><th>Line</th><th>Covers</th><th>Typical claim</th><th>Claims notes</th></tr></thead><tbody id="lobBody"></tbody></table></div>
   </section>
+<section class="block"><h2>The claim journey from two sides</h2>
+  <div class="tbl"><table><thead><tr><th>Stage</th><th>What the customer experiences</th><th>What the insurer does</th><th>Easy Claim task</th></tr></thead><tbody>
+    <tr><td>Notify</td><td>Calls, uses an app, tells the agent, or the hospital/garage notifies</td><td>Records the loss, checks the policy exists and was in force on the date of loss</td><td>FNOL</td></tr>
+    <tr><td>Register</td><td>Gets a claim number</td><td>Completes details, sets an initial reserve (estimate of cost)</td><td>Registration</td></tr>
+    <tr><td>Verify</td><td>May get a visit from a surveyor or investigator</td><td>Checks cause of loss, coverage and fraud signals</td><td>Investigation</td></tr>
+    <tr><td>Assess</td><td>Garage or hospital shares estimate</td><td>Values the loss item by item</td><td>Appraisal (+ approval)</td></tr>
+    <tr><td>Prove</td><td>Submits documents (bills, police report, ID)</td><td>Checks each document, asks for missing ones</td><td>Document</td></tr>
+    <tr><td>Calculate</td><td>Waits</td><td>Applies sum insured, deductible, co-pay, depreciation and limits</td><td>Calculation (+ approval)</td></tr>
+    <tr><td>Pay</td><td>Receives money, or the garage/hospital is paid directly</td><td>Chooses payees, approves, sends payment to finance</td><td>Settlement (+ approval) → BCP</td></tr>
+    <tr><td>Recover</td><td>Nothing (insurer acts in the background)</td><td>Recovers from a third party, sells salvage, collects reinsurance share</td><td>Subrogation, Salvage, Recovery; Reinsurance</td></tr>
+  </tbody></table></div>
+</section>
+<section class="block"><h2>Claims KPIs that business leaders track</h2>
+  <div class="tbl"><table><thead><tr><th>KPI</th><th>Meaning</th><th>Where Easy Claim supports it</th></tr></thead><tbody>
+    <tr><td>Turnaround time (TAT)</td><td>Days from report date to payment. Regulators often set maximum days.</td><td>Report date, task create/close dates, due date and overdue highlight (Task Monitor)</td></tr>
+    <tr><td>Claim settlement ratio</td><td>Claims paid ÷ claims reported in a period</td><td>Claim Search with status and dates; download to Excel</td></tr>
+    <tr><td>Reserve accuracy</td><td>Final paid amount compared with the first reserve</td><td>Reserve History, Transaction History</td></tr>
+    <tr><td>Claim leakage</td><td>Money paid that should not have been paid (over-assessment, missed recovery, fraud)</td><td>Appraisal price comparison (surveyor/garage/provider), approvals, recovery tasks</td></tr>
+    <tr><td>Reopen rate</td><td>Share of closed claims that reopen. A high rate signals poor first settlement.</td><td>New and Reopen menu; reopen history</td></tr>
+    <tr><td>Recovery rate</td><td>Money recovered (subrogation, salvage) ÷ paid claims</td><td>Subrogation, Salvage, Recovery histories</td></tr>
+  </tbody></table></div>
+  <p class="small muted"><span class="tag inf">Domain context</span> KPI definitions vary by insurer. Agree the formula with finance before building a report.</p>
+</section>
+
 
   <section class="block">
     <h2>The insurer value chain and InsureMO</h2>
@@ -612,6 +680,11 @@ figure.shot.tall .shot-open{max-height:640px}
     <h2>The seven main-line tasks</h2>
     <div class="tbl"><table><thead><tr><th>#</th><th>Task</th><th>What happens</th><th>Approval possible</th><th>Insurance meaning <span class="tag inf">Domain context</span></th></tr></thead><tbody id="taskTable"></tbody></table></div>
   </section>
+<section class="block"><h2>Each task in plain words</h2>
+  <p class="muted" style="max-width:80ch">For readers new to insurance: what each task means, an everyday comparison, what Easy Claim does, and what to watch out for. <span class="tag inf">Domain context</span> for the comparison; the system behaviour is from the source.</p>
+  <div class="grid g2" id="pxPlain"></div>
+</section>
+
 
   <section class="block">
     <h2>Claim mode and sub-claim mode</h2>
@@ -621,6 +694,15 @@ figure.shot.tall .shot-open{max-height:640px}
     </div>
     <div class="callout">In both modes a claim has one or more <b>sub-claims</b>. A sub-claim is one damaged object or one person, for example a vehicle, a third-party property or a medical expense. Reserves, loss items, calculation rows and payments are all tied to a sub-claim and a coverage. Sub-claim numbers look like <code>001</code>; in sub-claim mode the claim number carries the suffix, for example <code>CFHI001202500001155-001</code>. <span class="tag shot">Screenshot</span></div>
   </section>
+<section class="block"><h2>Key dates on a claim</h2>
+  <div class="tbl"><table><thead><tr><th>Date</th><th>Used for</th></tr></thead><tbody>
+    <tr><td>Date of Loss</td><td>Policy retrieval: the policy must be in force on this date. Also decides which policy version (after endorsements) applies.</td></tr>
+    <tr><td>Report Date</td><td>Late-reporting checks, regulatory TAT clock, IBNR analysis</td></tr>
+    <tr><td>Task create, due and closed dates</td><td>Workload, service levels, overdue highlight</td></tr>
+    <tr><td>Settlement / payment date</td><td>TAT end point, accounting period, interest on late payment where regulation requires it</td></tr>
+  </tbody></table></div>
+</section>
+
 
   <section class="block">
     <h2>Reserve</h2>
@@ -659,6 +741,21 @@ figure.shot.tall .shot-open{max-height:640px}
     </div>
     <p class="small muted">This gives multi-level approval without extra screens. Authority amounts are set in claim authority configuration (InsureMO Claim API). See Level 4 for the simulator.</p>
   </section>
+<section class="block"><h2>Designing an authority matrix</h2>
+  <p class="small muted"><span class="tag inf">Domain context</span> Easy Claim does not give limits; these are typical. Use them as a starting point in workshops.</p>
+  <div class="tbl"><table><thead><tr><th>Level</th><th>Role</th><th>Typical motor limit</th><th>Typical property limit</th><th>Notes</th></tr></thead><tbody>
+    <tr><td>L1</td><td>Claim handler</td><td>INR 50,000</td><td>USD 10,000</td><td>Most claims close at this level (straight-through for small claims)</td></tr>
+    <tr><td>L2</td><td>Senior handler / team lead</td><td>INR 2,00,000</td><td>USD 50,000</td><td></td></tr>
+    <tr><td>L3</td><td>Claims manager</td><td>INR 10,00,000</td><td>USD 250,000</td><td>Also approves ex-gratia and reserve close with payment differences</td></tr>
+    <tr><td>L4</td><td>Head of claims</td><td>Above L3</td><td>USD 1,000,000</td><td>Large-loss committee; reinsurer notified</td></tr>
+    <tr><td>L5</td><td>Claims committee / CEO</td><td>Litigated or reputational</td><td>Above USD 1,000,000</td><td>Often also needs reinsurer agreement under treaty "claims cooperation" clauses</td></tr>
+  </tbody></table></div>
+  <div class="grid g2">
+    <div class="callout"><b>Separate limits per task type.</b> Appraisal, calculation, settlement, prepay, subrogation, salvage and reserve change can each have a different limit for the same user. A handler may be allowed to reserve INR 5,00,000 but pay only INR 50,000.</div>
+    <div class="callout"><b>Four-eyes control.</b> The person who submits should not approve the same task. Test that the approval task is not assigned back to the submitter, and that a user cannot approve above their own limit.</div>
+  </div>
+</section>
+
 
   <section class="block">
     <h2>Menu map</h2>
@@ -680,6 +777,22 @@ figure.shot.tall .shot-open{max-height:640px}
       <div class="card"><h3>Search pages</h3><p>Claim Task, Claim Search, My Claim, Task Monitor and New and Reopen share one pattern: quick search box, <b>Advance Search</b> for more criteria, a column chooser and, on most, <b>Download</b> to Excel.</p></div>
     </div>
   </section>
+<section class="block"><h2>Claim Summary toolbar (on every task page)</h2>
+  <p class="small muted">Seen on the Easy Claim screenshots. Availability can depend on product and configuration.</p>
+  <div class="tbl"><table><thead><tr><th>Item</th><th>Use</th></tr></thead><tbody>
+    <tr><td>Policy No link</td><td>Opens the policy information page (data from Easy PA or the docked policy source)</td></tr>
+    <tr><td>Notes (under Advance)</td><td>All claim notes under that policy</td></tr>
+    <tr><td>Attachment</td><td>Claim documents, stored through InsureMO iDocs. Same directory used by the Document task.</td></tr>
+    <tr><td>Prior Claims</td><td>Earlier claims on the same policy or insured. Used for fraud and duplicate checks.</td></tr>
+    <tr><td>Task Transfer / Task Process</td><td>Pending tasks on this claim / the task history of the claim</td></tr>
+    <tr><td>Diary Task</td><td>Create a reminder task for a user</td></tr>
+    <tr><td>Print, Litigation, Payment Info, Medical Bill</td><td>Print claim forms; record legal proceedings; view payment details from finance; capture medical bills (health)</td></tr>
+    <tr><td>Pending Claim toggle</td><td>Marks the claim as pending (seen on health FNOL)</td></tr>
+    <tr><td>Red warning text</td><td>"Existed claim record in system on the same policy which reported within 24 hours" (duplicate-claim alert) and "Claim should be reported within 30 days after date of loss" (late-reporting alert)</td></tr>
+  </tbody></table></div>
+  <div class="callout"><span class="tag inf">Domain context</span> The 24-hour duplicate warning is a basic fraud and data-quality control. Two reports on one policy in a day are often the same loss reported twice (by the agent and by the customer), or a staged claim. The handler should check Prior Claims before registering.</div>
+</section>
+
 
   <div class="mark-done"><input type="checkbox" id="d1" data-done="basics"><label for="d1">I can explain the seven tasks, the two claim modes, reserve types and the authority rule.</label></div>
 </section>
@@ -694,6 +807,12 @@ figure.shot.tall .shot-open{max-height:640px}
     <p class="muted">Main line, approval loops and end states. Amber labels are routing conditions taken from the source.</p>
     <div class="diagram" id="mainFlow"></div>
   </section>
+<section class="block"><h2>Step by step: the standard claim process in one view</h2>
+  <p class="muted" style="max-width:84ch">The flowchart above shows the task order. This view shows every step, who does it, which Easy Claim screen is used, what comes out, and what it means in plain words. Numbers in the diagram match the table.</p>
+  <div class="explain"><b class="ex-h">Explained for non-insurance readers <span class="tag inf">Domain context</span></b><h4>How Easy Claim moves a claim</h4><ul><li><b>Task-based workflow:</b> each stage is a "task" sitting in someone's work queue. Finishing it (Submit) creates the next task automatically, like a relay baton.</li><li><b>Approval gates:</b> when an amount is above the user's limit, the system inserts an approval task for a senior person before the claim can move on.</li><li><b>Money is separate:</b> Easy Claim decides what to pay; BCP (finance) actually pays. This split is a standard fraud control.</li><li><b>Loops are normal:</b> missing documents or a rejected approval send the claim back a step; this is expected, not an error.</li></ul></div>
+  <div class="swimwrap" style="display:flex;flex-direction:column;gap:12px"><div class="diagram swim" id="pxStdSwim"></div><div id="pxStdTbl"></div></div>
+</section>
+
 
   <section class="block">
     <h2>Routing rules: what Submit creates</h2>
@@ -739,6 +858,11 @@ figure.shot.tall .shot-open{max-height:640px}
     <nav class="sc-list" id="scList" aria-label="Flows"></nav>
     <div class="sc-detail" id="scDetail"></div>
   </div>
+  <section class="block" id="pxScenBlock"><h2>Real-world claim scenarios</h2>
+  <p class="muted" style="max-width:80ch">Ten end-to-end cases across motor, health and property, following Priya, Mr Tan and Sunrise Textiles. Each shows the story, every step as a swimlane, the money, what each role should take away, and the screens used. Amounts and market rules are illustrative <span class="tag inf">Domain context</span>; task behaviour follows the source.</p>
+  <div class="filter-row" id="pxScenList" role="group" aria-label="Scenario"></div>
+  <div id="pxScenDet" style="display:flex;flex-direction:column;gap:14px"></div>
+</section>
   <div class="mark-done"><input type="checkbox" id="d3" data-done="flows"><label for="d3">I can walk any flow end to end, including its alternate paths.</label></div>
 </section>
 
@@ -817,6 +941,11 @@ figure.shot.tall .shot-open{max-height:640px}
       <div class="card"><h3>Reserve arithmetic <span class="tag inf">Domain context</span></h3><ul class="clean"><li>Outstanding reserve = expected total cost − paid so far.</li><li>Incurred = paid + outstanding. Management and reinsurers watch incurred.</li><li>A settlement reduces outstanding by the settled amount. A final settlement normally brings it to 0 and closes the reserve.</li><li>Recoveries (salvage, subrogation) reduce the net incurred cost.</li><li>Reserve changes above authority need approval because they change the reported liability.</li></ul></div>
     </div>
   </section>
+<section class="block"><h2>Follow the money: Priya's motor claim</h2>
+  <div class="tbl"><table><thead><tr><th>Day</th><th>Event</th><th>Outstanding</th><th>Paid to date</th><th>Incurred</th><th>Easy Claim action</th></tr></thead><tbody id="pxIncurred"></tbody></table></div>
+  <div class="callout"><span class="tag inf">Domain context</span> Good practice is to set the first reserve on known facts within 24 to 48 hours and review it at every task. Large reserve jumps late in the claim ("reserve creep") distort the loss ratio and are flagged by auditors and reinsurers.</div>
+</section>
+
 
   <div class="mark-done"><input type="checkbox" id="d5" data-done="calc"><label for="d5">I can explain incremental vs full-scale calculation and the reserve close rule.</label></div>
 </section>
@@ -869,6 +998,15 @@ figure.shot.tall .shot-open{max-height:640px}
     <div class="filter-row"><label for="cfFilter" class="small">Filter</label><input id="cfFilter" type="search" placeholder="e.g. authority, workflow, matrix"></div>
     <div class="tbl"><table><thead><tr><th>Item</th><th>What it controls</th><th>Where</th><th>Basis</th></tr></thead><tbody id="cfBody"></tbody></table></div>
   </section>
+<section class="block"><h2>Health insurance baseline</h2>
+  <div class="prose">
+    <p><span class="tag src">Source</span> A health insurance claims baseline is available, built on the Claim API and configuration. It adds health-specific fields and rules so the system captures richer data. Health screens exist for FNOL, Sub-Claim Information, Registration, Investigation, Appraisal, Settlement and Case Information.</p>
+    <p>From the screenshots, health FNOL adds: "Claim with other insurer?" (contribution check), "Report to police", Event Description, Agent/Broker Code and Name, Pending Claim toggle, Medical Bill and Payment Info links.</p>
+  </div>
+  <div class="callout"><span class="tag inf">Domain context</span> Health claims need data that motor and property do not: diagnosis code (ICD-10), procedure code, hospital (provider) ID, admission and discharge dates, room category, pre-authorisation number, and itemised bills. Regulators in several markets set tight timelines for cashless decisions; for example India's 2024 health master circular asks for cashless authorisation within one hour and final discharge authorisation within three hours. Confirm current rules for your market.</div>
+  <p class="small">Health screenshots in this guide: <a href="#scr-fnol">FNOL</a> · <a href="#scr-fnol">Sub-claim information (on FNOL)</a> · <a href="#scr-reg">Registration</a> · <a href="#scr-inv">Investigation</a> · <a href="#scr-appr">Appraisal</a> · <a href="#scr-settle">Settlement</a> · <a href="#scr-caseinfo">Case Information</a></p>
+</section>
+
   <section class="block">
     <h2>Code lists seen on screens</h2>
     <p class="muted">These drop-down lists appear in screenshots. Their values are tenant or product configuration; confirm the lists for your product. <span class="tag shot">Screenshot</span></p>
@@ -2779,6 +2917,126 @@ const FINAL=[
 ];
 
 
+
+/* ===================== PORTED (from the main-branch Claims guide, 2026-11-10) ===================== */
+Object.assign(LANES,{hosp:'Hospital',gar:'Garage / repairer',surv:'Surveyor / loss adjuster',expert:'Surveyor / investigator / provider',buyer:'Salvage buyer',api:'Partner app / portal'});
+LANE_ORDER.splice(LANE_ORDER.indexOf('tpa')+1,0,'hosp','gar','surv','expert','buyer','api');
+const PX_LANE={pol:'cust',agt:'agent',hand:'hdl',fin:'bcp'},PX_KIND={pa:'mod',appr:'op'};
+const PX_SCR={fnol:'fnol',reg:'reg',inv:'inv',app:'appr',doc:'doc',calc:'calc',set:'settle',prepay:'prepay',subro:'subro',salv:'salv',recov:'recov',reserves:'rsvUp'};
+const PX_TASK={fnol:'FNOL',reg:'Registration',inv:'Investigation',app:'Appraisal',doc:'Document',calc:'Calculation',set:'Settlement',prepay:'Prepay',subro:'Subrogation',salv:'Salvage',recov:'Recovery'};
+function PX(st){return st.map(s=>{const o={l:PX_LANE[s.l]||s.l,k:PX_KIND[s.k]||s.k,t:s.t};if(s.m)o.m=s.m;if(s.o)o.s=s.o;if(s.p)o.d=s.p;if(s.b)o.r='Amount above the user\'s authority, so an approval task is created';if(o.l==='ri'&&!s.tag)o.tag='inf';else if(s.tag)o.tag=s.tag==='ind'?'inf':s.tag;return o})}
+const PX_SCEN=[
+{id:'s1',name:'Motor own damage, cashless garage repair',lob:'Motor',mode:'Claim mode',
+ story:'Priya\'s car is rear-ended at a signal. She uses a network garage, so the insurer pays the garage directly (cashless). She pays only depreciation and the deductible.',
+ steps:[S('clmt','ev','Accident; Priya calls helpline from the scene, takes photos'),S('hand','op','FNOL: policy found, cause = collision, sub-claim 001 own damage',{m:'New Accident Report → FNOL'}),S('pa','pa','Policy in force: IDV 6,00,000, comprehensive, deductible 1,000, NCB 20%'),S('hand','op','Registration: indemnity reserve 60,000, expense reserve 1,500',{m:'Claim Reserve'}),S('gar','ext','Car towed to network garage; estimate 82,000'),S('surv','ext','Surveyor inspects; agrees parts and labour'),S('hand','op','Investigation: surveyor details; reserve updated to 82,000',{m:'Investigation'}),S('hand','op','Appraisal: labour 30,000, metal parts 32,000, plastic parts 20,000',{m:'Loss Item'}),S('appr','appr','Appraisal Approval (82,000 > handler limit 50,000)',{b:'Above'}),S('clmt','ev','Uploads claim form, licence, registration, police report'),S('hand','op','Document: all qualified → Calculation'),S('hand','op','Calculation: 82,000 − depreciation 13,200 − deductible 1,000 = 67,800'),S('appr','appr','Calculation and Settlement Approval by team lead',{b:'Above'}),S('bcp','bcp','Claim AP 67,800 to garage; finance pays'),S('gar','ext','Garage receives 67,800 + 14,200 from Priya; releases car'),S('pa','pa','At renewal, NCB drops from 20% to 0%')],
+ money:[['Gross assessed','82,000'],['Depreciation (metal 10% of 32,000; plastic 50% of 20,000)','−13,200'],['Deductible','−1,000'],['Paid to garage','67,800'],['Paid by Priya to garage','14,200'],['Surveyor fee (expense)','1,500']],
+ lessons:{ba:'Decide how a zero-depreciation add-on changes the calculation; who can be payee in cashless; how NCB loss is sent to Easy PA for renewal.',qa:'Test depreciation by material and vehicle age; deductible; approvals exactly at the limit; garage as payee with bank details from Party Management.',dev:'Garage must exist in Party Management with payment information. Settlement creates the AP in BCP with the claim number and payee party.'},
+ links:['fnol','reg','inv','app','doc','calc','set']},
+{id:'s2',name:'Motor subrogation against the at-fault party',lob:'Motor',mode:'Claim mode',
+ story:'Continuing scenario 1. The truck driver was at fault. Priya\'s insurer recovers what it paid from the truck owner\'s insurer.',
+ steps:[S('hand','op','Police report confirms truck at fault'),S('hand','op','New and Reopen → New Task → Subrogation',{m:'Claim > New and Reopen'}),S('hand','op','Subrogation: against truck insurer, 67,800 + Priya\'s deductible 1,000'),S('tp','ext','Truck insurer receives demand with evidence'),S('tp','ext','Truck insurer accepts 68,800'),S('appr','appr','Subrogation Approval (above handler limit)',{b:'Above'}),S('bcp','bcp','Recovery AR 68,800 (200312, 200100 +)'),S('tp','ext','Truck insurer pays'),S('bcp','bcp','Collection applied; AR settled'),S('hand','op','Refund 1,000 deductible to Priya (uninsured loss recovered)'),S('ri','ri','If motor treaty applies, reinsurer share of recovery returned'),S('gl','gl','Net incurred reduced')],
+ money:[['Paid to garage','67,800'],['Recovered from truck insurer','68,800'],['Passed back to Priya (deductible)','1,000'],['Net indemnity cost','0 (only the 1,500 survey fee remains)']],
+ lessons:{ba:'Check if knock-for-knock or inter-company agreements apply in your market; they change whether subrogation is used at all.',qa:'Test subrogation above and below authority; Recovery AR appears in BCP with the claim number; partial recovery.',dev:'Subrogation creates a receivable, not a payable. The RI module must receive recoveries as negative paid loss.'},
+ links:['subro']},
+{id:'s3',name:'Motor flood total loss with salvage',lob:'Motor',mode:'Claim mode',
+ story:'Priya\'s car is submerged in a city flood. Repair would cost more than 75% of the insured value, so it is a constructive total loss. The bank that financed the car is paid first. The wreck is sold.',
+ steps:[S('clmt','ev','Car submerged in flood; reported in app'),S('hand','op','FNOL with Catastrophe Code for the flood event'),S('hand','op','Registration: reserve 4,50,000'),S('surv','ext','Surveyor: repair 5,20,000 > 75% of IDV (4,50,000) → total loss'),S('hand','op','Appraisal: total loss at IDV 6,00,000; reserve updated'),S('appr','appr','Appraisal Approval (L3)',{b:'Above'}),S('hand','op','Document: registration certificate, keys, loan statement, transfer papers'),S('hand','op','Calculation: 6,00,000 − 1,000 deductible = 5,99,000'),S('appr','appr','Calculation and Settlement Approval (L3)',{b:'Above'}),S('hand','op','Settlement: payee 1 financier 3,00,000; payee 2 Priya 2,99,000'),S('bcp','bcp','Two claim APs; paid'),S('pa','pa','Policy ends after total loss'),S('hand','op','New Task → Salvage; wreck auctioned'),S('buyer','ext','Buyer pays 1,20,000'),S('bcp','bcp','Recovery AR collected'),S('ri','ri','Claim aggregated under the catastrophe code for cat XOL')],
+ money:[['IDV','6,00,000'],['Deductible','−1,000'],['Paid (financier + Priya)','5,99,000'],['Salvage recovered','−1,20,000'],['Net cost','4,79,000']],
+ lessons:{ba:'Define total-loss threshold, financier payee rule and how the policy ends in Easy PA after total loss.',qa:'Test two payees with different amounts; salvage after closure; catastrophe code mandatory during the event.',dev:'Catastrophe code must flow to Reinsurance for event aggregation. A total loss should trigger a policy status change in Easy PA (confirm the interface).'},
+ links:['app','set','salv']},
+{id:'s4',name:'Health cashless hospitalisation through a TPA',lob:'Health',mode:'Sub-claim mode',
+ story:'Mr Tan has planned knee surgery at a network hospital. The TPA approves cashless treatment. The insurer pays the hospital; Mr Tan pays non-payable items and his 10% co-pay.',
+ steps:[S('hosp','ext','Hospital sends pre-authorisation request with estimate 3,50,000'),S('tpa','ext','TPA checks policy, waiting period and sum insured; approves 2,50,000 initially'),S('hand','op','FNOL in sub-claim mode; sub-claim 001 inpatient; Agent/Broker code captured',{m:'Health FNOL'}),S('hand','op','Registration: indemnity reserve 2,50,000'),S('hosp','ext','Surgery done; final bill 3,40,000 at discharge'),S('tpa','ext','Final review: consumables 12,000 not payable; co-pay 10%'),S('hand','op','Investigation: admission verified; Appraisal: medical bill items',{m:'Medical Bill'}),S('hand','op','Document: discharge summary, final bill, reports qualified'),S('hand','op','Calculation: (3,40,000 − 12,000) × 90% = 2,95,200'),S('appr','appr','Calculation and Settlement Approval',{b:'Above'}),S('hand','op','Settlement: payee hospital 2,95,200, Final'),S('bcp','bcp','Claim AP; hospital paid in a batch (BCP P7)'),S('clmt','ev','Mr Tan pays hospital 44,800 and is discharged'),S('hand','op','New Subclaim 002: hospital cash 5 days × 2,000 = 10,000 to Mr Tan')],
+ money:[['Final bill','3,40,000'],['Non-payable consumables','−12,000'],['Co-pay 10% of 3,28,000','−32,800'],['Paid to hospital','2,95,200'],['Paid by Mr Tan','44,800'],['Hospital cash (sub-claim 002)','10,000'],['Sum insured left this year','5,00,000 − 2,95,200 = 2,04,800 (if hospital cash is a separate benefit)']],
+ lessons:{ba:'Define TPA integration (who creates FNOL, who approves cashless), non-payable item list, co-pay order, and whether benefits reduce the sum insured.',qa:'Test sub-claim mode: two sub-claims with different payees and timelines; co-pay rounding; sum insured balance after payment.',dev:'Health baseline fields (Medical Bill, provider) and TPA party. Hospital payments are usually batched in BCP.'},
+ links:['fnol','calc','set']},
+{id:'s5',name:'Health reimbursement with missing documents',lob:'Health',mode:'Sub-claim mode',
+ story:'Mr Tan\'s daughter is treated at a non-network hospital. He pays and then claims reimbursement, but the discharge summary is missing.',
+ steps:[S('clmt','ev','Pays hospital 60,000; submits claim within 30 days of discharge'),S('hand','op','FNOL and Registration: reserve 60,000'),S('hand','op','Investigation and Appraisal: bill items checked'),S('hand','op','Document: discharge summary missing → mark unqualified'),S('hand','op','Contact Information: Mr Tan added'),S('sys','sys','Email request sent from template'),S('sys','sys','Is Qualified = No → new Document task',{b:'No'}),S('clmt','ev','Uploads discharge summary'),S('hand','op','Document: all qualified → Calculation',{b:'Yes'}),S('hand','op','Calculation: (60,000 − 2,000 non-payables) × 90% = 52,200'),S('hand','op','Settlement: payee Mr Tan, bank transfer (within authority)'),S('bcp','bcp','Claim AP; paid to bank account')],
+ money:[['Bill','60,000'],['Non-payables','−2,000'],['Co-pay 10%','−5,800'],['Paid to Mr Tan','52,200']],
+ lessons:{ba:'Decide whether the regulatory TAT clock starts at report date or at the last document received, and how many reminders are sent before closing for no documents.',qa:'Test the document loop more than once; template content; that only claimant is editable on Document task.',dev:'Notification channel and template are tenant configuration. Keep an audit trail of every unqualified mark.'},
+ links:['doc']},
+{id:'s6',name:'Property fire: under-insurance, prepay and reinsurance',lob:'Property',mode:'Claim mode',
+ story:'Fire damages stock at the Sunrise Textiles warehouse. The stock was worth 2.5M but insured for 2.0M. The insurer pays an interim amount, applies average, sells salvage and recovers from reinsurers.',
+ steps:[S('pol','ev','Night fire; fire brigade attends'),S('agt','ext','Broker notifies insurer with initial estimate 1.5M'),S('hand','op','FNOL and Registration: indemnity reserve 1,500,000; expense reserve 40,000'),S('ri','ri','Large-loss notice to reinsurers; ceded reserve updated'),S('surv','ext','Loss adjuster on site within 24 hours; cause electrical fault (covered)'),S('hand','op','Investigation recorded; value at risk 2.5M vs SI 2.0M'),S('hand','op','New Task → Prepay 300,000'),S('appr','appr','Prepay Approval (head of claims)',{b:'Above'}),S('bcp','bcp','Prepay paid to insured'),S('surv','ext','Final report: loss 1,512,500'),S('hand','op','Appraisal, Document, Calculation: 1,512,500 × 80% − 10,000 = 1,200,000'),S('appr','appr','Calculation and Settlement Approval (committee)',{b:'Above'}),S('hand','op','Settlement: final 900,000 (1,200,000 − 300,000 prepaid)'),S('ri','ri','Cash call: quota share 480,000; XOL 470,000'),S('hand','op','Salvage: burnt stock sold 40,000'),S('gl','gl','Gross, ceded and net losses booked')],
+ money:[['Assessed loss','1,512,500'],['Average 2.0M ÷ 2.5M = 80%','1,210,000'],['Deductible','−10,000'],['Gross payable','1,200,000'],['Prepay + final','300,000 + 900,000'],['Quota share 40% recovered','−480,000'],['Per-risk XOL (500k xs 250k)','−470,000'],['Net retained by insurer','250,000'],['Salvage 40,000','16,000 back to quota share reinsurer; 24,000 reduces the XOL recovery, so the insurer\'s net stays 250,000 (loss is still above the retention)']],
+ lessons:{ba:'Define large-loss thresholds that trigger reinsurer notice and cash call; define who approves prepay; check the average clause wording.',qa:'Test prepay deducted from final settlement; average clause calculation; reinsurance share on salvage.',dev:'Reserve and paid changes must flow to Reinsurance per policy and coverage. Prepay and settlement both create claim APs in BCP.'},
+ links:['prepay','salv','calc']},
+{id:'s7',name:'Catastrophe event: bulk claims through Batch FNOL',lob:'Motor and property',mode:'Both',
+ story:'A cyclone causes thousands of claims in three days. The insurer opens a catastrophe event, loads claims in bulk and moves work to a CAT team.',
+ steps:[S('clmt','ev','Cyclone; thousands of losses'),S('hand','op','Claims head opens a catastrophe event; Catastrophe Code set up'),S('agt','ext','Agents and brokers collect notices in spreadsheets'),S('hand','op','Batch FNOL: select product, Template Download, fill rows',{m:'Claim > Batch FNOL'}),S('hand','op','Upload file; Upload No generated'),S('sys','sys','File validated; claim cases created'),S('hand','op','Upload Monitor: check progress; fix rejected rows',{m:'Claim Configuration > Upload Monitor'}),S('hand','op','Reassignment: tasks to CAT team or shared pool',{m:'Claim > Reassignment'}),S('hand','op','Task Monitor: backlog and overdue tasks by team',{m:'Claim > Task Monitor'}),S('api','ext','Small claims settled straight through by API'),S('ri','ri','All claims with the code aggregated for cat XOL recovery'),S('gl','gl','Event loss reported to management and regulator')],
+ money:[['Example','8,000 claims, gross 900 million'],['Cat XOL retention','250 million'],['Cat XOL recovery','up to the treaty limit above 250 million']],
+ lessons:{ba:'Define the CAT process: who opens an event, code format, Batch FNOL template per product, fast-track rules.',qa:'Test Batch FNOL with valid, invalid and duplicate rows; Upload Monitor status; mass reassignment.',dev:'Batch FNOL processes asynchronously; Upload No is the tracking key. Catastrophe Code must be on every claim and sent to Reinsurance.'},
+ links:['fnol']},
+{id:'s8',name:'Claim withdrawn or declined',lob:'Any',mode:'Any',
+ story:'Two endings without payment: a customer withdraws a claim at FNOL, and a claim is declined because the driver had no valid licence (an exclusion).',
+ steps:[S('clmt','ev','Customer reports a minor scrape, then decides not to claim to keep NCB'),S('hand','op','FNOL or Registration: Cancel',{m:'Cancel button'}),S('sys','sys','Claim cancelled; any reserve released',{r:'Cancelled'}),S('clmt','ev','Second case: accident reported'),S('surv','ext','Investigation: driver\'s licence had expired'),S('hand','op','Coverage check: policy excludes unlicensed driving'),S('hand','op','Calculation or Settlement: Decline',{m:'Decline button'}),S('sys','sys','Claim declined; reserves closed',{r:'Declined'}),S('hand','op','Decline letter with reason and complaint route'),S('clmt','ev','Customer may complain to ombudsman')],
+ money:[['Cancelled claim','0 paid; reserve released'],['Declined claim','0 indemnity; investigation fee still paid from expense reserve']],
+ lessons:{ba:'Define decline reasons list, letter templates and approval for declines (many insurers require senior approval to decline).',qa:'Test Cancel at FNOL and at Registration; Decline at Calculation and at Settlement; reserve status after each.',dev:'Cancel and Decline must close reserves and send reserve release to BCP/GL and Reinsurance.'},
+ links:['fnol','calc','set']},
+{id:'s9',name:'Closed claim reopened for more payment',lob:'Health and motor',mode:'Any',
+ story:'After Mr Tan\'s claim is closed, post-hospitalisation physiotherapy bills arrive. In another case, the garage finds hidden damage after opening Priya\'s car.',
+ steps:[S('clmt','ev','New bills arrive after claim closed'),S('hand','op','Claim Search: find the claim; check status',{m:'Claim > Claim Search'}),S('hand','op','Option A: New and Reopen → Reopen Task (Calculation; choose calculation times in new logic)',{m:'Reopen Task'}),S('hand','op','Option B: add new indemnity reserve (case reopens)'),S('sys','sys','Case reopened'),S('hand','op','Calculation: full-scale total entered'),S('hand','op','Settlement: supplementary payment'),S('bcp','bcp','Claim AP for the extra amount'),S('sys','sys','Claim closed again')],
+ money:[['First settlement','2,95,200'],['Post-hospital physio','18,000 × 90% = 16,200'],['Total paid','3,11,400']],
+ lessons:{ba:'Define who may reopen, time limits for reopening, and whether reopen needs approval.',qa:'Test Reopen Task lists only finished tasks (Investigation, Appraisal, Document, Calculation without parallel tasks); calculation times selection in new logic; history shows Is Reopened / Reopened To.',dev:'Reopened calculation replaces the original record and the link between them is stored. Reopen must reopen reserve in BCP/GL.'},
+ links:['reserves']},
+{id:'s10',name:'Payment error: cancel payment or recover',lob:'Any',mode:'Any',
+ story:'The settlement was sent with the wrong bank account. What to do depends on whether BCP has already paid.',
+ steps:[S('hand','op','Error found in payment information'),S('bcp','dec','Has BCP already paid?'),S('bcp','bcp','No: cancel payment in BCP',{b:'Not paid'}),S('hand','op','New settlement with correct account'),S('bcp','bcp','Yes: payment already made',{b:'Paid'}),S('hand','op','New Task → Recovery against the wrong recipient'),S('bcp','bcp','Recovery AR; collect back (or reverse refund if the bank returns funds)'),S('hand','op','New settlement with correct account'),S('bcp','bcp','Correct claim AP paid')],
+ money:[['Wrong payment','52,200'],['Recovered','52,200'],['Correct payment','52,200']],
+ lessons:{ba:'Define the control: who can change payee bank details and whether a change needs a second person.',qa:'Test both branches; check no double payment is possible while the first AP is still open.',dev:'Payment status from BCP (approved, paid, reversed) decides the branch. Plan for this status to be visible in Claims (Payment Info).'},
+ links:['recov','set']}
+];
+const PX_STD=[
+ S('clmt','ev','Loss happens; insured, agent, hospital or garage reports it',{st:0,m:'Phone, app, agent, partner API',o:'Notice received',p:'The customer tells the insurer something went wrong. Nothing is in the system yet.'}),
+ S('hand','op','New Accident Report: enter Policy No and Date of Loss; Search',{st:0,m:'Claim > Claim Task',o:'Policy search',p:'The handler finds the customer\'s policy so the claim can be checked against it.'}),
+ S('pa','pa','Easy PA returns the policy that was in force on the date of loss',{st:0,m:'Policy docking',o:'Policy details shown',p:'Confirms the customer was covered on the day of the loss.'}),
+ S('hand','op','FNOL: record what happened, who claims, what was damaged; Submit',{st:0,m:'FNOL task page',o:'Claim No created',p:'The claim is officially opened and gets its reference number.'}),
+ S('sys','sys','FNOL closes; Registration task created; Task Transfer opens',{st:0,m:'Task Transfer > Work On',o:'Registration pending',p:'The system hands the work to the next step automatically.'}),
+ S('hand','op','Registration: complete details; add reserve lines (indemnity and expense); Submit',{st:1,m:'Registration > Claim Reserve',o:'Reserve open; Investigation task',p:'The insurer writes down its first estimate of the cost (the reserve).'}),
+ S('fin','bcp','Reserve booked for accounting (BCP fee 200201, no payment)',{st:1,m:'BCP',o:'Liability in the books',p:'Finance records the expected cost so profit is not overstated.'}),
+ S('ri','ri','Reinsurer share of the reserve is noted',{st:1,m:'Reinsurance',o:'Ceded reserve',p:'If part of the risk was passed to a reinsurer, its share is tracked from day one.'}),
+ S('expert','ext','Surveyor or investigator inspects the damage and checks the facts',{st:2,m:'Site, garage or hospital visit',o:'Survey / investigation report',p:'An independent expert confirms the loss is real and covered.'}),
+ S('hand','op','Investigation: record findings; update the reserve if needed; Submit',{st:2,m:'Investigation > Sub-Claim tab',o:'Appraisal task',p:'The handler stores the evidence and corrects the estimate.'}),
+ S('expert','ext','Garage or hospital sends the estimate or bill',{st:3,m:'Estimate / bill',o:'Prices received',p:'The repairer or hospital says what it will cost.'}),
+ S('hand','op','Appraisal: enter loss items with surveyor, garage and provider prices; Submit',{st:3,m:'Appraisal > Loss Item',o:'Appraisal amount',p:'The handler values the damage item by item.'}),
+ S('sys','dec','Is the appraisal amount above the handler\'s approval limit?',{st:3,m:'Claim authority configuration',o:'Yes → approval; No → Document',p:'Large amounts need a senior person to check them.'}),
+ S('appr','appr','Appraisal Approval: approve or reject (reject sends it back)',{st:3,b:'Yes',m:'Appraisal Approval task',o:'Document task',p:'A second person confirms the value (four-eyes control).'}),
+ S('clmt','ev','Claimant uploads documents: claim form, ID, bills, reports',{st:4,m:'Attachment (iDocs)',o:'Documents received',p:'The customer provides proof.'}),
+ S('hand','op','Document: mark each document qualified or not; Submit',{st:4,m:'Document tab',o:'Not qualified → new Document task and notice; qualified → Calculation',p:'Payment is not allowed until the proof is complete.'}),
+ S('hand','op','Calculation: apply limits, deductible, co-pay, depreciation; Submit (or Decline)',{st:5,m:'Calculation tab (Claim Matrix)',o:'Calculated amount',p:'The policy rules turn the damage value into the amount the insurer owes.'}),
+ S('appr','appr','Calculation Approval if above the handler\'s limit',{st:5,b:'If above',m:'Calculation Approval task',o:'Settlement task',p:'A senior person checks the amount to be paid.'}),
+ S('hand','op','Settlement: choose payees (customer, garage, hospital), partial or final; Submit (or Decline)',{st:6,m:'Settlement tab > Payee',o:'Payment request',p:'The handler decides who gets paid and how much.'}),
+ S('appr','appr','Settlement Approval if above the handler\'s limit',{st:6,b:'If above',m:'Settlement Approval task',o:'Approved',p:'Final check before money leaves the company.'}),
+ S('sys','sys','Claim closed (final settlement) or kept open (partial)',{st:6,m:'Case status',o:'Closed',p:'The case is finished in the claims system.'}),
+ S('fin','bcp','BCP creates the claim payable; finance approves and pays; bank transfers money; GL posts it',{st:6,m:'BCP Refund Approval, Single / Massive Refund',o:'Payee paid',p:'Finance, not the claims team, releases the money. This separation prevents fraud.'}),
+ S('ri','ri','Reinsurer pays its share of the paid claim',{st:6,m:'Reinsurance',o:'Recovery from reinsurer',p:'The insurer gets back the part of the claim it passed on.'}),
+ S('hand','op','If someone else caused the loss, or there is salvage: Subrogation or Salvage task',{st:7,m:'Claim > New and Reopen > New Task',o:'Recovery receivable in BCP',p:'The insurer tries to get money back from the person at fault or by selling damaged property.'}),
+ S('hand','op','If more costs appear later: Reopen task or add a new reserve',{st:7,m:'Claim > New and Reopen',o:'Claim reopened',p:'Closed claims can be reopened for extra payments.'})
+];
+
+const PX_PLAIN={
+ fnol:{simple:'The first time the insurer hears about a loss. A claim record is opened.',analogy:'Like reporting a fault to a service desk: you get a ticket number before anyone fixes anything.',does:'Finds the policy, captures what happened, who is claiming and what was damaged, then creates the Registration task.',watch:'Date of loss decides whether the policy was active. A duplicate report on the same policy within 24 hours shows a warning.'},
+ reg:{simple:'The claim is completed and the first cost estimate (reserve) is entered.',analogy:'Like a project manager setting an initial budget for a job.',does:'Adds reserve lines per sub-claim, reserve type and coverage, and records history. Creates the Investigation task.',watch:'A reserve that is too low hides cost from management; too high ties up capital.'},
+ inv:{simple:'Checking the facts: did it happen, is it covered, is the claimant entitled.',analogy:'Like an auditor checking a receipt before reimbursing an expense.',does:'Stores investigator details and findings per sub-claim; lets authorised users update, close or reopen reserves.',watch:'Reserve buttons only appear for users with permission.'},
+ app:{simple:'Putting a money value on the damage, item by item.',analogy:'Like getting three quotes for a home repair and agreeing a fair price.',does:'Records labour and parts with surveyor, garage and provider prices. Sends large amounts for approval.',watch:'This is where inflated repair bills are caught.'},
+ doc:{simple:'Collecting and checking the proof needed to pay.',analogy:'Like a bank asking for payslips before approving a loan.',does:'Marks documents qualified or not, notifies the contact person, and loops until all proof is complete.',watch:'Missing documents are the most common reason for slow claims.'},
+ calc:{simple:'Applying the policy rules to work out what the insurer owes.',analogy:'Like a tax calculation: gross amount minus allowances and limits gives the net amount.',does:'Uses configured formulas (Claim Matrix) to calculate each line; handler can adjust; large amounts go for approval; Decline is possible.',watch:'Order of deductions changes the result. Agree it in writing.'},
+ set:{simple:'Deciding who gets paid, how much, and sending it to finance.',analogy:'Like approving a supplier invoice: claims approves, finance pays.',does:'Records payees, partial or final payments, sends approved amounts to BCP and closes the claim on final settlement.',watch:'Wrong payee or bank details are the most expensive errors.'},
+ prepay:{simple:'Paying part of the claim early, before the final amount is known.',analogy:'Like an advance on salary.',does:'Records payees and amount; approval if above limit; the amount is deducted from the final settlement.',watch:'Make sure the final settlement deducts it, so nothing is paid twice.'},
+ subro:{simple:'Getting money back from the person who caused the loss, after paying your own customer.',analogy:'Like your employer paying your medical bill after a work accident and then claiming from the company at fault.',does:'Records the recovery against the third party; approval if above limit; BCP creates a receivable.',watch:'Some markets have agreements between insurers that remove the need to recover.'},
+ salv:{simple:'Selling what is left of damaged property after paying a total loss.',analogy:'Like selling a written-off car for scrap.',does:'Records the buyer and amount; approval if above limit; BCP collects the money.',watch:'Reinsurers get their share of the salvage money.'},
+ recov:{simple:'Getting back money that was paid by mistake.',analogy:'Like a bank reversing a payment sent to the wrong account.',does:'Records the overpayment as a receivable; there is no approval task.',watch:'Use only after BCP has paid; before that, cancel the payment instead.'}
+};
+const PX_INC=[
+ ['1','FNOL and Registration','60,000 + 1,500','0','61,500','Registration: add indemnity and expense reserve'],
+ ['2','Garage estimate 82,000','82,000 + 1,500','0','83,500','Investigation: Update reserve (within authority)'],
+ ['5','Calculation approved 67,800 (after depreciation and deductible)','67,800 + 1,500','0','69,300','Update reserve down to the calculated amount'],
+ ['6','Garage paid 67,800; surveyor fee 1,500 paid','0','69,300','69,300','Settlement (final), expense payment; BCP pays'],
+ ['40','Subrogation: truck insurer pays 67,800','0','69,300 − 67,800 recovered','1,500 net','Subrogation task; BCP recovery AR collected'],
+];
+
+
 /* ===================== APP ===================== */
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -3291,8 +3549,35 @@ function doSearch(){
 }
 
 /* ---------- init ---------- */
+
+/* ---------- ported content ---------- */
+function pxRedraw(){$$('[data-swim]').forEach(b=>{if(b.offsetParent&&Math.abs(b.clientWidth-(b._w||0))>40)drawSwim(b)})}
+let pxCur='s1';
+function renderPxScen(){
+  $('#pxScenList').innerHTML=PX_SCEN.map(s=>`<button type="button" class="chip" data-id="${s.id}" aria-pressed="${s.id===pxCur}">${esc(s.name)}</button>`).join('');
+  $$('#pxScenList button').forEach(b=>b.addEventListener('click',()=>{pxCur=b.dataset.id;renderPxScen()}));
+  const s=PX_SCEN.find(x=>x.id===pxCur),st=PX(s.steps),L=s.lessons||{};
+  $('#pxScenDet').innerHTML=`<div class="row" style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag src">${esc(s.lob)}</span><span class="tag">${esc(s.mode)}</span><span class="tag inf">Real-world case</span></div>
+   <h3 style="margin:0">${esc(s.name)}</h3><p style="max-width:80ch">${esc(s.story)}</p>
+   <div class="swimwrap" style="display:flex;flex-direction:column;gap:12px"><div class="diagram swim" id="pxScenSwim"></div><h4 style="margin:0">Step by step (${st.length} steps, ${new Set(st.map(x=>x.l)).size} actors)</h4>${stepTable(st,'pxScenTbl')}</div>
+   <div class="grid g2">
+    ${s.money?`<div class="card"><h4>The money</h4><div class="tbl"><table><tbody>${s.money.map(r=>`<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td></tr>`).join('')}</tbody></table></div></div>`:''}
+    <div class="card"><h4>Screens used</h4><div class="filter-row">${(s.links||[]).map(k=>PX_SCR[k]?`<a class="xlink" href="#scr-${PX_SCR[k]}">${esc(PX_TASK[k]||k)}</a>`:'').join('')}</div>
+     ${L.ba?`<div class="notes" style="grid-template-columns:1fr"><div class="note" data-r="ba"><span class="who">Business analyst</span>${esc(L.ba)}</div><div class="note" data-r="qa"><span class="who">Tester</span>${esc(L.qa)}</div><div class="note" data-r="dev"><span class="who">Developer</span>${esc(L.dev)}</div></div>`:''}</div>
+   </div>`;
+  mountSwim($('#pxScenSwim'),st,{uid:'px',label:s.name});
+  if(typeof applyLens==='function')applyLens();
+}
+function renderPorted(){
+  $('#pxPlain').innerHTML=Object.entries(PX_PLAIN).map(([k,p])=>`<div class="explain"><span class="ex-h">${esc(PX_TASK[k]||k)} · in plain words</span><dl><dt>In simple terms</dt><dd>${esc(p.simple)}</dd><dt>Everyday comparison</dt><dd>${esc(p.analogy)}</dd><dt>What Easy Claim does</dt><dd>${esc(p.does)}</dd><dt>Watch out for</dt><dd>${esc(p.watch)}</dd></dl></div>`).join('');
+  $('#pxIncurred').innerHTML=PX_INC.map(r=>`<tr><td class="num">${esc(r[0])}</td><td>${esc(r[1])}</td><td class="num">${esc(r[2])}</td><td class="num">${esc(r[3])}</td><td class="num">${esc(r[4])}</td><td class="small">${esc(r[5])}</td></tr>`).join('');
+  const std=PX(PX_STD);$('#pxStdTbl').innerHTML=stepTable(std,'pxStdT');mountSwim($('#pxStdSwim'),std,{uid:'std',label:'Standard claim process'});
+  renderPxScen();
+  PX_SCEN.forEach(s=>INDEX.push({k:'Real-world scenario',t:s.name,x:(s.name+' '+s.story+' '+s.steps.map(x=>x.t).join(' ')).toLowerCase(),h:'flows'}));
+  window.addEventListener('hashchange',()=>setTimeout(pxRedraw,40));setTimeout(pxRedraw,60);
+}
 function init(){
-  renderStatic();renderInsure();renderIndustry();renderStates();renderHub();renderToolkit();buildIndex();trackerInit();
+  renderStatic();renderInsure();renderIndustry();renderStates();renderHub();renderToolkit();buildIndex();trackerInit();renderPorted();
   $('#simTask').innerHTML=Object.keys(SIM).map(k=>`<option>${esc(k)}</option>`).join('');$('#simTask').addEventListener('change',renderSimInputs);renderSimInputs();
   ['dkPa','dkMan','dkIs'].forEach(id=>$('#'+id).addEventListener('change',runDock));runDock();
   $('#ciRun').addEventListener('click',runCI);$('#ciTotals').addEventListener('keydown',e=>{if(e.key==='Enter')runCI()});runCI();
