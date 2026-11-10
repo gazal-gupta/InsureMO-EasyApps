@@ -7,7 +7,7 @@ Learning material for InsureMO Easy Apps modules (BCP, Easy PA, Claims, Reinsura
 - `bcp-learning-guide/img/`: the original screenshots from the source BCP guide, at full resolution.
 - `.claude/skills/insuremo-learning-guide/`: the product-manager skill and the build engine. Use it to update the BCP guide or build guides for other modules.
 
-- `easyapps-learning-guide/`: the combined Easy Apps guide (one 12 MB offline file). A hub (capability map, cross-module interfaces and journeys, combined gaps, glossary, search) with the four module guides embedded unchanged. See its README for the rebuild and QA steps.
+- `easyapps-learning-guide/`: the combined Easy Apps guide (one 12 MB offline file). A hub (capability map, cross-module interfaces and journeys, combined gaps, glossary, search) with the four module guides embedded unchanged. See its README for the rebuild and QA steps. Shareable artifact: https://claude.ai/artifact/D4YUYkPsfJHucPw8yUpiW7 (republish from the `--artifact` output).
 
 ## How to work on it
 - To change the BCP guide, edit the files in `.claude/skills/insuremo-learning-guide/engine/`, then rebuild:
