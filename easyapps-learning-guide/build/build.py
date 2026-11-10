@@ -237,6 +237,7 @@ def main():
     ap.add_argument('--modules', required=True)
     ap.add_argument('--out', required=True)
     ap.add_argument('--artifact')
+    ap.add_argument('--artifact-dir', help='light shared page: index.html plus m/<module>.html files loaded on demand')
     ap.add_argument('--quality', type=int, default=80)
     a = ap.parse_args()
     meta = json.loads(read(os.path.join(SRC, 'meta.json')))
@@ -244,13 +245,16 @@ def main():
     data = build_data(H, meta)
     stats = {'before': 0, 'after': 0}
     payload = ''
+    mod_html = {}
     for k in ORDER:
         html = read(os.path.join(a.modules, k + '.html'))
         assert 'image/png' not in re.sub(r'data:image/png;base64,[A-Za-z0-9+/=]+', '', html), k + ': code refers to image/png'
         html = recompress(html, a.quality, os.path.join(a.modules, '.imgcache'), stats)
         html = inject_bridge(html, k)
+        mod_html[k] = html
         payload += f'<script type="application/json" id="mod-{k}">{script_json(html)}</script>\n'
     page = read(os.path.join(SRC, 'hub.html'))
+    shell = page
     page = page.replace('<!--EA_DATA-->', f'<script type="application/json" id="ea-data">{script_json(data)}</script>')
     page = page.replace('<!--EA_MODULES-->', payload)
     page = page.replace('/*EA_APP*/', read(os.path.join(SRC, 'hub.js')))
@@ -263,6 +267,16 @@ def main():
     if a.artifact:
         with open(a.artifact, 'w', encoding='utf-8') as fh:
             fh.write(page.replace('<!--BODY-->', '', 1))
+    if a.artifact_dir:
+        os.makedirs(os.path.join(a.artifact_dir, 'm'), exist_ok=True)
+        light = shell.replace('<!--EA_DATA-->', f'<script type="application/json" id="ea-data">{script_json(data)}</script>')
+        light = light.replace('<!--EA_MODULES-->', '').replace('/*EA_APP*/', read(os.path.join(SRC, 'hub.js'))).replace('<!--BODY-->', '', 1)
+        with open(os.path.join(a.artifact_dir, 'index.html'), 'w', encoding='utf-8') as fh:
+            fh.write(light)
+        for k, html in mod_html.items():
+            with open(os.path.join(a.artifact_dir, 'm', k + '.html'), 'w', encoding='utf-8') as fh:
+                fh.write(html)
+        print(f'light page {len(light.encode())/1e6:.2f} MB + modules ' + ', '.join(f'{k} {len(v.encode())/1e6:.1f} MB' for k, v in mod_html.items()) + f' -> {a.artifact_dir}')
     mb = len(standalone.encode()) / 1e6
     print(f'images {stats["before"]/1e6:.2f} MB -> {stats["after"]/1e6:.2f} MB; page {mb:.2f} MB -> {a.out}')
     assert mb < 15.5, 'page is too large for an artifact (16 MB limit)'

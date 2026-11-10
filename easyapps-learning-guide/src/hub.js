@@ -24,7 +24,10 @@ function frame(k){
   const f=document.createElement('iframe');
   f.title=MOD[k].full+' learning guide';f.setAttribute('allowfullscreen','');f.setAttribute('allow','fullscreen');f.dataset.mod=k;
   $('#stage').appendChild(f);frames[k]=f;
-  f.srcdoc=JSON.parse($('#mod-'+k).textContent);
+  const el=$('#mod-'+k);
+  if(el){f.srcdoc=JSON.parse(el.textContent)}
+  else{fetch('m/'+k+'.html').then(r=>{if(!r.ok)throw new Error(r.status);return r.text()}).then(t=>{f.srcdoc=t})
+    .catch(()=>{$('#loading').hidden=false;$('#loading').textContent='The '+MOD[k].name+' guide could not be loaded. Reload the page, or use the offline file.'})}
   return f;
 }
 function send(k,msg){
