@@ -118,3 +118,12 @@ In the BCP source: two fee codes for the same step (700009 vs 403000), opposite 
 - **Keep the suite on one branch.** The module guides were built on parallel branches with diverging copies of this skill and of CLAUDE.md. Merge (never rebase) each branch, keep the published version of each guide, and check that every engine rebuilds its guide byte for byte after the merge.
 - **`git checkout --ours` on a file that merged without a conflict returns the merged copy.** To keep the current branch's file, use `git checkout HEAD -- <file>`.
 - **The delete safety check refuses `rm` on a path built from shell variables.** Write the exact absolute path.
+
+# Consolidating two builds of one guide (Claims)
+- **Diff the rendered guides, not the sources.** Dump each guide's navigation and every h1-h3 in a headless browser; the topics only one guide has are the port list.
+- **Port into the master with its own renderers and labels.** Lift each block by its h2 (the whole enclosing `<section>`), convert the labels ("Insurance knowledge" to "Domain context", the product-name tag to "Source"), and map lanes and step kinds onto the master's swimlane (`mountSwim`, `stepTable`) instead of copying a second engine.
+- **Keep one running customer.** Rename the other build's customer (Riya) to the master's (Priya) after checking that no figures clash.
+- **Mark what the source does not say.** Steps in a lane the source is silent on (reinsurance in Claims) get the Domain context tag automatically.
+- **Check that screenshots already exist before importing images.** All seven health screenshots were already in the master under other numbers.
+- **Remove the superseded build after the port.** Its `build.py` wrote to the same `index.html` and would have overwritten the master.
+- **A publish to an artifact made in another conversation needs a full read of the live page first.** For a 337 KB page that is about 90k tokens; plan it as its own step.

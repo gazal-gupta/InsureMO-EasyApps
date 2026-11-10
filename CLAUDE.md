@@ -28,11 +28,12 @@ Learning material for the InsureMO Easy Apps modules for business analysts, test
 - Swimlanes run top to bottom; every diagram has a full-screen view; status-model arrows are numbered in process order; two-way arrows curve on opposite sides.
 - The role lens hides less relevant sections and opens role-specific blocks. One role picker in the combined guide drives all four guides.
 - Added insurance knowledge is labelled "Domain context"; market rules carry a confidence tag; example amounts are illustrative.
-- All guides live on one branch (merged from their build branches on 2026-11-10). Each engine rebuilds its published guide byte for byte.
+- All guides live on one branch (merged from their build branches and from `main` on 2026-11-10). Each engine rebuilds its guide byte for byte.
+- One Claims guide: the published build (`index.html` + `build_standalone.py`) is master. The second build that was on `main` (PR #3) was ported into it and its files removed; it remains in git history.
 - `main` was created from an empty initial commit and merged into the first feature branch (force-push was blocked).
 
 ## Open items
-- **Two Claims guides.** `main` holds a different Claims build (PR #3, `claims-learning-guide/src/` + `build.py`). The published Claims guide is the one in this branch (`index.html` + `build_standalone.py`). Recommended: keep the published one as master and port any unique features from the other before this branch merges into `main`. Decision for the user.
+- **Claims shared page not yet republished.** The published Claims guide now includes the content ported from the second Claims build (10 real-world scenarios, the standard process in one view, plain-words task cards and more). The combined Easy Apps link carries it. To update the Claims link itself: `python3 -I claims-learning-guide/build_light.py claims-learning-guide <scratch>/claims-light.html`, read the live page in full (the publisher requires it; it is 337 KB, so do it in a fresh turn), then publish to its URL.
 - **Interfaces to confirm with the InsureMO platform team** before requirements or tests are locked: Claims to XRI (no specification in either source), Easy PA to XRI (only the Easy PA guide has fields), XRI to GL (direct or through BCP not stated), RI fee codes in BCP.
 - **Source gaps:** 72 across the four guides (15 high), listed on the combined guide's Source gaps page. BCP examples: fee codes 700009 vs 403000, sign of 401100, arithmetic errors in the offset examples.
 - **PRs:** https://github.com/gazal-gupta/InsureMO-EasyApps/pull/6 (this branch: combined guide, suite merge, skill). It includes the work of drafts #1 (Claims), #4 (XRI, BCP v2) and #5 (Easy PA), which can be closed once #6 merges into its base `claude/loving-rubin-hv650g`; #2 then carries everything to `main`. The user should switch the GitHub default branch to `main`.

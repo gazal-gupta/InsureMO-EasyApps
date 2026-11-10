@@ -15,7 +15,7 @@
 | Easy Apps (combined) | https://claude.ai/artifact/D4YUYkPsfJHucPw8yUpiW7 | Light page `modules/share/index.html` plus files `m/pa.html`, `m/bcp.html`, `m/clm.html`, `m/ri.html` |
 | Easy PA | https://claude.ai/artifact/6knf7mwoDjGiwThXqNok9q | Single page, images embedded (6.8 MB) |
 | BCP | https://claude.ai/artifact/FWXe2xvipxCwKW1SiVvujR | Single page, images embedded (5.6 MB); older image files still published alongside |
-| Easy Claim | https://claude.ai/artifact/CM4Zi8GHUscx1H6NuPd2KM | Light page (350 KB) plus `img/sN.png` files |
+| Easy Claim | https://claude.ai/artifact/CM4Zi8GHUscx1H6NuPd2KM | Light page (about 390 KB, built by `claims-learning-guide/build_light.py`) plus `img/sN.png` files; publish only the page unless a screenshot changed |
 | XRI | https://claude.ai/artifact/Q3LqqcJvLVLntmFCZATymY | Single page, images embedded (2.9 MB) |
 
 **Size rule.** A 6 MB embedded page failed to load for a viewer of the Claims guide. Keep a shared page under about 3 MB and publish anything heavier as files next to it. [likely] The 5.6 MB and 6.8 MB embedded pages are at the same risk; move them to the light pattern if anyone reports a page that does not load.
