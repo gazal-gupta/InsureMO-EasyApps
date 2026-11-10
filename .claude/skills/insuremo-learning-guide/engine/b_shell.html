@@ -1,0 +1,547 @@
+<div class="top"><div class="top-in">
+  <a class="brand" href="#start"><div class="brand-mark">BCP</div><div><b>InsureMO BCP Learning Guide</b><span>Billing · Collection · Payment — Easy Apps</span></div></a>
+  <div class="search"><label for="q" class="eyebrow" hidden>Search</label><input id="q" type="search" placeholder="Search terms, screens, scenarios, fee codes…" autocomplete="off"><div class="results" id="results" hidden></div></div>
+  <div class="roles" role="group" aria-label="Role lens"><span class="eyebrow">Lens</span>
+    <button class="chip" data-role="all" aria-pressed="true">All</button>
+    <button class="chip" data-role="ba" aria-pressed="false">Business analyst</button>
+    <button class="chip" data-role="qa" aria-pressed="false">Tester</button>
+    <button class="chip" data-role="dev" aria-pressed="false">Developer</button>
+  </div>
+  <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch colour theme">Theme</button>
+</div></div>
+
+<div class="shell">
+<aside class="rail">
+  <div class="progress" title="Levels marked complete"><i id="progBar"></i></div>
+  <nav id="railNav"></nav>
+  <div class="rolepath" id="rolePath"></div>
+</aside>
+<main id="main">
+
+<!-- START -->
+<section class="view" id="v-start" data-title="Start here">
+  <div class="hero">
+    <header>
+      <span class="eyebrow">Learning guide · basic to advanced</span>
+      <h1>Follow the money through InsureMO</h1>
+      <p class="lede">BCP (Billing, Collection and Payment) is the finance module of InsureMO. Every policy, endorsement, claim, reinsurance and commission transaction that has an amount ends up here as a receivable (AR), a payable (AP) or a fee. BCP collects the money, pays the money, settles the balances and feeds the General Ledger.</p>
+      <p class="muted small">Built from the InsureMO BCP module guide. Content marked <span class="tag inf">Domain context</span> is general insurance practice added to help you learn. It is not taken from the source guide, so confirm it with your project before you rely on it.</p>
+    </header>
+    <div class="card">
+      <span class="eyebrow">The three money movements in BCP</span>
+      <div class="flowstrip">
+        <div class="fs-row in"><span class="lbl">Money in</span><div class="fs-steps"><span>Bill (AR)</span><i>→</i><span>Collect</span><i>→</i><span>Suspense</span><i>→</i><span>Offset</span><i>→</i><span>Settled</span></div></div>
+        <div class="fs-row out"><span class="lbl">Money out</span><div class="fs-steps"><span>Bill (AP)</span><i>→</i><span>Approve</span><i>→</i><span>Confirm payment</span><i>→</i><span>Settled</span></div></div>
+        <div class="fs-row int"><span class="lbl">Internal</span><div class="fs-steps"><span>AR + AP</span><i>→</i><span>Net off / tolerance / write-off</span><i>→</i><span>Settled</span></div></div>
+      </div>
+      <p class="small muted">Every step creates fee records. Fees drive the GL posting. Every step except Cancel can be reversed.</p>
+    </div>
+  </div>
+
+  <section class="block">
+    <h2>Pick your learning path</h2>
+    <p class="muted">Use the <b>Lens</b> buttons at the top to filter content for your role. Everyone should start with Level 0 (insurance business basics) and finish levels 1 to 3. Each level ends with a 4-question checkpoint; track scores in <a href="#tracker">My progress</a> and finish with the <a href="#assessment">final assessment</a>. Everything works offline in the downloaded HTML file.</p>
+    <div class="paths" id="pathCards"></div>
+  </section>
+
+  <section class="block">
+    <h2>How the guide is organised</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Level</th><th>What you learn</th><th>You are ready to move on when you can…</th></tr></thead>
+      <tbody id="levelTable"></tbody>
+    </table></div>
+  </section>
+
+  <section class="block">
+    <h2>How to read the swimlane diagrams</h2>
+    <div class="legend">
+      <span><i style="border-color:var(--pa)"></i>Business event from another module</span>
+      <span><i style="border-color:var(--ink-2);border-style:dashed"></i>External party action</span>
+      <span><i style="border-color:var(--accent);background:var(--accent-soft)"></i>User action on a BCP screen</span>
+      <span><i style="border-color:var(--sys)"></i>BCP system action</span>
+      <span><i style="border-color:var(--gl);background:var(--surface-2)"></i>GL posting</span>
+      <span><i style="border-color:var(--in);background:var(--in-soft)"></i>End state</span>
+      <span><i style="border-color:var(--out);background:var(--out-soft)"></i>Reversal step</span>
+      <span><i style="border-color:var(--cancel);background:var(--cancel-soft)"></i>Irreversible step</span>
+    </div>
+    <p class="muted small">Each row (lane) is one actor. Read the numbered boxes left to right. Click a box to highlight its row in the step table under the diagram. The small grey text in a box shows the status change or fee code.</p>
+  </section>
+</section>
+
+<!-- L0 INSURANCE BUSINESS -->
+<section class="view" id="v-business" data-title="Insurance business basics" hidden>
+  <header><span class="eyebrow">Level 0 · Insurance business basics</span><h1>Who pays whom in insurance</h1>
+  <p class="lede">Before learning BCP screens, learn the money. Insurance is a promise paid for in advance: the client pays premium now, and the insurer pays claims later. Around that promise sit agents, brokers, coinsurers, reinsurers, banks and tax authorities. BCP records every amount that moves between them.</p></header>
+
+  <section class="block">
+    <h2>The parties</h2>
+    <div class="grid g3" id="partyCards"></div>
+  </section>
+
+  <section class="block">
+    <h2>Money flow map</h2>
+    <p class="muted">Green arrows bring money into the insurer; rust arrows take money out. Each arrow is a BCP record: AR for money in, AP for money out.</p>
+    <div class="diagram"><div id="moneyFlow"></div></div>
+    <div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>What</th><th>Direction</th></tr></thead><tbody id="flowBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>BCP processes in business words</h2>
+    <p class="muted">Each BCP process explained with the parties involved, a real example, and the BCP record it creates.</p>
+    <div class="tbl"><table><thead><tr><th>Process</th><th>Who pays whom</th><th>In plain words</th><th>Real example</th><th>In BCP</th></tr></thead><tbody id="procBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>The insurance value chain and InsureMO</h2>
+    <div class="tbl"><table><thead><tr><th>#</th><th>Stage</th><th>What happens</th><th>Money effect</th><th>InsureMO module</th></tr></thead><tbody>
+      <tr><td class="num">1</td><td>Product</td><td>Insurer designs cover, rules and rates.</td><td>None yet</td><td>Product Factory</td></tr>
+      <tr><td class="num">2</td><td>Distribution</td><td>Agent, broker, bank or online channel brings the client.</td><td>Commission agreed</td><td>Sales Channel</td></tr>
+      <tr><td class="num">3</td><td>Quote and underwriting</td><td>Risk assessed, terms and price decided.</td><td>Premium calculated</td><td>Easy PA</td></tr>
+      <tr><td class="num">4</td><td>Bind and issue</td><td>Client accepts; policy issued.</td><td>Premium AR and commission fee billed</td><td>Easy PA → BCP</td></tr>
+      <tr><td class="num">5</td><td>Billing and collection</td><td>Premium collected directly or via the intermediary.</td><td>Receipt, AR settled</td><td>BCP</td></tr>
+      <tr><td class="num">6</td><td>Policy servicing</td><td>Endorsements, renewals, cancellations.</td><td>Extra AR or refund AP; commission adjusts</td><td>Easy PA → BCP</td></tr>
+      <tr><td class="num">7</td><td>Claims</td><td>Loss reported, reserved, assessed, paid; recoveries pursued.</td><td>Reserve fee, claim AP, recovery AR</td><td>Claims → BCP</td></tr>
+      <tr><td class="num">8</td><td>Reinsurance</td><td>Risk ceded; premium paid out; claim shares recovered.</td><td>RI AP and AR</td><td>Reinsurance → BCP</td></tr>
+      <tr><td class="num">9</td><td>Finance and reporting</td><td>Books, tax returns, solvency and IFRS 17 reporting.</td><td>GL vouchers from BCP fees</td><td>BCP → GL</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Anatomy of a premium bill</h2>
+    <p class="prose">One worked example followed from bill to books. Mr Tan's car policy is sold by an agent at 15% commission in Singapore (GST 9%). Account names are typical; the real accounts come from GLIntegrationMappingRule.</p>
+    <div class="grid g2">
+      <div class="tbl"><table><thead><tr><th>Line</th><th class="num">SGD</th><th>BCP</th></tr></thead><tbody>
+        <tr><td>Premium</td><td class="num">1,000.00</td><td class="mono small">fee 100501</td></tr>
+        <tr><td>GST 9%</td><td class="num">90.00</td><td class="mono small">tax fee</td></tr>
+        <tr><td><b>Billed to Mr Tan (AR)</b></td><td class="num"><b>1,090.00</b></td><td class="mono small">ARAP 100101</td></tr>
+        <tr><td>Agent commission 15% of premium</td><td class="num">150.00</td><td class="mono small">fee 100600</td></tr>
+        <tr><td>Insurer keeps after commission and tax</td><td class="num">850.00</td><td></td></tr>
+      </tbody></table></div>
+      <div class="tbl"><table><thead><tr><th>Event</th><th>Debit</th><th>Credit</th></tr></thead><tbody>
+        <tr><td>Policy issued</td><td>Premium receivable 1,090</td><td>Premium written 1,000; GST payable 90</td></tr>
+        <tr><td>Commission earned</td><td>Commission expense 150</td><td>Commission payable 150</td></tr>
+        <tr><td>Mr Tan pays</td><td>Bank 1,090</td><td>Premium receivable 1,090</td></tr>
+        <tr><td>Agent paid</td><td>Commission payable 150</td><td>Bank 150</td></tr>
+      </tbody></table></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Agent or broker?</h2>
+    <div class="tbl"><table><thead><tr><th></th><th>Agent</th><th>Broker</th></tr></thead><tbody>
+      <tr><td><b>Represents</b></td><td>The insurer</td><td>The client</td></tr>
+      <tr><td><b>Products</b></td><td>One insurer (tied) or a few</td><td>Whole market</td></tr>
+      <tr><td><b>Paid by</b></td><td>Commission from the insurer</td><td>Brokerage from the insurer, sometimes fees from the client</td></tr>
+      <tr><td><b>Premium handling</b></td><td>Often the client pays the insurer directly</td><td>Usually collects from clients and remits within credit terms (e.g. 60 days), gross or net of commission</td></tr>
+      <tr><td><b>Typical BCP route</b></td><td>Policy Premium Collection; monthly commission settlement</td><td>Suspense Collection + Application (Use Commission), ARAP Offset, statements</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Policy, claim and reinsurance money in practice</h2>
+    <div class="grid g3">
+      <div class="card"><h3>Policy lifecycle</h3><ul class="clean small"><li><b>New business / renewal:</b> premium AR.</li><li><b>Endorsement up:</b> extra AR, usually pro-rata. Adding a driver for 6 of 12 months on a 120 annual charge = 60 + tax.</li><li><b>Endorsement down / cancellation:</b> refund AP. Pro-rata: 9 unused months of 1,200 = 900. Client-initiated cancellations often use a short-period scale and refund less.</li><li><b>Non-payment:</b> AR ages; cover may lapse or end under a premium payment warranty.</li></ul></div>
+      <div class="card"><h3>Claims</h3><ul class="clean small"><li><b>Reserve:</b> estimate of what will be paid; booked in accounts only (fee 200201).</li><li><b>Payment:</b> loss minus excess. Loss 8,000, excess 500 → AP 7,500, often paid to a workshop or hospital.</li><li><b>Recoveries:</b> salvage (sell the wreck) and subrogation (claim from the party at fault) → AR.</li><li><b>Reinsurance share:</b> large claims are partly recovered from reinsurers.</li></ul></div>
+      <div class="card"><h3>Reinsurance and coinsurance</h3><ul class="clean small"><li><b>Quota share 40%:</b> reinsurer gets 40% of premium, pays 40% of claims, and pays the insurer a ceding commission.</li><li><b>Facultative:</b> one large risk placed on its own.</li><li><b>Excess of loss:</b> reinsurer pays above a threshold; charged a minimum and deposit premium, plus reinstatement premium after a claim.</li><li><b>Coinsurance:</b> lead insurer collects all premium and pays all claims, then settles each follower's share by statement.</li></ul></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Rules from real markets</h2>
+    <p class="muted">Facts that shape BCP requirements. "certain" = well-established public rule; "likely" = common practice, confirm locally.</p>
+    <div class="tbl"><table><thead><tr><th>Market</th><th>Rule or practice</th><th>Confidence</th><th>Where it shows up in BCP</th></tr></thead><tbody id="factBody"></tbody></table></div>
+  </section>
+  <div data-cp="business"></div>
+  <label class="mark-done"><input type="checkbox" data-done="business"> I can explain who pays whom in an insurance transaction and which BCP process records it.</label>
+</section>
+
+<!-- L1 FOUNDATIONS -->
+<section class="view" id="v-basics" data-title="Foundations" hidden>
+  <header><span class="eyebrow">Level 1</span><h1>Foundations</h1>
+  <p class="lede">What BCP does, the words it uses, and where it sits in the InsureMO landscape.</p></header>
+
+  <section class="block">
+    <h2>What BCP does</h2>
+    <div class="grid g3">
+      <div class="card"><h3>1. Billing</h3><p>Receives financial data from PA, Claims, Reinsurance, Sales Channel and Printing through the billing API (<code>syncDataToBCP</code>). Each call creates a <b>bill</b> with one or more AR or AP records and a fee breakdown.</p></div>
+      <div class="card"><h3>2. Collection and payment</h3><p>Receives money (collection) and pays money (refund / payment). Settles AR and AP through <b>offset</b>. Supports reversal of every step except cancel.</p></div>
+      <div class="card"><h3>3. Query and GL feed</h3><p>Lets users search every financial record in any status and export to Excel. Produces fee records that become GL vouchers for the accounting system.</p></div>
+    </div>
+    <figure class="shot"><button type="button" class="shot-btn" data-src="img/image58.png" data-cap="BCP business overview from the source: Billing, Collection, Refund and Internal Offset functions on top of Query, BCP Fee &amp; GL Fee, and configuration (currency, bank account, workday, authority)."><img src="img/image58.png" width="1178" height="747" loading="lazy" alt="BCP business overview diagram"></button><figcaption>BCP business overview from the source guide. Four function groups (Billing, Collection, Refund, Internal Offset) sit on shared Query, Fee/GL and configuration layers. <span class="muted">· click to enlarge</span></figcaption></figure>
+    <div id="mapOverview"></div>
+    <div class="callout"><b>Why it matters:</b> in most implementations BCP is a middle system. It records each money movement as a fee entry and passes it to a third-party accounting system for reconciliation and reporting. Errors in BCP become errors in the books.</div>
+  </section>
+
+  <section class="block">
+    <h2>Where BCP sits</h2>
+    <div class="diagram" id="ecoDiagram"></div>
+  </section>
+
+  <section class="block">
+    <h2>Core concepts</h2>
+    <div class="grid g3" id="conceptCards"></div>
+  </section>
+
+  <section class="block">
+    <h2>Reversal and cancel are different</h2>
+    <div class="tbl"><table>
+      <thead><tr><th></th><th>Reversal</th><th>Cancel</th></tr></thead>
+      <tbody>
+        <tr><td><b>Used when</b></td><td>A completed step was wrong (wrong amount, wrong policy, bounced cheque).</td><td>An outstanding AR, AP, commission or prepay order should never be settled (policy cancelled, claim withdrawn, admin error).</td></tr>
+        <tr><td><b>Effect</b></td><td>Restores the previous state. AR or AP goes back to Outstanding with its balance.</td><td>Closes the balance. Status becomes Canceled.</td></tr>
+        <tr><td><b>Can it be undone?</b></td><td>Yes. You can redo the step.</td><td><b>No. Final and irreversible.</b></td></tr>
+        <tr><td><b>Fees</b></td><td>Flips the sign of the original fee and marks <code>Is Reverse = Y</code>.</td><td>Cancel AR creates a negative fee. Cancel AP creates a positive fee.</td></tr>
+        <tr><td><b>Screens</b></td><td>Reverse Collection, Reverse Application &amp; Offset, Reverse Refund.</td><td>Internal &gt; ARAP Management (delete action, Outstanding records only).</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="block">
+    <h2>Two ways to collect money</h2>
+    <div class="grid g2">
+      <div class="card"><span class="tag in">One step</span><h3>Collect and offset together</h3><p>Premium Collection and Single Collection. The cashier picks the AR, records the receipt, and the system settles the AR at once.</p><p class="muted small">Typical for customer billing and personal lines.</p></div>
+      <div class="card"><span class="tag in">Two steps</span><h3>Collect to suspense, apply later</h3><p>Suspense Collection, then Application. Money is parked in a suspense account and later used to settle one or many ARs.</p><p class="muted small">Typical for agent billing, coinsurers and commercial lines. Gives flexibility when one remittance covers many policies.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Menu map</h2>
+    <p class="muted">The BCP menu has four groups plus Query. Level 4 explains each screen in detail.</p>
+    <div class="tbl"><table><thead><tr><th>Menu</th><th>Screen</th><th>Purpose</th></tr></thead><tbody id="menuMapBody"></tbody></table></div>
+    <p class="small muted">The source uses two names for some screens: "Policy Premium Collection" is also called "Premium Collection &amp; Application", and "Single Collection" is also called "Collection &amp; Application".</p>
+  </section>
+
+  <section class="block">
+    <h2>Payment methods by business</h2>
+    <div class="tbl"><table><thead><tr><th>Business</th><th>Record</th><th>Cash</th><th>Cheque</th><th>Direct debit / credit</th><th>Bank transfer</th><th>Credit card</th></tr></thead><tbody id="pmBody"></tbody></table></div>
+    <div class="tbl"><table><thead><tr><th>Method</th><th>Fields captured (mandatory in bold)</th></tr></thead><tbody>
+      <tr><td>Cash</td><td>Reference information</td></tr>
+      <tr><td>Cheque</td><td><b>Bank</b> (BcpBank), <b>Cheque No</b>, <b>Cheque Date</b></td></tr>
+      <tr><td>Direct debit / credit</td><td>Reference information</td></tr>
+      <tr><td>Bank transfer</td><td><b>Bank</b> (BcpBank), <b>Bank Account No</b></td></tr>
+      <tr><td>Credit card</td><td><b>Account Holder Name</b>, <b>Bank</b>, <b>Credit Card No</b>, Credit Card Type (BcpCreditCardType: Visa / Master Card), Apply Date, Reference information</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Reference numbers you will see</h2>
+    <div class="tbl"><table><thead><tr><th>Record</th><th>Example from the guide</th><th>Where it is created</th></tr></thead><tbody>
+      <tr><td>Debit / credit note (DN/CN)</td><td class="mono">DR20221100024686</td><td>Each AR or AP record</td></tr>
+      <tr><td>Receipt</td><td class="mono">RCE20221100000005</td><td>Any collection screen</td></tr>
+      <tr><td>Payment</td><td class="mono">PYMT20221000000036</td><td>Refund Approval, Receipt Refund, Statement Refund</td></tr>
+      <tr><td>Offset</td><td class="mono">OFS20260700000135</td><td>Application, ARAP Offset, Tolerance. Format: OFS + year-month (6 digits) + sequence (8 digits)</td></tr>
+      <tr><td>Statement</td><td class="mono">ST20240100000001</td><td>Statement batch or API</td></tr>
+      <tr><td>Policy / Producer</td><td class="mono">POPHC00000131 / PTY100000015880</td><td>Policy Admin / Sales Channel</td></tr>
+    </tbody></table></div>
+    <p class="small muted">All numbers come from numbering templates and can be changed by configuration (Level 7). The source describes the offset number as "8-digit year-month + 6-digit sequence", but the sample OFS20260700000135 has a 6-digit year-month and an 8-digit sequence.</p>
+  </section>
+  <div data-cp="basics"></div>
+  <label class="mark-done"><input type="checkbox" data-done="basics"> I can explain AR, AP, suspense, offset, reversal and cancel to a colleague.</label>
+</section>
+
+<!-- L2 LIFECYCLE -->
+<section class="view" id="v-lifecycle" data-title="Money lifecycles" hidden>
+  <header><span class="eyebrow">Level 2</span><h1>Money lifecycles and status models</h1>
+  <p class="lede">Every scenario in BCP is a variation of three patterns. Learn the patterns and the status changes, and the scenarios become easy.</p></header>
+
+  <section class="block">
+    <h2>The three patterns</h2>
+    <div class="grid g3">
+      <div class="card"><span class="tag in">Money in</span><h3>Collect → Suspense → Offset</h3><ol class="steps"><li>Source module bills BCP. AR is created as Outstanding.</li><li>Money is received. A receipt is created and held in suspense.</li><li>The receipt is offset against the AR. AR balance becomes 0 and status Settled.</li></ol><p class="small muted"><b>Reverse in the opposite order:</b> reverse the offset first, then reverse the collection.</p></div>
+      <div class="card"><span class="tag out">Money out</span><h3>Approve → Confirm</h3><ol class="steps"><li>Source module bills BCP. AP is created as Outstanding.</li><li>Finance approves. A payment record is created as Approved.</li><li>Payment is confirmed after the bank transfer. Payment becomes Paid and AP is settled.</li></ol><p class="small muted"><b>Reverse:</b> one step, Reverse Refund. AP returns to Outstanding.</p></div>
+      <div class="card"><span class="tag int">Internal</span><h3>Net, tolerate or write off</h3><ol class="steps"><li>ARAP Offset nets AR and AP of the same party. No money moves.</li><li>Tolerance Offset clears small differences.</li><li>Write-off closes bad debt.</li></ol><p class="small muted"><b>Reverse:</b> Reverse Application &amp; Offset.</p></div>
+    </div>
+    <div class="callout"><b>Why payments need approval and collections do not:</b> paying money out is the higher-risk direction. Finance staff decide which APs can be paid and which are in dispute before money leaves the company. The guide calls refund "a very sensitive process".</div>
+  </section>
+
+  <section class="block">
+    <h2>Process maps from the source</h2>
+    <p class="muted">How the screens connect. Money in: every business source generates AR, which is collected by Policy Premium / Single Collection or by Suspense Collection + Application, or prepaid before issue. Money out: AP comes from claims, RI, endorsement refunds and commission settlement, goes through Refund Approval or Statement Refund, and is paid by Single or Massive Payment. Receipt Refund creates a payment directly.</p>
+    <div class="grid g2">
+      <figure class="shot"><button type="button" class="shot-btn" data-src="img/image1.png" data-cap="Collection main process"><img src="img/image1.png" width="849" height="488" loading="lazy" alt="Collection main process diagram"></button><figcaption>Collection main process <span class="muted">· click to enlarge</span></figcaption></figure>
+      <figure class="shot"><button type="button" class="shot-btn" data-src="img/image12.png" data-cap="Payment main process"><img src="img/image12.png" width="962" height="524" loading="lazy" alt="Payment main process diagram"></button><figcaption>Payment main process <span class="muted">· click to enlarge</span></figcaption></figure>
+    </div>
+    <h3>Collection main process, step by step</h3><div id="mapCollection"></div>
+    <h3>Payment main process, step by step</h3><div id="mapPayment"></div>
+  </section>
+
+  <section class="block">
+    <h2>Status models</h2>
+    <p class="muted">Pick a record type to see its statuses and what moves it from one to the next. Testers: every arrow is at least one test case.</p>
+    <div class="tabs" role="tablist" id="stTabs"></div>
+    <div class="diagram" id="stDiagram"></div>
+    <div class="tbl"><table><thead><tr><th>From</th><th>To</th><th>Trigger</th><th>Screen / process</th></tr></thead><tbody id="stTable"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Partial and over payment</h2>
+    <div class="grid g2">
+      <div class="card"><span class="tag in">Over-collection</span><h3>Paid more than the AR</h3><ul class="clean"><li>AR is fully settled.</li><li>The excess stays in the suspense account.</li><li>The excess can be applied to another AR of the same payer, refunded with Receipt Refund, or kept for later.</li></ul></div>
+      <div class="card"><span class="tag in">Under-collection</span><h3>Paid less than the AR</h3><ul class="clean"><li>AR status does <b>not</b> change. It stays Outstanding.</li><li>Only the balance goes down by the amount offset.</li><li>More partial payments can follow. When the total offset equals the AR amount, the AR becomes Settled.</li></ul></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Installments, multiple payers and multiple payees</h2>
+    <p>The billing call decides how many AR or AP records are created. Every process then runs per record.</p>
+    <div class="grid g2" id="comboCards"></div>
+    <p class="small muted">Exceptions: Reinsurance has no installments (TotalPeriods is always 1). Claim recovery generally has no installments and no multiple payers. Screens still show one row per transaction and display "Current Period" and "Total Periods".</p>
+  </section>
+  <div data-cp="lifecycle"></div>
+  <label class="mark-done"><input type="checkbox" data-done="lifecycle"> I can draw the AR, receipt and payment status models from memory.</label>
+</section>
+
+<!-- L3 SCENARIOS -->
+<section class="view" id="v-scenarios" data-title="Business scenarios" hidden>
+  <header><span class="eyebrow">Level 3</span><h1>Business scenarios</h1>
+  <p class="lede">All scenarios in the source guide, as 22 flows. Each one shows a swimlane flow for the normal and reversal paths, the screens used, status changes, fee codes, business rules and notes for each role.</p></header>
+  <div class="explorer">
+    <div class="sc-list" id="scList"></div>
+    <div class="sc-detail">
+      <label for="scSelect" hidden>Scenario</label><select id="scSelect" class="sc-select"></select>
+      <div id="scDetail"></div>
+    </div>
+  </div>
+  <div data-cp="scenarios"></div>
+  <label class="mark-done"><input type="checkbox" data-done="scenarios"> I can walk through the normal and reversal flow for each scenario group.</label>
+</section>
+
+<!-- L4 SCREENS -->
+<section class="view" id="v-screens" data-title="Screens" hidden>
+  <header><span class="eyebrow">Level 4</span><h1>Screens and operations</h1>
+  <p class="lede">What each BCP screen is for, what must be true before you use it, the steps, the validation rules, and the full field reference from the source (every search field, result column and button). Includes the query, statistics and configuration screens. Pick a screen.</p></header>
+  <div class="menu-tree" id="menuTree"></div>
+  <div id="screenDetail"></div>
+  <div data-cp="screens"></div>
+  <label class="mark-done"><input type="checkbox" data-done="screens"> I know which screen to use for each step and what it validates.</label>
+</section>
+
+<!-- L5 INTEGRATION -->
+<section class="view" id="v-integration" data-title="Cross-module integration" hidden>
+  <header><span class="eyebrow">Level 5</span><h1>Cross-module integration</h1>
+  <p class="lede">BCP does not create business. It reacts to Easy PA, Claims, Reinsurance and Sales Channel, and it sends results to the GL. Some BCP actions also send results back, for example a prepaid premium triggers policy issue in PA. Click a module.</p></header>
+  <div class="hub-wrap">
+    <div class="diagram" id="hubDiagram"></div>
+    <div id="hubPanel"></div>
+  </div>
+
+  <section class="block">
+    <h2>The billing contract: syncDataToBCP</h2>
+    <p>All business data enters BCP through one interface. The fields <code>BizModule</code>, <code>BizTransactionType</code>, <code>IsPrepay</code> and <code>ArapCate</code> decide what BCP creates.</p>
+    <div class="tbl"><table><thead><tr><th>BizModule</th><th>BizTransType</th><th>IsPrepay</th><th>Data created</th><th>ArapCate</th><th>Fee (GL)</th><th>ARAP fee type</th><th>Result</th></tr></thead><tbody id="syncBody"></tbody></table></div>
+    <p class="small muted">BizModule 50 (commission settlement, fee type 400100) is listed in the source's fee classification table but not in this entry matrix, because the settlement is created inside BCP and Sales Channel rather than sent by a source system.</p>
+  </section>
+
+  <section class="block">
+    <h2>End-to-end journeys across modules</h2>
+    <p class="muted">These journeys join several BCP scenarios into one business story. Use them for end-to-end and regression testing.</p>
+    <div class="tabs" role="tablist" id="jTabs"></div>
+    <div id="jDetail"></div>
+  </section>
+  <div data-cp="integration"></div>
+  <label class="mark-done"><input type="checkbox" data-done="integration"> I can explain what each module sends to BCP and what BCP sends back.</label>
+</section>
+
+<!-- L6 FEES -->
+<section class="view" id="v-fees" data-title="Fees, GL and offset logic" hidden>
+  <header><span class="eyebrow">Level 6 · Advanced</span><h1>Fees, GL and offset logic</h1>
+  <p class="lede">ARAP drives collection and payment. Fees drive accounting. Every time an AR or AP amount changes, BCP writes fee records that the GL turns into journal entries.</p></header>
+
+  <section class="block">
+    <h2>ARAP and fee: two different records</h2>
+    <div class="grid g2">
+      <div class="card"><h3>ARAP</h3><p>The amount actually owed to or by an external party. Drives collection and payment. <code>ArapCate = 1</code> is AR, <code>ArapCate = 2</code> is AP.</p></div>
+      <div class="card"><h3>Fee</h3><p>A detailed record of each money movement, used for GL posting. Every billing call creates fees, but not every fee has an ARAP. Example: a claim reserve creates a fee only (200201), with no collection or payment.</p></div>
+    </div>
+    <div class="tbl"><table><thead><tr><th>Fee attribute</th><th>Meaning</th></tr></thead><tbody>
+      <tr><td>Transaction Type</td><td>What produced the fee: NEWBIZ, ENDORSEMENT, COLLECTION, COLLECTION_CONFIRM, OFFSET, PAYMENT, PAYMENT_CONFIRMATION, SALESCHANNEL, COMMISSION.</td></tr>
+      <tr><td>Amount sign</td><td><b>+</b> money-in or receivable side. <b>−</b> money-out or payable side.</td></tr>
+      <tr><td>Is Reverse</td><td>N = normal fee. Y = reversal fee. A reversal always flips the sign of the original fee.</td></tr>
+      <tr><td>Fee Type</td><td>GL fee type code, for example 100501 Premium. Mapped to journal accounts in the <code>GLIntegrationMappingRule</code> data table.</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>The three "generate" actions</h2>
+    <div class="tbl"><table><thead><tr><th>Action</th><th>Produces</th><th>Used for</th></tr></thead><tbody>
+      <tr><td>Generate AR</td><td>A receivable: money owed to the company</td><td>Premium on a new policy or an increase endorsement</td></tr>
+      <tr><td>Generate AP</td><td>A payable: money owed by the company</td><td>Premium refund on a decrease or cancellation endorsement</td></tr>
+      <tr><td>Generate Fee</td><td>A neutral fee: neither AR nor AP until settled</td><td>Commission from a policy or endorsement</td></tr>
+    </tbody></table></div>
+    <div class="callout"><b>Key point:</b> commission is created as a fee (100600), not as an AR or AP. It becomes an AP or AR only when Commission Settlement summarises the commission fees into a settlement (400100). When the settlement is cleared, 100600 and 400100 are settled together.</div>
+  </section>
+
+  <section class="block">
+    <h2>Sign rules</h2>
+    <div class="tbl"><table><thead><tr><th>Record</th><th>Created</th><th>Settled</th><th>Restored (reversal)</th><th>Cancelled</th></tr></thead><tbody>
+      <tr><td>AR (ArapCate = 1)</td><td class="num">+</td><td class="num">−</td><td class="num">+</td><td class="num">−</td></tr>
+      <tr><td>AP (ArapCate = 2)</td><td class="num">−</td><td class="num">+</td><td class="num">−</td><td class="num">+</td></tr>
+    </tbody></table></div>
+    <p class="small muted">Payment approval (401100) creates a positive entry at approval only. There is no negative entry when the AP is settled. This is the rule in the Business Scenario chapter. The Fee Flow chapter shows the opposite sign; see "Source gaps".</p>
+  </section>
+
+  <section class="block">
+    <h2>Fee flow by scenario</h2>
+    <p class="muted">These tables come from the Transaction Fee Flow chapter. They show every fee written at each step.</p>
+    <div class="tabs" role="tablist" id="ffTabs"></div>
+    <div id="ffDetail"></div>
+  </section>
+
+  <section class="block">
+    <h2>Fee type reference</h2>
+    <div class="tbl"><table><thead><tr><th>Fee type</th><th>Name</th><th>Module / context</th></tr></thead><tbody id="feeRefBody"></tbody></table></div>
+    <div class="tbl"><table><thead><tr><th>Transaction type</th><th>Meaning</th></tr></thead><tbody id="txRefBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Partial payment: how fees are offset</h2>
+    <p class="prose">When an installment is paid in part, BCP must decide which fees inside the AR (premium, tax, each coverage) the payment settles. Two methods exist. <b>Priority offset</b> uses the <code>FeeTypePriority</code> data table and settles fees in priority order. <b>Proportional offset</b> splits the payment by each fee's share. Priority wins. If only some fee types have a priority, those are settled first and the rest of the payment is split proportionally (mixed mode). The installment (ARAP) offset fee always equals the amount paid.</p>
+    <div class="calc">
+      <div class="card">
+        <h3>Set up the AR</h3>
+        <div class="tbl"><table><thead><tr><th>Fee type</th><th class="num">Amount</th><th class="num">Priority</th></tr></thead><tbody id="calcFees"></tbody></table></div>
+        <div class="filter-row"><button class="btn ghost" type="button" id="calcAddFee">Add fee</button>
+          <label class="small" for="calcPreset">Example</label>
+          <select id="calcPreset"><option value="mixed">Mixed (A has priority 1)</option><option value="prio">Priority (A=1, B=2, C=3)</option><option value="prop">Proportional (premium + tax)</option></select></div>
+        <label class="small" for="calcPays">Payments in order, separated by commas</label>
+        <input id="calcPays" type="text" value="120, 100, 80.5">
+        <button class="btn" type="button" id="calcRun">Calculate</button>
+      </div>
+      <div class="card"><h3>Result</h3><div id="calcOut"></div></div>
+    </div>
+  </section>
+  <div data-cp="fees"></div>
+  <label class="mark-done"><input type="checkbox" data-done="fees"> I can predict the fee codes and signs for a collection, a refund and a reversal.</label>
+</section>
+
+<!-- L7 CONFIG -->
+<section class="view" id="v-config" data-title="Configuration and APIs" hidden>
+  <header><span class="eyebrow">Level 7 · Advanced</span><h1>Configuration, APIs and extension</h1>
+  <p class="lede">What you can change with configuration, what the platform API already does, and what each implementation must build in the iComposer layer.</p></header>
+
+  <section class="block">
+    <h2>Platform API or iComposer?</h2>
+    <p class="prose">The BCP core API already handles the common, multi-tenant flows: ARAP, collection, payment, offset, fee, status changes and reversals. Client needs beyond that differ by market and are built in an <b>iComposer</b> layer, on the client's tech stack or on the InsureMO app framework.</p>
+    <div class="tbl"><table><thead><tr><th>Area</th><th>Typical client need</th><th>Where it is built</th></tr></thead><tbody>
+      <tr><td>Payment methods</td><td>Payment gateway integration</td><td>iComposer (can be a common service per market)</td></tr>
+      <tr><td>Integration</td><td>Connecting to the PA or claim system</td><td>iComposer</td></tr>
+      <tr><td>Batch jobs</td><td>Premium notice, premium deduction batch</td><td>iComposer</td></tr>
+      <tr><td>Letters</td><td>Receipt, reminder letter, email, SMS</td><td>iComposer</td></tr>
+      <tr><td>Reports</td><td>Operational and reconciliation reports</td><td>iComposer</td></tr>
+      <tr><td>Authority</td><td>Payment or tolerance approval limits</td><td>iComposer</td></tr>
+      <tr><td>Upload</td><td>Bulk collection upload through Excel</td><td>iComposer</td></tr>
+    </tbody></table></div>
+    <div class="callout warn"><b>Fit-gap tip:</b> tolerance thresholds and payment authority limits are not listed as configuration. Plan them as build items unless the platform team confirms otherwise.</div>
+  </section>
+
+  <section class="block">
+    <h2>What you can configure</h2>
+    <div class="grid g2">
+      <div class="card"><h3>Data model</h3><p>All objects and fields are in the Data Dictionary (Module = BCP, Group = BCP_Core, Context = Common), covering BizTransaction, ARAP, Commission, Invoice, Prepaid Order, Collection and Offset. Tenants can add fields, for example <code>ARAPSequence</code> or <code>AccountHolderIdNo</code> on BcpArap. Fields added to the DD and passed in the API appear in the query detail view without code changes. Changes must be deployed. Export and import work only between environments on the same platform version.</p></div>
+      <div class="card"><h3>Code and data tables</h3><p>Drive drop-down lists and validate API payloads. Some tables are fixed by the platform: ask the platform team before changing BcpArapType, BcpOffsetType or BcpCollectionStatus.</p></div>
+      <div class="card"><h3>Numbering</h3><p>Receipt, payment, offset and statement numbers come from numbering templates and can be changed.</p></div>
+      <div class="card"><h3>Search index</h3><p>Index Management controls which fields are searchable, exact-match only, or displayed. ARAP index: schema <code>bcp_arap</code>, read alias <code>bcp_arap_r_alias</code>, write alias <code>bcp_arap_w_alias5</code>, rebuild batch <code>arapIndexRebuildBatch</code>. Number and date fields must have the correct type, or range search and sorting will fail.</p></div>
+      <div class="card"><h3>Messages</h3><p>Validation messages are configured per language.</p></div>
+      <div class="card"><h3>BCPConfig parameters</h3><p><code>arapFieldAllowUpdate</code>: which ARAP fields users can edit in ARAP Management.<br><code>bcp.export.gl.columns</code>: columns and order of the GL export, for example <code>GLVoucherNo,PolicyNo,GLDate,Amount,GLStatus,Branch</code>.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Data and code tables</h2>
+    <div class="filter-row"><label for="dtFilter" class="small">Filter</label><input id="dtFilter" type="search" placeholder="e.g. status, payment, branch"></div>
+    <div class="tbl"><table><thead><tr><th>Name</th><th>Source</th><th>Options / notes</th><th>Used on</th></tr></thead><tbody id="dtBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>APIs named in the guide</h2>
+    <div class="tbl"><table><thead><tr><th>Endpoint</th><th>Purpose</th></tr></thead><tbody id="apiBody"></tbody></table></div>
+    <h3>Export API options</h3>
+    <div class="grid g2">
+      <div class="card"><ul class="clean"><li><code>columnList</code>: columns to export</li><li><code>label</code>: rename a column header</li><li><code>codeTable</code>: turn codes into descriptions</li><li><code>datePattern</code>: date format</li><li>Header <code>x-mo-lang-id</code>: output language (en_US, es, ja_JP, pt, th_TH, vi_VN, zh_CN, zh_HK, zh_TW)</li><li>Filters: <code>conditions</code>, <code>fromRangeConditions</code>, <code>toRangeConditions</code>, <code>fuzzyConditions</code></li></ul></div>
+      <div class="card"><pre class="mono small" style="margin:0;white-space:pre-wrap;overflow-x:auto">{
+  "columnList": ["ArapNo","BranchCode","BranchName",
+    {"name":"ArapType","label":"Arap Type Test","codeTable":"BcpArapType"},
+    {"name":"InsertTime","label":"Time Test","datePattern":"yyyy-MM-dd"}],
+  "conditions": {"ArapType":"-1001"},
+  "fromRangeConditions": {"InsertTime":"2023-07-17"},
+  "toRangeConditions": {"InsertTime":"2023-07-17"},
+  "fuzzyConditions": {}
+}</pre><p class="small muted">The source shows the date pattern as "yyy-MM-dd". It is corrected here to "yyyy-MM-dd".</p></div>
+    </div>
+    <h3>Query through the skill</h3>
+    <p>The <code>insuremo-gi-bcp-query</code> skill gives API access to: suspense, BizTransaction, collection, payment, offset, GL voucher, ARAP, commission and settlement, GL mapping rules and fee types.</p>
+  </section>
+
+  <section class="block">
+    <h2>Query and statistics screens</h2>
+    <div class="grid g2">
+      <div class="card"><h3>BCP Statistics</h3><p>Tabs for ARAP, Collection and Payment. Filters: ARAP Type, Product, Branch (with subordinates), Entry Date (default: the full current year). 32 extra filter fields can be added.</p><p>KPI cards: Total Number of Transactions, Total ARAP Amount, Total ARAP Balance, by day or month, as bar or line chart, split by Outstanding, Settled and Canceled.</p><p><b>Daily balance check:</b> previous day outstanding + today's new ARAP = today's outstanding + today's settled + today's canceled.</p><p>Custom report: Group Type (text fields) with Average and Sum (number fields).</p></div>
+      <div class="card"><h3>Query screens</h3><ul class="clean"><li><b>Query ARAP</b>: expand, Fee, Commission, linked transactions, notes, export</li><li><b>Query Receipt</b>: status Collected / Confirmed / Reversed / Refund</li><li><b>Query Payment</b>: status Requested (Approved) / Paid / Reversed</li><li><b>Query Application &amp; Offset</b>: type Arap / Application / Tolerance / Write Off / Commission</li><li><b>Query GL</b>: GL vouchers; rules in GLIntegrationMappingRule</li><li><b>Query Statement</b>: ARAP list per statement</li><li><b>Query BizTransaction</b>: everything received through the API, with or without ARAP</li></ul><p class="small muted">The gear icon adds or removes columns and filters for your login only. Export with no results gives an empty Excel file.</p></div>
+    </div>
+  </section>
+  <div data-cp="config"></div>
+  <label class="mark-done"><input type="checkbox" data-done="config"> I know what is configuration, what is platform API, and what is iComposer build.</label>
+</section>
+
+<!-- L8 TOOLKIT -->
+<section class="view" id="v-toolkit" data-title="Role toolkits" hidden>
+  <header><span class="eyebrow">Level 8 · Apply</span><h1>Role toolkits</h1>
+  <p class="lede">Ready-to-use material for workshops, test design and build. All of it comes from the source rules.</p></header>
+  <div class="tabs" role="tablist" id="tkTabs">
+    <button role="tab" aria-selected="true" data-tk="ba">Business analyst</button>
+    <button role="tab" aria-selected="false" data-tk="qa">Tester</button>
+    <button role="tab" aria-selected="false" data-tk="dev">Developer</button>
+  </div>
+  <div id="tkDetail"></div>
+  <div data-cp="toolkit"></div>
+  <label class="mark-done"><input type="checkbox" data-done="toolkit"> I have used the toolkit for my role on a real requirement or test.</label>
+</section>
+
+<!-- GAPS -->
+<section class="view" id="v-gaps" data-title="Source gaps" hidden>
+  <header><span class="eyebrow">Consultant review</span><h1>Source gaps to resolve</h1>
+  <p class="lede">While building this guide I found places where the source guide contradicts itself or is incomplete. Close these with the InsureMO platform team before you sign off requirements or lock expected test results.</p></header>
+  <div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What the source says</th><th>Recommended action</th></tr></thead><tbody id="gapBody"></tbody></table></div>
+</section>
+
+<!-- COVERAGE -->
+<section class="view" id="v-coverage" data-title="Source coverage" hidden>
+  <header><span class="eyebrow">Completeness check</span><h1>Source coverage</h1>
+  <p class="lede">Every chapter of the source BCP guide and where it sits in this learning guide. Use it to confirm nothing is missing.</p></header>
+  <div class="tbl"><table><thead><tr><th>#</th><th>Source chapter / content</th><th>Where in this guide</th><th>Coverage</th></tr></thead><tbody id="covBody"></tbody></table></div>
+</section>
+
+<!-- TRACKER -->
+<section class="view" id="v-tracker" data-title="My progress" hidden>
+  <header><span class="eyebrow">Assess</span><h1>My progress and traceability</h1>
+  <p class="lede">See where you are on every module: what you opened, how long you spent, checkpoint scores, final assessment results, and how each learning objective is evidenced.</p></header>
+  <div id="trackerBody"></div>
+</section>
+
+<!-- ASSESSMENT -->
+<section class="view" id="v-assessment" data-title="Final assessment" hidden>
+  <header><span class="eyebrow">Assess</span><h1>Final assessment</h1>
+  <p class="lede">20 case-based questions that mix insurance business, BCP processes, screens and fees. No feedback until you submit. Pass mark 70%. Each question maps to a module in the traceability table.</p></header>
+  <div class="grid" id="finalBody" style="max-width:860px"></div>
+</section>
+
+<!-- QUIZ -->
+<section class="view" id="v-quiz" data-title="Knowledge check" hidden>
+  <header><span class="eyebrow">Assess</span><h1>All checkpoints</h1>
+  <p class="lede">Four questions per level with instant feedback. The same checkpoints appear at the end of each level page. Scores feed My progress.</p>
+  <div class="score" id="quizScore"></div></header>
+  <div class="grid" id="quizBody" style="max-width:820px"></div>
+  <div><button class="btn ghost" type="button" id="quizReset">Reset all checkpoint answers</button></div>
+</section>
+
+<!-- GLOSSARY -->
+<section class="view" id="v-glossary" data-title="Glossary" hidden>
+  <header><span class="eyebrow">Reference</span><h1>Glossary</h1></header>
+  <p class="lede">Insurance and BCP terms in plain English, with an example and where each one appears in InsureMO BCP.</p>
+  <div class="filter-row"><label for="glFilter" class="small">Filter</label><input id="glFilter" type="search" placeholder="Type a term"><label for="glCat" class="small">Category</label><select id="glCat"></select></div>
+  <div class="tbl"><table><thead><tr><th>Term</th><th>Category</th><th>Meaning</th><th>Example</th><th>In InsureMO BCP</th></tr></thead><tbody id="glBody"></tbody></table></div>
+</section>
+
+<p class="foot">Source: InsureMO BCP module guide (Business Flow Guide, Payment Method, Collection, Refund, Internal Transaction, Statement, Commission, Transaction Fee Flow, Query, API Overview, Business Scenario chapters). Items marked Domain context are general insurance practice. Confirm project-specific behaviour with the platform team.</p>
+</main>
+</div>
