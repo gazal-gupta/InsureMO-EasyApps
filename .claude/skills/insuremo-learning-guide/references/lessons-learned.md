@@ -127,3 +127,12 @@ In the BCP source: two fee codes for the same step (700009 vs 403000), opposite 
 - **Check that screenshots already exist before importing images.** All seven health screenshots were already in the master under other numbers.
 - **Remove the superseded build after the port.** Its `build.py` wrote to the same `index.html` and would have overwritten the master.
 - **A publish to an artifact made in another conversation needs a full read of the live page first.** For a 337 KB page that is about 90k tokens; plan it as its own step.
+
+# Client manuals (Protec, 2026)
+- **Check the cover first.** A manual titled for one client and one product (Protec, Motor TP) is a client implementation, not the base product. Tag everything from it with its own source label ("Protec manual") and say that labels, products and numbers can differ.
+- **The manuals are tabbed web pages, not headed documents.** Parse the tab panels, section-title and sub-title blocks in reading order and keep `[IMG n]` markers in place; a heading-based parser found nothing.
+- **Find duplicates before importing screenshots.** A 32×32 average-hash comparison found 24 of 32 XRI screenshots already in the guide (re-encoded); none of the 65 Easy PA ones were.
+- **Captions can be wrong.** The Easy PA manual's captions ran ahead of the screenshots and most steps had only "Step N". View every screenshot on contact sheets (four per sheet is readable), write each step from the screen, and log the caption problem as a source gap.
+- **Reconcile figures across screenshots.** Intermediate screens of one calculation look inconsistent until you rebuild the sequence (basic TP × 1.18 = net TP; + CPA = footer; + add-ons = total). Put the reconciliation in the guide.
+- **Map cases to existing scenarios, not new pages.** Seven manual cases became system walkthroughs on scenarios N1, E7, K4, N3, E2, N2, N4 and N6, plus a client panel on each Level 4 screen, so the platform view and the client view sit together.
+- **Confidential sources and public places.** Before pushing or publishing content from a document marked Confidential, check the repository's visibility and the artifact's sharing. Commit locally and ask; never push it to a public repository on your own.

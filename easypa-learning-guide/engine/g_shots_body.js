@@ -74,7 +74,7 @@ function stepsWithShots(s){
   const pre=sh.filter(x=>x.step==='pre');
   return `${pre.length?`<div class="stepfigs">${pre.map(fig).join('')}</div>`:''}
   <h4>Steps${sh.length?` <span class="tag">${sh.length} screenshot${sh.length>1?'s':''}</span>`:''}</h4>
-  <ol class="shotsteps">${s.steps.map((x,i)=>{const f=sh.filter(y=>y.step===i);return `<li><div class="st-txt"><span class="st-n">${i+1}</span><span>${esc(x)}</span></div>${f.length?`<div class="stepfigs">${f.map(fig).join('')}</div>`:''}</li>`}).join('')}</ol>`;
+  <ol class="shotsteps">${s.steps.map((x,i)=>{const f=sh.filter(y=>y.step===i);return `<li><div class="st-txt"><span class="st-n">${i+1}</span><span>${esc(x)}</span></div>${f.length?`<div class="stepfigs">${f.map(fig).join('')}</div>`:''}</li>`}).join('')}</ol>${typeof protecScreenHTML==='function'?protecScreenHTML(s.id):''}`;
 }
 function openLightbox(src,cap){
   let lb=$('#lightbox');

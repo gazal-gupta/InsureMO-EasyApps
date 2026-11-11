@@ -13,7 +13,7 @@ Requires Pillow (PIL) for image sizes.
 import argparse, base64, json, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-JS_ORDER = ['c_data.js', 'e_fields.js', 'g_shots.js', 'h_biz.js', 'i_track.js', 'f_lens.js', 'd_app.js']
+JS_ORDER = ['c_data.js', 'e_fields.js', 'g_shots.js', 'h_biz.js', 'j_protec.js', 'i_track.js', 'f_lens.js', 'd_app.js']
 
 
 def read(name):
@@ -31,10 +31,10 @@ def main():
     from PIL import Image
     data, dims = {}, {}
     for f in sorted(os.listdir(a.img)):
-        if not re.match(r'.+\.(png|jpe?g)$', f, re.I):
+        if not re.match(r'.+\.(png|jpe?g|webp)$', f, re.I):
             continue
         p = os.path.join(a.img, f)
-        mime = 'image/png' if f.lower().endswith('.png') else 'image/jpeg'
+        mime = {'png': 'image/png', 'webp': 'image/webp'}.get(f.lower().rsplit('.', 1)[-1], 'image/jpeg')
         with open(p, 'rb') as fh:
             data[f] = f'data:{mime};base64,' + base64.b64encode(fh.read()).decode()
         dims[f] = list(Image.open(p).size)

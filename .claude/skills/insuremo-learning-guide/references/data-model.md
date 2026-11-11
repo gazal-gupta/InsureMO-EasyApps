@@ -83,3 +83,7 @@ All data sits in one inline script before the app code (marker `/* =============
 
 ## Combined Easy Apps guide
 Formats for `meta.json`, the harvested data and the hub data are in `references/easyapps-hub.md`.
+
+## Client-source add-ons (Protec)
+- Easy PA `engine/j_protec.js` (loaded after `h_biz.js`): `WALK` {scenarioId: [{t, ref, steps: [[img, text]]}]} renders as "See it in the system" under the scenario swimlane; `PROTEC_SCREENS` {screenId: [[img, text]]} renders as a client panel on Level 4 screens; `PCALC` {ref, rows: [[cover, beforeTax, due]], steps} renders into `#protecCalc` on Level 6. It also pushes rows into `GAPS`, `GLOSS` and `COVERAGE`. The Easy PA build accepts `.webp` images.
+- XRI `src/j_protec_ri.js` (loaded after `h_biz.js`): pushes `SHOT`s into `SHOTS`, rules into `SCREENS`, and rows into `GAPS` and `COVERAGE`.
