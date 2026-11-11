@@ -167,6 +167,9 @@ function swimlane(steps,opts={}){
 
 /* ---------- full-screen diagram viewer ---------- */
 function addFullButtons(){$$('.diagram').forEach(d=>{if(d.querySelector(':scope>.dg-full')||!d.querySelector('svg'))return;const b=document.createElement('button');b.type='button';b.className='dg-full theme-btn';b.textContent='Full screen';d.prepend(b)})}
+
+/* diagrams drawn after a click (journeys, status models) get their Full screen button too */
+(function(){let t;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(addFullButtons,60)}).observe(document.documentElement,{childList:true,subtree:true})})();
 document.addEventListener('click',e=>{const b=e.target.closest('.dg-full');if(!b)return;const svg=b.parentElement.querySelector('svg');if(!svg)return;
  let o=$('#dgfull');if(!o){o=document.createElement('div');o.id='dgfull';o.setAttribute('role','dialog');o.innerHTML='<div class="lb-bar"><span class="lb-cap">Diagram</span><button type="button" class="theme-btn" data-dgx>Close</button></div><div class="dg-body"></div>';document.body.appendChild(o);
   $('[data-dgx]',o).addEventListener('click',()=>{o.hidden=true});document.addEventListener('keydown',ev=>{if(ev.key==='Escape')o.hidden=true})}

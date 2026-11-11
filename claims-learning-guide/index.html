@@ -308,6 +308,15 @@ body.wide .shell{grid-template-columns:minmax(0,1fr)}
 .shot-open{display:block;width:100%;padding:0;border:0;background:#fff;cursor:zoom-in;max-height:520px;overflow:hidden}
 figure.shot.tall .shot-open{max-height:640px}
 .shot-open img{display:block;width:100%;height:auto}
+.diagram{position:relative}
+.diagram:has(>.dg-full){padding-top:44px}
+.dg-full{position:absolute;top:8px;right:8px;z-index:2;font-size:12px}
+#dgfull{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 10px) max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 10px) max(12px,env(safe-area-inset-left,0px))}
+#dgfull[hidden]{display:none!important}
+#dgfull .lb-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px;color:var(--ink)}
+.dg-body{flex:1;min-height:0;overflow:auto}
+.dg-body svg{width:100%;height:100%;max-width:none!important;min-width:0!important}
+svg .st-num{fill:var(--accent)} svg .st-numt{fill:var(--accent-ink);font-size:9.5px;font-weight:700;font-family:var(--f-mono)} svg .st-step.on .st-lblbg{stroke:var(--accent);stroke-width:2} .st-badge{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-family:var(--f-mono);font-size:11px;font-weight:700} #stTable tr.hl td{background:var(--accent-soft)}
 #lightbox{position:fixed;inset:0;z-index:100;background:rgba(10,16,18,.9);display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 10px) max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 10px) max(12px,env(safe-area-inset-left,0px));gap:8px}
 #lightbox .lb-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#fff;font-size:14px}
 #lightbox .lb-body{flex:1;overflow:auto;display:flex;align-items:flex-start;justify-content:center}
@@ -590,6 +599,7 @@ figure.shot.tall .shot-open{max-height:640px}
   <section class="block">
     <h2>The lifecycle at a glance</h2>
     <div class="diagram" id="lifeDiagram"></div>
+    <details class="more"><summary>Numbered arrows as a table</summary><div><div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>Trigger</th></tr></thead><tbody id="lfEdges"></tbody></table></div></div></details>
     <p class="small muted">Policy status words: <b>Quoted</b> (price offered) → <b>Bound</b> (insurer committed, cover starts) → <b>Issued / In force</b> (documents produced) → <b>Endorsed</b> (changed mid-term) → <b>Renewed</b>, <b>Expired</b>, <b>Lapsed</b> (premium not paid) or <b>Cancelled</b> (ended early). <b>Reinstated</b> brings a lapsed or cancelled policy back.</p>
   </section>
   <section class="block">
@@ -806,6 +816,7 @@ figure.shot.tall .shot-open{max-height:640px}
     <h2>Claim process flowchart</h2>
     <p class="muted">Main line, approval loops and end states. Amber labels are routing conditions taken from the source.</p>
     <div class="diagram" id="mainFlow"></div>
+    <details class="more"><summary>Numbered arrows as a table</summary><div><div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>Trigger</th></tr></thead><tbody id="mfEdges"></tbody></table></div></div></details>
   </section>
 <section class="block"><h2>Step by step: the standard claim process in one view</h2>
   <p class="muted" style="max-width:84ch">The flowchart above shows the task order. This view shows every step, who does it, which Easy Claim screen is used, what comes out, and what it means in plain words. Numbers in the diagram match the table.</p>
@@ -836,6 +847,8 @@ figure.shot.tall .shot-open{max-height:640px}
     <h2>Status models</h2>
     <div class="tabs" role="tablist" id="stTabs"></div>
     <div class="diagram" id="stDiagram"></div>
+    <div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>Trigger (numbered arrow)</th></tr></thead><tbody id="stEdges"></tbody></table></div>
+    <p class="small muted">Status rules from the source:</p>
     <div class="tbl"><table><thead><tr><th>From</th><th>Action</th><th>To</th><th>Basis</th></tr></thead><tbody id="stTable"></tbody></table></div>
   </section>
 
@@ -3101,8 +3114,8 @@ function graphSvg(m,uid){
   const N=Object.fromEntries(m.nodes.map(n=>[n.id,n]));const mk='gah'+uid;
   let s=`<svg xmlns="${SVGNS}" width="100%" viewBox="0 0 ${W} ${H}" style="max-width:${W}px;min-width:${Math.min(W,620)}px;display:block;margin:0 auto" role="img" aria-label="${esc(m.name||'Diagram')}"><defs><marker id="${mk}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>`;
   const labels=[];
-  m.edges.forEach(([a,b,l,o])=>{o=o||{};const A=N[a],B=N[b];
-    if(o.self){const x=A.x+nw(A)-26,y=A.y+5;s+=`<path class="edge" d="M${x},${y} C ${x+10},${y-38} ${x+46},${y-30} ${x+26},${y+6}" marker-end="url(#${mk})"/>`;labels.push([x+26,y-30,l]);return}
+  m.edges.forEach(([a,b,l,o],ei)=>{o=o||{};const A=N[a],B=N[b];
+    if(o.self){const x=A.x+nw(A)-26,y=A.y+5;s+=`<path class="edge" d="M${x},${y} C ${x+10},${y-38} ${x+46},${y-30} ${x+26},${y+6}" marker-end="url(#${mk})"/>`;labels.push([x+26,y-30,l,ei]);return}
     const ax=A.x+nw(A)/2,ay=A.y+5+NH/2,bx=B.x+nw(B)/2,by=B.y+5+NH/2;
     const dx=bx-ax,dy=by-ay,len=Math.hypot(dx,dy)||1;const nx=-dy/len,ny=dx/len;
     const off=o.bend!=null?o.bend:(m.edges.some(e=>e[0]===b&&e[1]===a&&!(e[3]&&e[3].bend!=null))?24:0);
@@ -3110,11 +3123,29 @@ function graphSvg(m,uid){
     const clip=(px,py,tx,ty,n)=>{const ddx=tx-px,ddy=ty-py;const tX=Math.abs(ddx)>0?(nw(n)/2)/Math.abs(ddx):1e9,tY=Math.abs(ddy)>0?(NH/2)/Math.abs(ddy):1e9;const t=Math.min(tX,tY);return[px+ddx*t,py+ddy*t]};
     const [sx,sy]=clip(ax,ay,cx,cy,A),[ex,ey]=clip(bx,by,cx,cy,B);
     s+=`<path class="edge" d="M${sx},${sy} Q${cx},${cy} ${ex},${ey}" marker-end="url(#${mk})"/>`;
-    labels.push([(sx+2*cx+ex)/4,(sy+2*cy+ey)/4,l])});
+    let ly=(sy+2*cy+ey)/4;const lw=l.length*5.6+(m.num?30:8);
+    // a label wider than the gap between two boxes on one row sits above the boxes instead of on top of them
+    if(Math.abs(ey-sy)<2&&off===0&&lw>Math.abs(ex-sx)-6)ly-=NH/2+12;
+    labels.push([(sx+2*cx+ex)/4,ly,l,ei])});
   m.nodes.forEach(n=>{s+=`<g class="st-node ${n.c||''}" data-id="${n.id}"><rect x="${n.x}" y="${n.y+5}" width="${nw(n)}" height="${NH}" rx="19"/><text x="${n.x+nw(n)/2}" y="${n.y+5+NH/2+4}" text-anchor="middle">${esc(n.t)}</text></g>`});
-  labels.forEach(([lx,ly,l])=>{const tw=l.length*5.6+8;s+=`<rect class="st-lblbg" x="${lx-tw/2}" y="${ly-8}" width="${tw}" height="15" rx="3"/><text class="st-lbl" x="${lx}" y="${ly+3}" text-anchor="middle">${esc(l)}</text>`});
+  // move a label up or down when it would sit on top of a label already placed
+  const placed=[];labels.forEach(L=>{const w=L[2].length*5.6+(m.num?30:8);const hit=y=>placed.some(q=>Math.abs(q[0]-L[0])<(q[2]+w)/2+2&&Math.abs(q[1]-y)<17);
+    const dy=[0,18,-18,36,-36].find(d=>!hit(L[1]+d));if(dy)L[1]+=dy;placed.push([L[0],L[1],w])});
+  labels.forEach(([lx,ly,l,ei])=>{if(m.num){const tw=l.length*5.6+30;s+=`<g class="st-step" data-i="${ei}"><rect class="st-lblbg" x="${lx-tw/2}" y="${ly-9}" width="${tw}" height="17" rx="3"/><circle class="st-num" cx="${lx-tw/2+9}" cy="${ly-0.5}" r="7.5"/><text class="st-numt" x="${lx-tw/2+9}" y="${ly+3}" text-anchor="middle">${ei+1}</text><text class="st-lbl" x="${lx+9}" y="${ly+3.5}" text-anchor="middle">${esc(l)}</text></g>`;return}const tw=l.length*5.6+8;s+=`<rect class="st-lblbg" x="${lx-tw/2}" y="${ly-8}" width="${tw}" height="15" rx="3"/><text class="st-lbl" x="${lx}" y="${ly+3}" text-anchor="middle">${esc(l)}</text>`});
   return s+'</svg>';
 }
+[MAINFLOW,LIFEMAP].concat(Object.values(STATES)).forEach(m=>{m.num=1});
+/* numbered arrows as table rows; clicking an arrow label highlights its row */
+function edgeRows(m){const nm=Object.fromEntries(m.nodes.map(n=>[n.id,n.t]));return m.edges.map(([a,b,l],i)=>`<tr data-i="${i}"><td class="num"><span class="st-badge">${i+1}</span></td><td>${esc(nm[a])}</td><td>${esc(a===b?nm[b]+' (same status)':nm[b])}</td><td>${esc(l)}</td></tr>`).join('')}
+function linkEdges(dia,tb){$$('.st-step',dia).forEach(g=>{g.style.cursor='pointer';g.addEventListener('click',()=>{const i=g.dataset.i;$$('tr',tb).forEach(r=>r.classList.toggle('hl',r.dataset.i===i));$$('.st-step',dia).forEach(x=>x.classList.toggle('on',x===g));const r=$(`tr[data-i="${i}"]`,tb);if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})})})}
+
+/* ---------- full-screen diagram viewer ---------- */
+function addFullButtons(){$$('.diagram').forEach(d=>{if(d.querySelector(':scope>.dg-full')||!d.querySelector('svg'))return;const b=document.createElement('button');b.type='button';b.className='dg-full theme-btn';b.textContent='Full screen';d.prepend(b)})}
+document.addEventListener('click',e=>{const b=e.target.closest('.dg-full');if(!b)return;const svg=b.parentElement.querySelector('svg');if(!svg)return;
+ let o=$('#dgfull');if(!o){o=document.createElement('div');o.id='dgfull';o.setAttribute('role','dialog');o.innerHTML='<div class="lb-bar"><span class="lb-cap">Diagram</span><button type="button" class="theme-btn" data-dgx>Close</button></div><div class="dg-body"></div>';document.body.appendChild(o);
+  $('[data-dgx]',o).addEventListener('click',()=>{o.hidden=true});document.addEventListener('keydown',ev=>{if(ev.key==='Escape')o.hidden=true})}
+ const c=svg.cloneNode(true);c.removeAttribute('style');c.setAttribute('width','100%');c.setAttribute('height','100%');$('.dg-body',o).innerHTML='';$('.dg-body',o).appendChild(c);$('.lb-cap',o).textContent=svg.getAttribute('aria-label')||'Diagram';o.hidden=false});
+(function(){let t;new MutationObserver(()=>{clearTimeout(t);t=setTimeout(addFullButtons,60)}).observe(document.documentElement,{childList:true,subtree:true})})();
 
 /* ---------- visit tracking ---------- */
 function seen(kind,id){const v=store.get('seen',{});v[kind]=v[kind]||{};if(!v[kind][id]){v[kind][id]=Date.now();store.set('seen',v)}}
@@ -3130,7 +3161,7 @@ function renderStatic(){
   $('#auxCards').innerHTML=AUX.map(a=>`<div class="card"><h3>${esc(a[0])}</h3><p>${esc(a[1])}</p><p class="small muted">Approval task: ${esc(a[2])}</p><div class="filter-row">${flowLink(a[3])}</div></div>`).join('');
   let last='';$('#menuBody').innerHTML=MENU.map(m=>{const r=`<tr><td>${m[0]!==last?`<b>${m[0]}</b>`:''}</td><td>${esc(m[1])}</td><td>${esc(m[2])}</td><td>${scrLink(m[3])}</td></tr>`;last=m[0];return r}).join('');
   const rt=()=>{const q=($('#rtFilter').value||'').toLowerCase();$('#routeBody').innerHTML=ROUTES.filter(r=>r.join(' ').toLowerCase().includes(q)).map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${scrLink(r[3])}</td></tr>`).join('')};rt();$('#rtFilter').addEventListener('input',rt);
-  $('#mainFlow').innerHTML=graphSvg(MAINFLOW,'m');
+  $('#mainFlow').innerHTML=graphSvg(MAINFLOW,'m');$('#mfEdges').innerHTML=edgeRows(MAINFLOW);linkEdges($('#mainFlow'),$('#mfEdges'));
   $('#mxTable').innerHTML=`<thead><tr><th>Section</th>${MXCOLS.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${MX.map(r=>`<tr><td><b>${esc(r[0])}</b></td>${r.slice(1).map(c=>`<td class="${c[0]==='—'?'':c[0]}">${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody>`;
   $('#calcCmp').innerHTML=CALC_CMP.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('');
   $('#calcFx').innerHTML=CALC_FX.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('');
@@ -3204,7 +3235,7 @@ function runCP(){
 
 /* ---------- policy lifecycle ---------- */
 function renderIndustry(){
-  $('#lifeDiagram').innerHTML=graphSvg(LIFEMAP,'l');
+  $('#lifeDiagram').innerHTML=graphSvg(LIFEMAP,'l');$('#lfEdges').innerHTML=edgeRows(LIFEMAP);linkEdges($('#lifeDiagram'),$('#lfEdges'));
   ['cxPrem','cxDays','cxTerm','cxClaim'].forEach(id=>$('#'+id).addEventListener('input',runCX));runCX();
   ['riLoss','riQs','riRet','riLim'].forEach(id=>$('#'+id).addEventListener('input',runRI));runRI();
 }
@@ -3286,7 +3317,7 @@ let curSt='claim';
 function renderStates(){
   $('#stTabs').innerHTML=Object.entries(STATES).map(([k,m])=>`<button role="tab" type="button" data-k="${k}" aria-selected="${k===curSt}">${esc(m.name)}</button>`).join('');
   $$('#stTabs button').forEach(b=>b.addEventListener('click',()=>{curSt=b.dataset.k;renderStates()}));
-  const m=STATES[curSt];$('#stDiagram').innerHTML=graphSvg(m,'s');
+  const m=STATES[curSt];$('#stDiagram').innerHTML=graphSvg(m,'s');$('#stEdges').innerHTML=edgeRows(m);linkEdges($('#stDiagram'),$('#stEdges'));
   $('#stTable').innerHTML=m.rows.map(r=>`<tr>${r.map((c,i)=>`<td>${i===3?`<span class="tag ${/Screenshot/.test(c)&&!/Source/.test(c)?'shot':'src'}">${esc(c)}</span>`:esc(c)}</td>`).join('')}</tr>`).join('');
 }
 
@@ -3314,14 +3345,23 @@ function renderScreens(){
 /* ---------- hub ---------- */
 let hubSel='bcp';
 const HUBLBL={pa:'policy data',bcp:'reserve fee · AP · AR',ri:'ceded claims (domain)',docs:'documents · notices'};
+/* integration map edge: clipped at both boxes, arrowhead shows which way data moves */
+function hubEdge(k,mx,my,mw,mh,C,toCore,fromCore,col,dash){
+  const cx=C.x+C.w/2,cy=C.y+C.h/2;
+  const clip=(px,py,tx,ty,w,h)=>{const dx=tx-px,dy=ty-py;const t=Math.min(Math.abs(dx)>0?(w/2+4)/Math.abs(dx):1e9,Math.abs(dy)>0?(h/2+4)/Math.abs(dy):1e9);return[px+dx*t,py+dy*t]};
+  const [sx,sy]=clip(mx,my,cx,cy,mw,mh),[ex,ey]=clip(cx,cy,mx,my,C.w,C.h);
+  return `<path class="hub-edge" d="M${sx},${sy} L${ex},${ey}" stroke="${col}" ${dash?'stroke-dasharray="5 4"':''} ${toCore?`marker-end="url(#ha-${k})"`:''} ${fromCore?`marker-start="url(#ha-${k})"`:''}/>`;
+}
+function hubDefs(){return '<defs>'+Object.entries(MODS).map(([k,m])=>`<marker id="ha-${k}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${m.col}"/></marker>`).join('')+'</defs>'}
+function hubLegend(W,H){return `<text x="10" y="${H-8}" font-size="11" fill="var(--ink-2)">Arrowheads show which way data moves; two heads mean both ways.</text>`}
 function hubSvg(){
-  const W=660,H=380;let s=`<svg xmlns="${SVGNS}" width="100%" viewBox="0 0 ${W} ${H}" style="max-width:${W}px;min-width:480px" role="img" aria-label="Claims module links">`;
+  const W=660,H=380;let s=`<svg xmlns="${SVGNS}" width="100%" viewBox="0 0 ${W} ${H}" style="max-width:${W}px;min-width:480px" role="img" aria-label="Claims module links">`+hubDefs();
   const C={x:250,y:150,w:160,h:80};
-  Object.entries(MODS).forEach(([k,m])=>{const mx=m.x+70,my=m.y+28;const cx=C.x+C.w/2,cy=C.y+C.h/2;s+=`<path class="hub-edge" d="M${mx},${my} L${cx},${cy}" stroke="${m.col}" ${m.basis==='inf'?'stroke-dasharray="5 4"':''}/>`;
+  Object.entries(MODS).forEach(([k,m])=>{const mx=m.x+70,my=m.y+28;const cx=C.x+C.w/2,cy=C.y+C.h/2;s+=hubEdge(k,mx,my,140,56,C,(m.gets||[]).length,(m.sends||[]).length,m.col,m.basis==='inf');
     const lx=(mx+cx)/2,ly=(my+cy)/2;const t=HUBLBL[k];const tw=t.length*5.8+10;s+=`<rect class="st-lblbg" x="${lx-tw/2}" y="${ly-9}" width="${tw}" height="17" rx="3"/><text class="st-lbl" x="${lx}" y="${ly+3}" text-anchor="middle">${esc(t)}</text>`});
   s+=`<g class="hub-core"><rect x="${C.x}" y="${C.y}" width="${C.w}" height="${C.h}" rx="8"/><text x="${C.x+C.w/2}" y="${C.y+34}" text-anchor="middle" font-size="16" font-weight="700" font-family="var(--f-display)">Easy Claim</text><text x="${C.x+C.w/2}" y="${C.y+54}" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)">Claim API</text></g>`;
   Object.entries(MODS).forEach(([k,m])=>{s+=`<g class="hub-node ${k===hubSel?'sel':''}" data-k="${k}" tabindex="0" role="button" aria-label="${esc(m.n)}"><rect x="${m.x}" y="${m.y}" width="140" height="56" rx="8" stroke="${m.col}" ${m.basis==='inf'?'stroke-dasharray="5 4"':''}/><text x="${m.x+70}" y="${m.y+24}" text-anchor="middle">${esc(m.n)}</text><text class="sub" x="${m.x+70}" y="${m.y+42}" text-anchor="middle">${esc(m.code)}</text></g>`});
-  return s+'</svg>';
+  return s+hubLegend(W,H)+'</svg>';
 }
 function renderHub(){
   $('#hubDiagram').innerHTML=hubSvg();

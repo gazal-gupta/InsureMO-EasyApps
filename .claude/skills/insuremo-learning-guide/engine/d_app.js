@@ -79,13 +79,22 @@ function ecoSvg(){
 
 /* ---------- hub ---------- */
 let hubSel='pa';
+/* integration map edge: clipped at both boxes, arrowhead shows which way data moves */
+function hubEdge(k,mx,my,mw,mh,C,toCore,fromCore,col,dash){
+  const cx=C.x+C.w/2,cy=C.y+C.h/2;
+  const clip=(px,py,tx,ty,w,h)=>{const dx=tx-px,dy=ty-py;const t=Math.min(Math.abs(dx)>0?(w/2+4)/Math.abs(dx):1e9,Math.abs(dy)>0?(h/2+4)/Math.abs(dy):1e9);return[px+dx*t,py+dy*t]};
+  const [sx,sy]=clip(mx,my,cx,cy,mw,mh),[ex,ey]=clip(cx,cy,mx,my,C.w,C.h);
+  return `<path class="hub-edge" d="M${sx},${sy} L${ex},${ey}" stroke="${col}" ${dash?'stroke-dasharray="5 4"':''} ${toCore?`marker-end="url(#ha-${k})"`:''} ${fromCore?`marker-start="url(#ha-${k})"`:''}/>`;
+}
+function hubDefs(){return '<defs>'+Object.entries(MODS).map(([k,m])=>`<marker id="ha-${k}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${m.col}"/></marker>`).join('')+'</defs>'}
+function hubLegend(W,H){return `<text x="10" y="${H-8}" font-size="11" fill="var(--ink-2)">Arrowheads show which way data moves; two heads mean both ways.</text>`}
 function hubSvg(){
-  const W=740,H=400;let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Module integration map">`;
+  const W=740,H=400;let s=`<svg xmlns="${SVGNS}" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Module integration map">`+hubDefs();
   const C={x:290,y:160,w:160,h:70};
-  Object.entries(MODS).forEach(([k,m])=>{const mx=m.x+70,my=m.y+28;const cx=C.x+C.w/2,cy=C.y+C.h/2;s+=`<path class="hub-edge" d="M${mx},${my} L${cx},${cy}" stroke="${m.col}" ${k==='gl'?'stroke-dasharray="5 4"':''}/>`});
+  Object.entries(MODS).forEach(([k,m])=>{s+=hubEdge(k,m.x+70,m.y+28,140,56,C,(m.sends||[]).length,(m.gets||[]).length,m.col,k==='gl')});
   s+=`<g class="hub-core"><rect x="${C.x}" y="${C.y}" width="${C.w}" height="${C.h}" rx="8"/><text x="${C.x+C.w/2}" y="${C.y+30}" text-anchor="middle" font-size="16" font-weight="700" font-family="var(--f-display)">BCP</text><text x="${C.x+C.w/2}" y="${C.y+50}" text-anchor="middle" font-size="10" fill="var(--ink-2)" font-family="var(--f-mono)">syncDataToBCP</text></g>`;
   Object.entries(MODS).forEach(([k,m])=>{s+=`<g class="hub-node ${k===hubSel?'sel':''}" data-k="${k}" tabindex="0" role="button" aria-label="${esc(m.n)}"><rect x="${m.x}" y="${m.y}" width="140" height="56" rx="8" stroke="${m.col}"/><text x="${m.x+70}" y="${m.y+24}" text-anchor="middle">${esc(m.n)}</text><text class="sub" x="${m.x+70}" y="${m.y+42}" text-anchor="middle">${esc(m.code)}</text></g>`});
-  return s+'</svg>';
+  return s+hubLegend(W,H)+'</svg>';
 }
 function renderHub(){
   $('#hubDiagram').innerHTML=hubSvg();

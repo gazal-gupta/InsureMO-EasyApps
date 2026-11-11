@@ -271,7 +271,7 @@ function renderCross(){
     <div><span class="eyebrow">Integration map</span><h2>Interfaces between modules</h2></div>
     <div class="imap">
       <div class="svgwrap">${imapSvg()}
-        <div class="vlegend"><span><i style="border-color:var(--in)"></i>Both guides agree</span><span><i style="border-color:var(--warn);border-top-style:dashed"></i>Described on one side only</span><span><i style="border-color:var(--cancel);border-top-style:dotted"></i>Gap in both sources</span><span>Numbers count the statements in both guides.</span></div>
+        <div class="vlegend"><span>→ Arrowheads show which way data moves; two heads mean both ways</span><span><i style="border-color:var(--in)"></i>Both guides agree</span><span><i style="border-color:var(--warn);border-top-style:dashed"></i>Described on one side only</span><span><i style="border-color:var(--cancel);border-top-style:dotted"></i>Gap in both sources</span><span>Numbers count the statements in both guides.</span></div>
       </div>
       <div class="panel" id="pairPanel"></div>
     </div>
@@ -295,12 +295,16 @@ function renderCross(){
 }
 function imapSvg(){
   const W=760,H=372,NW=150,NH=40;
-  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Integration map of Easy PA, BCP, Easy Claim, XRI, Sales Channel and GL">`;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Integration map of Easy PA, BCP, Easy Claim, XRI, Sales Channel and GL"><defs><marker id="eah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-2)"/></marker></defs>`;
+  // line ends stop at the node edge so the arrowheads show; heads follow the direction of the statements
+  const clip=(px,py,tx,ty)=>{const dx=tx-px,dy=ty-py;const t=Math.min(Math.abs(dx)>0?(NW/2+3)/Math.abs(dx):1e9,Math.abs(dy)>0?(NH/2+3)/Math.abs(dy):1e9);return[px+dx*t,py+dy*t]};
   D.pairs.forEach(p=>{
-    const [x1,y1]=NODE[p.a],[x2,y2]=NODE[p.b];const n=pairEdges(p).length;let d,lx,ly;
-    if(p.a==='clm'&&p.b==='ri'){const cx=380,cy=410;d=`M${x1},${y1} Q${cx},${cy} ${x2},${y2}`;lx=.25*x1+.5*cx+.25*x2;ly=.25*y1+.5*cy+.25*y2}
-    else{const t=LBL[p.a+'|'+p.b]||.5;d=`M${x1},${y1} L${x2},${y2}`;lx=x1+(x2-x1)*t;ly=y1+(y2-y1)*t}
-    s+=`<g class="ee ${p.verdict}" data-pair="${p.a}|${p.b}" tabindex="0" role="button" aria-label="${esc(NAME(p.a))} and ${esc(NAME(p.b))}: ${n} statements"><path class="hit" d="${d}"/><path class="ln" d="${d}"/><g class="lb"><rect x="${lx-15}" y="${ly-10}" width="30" height="20" rx="10"/><text x="${lx}" y="${ly+4}" text-anchor="middle">${n}</text></g></g>`;
+    const [x1,y1]=NODE[p.a],[x2,y2]=NODE[p.b];const E=pairEdges(p),n=E.length;let d,dl,lx,ly;
+    const fw=E.some(e=>e.a===p.a&&e.b===p.b),bw=E.some(e=>e.a===p.b&&e.b===p.a);
+    const mk=`${fw?' marker-end="url(#eah)"':''}${bw?' marker-start="url(#eah)"':''}`;
+    if(p.a==='clm'&&p.b==='ri'){const cx=380,cy=410;d=`M${x1},${y1} Q${cx},${cy} ${x2},${y2}`;const [sx,sy]=clip(x1,y1,cx,cy),[ex,ey]=clip(x2,y2,cx,cy);dl=`M${sx},${sy} Q${cx},${cy} ${ex},${ey}`;lx=.25*x1+.5*cx+.25*x2;ly=.25*y1+.5*cy+.25*y2}
+    else{const t=LBL[p.a+'|'+p.b]||.5;d=`M${x1},${y1} L${x2},${y2}`;const [sx,sy]=clip(x1,y1,x2,y2),[ex,ey]=clip(x2,y2,x1,y1);dl=`M${sx},${sy} L${ex},${ey}`;lx=x1+(x2-x1)*t;ly=y1+(y2-y1)*t}
+    s+=`<g class="ee ${p.verdict}" data-pair="${p.a}|${p.b}" tabindex="0" role="button" aria-label="${esc(NAME(p.a))} and ${esc(NAME(p.b))}: ${n} statements"><path class="hit" d="${d}"/><path class="ln" d="${dl}"${mk}/><g class="lb"><rect x="${lx-15}" y="${ly-10}" width="30" height="20" rx="10"/><text x="${lx}" y="${ly+4}" text-anchor="middle">${n}</text></g></g>`;
   });
   Object.entries(NODE).forEach(([k,[x,y]])=>{
     const go=MOD[k]?'#'+k+'--integration':'';
