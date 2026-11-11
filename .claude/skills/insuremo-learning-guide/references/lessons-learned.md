@@ -136,3 +136,9 @@ In the BCP source: two fee codes for the same step (700009 vs 403000), opposite 
 - **Reconcile figures across screenshots.** Intermediate screens of one calculation look inconsistent until you rebuild the sequence (basic TP × 1.18 = net TP; + CPA = footer; + add-ons = total). Put the reconciliation in the guide.
 - **Map cases to existing scenarios, not new pages.** Seven manual cases became system walkthroughs on scenarios N1, E7, K4, N3, E2, N2, N4 and N6, plus a client panel on each Level 4 screen, so the platform view and the client view sit together.
 - **Confidential sources and public places.** Before pushing or publishing content from a document marked Confidential, check the repository's visibility and the artifact's sharing. Commit locally and ask; never push it to a public repository on your own.
+
+# Combined guide: the "Screens does not open" bug (2026-11-11)
+- **A srcdoc page resolves relative links against the parent's URL.** A guide inside the hub has `<a href="#screens">`; clicking it navigated the frame to the hub page itself, so the user saw the hub inside the hub. Setting `location.hash` from a test never shows this. The bridge now turns every same-page link click into a hash change.
+- **Test with real clicks.** `qa.js` now clicks every left-menu link in every guide and fails if the hub appears inside a guide.
+- **Do not add a fallback that loads a page you cannot verify.** The first fallback (load `m/<k>.html` as the frame's src) would itself nest the hub on a host that answers with its own page. The hub now checks that the fetched text is the requested guide (`var M="<k>"`) and otherwise shows a clear error with a link to the module's own page.
+- **Ask for a screenshot early.** "It doesn't open" had three plausible causes; the user's screenshot (two hub bars) identified the real one at once.

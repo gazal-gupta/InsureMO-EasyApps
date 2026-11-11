@@ -26,9 +26,19 @@ function frame(k){
   $('#stage').appendChild(f);frames[k]=f;
   const el=$('#mod-'+k);
   if(el){f.srcdoc=JSON.parse(el.textContent)}
-  else{fetch('m/'+k+'.html').then(r=>{if(!r.ok)throw new Error(r.status);return r.text()}).then(t=>{f.srcdoc=t})
-    .catch(()=>{$('#loading').hidden=false;$('#loading').textContent='The '+MOD[k].name+' guide could not be loaded. Reload the page, or use the offline file.'})}
+  else{
+    const url=new URL('m/'+k+'.html',document.baseURI).href;
+    fetch(url).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()})
+      .then(h=>{if(h.indexOf('var M="'+k+'"')<0)throw new Error('the file is not the '+MOD[k].name+' guide ('+h.length+' bytes)');f.srcdoc=h})
+      .catch(e=>{loadErr[k]='fetch '+url+': '+(e&&e.message||e);showLoadError(k)});
+    setTimeout(()=>{if(!ready[k])showLoadError(k)},20000);
+  }
   return f;
+}
+const loadErr={};
+function showLoadError(k){
+  const el=$('#loading');if(curMod!==k)return;el.hidden=false;
+  el.innerHTML=`<div style="max-width:60ch;padding:16px;display:flex;flex-direction:column;gap:10px"><b>The ${esc(MOD[k].name)} guide did not open.</b><span>Reload the page and try again. If it still does not open, use the ${esc(MOD[k].name)} guide's own page or the offline file.</span><a class="btn" href="${esc(MOD[k].art)}" target="_blank" rel="noopener">Open the ${esc(MOD[k].name)} guide on its own</a><span class="small muted">Details for support: ${esc(loadErr[k]||'no answer from the guide after 20 seconds')}</span></div>`;
 }
 function send(k,msg){
   msg.ea=1;
@@ -39,7 +49,7 @@ window.addEventListener('message',e=>{
   const d=e.data;if(!d||d.ea!==1||!d.mod||!frames[d.mod]||e.source!==frames[d.mod].contentWindow)return;
   const k=d.mod;
   if(d.t==='ready'){ready[k]=true;send(k,{t:'theme',v:theme()});send(k,{t:'role',r:role});
-    const q=queue[k]||{};queue[k]=null;if(q.go)send(k,q.go);if(k===curMod)$('#loading').hidden=true}
+    const q=queue[k]||{};queue[k]=null;if(q.go)send(k,q.go);if(k===curMod){$('#loading').hidden=true;$('#loading').textContent='Opening the module guide…'}}
   else if(d.t==='nav'){nav[k]=d;if(k===curMod){quietHash(link(k,d.h).slice(1));crumb()}}
   else if(d.t==='open'){go(link(d.to,d.h).slice(1))}
   else if(d.t==='err'){(window.EA_ERRS=window.EA_ERRS||[]).push(k+': '+d.m)}
@@ -68,7 +78,7 @@ function showPage(p){
 function showMod(k,inner){
   curMod=k;curPage=null;$('#hub').hidden=true;$('#stage').hidden=false;
   frame(k);$$('#stage iframe').forEach(f=>{f.hidden=f.dataset.mod!==k});
-  $('#loading').hidden=!!ready[k];
+  $('#loading').hidden=!!ready[k];if(!ready[k])$('#loading').textContent='Opening the module guide…';
   send(k,{t:'go',h:inner});
   if(!nav[k]||nav[k].h!==inner)nav[k]={h:inner,title:''};
   tabs();crumb();

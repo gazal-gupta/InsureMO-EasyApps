@@ -68,6 +68,8 @@ window.addEventListener('message',function(e){var d=e.data;if(!d||d.ea!==1)retur
 });
 var ART=%ART%;var REL={'bcp-learning-guide':'bcp','easypa-learning-guide':'pa','reinsurance-learning-guide':'ri','claims-learning-guide':'clm'};
 document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;if(!a)return;var href=a.getAttribute('href')||'';
+ if(href==='#'){e.preventDefault();return}
+ if(href.charAt(0)==='#'&&!a.target&&!e.defaultPrevented&&e.button===0&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey){e.preventDefault();var h=href.slice(1);if(decodeURIComponent(location.hash.slice(1))===h){try{route()}catch(_){}}else{location.hash=h}return}
  var m=href.match(/artifact\/([A-Za-z0-9]+)\/?(?:#(.*))?$/);var t=m&&ART[m[1]];
  if(!t){m=href.match(/([a-z]+-learning-guide)\/index\.html(?:#(.*))?$/);t=m&&REL[m[1]]}
  if(t){e.preventDefault();e.stopPropagation();post({t:'open',to:t,h:m[2]||''})}},true);
