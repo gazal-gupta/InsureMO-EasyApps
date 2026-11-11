@@ -103,6 +103,6 @@
     {"mod": "clm", "lv": ["basics", "lifecycle", "flows", "calc"], "why": "The largest outflow: reserves, payments and recoveries."},
     {"mod": "ri", "lv": ["business", "basics", "lifecycle", "scenarios"], "why": "Protects the balance sheet; depends on policy and claim data."},
     {"mod": "hub", "lv": ["cross"], "why": "Join the four modules: interfaces, end-to-end journeys and the gaps between them."},
-    {"mod": "all", "lv": ["toolkit", "gaps", "assessment"], "why": "Role toolkits, source gaps and the final assessment in each guide."}
+    {"mod": "all", "lv": ["toolkit", "gaps", "assessment"], "why": "Role toolkits, InsureMO guide gaps and the final assessment in each guide."}
   ]
 }
