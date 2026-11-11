@@ -226,6 +226,16 @@ details.sub > summary .cnt{font-size:12.5px;color:var(--ink-2)}
 .step .x{font-size:11.5px;color:var(--ink-2)}
 .step .d{font-size:11.5px;color:var(--ink-2)}
 .swimwrap{overflow-x:auto;max-width:100%}
+.xa-swimbox{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);display:flex;flex-direction:column;min-width:0}
+.xa-swimbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:6px 10px;border-bottom:1px solid var(--line)}
+.xa-swimbox .swimwrap{overflow:auto}
+.xa-swim{display:block;max-width:none}
+.xa-swimbox.fs{position:fixed;inset:0;z-index:1000;border-radius:0;background:var(--bg)}
+.xa-swimbox.fs .swimwrap{flex:1;padding:12px}
+.xa-swimbox.fs .xa-swim{margin:0 auto}
+.xa-lh{fill:var(--ink);font-size:12px;font-weight:600;font-family:var(--f-body)}
+.xa-kind{fill:var(--ink-2);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;font-family:var(--f-mono)}
+.xa-steps summary{cursor:pointer;font-size:13.5px;color:var(--ink-2);padding:4px 0}
 .notebox{border:1px solid var(--line);border-left:4px solid var(--warn);background:var(--warn-soft);border-radius:var(--r);padding:10px 12px;font-size:13.5px}
 
 /* gaps and glossary */

@@ -264,12 +264,48 @@ const AREAS=[
 ];
 
 /* ---------------- renderers ---------------- */
+/* Swimlane diagram as SVG: one column per actor, read top to bottom, a numbered box per step
+   and an arrow from each step to the next. Shared by the hub's journeys (window.EA_SWIM).
+   lanes: [{id, n, sub, c}]   steps: [{l, k, t}]   c is a CSS colour such as var(--pa). */
+let swimN=0;
+function wrapTxt(s,max){const out=[];let line='';String(s).split(/\s+/).forEach(w=>{if(!w)return;if(line&&(line+' '+w).length>max){out.push(line);line=w}else line=line?line+' '+w:w});if(line)out.push(line);return out}
+function swimSvg(lanes,steps,label){
+  const id='xsw'+(++swimN),LW=168,BW=148,TOP=58,GAP=34,PAD=12;
+  const col={};lanes.forEach((l,i)=>col[l.id]=i);
+  const W=lanes.length*LW;let y=TOP+16;
+  const box=steps.map(s=>{const lines=wrapTxt(s.t,22);const h=(s.k?20:8)+lines.length*15+10;const x=col[s.l]*LW+(LW-BW)/2;const b={x,y,h,lines,s};y+=h+GAP;return b});
+  const H=y-GAP+PAD+4;
+  let g=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" class="xa-swim" role="img" aria-label="${esc(label)}: ${steps.length} steps"><defs><marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-2)"/></marker></defs>`;
+  lanes.forEach((l,i)=>{const x=i*LW;const hl=wrapTxt(l.n,21).slice(0,2);
+    g+=`<rect x="${x}" y="0" width="${LW}" height="${H}" fill="${i%2?'var(--lane-a)':'var(--surface)'}"/>`+(i?`<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="var(--line)" stroke-dasharray="3 3"/>`:'')+
+      `<rect x="${x}" y="0" width="${LW}" height="${TOP-6}" fill="var(--surface-2)"/><rect x="${x}" y="${TOP-9}" width="${LW}" height="3" fill="${l.c}"/>`+
+      hl.map((t,j)=>`<text x="${x+LW/2}" y="${18+j*14}" text-anchor="middle" class="xa-lh">${esc(t)}</text>`).join('')+
+      (l.sub?`<text x="${x+LW/2}" y="${18+hl.length*14}" text-anchor="middle" class="xa-small">${esc(l.sub)}</text>`:'')});
+  box.forEach((b,i)=>{const n=box[i+1];if(!n)return;
+    const x1=b.x+BW/2,y1=b.y+b.h,x2=n.x+BW/2,y2=n.y-2;
+    const d=x1===x2?`M${x1},${y1} V${y2}`:`M${x1},${y1} V${y1+GAP/2} H${x2} V${y2}`;
+    g+=`<path d="${d}" fill="none" stroke="var(--ink-2)" stroke-width="1.5" marker-end="url(#${id})"/>`});
+  box.forEach((b,i)=>{const c=lanes[col[b.s.l]].c;
+    g+=`<g class="step" data-n="${i+1}"><rect x="${b.x}" y="${b.y}" width="${BW}" height="${b.h}" rx="6" fill="var(--surface)" stroke="${c}" stroke-width="1.5"/><rect x="${b.x}" y="${b.y}" width="5" height="${b.h}" rx="2" fill="${c}"/>`+
+      `<circle cx="${b.x}" cy="${b.y}" r="11" fill="${c}" stroke="var(--surface)" stroke-width="2"/><text x="${b.x}" y="${b.y+4}" text-anchor="middle" class="xa-num">${i+1}</text>`+
+      (b.s.k?`<text x="${b.x+16}" y="${b.y+15}" class="xa-kind">${esc(b.s.k)}</text>`:'')+
+      b.lines.map((t,j)=>`<text x="${b.x+14}" y="${b.y+(b.s.k?20:8)+12+j*15}" class="xa-msg">${esc(t)}</text>`).join('')+`</g>`});
+  return g+'</svg>';
+}
+/* wrapper with a full-screen button and the numbered step table */
+function swimBlock(lanes,steps,label,rows,head){
+  return `<div class="xa-swimbox"><div class="xa-swimbar"><span class="small muted">Read top to bottom: each column is an actor; follow the arrows from step 1.</span><button type="button" class="btn xa-fs" aria-pressed="false">Full screen</button></div>`+
+   `<div class="swimwrap">${swimSvg(lanes,steps,label)}</div></div>`+
+   `<details class="xa-steps"><summary>Steps as a table (${steps.length})</summary><div class="tw"><table class="menutbl"><thead><tr><th>#</th>${head.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></details>`;
+}
+/* one listener for every full-screen button: a fixed overlay works inside the artifact sandbox */
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.xa-fs');if(!b)return;const box=b.closest('.xa-swimbox');const on=!box.classList.contains('fs');
+  box.classList.toggle('fs',on);b.setAttribute('aria-pressed',on);b.textContent=on?'Close full screen':'Full screen';document.documentElement.style.overflow=on?'hidden':''});
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const box=document.querySelector('.xa-swimbox.fs');if(box)box.querySelector('.xa-fs').click()});
 function swim(b){
   const lanes=[];b.steps.forEach(s=>{if(!lanes.includes(s[0]))lanes.push(s[0])});
-  let g=`<div class="swim" style="grid-template-columns:34px repeat(${lanes.length},minmax(140px,220px))"><div class="lh" style="--c:var(--line)"></div>`+
-   lanes.map(l=>`<div class="lh" style="--c:var(--${LANE[l][1]})">${esc(LANE[l][0])}</div>`).join('');
-  b.steps.forEach((s,i)=>{g+=`<div class="nlab">${i+1}</div>`+lanes.map(l=>`<div class="cell${i%2?' alt':''}">${l===s[0]?`<div class="step" style="--c:var(--${LANE[l][1]})"><span>${esc(s[1])}</span>${s[2]?`<span class="x">${esc(s[2])}</span>`:''}</div>`:''}</div>`).join('')});
-  return `<h3>${esc(b.h)}</h3><p class="small muted">Read top to bottom: each column is an actor, each row one step.</p><div class="swimwrap">${g}</div></div>`;
+  const L=lanes.map(l=>({id:l,n:LANE[l][0],c:`var(--${LANE[l][1]})`}));
+  return `<h3>${esc(b.h)}</h3>`+swimBlock(L,b.steps.map(s=>({l:s[0],t:s[1]})),b.h,b.steps.map(s=>[LANE[s[0]][0],s[1],s[2]||'']),['Actor','Step','Detail']);
 }
 function states(b){
   const NW=170,NH=40,N=Object.fromEntries(b.nodes.map(n=>[n[0],n]));
@@ -396,5 +432,5 @@ const GLOSS=[
  ['VFA','Variable fee approach for direct participating contracts under IFRS 17.'],['Onerous contract','A group expected to make a loss; the loss is recognised immediately.'],['Coverage units','The measure used to release the CSM over the coverage period.'],
  ['Idempotency','Processing the same message twice has the same effect as once.'],['Control totals','Count and amount totals compared on both sides of a batch interface.']];
 window.EA_EXTRA={page:'areas',title:'Additional insurance areas',cur:()=>cur,areas:AREAS.map(a=>({id:a.id,n:a.n,short:a.short})),render,open,
- gloss:GLOSS,search:AREAS.map(a=>({id:a.id,t:a.n,x:(a.n+' '+a.short+' '+a.why+' '+JSON.stringify(a.blocks)).toLowerCase()})),CALC};
+ swim:swimBlock,gloss:GLOSS,search:AREAS.map(a=>({id:a.id,t:a.n,x:(a.n+' '+a.short+' '+a.why+' '+JSON.stringify(a.blocks)).toLowerCase()})),CALC};
 })();

@@ -31,8 +31,8 @@ async function state(fr){return fr.evaluate(()=>{const v=document.querySelector(
   await page.evaluate(()=>location.hash='cross');await sleep(200);
   for(const pr of D.pairs){await page.click(`.chip[data-pair="${pr.a}|${pr.b}"]`);const t=await page.$eval('#pairPanel',e=>e.innerText);if(!t.includes('describes it')){ok(false,'pair panel '+pr.a+'-'+pr.b);}}
   ok(true,`${D.pairs.length} interface pairs open`);
-  let jbad=0;for(const j of D.journeys){await page.click(`#jList button[data-j="${j.mod}|${j.id}"]`);const n=await page.$$eval('#jView .step',x=>x.length);if(n!==j.paths[0].steps.length)jbad++}
-  ok(jbad===0,`${D.journeys.length} journeys draw every step as a swimlane`);
+  let jbad=0;for(const j of D.journeys){await page.click(`#jList button[data-j="${j.mod}|${j.id}"]`);const n=await page.$$eval('#jView .xa-swim .step',x=>x.length);const a=await page.$$eval('#jView .xa-swim path[marker-end]',x=>x.length);if(n!==j.paths[0].steps.length||a!==n-1)jbad++}
+  ok(jbad===0,`${D.journeys.length} journeys draw every step as a numbered box with an arrow to the next`);
   if(shots){await page.click('#jList button[data-j="pa|J1"]');await (await page.$('#jView')).screenshot({path:path.join(shots,'hub-journey.png')})}
   // modules: open, then follow every capability-map link
   const links={};for(const k of D.order){links[k]=new Set(['start']);D.tree[k].forEach(g=>g.caps.forEach(c=>{links[k].add(c.h);c.f.forEach(f=>links[k].add(f.h))}));D.menu[k].groups.forEach(g=>g.s.forEach(s=>links[k].add(s.h)))}

@@ -328,17 +328,14 @@ function drawJourney(){
   const LN=MOD[j.mod].lanes,LM=MOD[j.mod].laneMod;const lc=l=>COL(LM[l]||'ext');
   const touched=[...new Set(lanes.map(l=>LM[l]).filter(x=>x&&x!=='ext'))];
   const KIND={ev:'Event',op:'User action',sys:'System',ext:'External party',gl:'GL posting',end:'End',bcp:'BCP',ri:'Reinsurance',x:'Exception'};
-  let g=`<div class="swim" style="grid-template-columns:34px repeat(${lanes.length},minmax(150px,240px))"><div class="lh" style="--c:var(--line)"></div>`+
-    lanes.map(l=>`<div class="lh" style="--c:${lc(l)}">${esc(LN[l]||l)}<small>${esc(LM[l]&&LM[l]!=='ext'?NAME(LM[l]):'Outside InsureMO')}</small></div>`).join('');
-  path.steps.forEach((s,i)=>{
-    g+=`<div class="nlab">${i+1}</div>`+lanes.map(l=>`<div class="cell${i%2?' alt':''}">${l===s.l?`<div class="step" style="--c:${lc(l)}"><span class="k">${esc(KIND[s.k]||s.k)}</span><span>${esc(s.t)}</span>${s.m?`<span class="x">${esc(s.m)}</span>`:''}${s.s?`<span class="x">Status: ${esc(s.s)}</span>`:''}${s.f?`<span class="x">${esc(s.f)}</span>`:''}${s.d?`<span class="d">${esc(s.d)}</span>`:''}</div>`:''}</div>`).join('');
-  });
-  g+='</div>';
+  const SW=window.EA_EXTRA&&window.EA_EXTRA.swim;
+  const g=SW(lanes.map(l=>({id:l,n:LN[l]||l,sub:LM[l]&&LM[l]!=='ext'?NAME(LM[l]):'Outside InsureMO',c:lc(l)})),path.steps.map(s=>({l:s.l,k:KIND[s.k]||s.k,t:s.t})),j.n,
+    path.steps.map(s=>[LN[s.l]||s.l,KIND[s.k]||s.k,s.t,[s.m,s.s?'Status: '+s.s:'',s.f,s.d].filter(Boolean).join(' · ')]),['Actor','Type','Step','Detail']);
   $('#jView').innerHTML=`<div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap"><span class="eyebrow">${esc(j.kind==='industry'?'Industry process':'Journey')} ${esc(j.id)} · from the ${esc(MOD[j.mod].name)} guide</span></div>
     <h3>${esc(j.n)}</h3><p class="small">${esc(j.d)}</p>
     <div class="chips"><span class="small muted">Modules in this flow</span>${touched.map(mtag).join('')}</div>
     ${j.paths.length>1?`<div class="chips" role="group" aria-label="Path">${j.paths.map((p,i)=>`<button class="chip" type="button" data-p="${i}" aria-pressed="${i===selPath}">${esc(p.n||'Path '+(i+1))}</button>`).join('')}</div>`:''}
-    <div class="swimwrap">${g}</div>
+    ${g}
     ${j.note?`<div class="notebox">${esc(j.note)}</div>`:''}
     <p class="small"><a href="${link(j.mod,j.h)}">Open this ${j.kind==='industry'?'process':'journey'} in the ${esc(MOD[j.mod].name)} guide</a>${j.kind==='journey'?' (Cross-module level, journeys)':''}</p>`;
   $$('#jView [data-p]').forEach(b=>b.addEventListener('click',()=>{selPath=+b.dataset.p;drawJourney()}));
