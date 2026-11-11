@@ -37,7 +37,7 @@ Shared pages are private until the owner shares them. To change or build a guide
 | Reference | Source gaps to resolve, source coverage map, glossary of about 90 insurance and BCP terms |
 | Assess | Checkpoint (4 questions) at the end of every level, My progress & traceability dashboard, 20-question final assessment (pass mark 70%) |
 
-**Source:** the InsureMO BCP module guide. Content marked *Domain context* is general insurance practice added for learning. The "Source gaps" page lists contradictions found in the source; resolve these with the platform team before you lock requirements or expected test results.
+**Source:** the InsureMO BCP module guide. Content marked *Insurance knowledge* is general insurance practice added for learning. The "InsureMO BCP gaps" page lists contradictions found in the source; resolve these with the platform team before you lock requirements or expected test results.
 
 Progress (levels visited, time spent, checkpoint and final scores) is saved in the viewer's browser. Use My progress → Download / Copy to export it and Import to restore it on another machine.
 
@@ -72,7 +72,7 @@ python3 claims-learning-guide/build_standalone.py claims-learning-guide claims-l
 | 5 Claims process flows | 24 swimlane flows with alternate paths, step-by-step tables, a real example and industry practice for each |
 | 6 Screens | 41 screens with sections, buttons, fields, rules and all source screenshots (click to enlarge) |
 | 7 Calculation and reserve logic | GIMO rating vs new calculation tool, Claim Matrix V1 / V2, full-scale calculator, reserve close checker |
-| 8 Cross-module | Easy PA policy docking, Claims-to-BCP money map, Reinsurance (domain context), journeys |
+| 8 Cross-module | Easy PA policy docking, Claims-to-BCP money map, Reinsurance (insurance knowledge), journeys |
 | 9 Configuration and APIs | Parameters, authority, workflow, code lists, APIs, configure-or-build |
 | 10 Role toolkits | BA questions and fit-gap, test matrix, boundary and validation tests, developer checklists |
 | Reference | 17 source Q&As, source gaps, insurance glossary (226 terms in 14 categories) |
@@ -82,7 +82,7 @@ Every module from 1 to 9 ends with a 4-question checkpoint. Each question is lin
 
 Swimlanes wrap to the page width instead of scrolling sideways; "Wide view" hides the side menu for more room.
 
-**Source:** the InsureMO Easy Claim Function User Guide. Labels show where each statement comes from: *Source*, *Screenshot*, *BCP guide* or *Domain context* (general insurance practice; confirm with your project). The Claims source does not describe Reinsurance. Industry facts cited (for example India's Section 64VB cash-before-cover rule and IRDAI health cashless timelines) should be re-checked against current regulation before use in client deliverables.
+**Source:** the InsureMO Easy Claim Function User Guide. Labels show where each statement comes from: *InsureMO Easy Claims*, *Screenshot*, *BCP guide* or *Insurance knowledge* (general insurance practice; confirm with your project). The Claims source does not describe Reinsurance. Industry facts cited (for example India's Section 64VB cash-before-cover rule and IRDAI health cashless timelines) should be re-checked against current regulation before use in client deliverables.
 
 Progress, answers and preferences are stored only in the learner's browser.
 

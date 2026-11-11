@@ -4,14 +4,14 @@ const LEVELS=[
  {id:'business',n:'0',name:'Reinsurance business basics',grp:'Basic',learn:'Insurer, cedant, reinsurer, retrocessionaire, broker; why insurers buy reinsurance; treaty vs facultative; proportional vs non-proportional; money flow; real market rules',ready:'Explain who cedes what to whom, why, and what money moves in each direction'},
  {id:'basics',n:'1',name:'Foundations of XRI',grp:'Basic',learn:'What XRI does, architecture, the treaty structure (treaty, section, subsection), core concepts, menu map, maker-checker review, reference numbers',ready:'Name the six XRI menus and explain the three treaty levels'},
  {id:'lifecycle',n:'2',name:'Reinsurance lifecycles',grp:'Basic',learn:'Contract, cession, recovery and accounting lifecycles; status models; effective dates and slices; SOA types',ready:'Draw the status model of a treaty, a facultative task, a recovery case and an SOA'},
- {id:'scenarios',n:'3',name:'Business scenarios',grp:'Intermediate',learn:'25 end-to-end flows with top-to-bottom swimlanes. Each has the XRI process (from the source) and the industry process (domain context), real examples, rules and role notes',ready:'Walk any scenario end to end and say which steps XRI performs and which happen in the market'},
+ {id:'scenarios',n:'3',name:'Business scenarios',grp:'Intermediate',learn:'25 end-to-end flows with top-to-bottom swimlanes. Each has the XRI process (from the InsureMO XRI guide) and the industry process (insurance knowledge), real examples, rules and role notes',ready:'Walk any scenario end to end and say which steps XRI performs and which happen in the market'},
  {id:'screens',n:'4',name:'Screens',grp:'Intermediate',learn:'Every XRI screen: purpose, prerequisites, steps with screenshots, validation rules and the full field reference',ready:'Pick the right screen for a task and predict its required fields and status change'},
  {id:'integration',n:'5',name:'Cross-module',grp:'Intermediate',learn:'How Easy PA, Claims, BCP, GL, document management and external parties connect to XRI; end-to-end journeys',ready:'Explain what XRI needs from each module and what it sends back'},
  {id:'fees',n:'6',name:'RI accounting & calculators',grp:'Advanced',learn:'Statement of account anatomy, SOA types, sign rules, commission types, IFRS 17 view, cession, XoL and SOA calculators',ready:'Calculate a cession, an XoL recovery with reinstatement and a quarterly balance'},
  {id:'config',n:'7',name:'Configuration & build',grp:'Advanced',learn:'InsureMO platform vs partner build, configurable items in XRI, drop-down values, architecture services',ready:'Separate configuration, platform API and partner (BFF) build'},
  {id:'toolkit',n:'8',name:'Role toolkits',grp:'Apply',learn:'BA workshop questions and fit-gap, test matrix and validation tests, developer checklists',ready:'Use it on a live requirement or test cycle'},
- {id:'gaps',n:'!',name:'Source gaps',grp:'Reference'},
- {id:'coverage',n:'✓',name:'Source coverage',grp:'Reference'},
+ {id:'gaps',n:'!',name:'InsureMO XRI gaps',grp:'Reference'},
+ {id:'coverage',n:'✓',name:'InsureMO XRI coverage',grp:'Reference'},
  {id:'glossary',n:'A',name:'Glossary',grp:'Reference'},
  {id:'tracker',n:'%',name:'My progress & traceability',grp:'Assess'},
  {id:'quiz',n:'?',name:'All checkpoints',grp:'Assess'},
@@ -19,9 +19,9 @@ const LEVELS=[
 ];
 
 const PATHS={
- ba:{t:'Business analyst',d:'Run requirement workshops, map the client’s treaty programme to XRI and write fit-gap.',steps:['Level 0: reinsurance business and money flows','Level 1: XRI menus and treaty structure','Level 2: lifecycles and statuses','Level 3: scenarios (XRI vs industry process)','Level 5: cross-module journeys','Level 8: BA questions and fit-gap','Source gaps: decisions to take to the client']},
- qa:{t:'Tester',d:'Design test cases for treaty set-up, cession, recovery and statements.',steps:['Level 0: reinsurance basics and worked numbers','Level 2: status models','Level 3: scenarios and test cases','Level 4: screens, fields and validations','Level 6: calculators for expected results','Level 8: test matrix','Source gaps: do not lock expected results on open gaps']},
- dev:{t:'Developer',d:'Build the BFF layer, integrations with Easy PA, Claims, BCP and GL, and reports.',steps:['Level 0: reinsurance basics','Level 1: architecture and XRI services','Level 5: data XRI needs from other modules','Level 6: accounting and SOA logic','Level 7: platform vs partner build','Level 8: developer checklist','Source gaps: missing API specifications']}
+ ba:{t:'Business analyst',d:'Run requirement workshops, map the client’s treaty programme to XRI and write fit-gap.',steps:['Level 0: reinsurance business and money flows','Level 1: XRI menus and treaty structure','Level 2: lifecycles and statuses','Level 3: scenarios (XRI vs industry process)','Level 5: cross-module journeys','Level 8: BA questions and fit-gap','InsureMO XRI gaps: decisions to take to the client']},
+ qa:{t:'Tester',d:'Design test cases for treaty set-up, cession, recovery and statements.',steps:['Level 0: reinsurance basics and worked numbers','Level 2: status models','Level 3: scenarios and test cases','Level 4: screens, fields and validations','Level 6: calculators for expected results','Level 8: test matrix','InsureMO XRI gaps: do not lock expected results on open gaps']},
+ dev:{t:'Developer',d:'Build the BFF layer, integrations with Easy PA, Claims, BCP and GL, and reports.',steps:['Level 0: reinsurance basics','Level 1: architecture and XRI services','Level 5: data XRI needs from other modules','Level 6: accounting and SOA logic','Level 7: platform vs partner build','Level 8: developer checklist','InsureMO XRI gaps: missing API specifications']}
 };
 
 /* [name, text, tone] tone: int = contract, in = cession, out = recovery, cancel = accounting */
@@ -67,7 +67,7 @@ const MENU=[
 const STATES={
  treaty:{name:'Outward treaty',nodes:[{id:'N',t:'Newly built',x:22,y:110,c:'start'},{id:'R',t:'New to be Reviewed',x:292,y:110},{id:'F',t:'In force',x:562,y:110,c:'good'},{id:'M',t:'Adjustment pending',x:562,y:10},{id:'S',t:'Settlement pending',x:832,y:210},{id:'X',t:'Settled',x:832,y:110,c:'final'},{id:'D',t:'Deleted',x:22,y:210,c:'final'}],
   edges:[['N','R','Submit'],['R','F','Review Pass'],['F','M','Adjust'],['M','F','Pass'],['F','S','Settle'],['S','X','Pass'],['N','D','Delete']],
-  rows:[['Newly built','New to be Reviewed','User clicks Submit on the Treaty Level page','Outwards Treaty Management > Create'],['New to be Reviewed','In force','Reviewer clicks Review Pass','Review'],['In force','Adjustment pending → In force','Modification record created, submitted and passed. Takes effect from Modification Effective Date','Adjustment'],['In force','Settlement pending → Settled','Treaty Settlement submitted and passed','Settle'],['In force','In force (renewed copy)','Renewal keeps the treaty number and adds one year; it is submitted for review','Renewal'],['Newly built (not effective)','Deleted','Only ineffective records can be deleted','Search result row'],['Note','','Labels "Newly built" and "New to be Reviewed" are from the source; "Adjustment pending", "Settlement pending" and "Settled" are descriptive. The source does not give these status names.','See Source gaps']]},
+  rows:[['Newly built','New to be Reviewed','User clicks Submit on the Treaty Level page','Outwards Treaty Management > Create'],['New to be Reviewed','In force','Reviewer clicks Review Pass','Review'],['In force','Adjustment pending → In force','Modification record created, submitted and passed. Takes effect from Modification Effective Date','Adjustment'],['In force','Settlement pending → Settled','Treaty Settlement submitted and passed','Settle'],['In force','In force (renewed copy)','Renewal keeps the treaty number and adds one year; it is submitted for review','Renewal'],['Newly built (not effective)','Deleted','Only ineffective records can be deleted','Search result row'],['Note','','Labels "Newly built" and "New to be Reviewed" are from the InsureMO XRI guide; "Adjustment pending", "Settlement pending" and "Settled" are descriptive. The InsureMO XRI guide does not give these status names.','See InsureMO XRI gaps']]},
  fac:{name:'Facultative task',nodes:[{id:'T',t:'To be claimed',x:22,y:110,c:'start'},{id:'A',t:'Allocating',x:292,y:110},{id:'Q',t:'Quotation',x:292,y:10},{id:'V',t:'To review',x:562,y:110},{id:'C',t:'Complete',x:832,y:110,c:'good'},{id:'L',t:'Closed',x:562,y:210,c:'final'}],
   edges:[['T','A','Accept task'],['A','Q','Arrange'],['Q','V','Submission Review'],['V','C','Review Pass'],['V','A','Failed Review'],['A','L','Close + reason']],
   rows:[['To be claimed','Allocating','Accept reinsurance task (or Copy from another policy’s arrangement)','New Cession Facultative / Endorsement Facultative'],['Allocating','Quotation (task progress)','Add proportional or non-proportional facultative arrangements and feedback','Manage task'],['Quotation','To review','Submission Review records the operator','Manage task'],['To review','Complete','Review Pass. The arrangement takes effect','Review (single or batch)'],['To review','Allocating','Failed Review. The task goes back for rework','Review'],['Allocating','Closed','Close with a closing reason','Manage task']]},
@@ -82,7 +82,7 @@ const STATES={
   rows:[['—','Effective','Automatic SOAs (quarterly, cash call, installment, recovery) are generated by the system','Statement search'],['New in progress','To be reviewed','Manual or semi-auto SOA is submitted','Create Manual SOA / Semi Auto SOA'],['To be reviewed','Deleted','Delete a manual or semi-auto SOA that has not been reviewed','Delete'],['To be reviewed','Effective','Review Pass (single or batch)','Review'],['Effective (Estimate = No)','Settled','Included in a settlement and summary. SOAs with Estimate = Yes cannot be settled','Settlement Statement'],['Effective (inward manual)','Withdrawn','Cancel withdraws the last reviewed account data','Treaty Inward Statement > Cancel']]},
  setl:{name:'Settlement summary',nodes:[{id:'N',t:'Not submitted',x:22,y:110,c:'start'},{id:'T',t:'To be reviewed',x:292,y:110},{id:'R',t:'Reviewed',x:562,y:110},{id:'W',t:'Written off',x:832,y:20,c:'good'},{id:'F',t:'Write-off failed',x:832,y:210},{id:'C',t:'Cancelled',x:562,y:240,c:'final'}],
   edges:[['N','T','Submit'],['T','R','Review Pass'],['R','W','Write-off'],['R','F','Rejected'],['F','C','Cancel'],['N','C','Cancel']],
-  rows:[['Not submitted','To be reviewed','Submission Review updates settlement status and balance to be summarized','Settlement Summary > Create'],['To be reviewed','Reviewed','Review Pass','Review'],['Reviewed','Written off','Accounts receivable / payable system writes off the item','External AR/AP (BCP or client finance)'],['Reviewed','Write-off failed','AR/AP system rejects the write-off','External'],['Write-off failed or not written off','Cancelled','Cancel (deletes the summary)','Settlement Summary > Cancel'],['Note','','The write-off status names come from the Adjustment and Cancel rules in the source. The AR/AP system is not named.','See Source gaps']]}
+  rows:[['Not submitted','To be reviewed','Submission Review updates settlement status and balance to be summarized','Settlement Summary > Create'],['To be reviewed','Reviewed','Review Pass','Review'],['Reviewed','Written off','Accounts receivable / payable system writes off the item','External AR/AP (BCP or client finance)'],['Reviewed','Write-off failed','AR/AP system rejects the write-off','External'],['Write-off failed or not written off','Cancelled','Cancel (deletes the summary)','Settlement Summary > Cancel'],['Note','','The write-off status names come from the Adjustment and Cancel rules in the InsureMO XRI guide. The AR/AP system is not named.','See InsureMO XRI gaps']]}
 };
 
 /* ---------- lanes ---------- */
@@ -91,7 +91,7 @@ const LANE_ORDER=['ins','ced','pa','clm','uw','rev','xri','bcp','broker','rein']
 function S(l,k,t,o){return Object.assign({l,k,t},o||{})}
 const I=(l,k,t,o)=>S(l,k,t,Object.assign({tag:'inf'},o||{}));
 
-/* ---------- scenarios: xri = process in the source; ind = industry process (domain context) ---------- */
+/* ---------- scenarios: xri = process in the InsureMO XRI guide; ind = industry process (insurance knowledge) ---------- */
 const SCEN=[
 /* ===== CONTRACT SET-UP ===== */
 {id:'D1',grp:'def',name:'Set up an outward proportional treaty (quota share / surplus)',mods:['ri'],src:'Outwards Treaty Management: Create and Edit Treaties, Review Treaties',
@@ -101,7 +101,7 @@ const SCEN=[
  rules:['Required information at the current level must be filled before the next level opens.','Treaty Type follows Treaty Priority Type: All Risk Agreement, Commercial Proportional and Life Proportional → Proportional; Commercial Non-Proportional → Non-Proportional. Not editable after creation.','Participant Info is entered at Treaty Level for proportional treaties (brokers and recipients; recipients can sit under a broker).','Coinsurance Claim Recovery appears only when Treaty Biz Category = Co-insurance and applies only to Life reinsurance.','Submit sends the treaty to review; it takes effect only after Review Pass.','A draft can be saved and finished later from the edit icon on the search result.'],
  ba:'Collect the signed slip and wording for each treaty. Map each clause to a field: retention, lines, commission (fixed, sliding, profit), premium reserve, cash call limit, exclusions. List clauses that have no field and agree how to handle them (Treaty Rules text, Notes, or a build).',
  qa:'Create one QS and one surplus treaty. Check that Treaty Type cannot be changed, that the next level is blocked until required fields are filled, and that a policy issued after Review Pass is ceded with the right share.',
- dev:'Treaty data drives the cession engine. Confirm the API that exposes treaty and section rules to the BFF and the event that starts cession on policy issue. Neither is described in the source.'},
+ dev:'Treaty data drives the cession engine. Confirm the API that exposes treaty and section rules to the BFF and the event that starts cession on policy issue. Neither is described in the InsureMO XRI guide.'},
 
 {id:'D2',grp:'def',name:'Set up an outward excess of loss (XoL) treaty',mods:['ri'],src:'Outwards Treaty Management: Non-proportional treaty Subsection Level',
  desc:'A non-proportional treaty protects the cedant against large single losses (per risk) or many losses from one event (catastrophe). Each layer is a subsection with its own attachment point, limit, premium, installments and reinstatements.',
@@ -110,7 +110,7 @@ const SCEN=[
  rules:['Each XoL layer is one subsection: currency, attachment point, limit of indemnity, annual aggregate limit.','Premium block: Limit, ROL (rate on line), Estimated Cede Out Premium, MDP Percentage, Minimum Deposit Premium, Adjustment rate.','Installment Plan holds Installment Frequency (for example Yearly), number, date, currency and amount.','Reinstatement block holds the Number of Reinstatement(s) and, for each, Calculation based on time (Yes/No), Calculation based on amount (Yes/No) and Reinstatement Ratio %.','Treaty Type cannot be changed after creation.'],
  ba:'For each layer confirm: per risk or per event, the hours clause for cat events, the reinstatement terms (for example 1 at 100% pro rata as to amount), and the GNPI definition used for the adjustment.',
  qa:'Use the XoL calculator in Level 6 to set expected recovery and reinstatement premium before you test a recovery on this treaty.',
- dev:'Per-event aggregation needs a catastrophe event code on claims. The source mentions a Claim CAT Code search field but not how it is captured or sent. Confirm with the Claims team.'},
+ dev:'Per-event aggregation needs a catastrophe event code on claims. The InsureMO XRI guide mentions a Claim CAT Code search field but not how it is captured or sent. Confirm with the Claims team.'},
 
 {id:'D3',grp:'def',name:'Adjust an in-force treaty mid-term',mods:['ri'],src:'Outwards Treaty Management: Modify Treaties',
  desc:'Treaty terms sometimes change during the year by agreement with reinsurers (an addendum). XRI records each change as a modification record with its own effective date, and keeps the history.',
@@ -137,7 +137,7 @@ const SCEN=[
  rules:['Only treaties in force can be settled.','Settlement Target and Planned Settlement Date are required.','Settlement bill: all contents except SOA Date are read-only; IBNR and settlement ratio are entered by the user.','If you settle at headquarter level, Branch Assessment Details is not shown; at branch level, unsettled claims are broken down by branch.'],
  ba:'Settlement is a financial and legal decision (commutation). Confirm the approval matrix and the accounting treatment with finance before configuring.',
  qa:'Check that SOAs with Estimate = Yes are not included, and that the settlement bill’s IBNR × ratio arithmetic is correct.',
- dev:'After settlement no new cession or recovery should hit the treaty. The source does not say how XRI blocks them. Test and confirm.'},
+ dev:'After settlement no new cession or recovery should hit the treaty. The InsureMO XRI guide does not say how XRI blocks them. Test and confirm.'},
 
 {id:'D6',grp:'def',name:'Facultative obligatory facility: create, review, adjust, renew',mods:['ri'],src:'Facultative Facility Management',
  desc:'A facultative obligatory facility gives the cedant automatic capacity for a defined type of risk without negotiating each risk. It has two layers: the agreement layer and subsections.',
@@ -146,14 +146,14 @@ const SCEN=[
  rules:['Subsection layer information can be entered only after Basic Information is complete.','Submission Review sets Facultative Facility Status to Modification to be reviewed.','Adjustment needs a Modification Effective Date; Abandon modification discards changes.','Renewal keeps the facility code and extends the term one year; Copy gets a new facility code after review.','Only agreements not in force can be deleted.'],
  ba:'Clarify why the client uses a facility rather than treaty or pure facultative. A facility carries anti-selection risk for the reinsurer, so check the cession rules carefully.',
  qa:'Create, review, adjust and renew one facility. Check that a policy in scope is matched to it.',
- dev:'The source describes the proportional subsection only. Confirm whether non-proportional facilities exist in your version.'},
+ dev:'The InsureMO XRI guide describes the proportional subsection only. Confirm whether non-proportional facilities exist in your version.'},
 
 {id:'D7',grp:'def',name:'Onboard a reinsurance party and update credit ratings',mods:['ri','bcp'],src:'Reinsurance Party Management',
  desc:'Every reinsurer, broker and cedant used in XRI is a reinsurance party with contacts, bank accounts, tax data and a credit rating. Ratings can be updated in batch from a template.',
  xri:[S('uw','op','Reinsurance Party Management > Create',{m:'Reinsurance Party Inquiry'}),S('uw','op','Select reinsurance party type'),S('uw','op','Basic info and rating, business info, contacts, bank accounts, recipient ranking, tax, notes',{r:'Fields marked * are mandatory'}),S('uw','op','Submit'),S('rev','op','Review Pass',{s:'In force'}),S('xri','sys','Party available on treaties, facilities and settlements'),S('uw','op','Template Download, then Update Reinsurer’s Credit Rating (batch)',{f:'capital, solvency, rating'}),S('xri','end','Settlement summaries use the party’s latest bank account')],
  ind:[I('ced','ext','Security committee sets the approved reinsurer list'),I('ced','ext','Minimum rating (for example A- from S&P or AM Best)'),I('ced','ext','Collateral required from unrated or offshore reinsurers'),S('uw','op','Approved party created in XRI',{m:'Reinsurance Party Management'}),S('uw','op','Ratings refreshed regularly (batch upload)'),I('ced','end','Exposure to each reinsurer monitored against limits')],
  rules:['Contacts types: Treaty Contact, Facultative Contact, Settlement Contact.','Multiple bank accounts and multiple tax records can be added.','When a party becomes invalid, its tax account cannot be used by business or finance modules.','Recipient Ranking: add the head office; after review the system creates a record under the head office for the branch.','Edit is for parties in force; parties not yet in force can be edited or deleted from the result row.'],
- ba:'Ask for the client’s reinsurer security policy: minimum rating, concentration limits per reinsurer, and collateral rules. XRI stores ratings, but the source does not describe rating checks at placement.',
+ ba:'Ask for the client’s reinsurer security policy: minimum rating, concentration limits per reinsurer, and collateral rules. XRI stores ratings, but the InsureMO XRI guide does not describe rating checks at placement.',
  qa:'Make a party invalid and confirm its tax account cannot be selected in a settlement.',
  dev:'Settlement Summary takes the payer’s latest bank account in the settlement currency from this module. Keep bank data in one master.'},
 
@@ -165,14 +165,14 @@ const SCEN=[
  rules:['The system matches insured business against effective treaties and reinsures according to treaty rules.','Policies with endorsements are reinsured separately for each endorsement period (slice).','Multiple policies of the same risk can be combined (merged risk positions) and attached to the relevant treaties.','Retention is maintained in the section Retention Limit table against the treaty’s Retention Base (for example Gross Premium).'],
  ba:'Write down the cession waterfall for each class: retention → quota share → surplus lines → facility → facultative. Confirm the order (Execution Order on the subsection) with the client.',
  qa:'Use the cession calculator in Level 6 to predict the split, then issue the policy and compare with the inquiry screen.',
- dev:'Needed from Easy PA: policy and endorsement numbers, risk units, risk category, sums insured, premium by coverage, currency, effective and expiry dates, coinsurance share. Not specified in the source.'},
+ dev:'Needed from Easy PA: policy and endorsement numbers, risk units, risk category, sums insured, premium by coverage, currency, effective and expiry dates, coinsurance share. Not specified in the InsureMO XRI guide.'},
 
 {id:'A2',grp:'alloc',name:'Place facultative reinsurance for a new risk',mods:['pa','ri','bcp'],src:'Risk Allocation > New Cession Facultative',
  desc:'A large risk exceeds treaty capacity. The RI user claims the facultative task, records quotes from reinsurers, confirms the placement and sends it for review.',
  xri:[S('xri','sys','Facultative task created for the policy',{s:'To be claimed'}),S('uw','op','Search tasks, select, Accept reinsurance task',{m:'New Cession Facultative',s:'Allocating'}),S('uw','op','Review policy basic information and risk position',{s:'Quotation'}),S('uw','op','Add Facultative Proportional Arrangement or upload template',{r:'Reinsurance Parties, Payer, Currency, Exchange Rate required'}),S('uw','op','Record Reinsurance Arrangement Feedback; Placement confirmed = Yes'),S('uw','op','Tick Binding; Confirm Reinsurance Result',{r:'Binding only when Placement confirmed = Yes'}),S('uw','op','Submission Review',{s:'To review'}),S('rev','op','Review Pass (single or batch)',{s:'Complete'}),S('xri','end','Facultative SOA for premium',{f:'FacCedingEndorseBill'})],
  ind:[I('broker','ext','Broker sends fac slip: risk details, survey, sum insured'),I('rein','ext','Reinsurers quote (rate, commission, written line)'),I('broker','ext','Firm order; lines signed (may be scaled down)'),I('ced','ext','Cover bound before the policy inception'),S('uw','op','Placement recorded and reviewed in XRI',{m:'New Cession Facultative'}),I('bcp','end','Fac premium paid within agreed terms')],
  rules:['Copy can bring another policy’s facultative arrangement into a task whose Allocation Status is To be claimed.','Close requires a closing reason.','Submission Review records the current user as operator.','Batch review: selecting several tasks opens a confirm box; one task opens the review page.','Failed Review returns the task for rework.'],
- ba:'Set rules for when cover must be bound (before inception). Decide who can bind and up to what amount. The source does not describe authority limits.',
+ ba:'Set rules for when cover must be bound (before inception). Decide who can bind and up to what amount. The InsureMO XRI guide does not describe authority limits.',
  qa:'Try Binding with Placement confirmed = No (must be blocked). Place 100% across two reinsurers and check the shares and commission on the facultative SOA.',
  dev:'Template upload and download exist for proportional arrangements. Get the template layout and validation rules from the platform team.'},
 
@@ -209,7 +209,7 @@ const SCEN=[
  xri:[S('clm','ev','Large claim paid'),S('xri','sys','Recovery reaches Cash Call Limit',{s:'waiting for handle'}),S('uw','op','Recovery Management: tick Cash Call flag',{m:'Treaty Recovery'}),S('uw','op','Add notes; Submit',{s:'waiting for review'}),S('rev','op','Review Pass',{s:'Reviewed'}),S('xri','sys','Cash call bill issued',{f:'Proportional treaty cash call bill'}),S('rein','ext','Reinsurers pay the cash call',{tag:'inf'}),S('xri','sys','Release in the quarterly account',{f:'Cash Call Release Statement'}),S('xri','end','No cash call SOA by quarter end → merged into quarterly bill',{s:'Reviewed'})],
  ind:[I('clm','ev','Large loss, for example a factory fire'),I('ced','ext','Cash call request with loss documents'),I('broker','ext','Broker collects from each reinsurer'),I('rein','ext','Payment within the treaty deadline (often 15 to 30 days)'),I('ced','ext','Cash call credited back in the quarterly account'),I('ced','end','Liquidity protected')],
  rules:['Cash call cases need manual processing (Loss Recovery Status = waiting for handle).','Recovery Management is active only for cases waiting for handle or waiting for review.','If no cash call statement is generated by quarter end, the case is merged into the quarterly statement and its status changes to Reviewed.','The quarterly bill has a Cash Call Release Statement of Account list.'],
- ba:'Confirm the cash call limit per treaty and currency, and the payment deadline for reinsurers (the source does not give one).',
+ ba:'Confirm the cash call limit per treaty and currency, and the payment deadline for reinsurers (the InsureMO XRI guide does not give one).',
  qa:'Pay a claim just above the limit and one just below. Only the first should need Recovery Management.',
  dev:'The release entry must offset the cash call in the quarterly account so the reinsurer is not charged twice.'},
 
@@ -220,7 +220,7 @@ const SCEN=[
  rules:['Non-proportional treaties (per risk or catastrophe) are processed case by case.','Claim Recovery Info covers All-Risks Treaty, Commercial Prop Treaty, Facility and Accident XOL recoveries.','Layer columns: Treaty exceeded limit, Outstanding allocation, Recovery Paid, Applicable Reinstatement Fees, Loss Paid, Reinstated Premium, Pending Recovery, Pending Reinstatement Premium.','Coinsurance Info appears only for internal coinsurance policies.'],
  ba:'Write down the reinstatement terms per layer (number, percentage, pro rata as to amount and / or time). They change the net recovery.',
  qa:'Source example: layer 500,000 xs 500,000, net loss 900,000 → recovery 400,000, applicable reinstatement fees 8,000. Recompute with the XoL calculator.',
- dev:'Reinstatement premium formula is not in the source. Get it from the platform team before automating expected results.'},
+ dev:'Reinstatement premium formula is not in the InsureMO XRI guide. Get it from the platform team before automating expected results.'},
 
 {id:'R4',grp:'rec',name:'Facultative recovery',mods:['clm','ri','bcp'],src:'Reinsurance Recovery > Facultative Recovery',
  desc:'A claim is paid on a risk with facultative cover. XRI collects the case in the facultative recovery pool and calculates proportional and non-proportional facultative recoveries.',
@@ -236,7 +236,7 @@ const SCEN=[
  xri:[S('uw','op','Open the case (Case Number)',{m:'Treaty / Facultative Recovery'}),S('uw','op','Modify recovery info: change loss paid / actual recovery'),S('uw','op','Add notes explaining the change'),S('uw','op','Submit for review',{s:'waiting for review'}),S('rev','op','Review: modify again or Review Pass',{s:'Reviewed'}),S('uw','rev','If wrong: Recovery Adjustment Cancellation',{s:'Adjustment cancelled'}),S('xri','end','Corrected amount in the next SOA')],
  ind:[I('rein','ext','Reinsurer disputes cover for a claim'),I('ced','ext','Review wording, exclusions and claim documents'),I('broker','ext','Agreement on the recoverable amount'),S('uw','op','Recovery corrected and reviewed in XRI'),I('ced','end','Disputed amount closed or escalated to arbitration')],
  rules:['Treaty recovery: adjust from the view page with Modify recovery info, then submit for review.','Reviewer can also Modify recovery info before Review Pass.','Notes record why a system result was changed.','Recovery Adjustment Cancellation cancels an adjustment.'],
- ba:'Set an approval rule: changes above a threshold need a senior reviewer. The source has one review level only.',
+ ba:'Set an approval rule: changes above a threshold need a senior reviewer. The InsureMO XRI guide has one review level only.',
  qa:'Modify a recovery, cancel the adjustment, and confirm the original value returns.',
  dev:'Keep both the system amount and the adjusted amount for audit.'},
 
@@ -255,7 +255,7 @@ const SCEN=[
  xri:[S('xri','sys','Treaty results calculated for the period'),S('xri','sys','Profit commission bill: profit commission adjustment, participant details',{f:'Profit commission bill'}),S('xri','sys','Sliding scale adjustment: external commission difference',{f:'Adjustment commission bill-external'}),S('uw','op','View, check participant tabs, print',{m:'Outward Treaty Statement'}),S('xri','end','Bills settled with other SOAs',{m:'Settlement'})],
  ind:[I('ced','ext','Year closes; claims develop'),I('ced','ext','Calculate treaty profit (income minus outgo)'),I('ced','ext','Apply loss ratio to sliding scale'),I('broker','ext','Agree calculation with reinsurers'),I('rein','end','Reinsurer pays extra commission (or cedant refunds)')],
  rules:['Commission Info on Treaty Level holds commission type, rate, earthquake commission, profit commission rate, management fees rate and loss rollover period.','If recipients have different commission, the profit commission bill shows them on separate tabs.','Branch Assessment Details appear only when the treaty assesses branches or accounting organizations.'],
- ba:'Get the exact profit commission formula and the sliding scale table from the wording. The source does not describe the calculation.',
+ ba:'Get the exact profit commission formula and the sliding scale table from the wording. The InsureMO XRI guide does not describe the calculation.',
  qa:'Use the profit commission example in Level 6 for expected values; mark them as derived until the formula is confirmed.',
  dev:'Loss Rollover Period (deficit carried forward) must be stored by year. Check how XRI reads it.'},
 
@@ -275,14 +275,14 @@ const SCEN=[
  rules:['Treaty manual SOA types: proportional treaty quarterly bill, profit commission bill, proportional treaty cash call bill, adjustment commission bill-external, settlement bill, XOL contract settlement bill, XOL treaty recovery bill.','Facultative manual SOA types: FacCedingEndorseBill, FACRecovery SOA, Facultative Facility Monthly/Quarterly Bill.','Edit is allowed for SOAs To be reviewed; Delete for SOAs not reviewed.','Download Template and Upload SOA Balance Details support bulk entry of participant balances.'],
  ba:'Limit manual SOAs to defined reasons. Every manual SOA is a control risk.',
  qa:'Create a manual SOA with Is estimated = Yes and confirm it cannot be selected in Settlement Statement.',
- dev:'Manual SOA uploads need the template format. Not in the source.'},
+ dev:'Manual SOA uploads need the template format. Not in the InsureMO XRI guide.'},
 
 {id:'S5',grp:'acc',name:'Settle balances: settlement statement and summary',mods:['ri','bcp'],src:'Settlement > Settlement Statement; Settlement Summary',
  desc:'Effective SOAs are settled in two steps. Settlement Statement selects the SOAs (or inward statement items) to settle and fixes the amount and rate. Settlement Summary groups settlements by payer and currency and sends them to the receivable and payable system.',
  xri:[S('uw','op','Settlement Statement > Create',{m:'Settlement Statement'}),S('uw','op','Search pending SOAs by type, status, payer, year'),S('uw','op','Select SOAs or items; Trial to check the balance',{r:'Only inward statements allow item-level selection'}),S('uw','op','Create Settlement: currency, amounts, settlement rate'),S('uw','op','Submit Settlement',{s:'Balance to be settled updated'}),S('uw','op','Settlement Summary > Create: select by type, currency, payer',{m:'Settlement Summary'}),S('xri','sys','Payer bank account taken from Reinsurance Party'),S('rev','op','Review Pass',{s:'Reviewed'}),S('bcp','end','AR / AP write-off in the receivable / payable system',{tag:'inf'})],
  ind:[I('broker','ext','Broker nets balances across treaties and reinsurers'),I('ced','ext','Agree the net amount with the broker'),I('bcp','ext','Pay or receive the net cash'),I('bcp','ext','Match cash to the open balances'),I('ced','end','Overdue balances chased (credit control)')],
  rules:['Settlement Statement Adjustment and Delete work only on settlements not summarized.','Submit Settlement updates the settlement status and the balance still to settle on each SOA.','Settlement Summary Adjustment is allowed when status is Not Submitted for Review or Not Reviewed, or write-off status is Not Written off or Written off not approved.','Cancel a summary only when write-off failed or it was not written off and not approved.','Account Information is read-only and comes from the payer’s latest bank account in the settlement currency.'],
- ba:'Confirm who the AR/AP system is: InsureMO BCP or the client’s ERP. The source only says "accounts receivable and payable system".',
+ ba:'Confirm who the AR/AP system is: InsureMO BCP or the client’s ERP. The InsureMO XRI guide only says "accounts receivable and payable system".',
  qa:'Trial a settlement of two SOAs in different currencies and check the settlement rate conversion.',
  dev:'The interface from Settlement Summary to BCP (or ERP) is not specified. Agree the payload and write-off callback.'},
 
@@ -309,8 +309,8 @@ const SCEN=[
  desc:'An inward treaty can be cancelled or terminated when it is In Force or Expired. Cancel first checks that no statement exists. Both go through review. Neither can be reversed in the screens described.',
  xri:[S('uw','op','Select In Force or Expired treaty',{m:'Inwards Treaty Management'}),S('xri','sys','Cancel: check that no statement exists',{r:'If a statement exists the cancel page is not opened'}),S('uw','x','Cancel → confirm → review',{s:'Cancel pending review'}),S('uw','x','Or Terminate → Confirm → review',{s:'Terminate pending review'}),S('rev','op','Review',{s:'Cancelled / Terminated'}),S('xri','end','Treaty no longer accepts new business')],
  ind:[I('ced','ext','Notice of cancellation under the treaty clause (often 90 days)'),I('rein','ext','Cancel from inception: treated as never in force'),I('rein','ext','Terminate: ends cover going forward; run-off or clean cut'),S('uw','x','Recorded in XRI with review'),I('rein','end','Final accounts agreed')],
- rules:['Cancel and Terminate are allowed for treaties In Force or Expired.','Cancel checks for statements first; the source does not say what happens if one exists.','Both pages are read-only copies of the treaty main page.','Both submit to review.'],
- ba:'The source does not define the business difference between Cancel and Terminate. Agree a definition with the client (domain usage shown in the industry flow) and log it.',
+ rules:['Cancel and Terminate are allowed for treaties In Force or Expired.','Cancel checks for statements first; the InsureMO XRI guide does not say what happens if one exists.','Both pages are read-only copies of the treaty main page.','Both submit to review.'],
+ ba:'The InsureMO XRI guide does not define the business difference between Cancel and Terminate. Agree a definition with the client (domain usage shown in the industry flow) and log it.',
  qa:'Try to cancel a treaty that has a statement; record the actual system message.',
  dev:'Treat both as irreversible until the platform team confirms an undo path.'},
 
@@ -321,7 +321,7 @@ const SCEN=[
  rules:['Statement review applies to manual adjustment statements only.','Abandon statement of Account deletes the entry.','Cancel changes a reviewed manual statement to withdrawn and withdraws the last reviewed account data.','Item-level settlement is possible only for inward statements.'],
  ba:'Agree the cedant statement template so it can be uploaded or keyed quickly.',
  qa:'Withdraw a reviewed inward statement and check it leaves the pending settlement list.',
- dev:'Consider a bulk upload for cedant accounts; the source describes manual entry only.'}
+ dev:'Consider a bulk upload for cedant accounts; the InsureMO XRI guide describes manual entry only.'}
 ];
 
 /* ---------- module hub ---------- */
@@ -330,7 +330,7 @@ const MODS={
   sends:['Issued policies and renewals: policy, risk units, sums insured, premium, risk category, dates','Endorsements: endorsement number, type, effective date, change in premium and limit','Coinsurance share (Own Percentage) and merged risks'],
   gets:['Policy Reinsurance Arrangement (read through Reinsurance Query)','Facultative placement status (Has Fac Task) for underwriting referral'],
   screens:'New Cession Facultative, Endorsement Facultative, Cession Adjustment, Policy Reinsurance Arrangement Inquiry',sc:['A1','A2','A3','A4'],
-  ba:'For each policy transaction (issue, renew, endorse, cancel, reinstate) confirm the cession effect and whether facultative must be bound before issue.',qa:'Issue, endorse and cancel a policy; check slices and SOAs follow.',dev:'Agree the policy-to-XRI event and payload. The source does not specify it.'},
+  ba:'For each policy transaction (issue, renew, endorse, cancel, reinstate) confirm the cession effect and whether facultative must be bound before issue.',qa:'Issue, endorse and cancel a policy; check slices and SOAs follow.',dev:'Agree the policy-to-XRI event and payload. The InsureMO XRI guide does not specify it.'},
  clm:{n:'Claims',code:'Claim admin',col:'var(--clm)',x:20,y:170,
   sends:['Claim case: case number, date of loss, accident cause, CAT code, risk category','Each appraisal and loss paid change (new reinsurance claim number)','Outstanding and paid amounts by currency'],
   gets:['Treaty and facultative recovery amounts','Cash call flag and status for large losses'],
@@ -345,7 +345,7 @@ const MODS={
   sends:['Exchange rates for tax and settlement'],
   gets:['Ceded premium, commission, recoveries, reserves by treaty and period','IFRS 17 grouping data (profit level, portfolio) from IFRS17 Condition'],
   screens:'Treaty Level: IFRS17 Condition, Currency for Tax; SOA VAT details',sc:['S1','S2','S3'],
-  ba:'Agree the chart of accounts for reinsurance held and the IFRS 17 grouping.',qa:'Reconcile one quarter: SOA totals to GL postings.',dev:'GL posting rules for XRI are not in the source. Design them with finance.'},
+  ba:'Agree the chart of accounts for reinsurance held and the IFRS 17 grouping.',qa:'Reconcile one quarter: SOA totals to GL postings.',dev:'GL posting rules for XRI are not in the InsureMO XRI guide. Design them with finance.'},
  dms:{n:'Document mgmt',code:'Image Management',col:'var(--ink-2)',x:20,y:310,
   sends:['Stored slips, wordings, loss advices, review evidence'],gets:['Uploads from Image Management on every main page'],
   screens:'All create, review and recovery pages',sc:['D1','A2','R2'],
@@ -363,7 +363,7 @@ const JOURNEYS=[
  {id:'j2',n:'Large loss to cash call',d:'A factory fire on a quota share risk. The reinsurers’ share is above the cash call limit.',
   steps:[S('clm','ev','Fire loss, paid 5m'),S('xri','sys','Recovery at QS share',{f:'2m at 40%'}),S('xri','sys','Above cash call limit',{s:'waiting for handle'}),S('uw','op','Cash call flag; Submit',{m:'see scenario R2'}),S('rev','op','Review Pass'),S('xri','sys','Cash call bill'),S('bcp','op','Collect from reinsurers',{tag:'inf'}),S('xri','end','Released in quarterly account')]},
  {id:'j3',n:'Catastrophe event and XoL',d:'A typhoon causes many claims. After proportional recoveries, the net retained losses exceed the cat XoL attachment point.',
-  steps:[S('clm','ev','Many claims, one CAT code'),S('xri','sys','Proportional recoveries first',{m:'see scenario R1'}),S('xri','sys','Net retained loss per event'),S('xri','sys','XoL layer recovery',{m:'see scenario R3'}),S('xri','sys','Reinstatement premium due'),S('rev','op','Review Pass'),S('xri','sys','XoL recovery bill'),S('bcp','end','Net settled')],note:'Per-event aggregation depends on a CAT code from Claims. The source shows Claim CAT Code as a search field only. Confirm how events are built.'},
+  steps:[S('clm','ev','Many claims, one CAT code'),S('xri','sys','Proportional recoveries first',{m:'see scenario R1'}),S('xri','sys','Net retained loss per event'),S('xri','sys','XoL layer recovery',{m:'see scenario R3'}),S('xri','sys','Reinstatement premium due'),S('rev','op','Review Pass'),S('xri','sys','XoL recovery bill'),S('bcp','end','Net settled')],note:'Per-event aggregation depends on a CAT code from Claims. The InsureMO XRI guide shows Claim CAT Code as a search field only. Confirm how events are built.'},
  {id:'j4',n:'Endorsement mid-term',d:'Sum insured increases mid-term on a risk with facultative cover.',
   steps:[S('pa','ev','Endorsement: SI + 5m'),S('xri','sys','New slice from effective date'),S('xri','sys','Endorsement fac task'),S('uw','op','Arrange endorsement fac',{m:'see scenario A3'}),S('rev','op','Review Pass'),S('xri','sys','Endorsement fac SOA'),S('bcp','end','Additional premium settled')]},
  {id:'j5',n:'Inward treaty account',d:'The company accepts a 5% line on another insurer’s quota share and receives quarterly accounts.',
@@ -439,10 +439,10 @@ const APIS=[
  ['Riskunit Mgmt','Risk unit and risk position management'],['Treaty Mgmt','Treaty, facility and inward contract definitions'],['Cession Engine','Automatic cession calculation against treaty rules'],['Claim Recovery Engine','Treaty and facultative recovery calculation'],['Risk Accumulation','Accumulation of risks (risk accumulation group)'],['Reinsurance Party Mgmt','Reinsurers, brokers, cedants'],['API Gateway','Single entry point for BFF and third-party calls'],['BFF APIs & Database','Partner-owned backend-for-frontend layer'],['Domain services','Utility (API Mgmt, iHub, Service Factory, Config Center, Security, Audit), Common (Data Dict., URP, Rating, Workflow, Log Analyzer, Printing), Non-insurance (Email, SMS, 2FA, KMS, Doc Gen, Storage), DataMO (governance, visualization, indicators)'],['Foundation','IAM, K8S, DevOps, Monitor, MySQL, MongoDB, distributed transactions, Elasticsearch, message queue']
 ];
 
-/* ---------- source gaps: [impact, topic, what the source says, action] ---------- */
+/* ---------- source gaps: [impact, topic, what the InsureMO XRI guide says, action] ---------- */
 const GAPS=[
- ['High','No integration specification','The source says XRI "matches the insured business" and that claims "trigger" recovery, but gives no API, event or payload for Easy PA, Claims, BCP or GL. Architecture shows "BFF APIs" only.','Request API and event specifications (policy issue, endorsement, claim change, settlement summary, write-off callback) before integration design.'],
- ['High','No accounting / GL rules','SOAs are "submitted to the financial department" and summaries go to an "accounts receivable and payable system". No GL accounts, posting rules or IFRS 17 measurement logic.','Design posting rules with finance. Treat the GL entries in Level 6 as domain context only.'],
+ ['High','No integration specification','The InsureMO XRI guide says XRI "matches the insured business" and that claims "trigger" recovery, but gives no API, event or payload for Easy PA, Claims, BCP or GL. Architecture shows "BFF APIs" only.','Request API and event specifications (policy issue, endorsement, claim change, settlement summary, write-off callback) before integration design.'],
+ ['High','No accounting / GL rules','SOAs are "submitted to the financial department" and summaries go to an "accounts receivable and payable system". No GL accounts, posting rules or IFRS 17 measurement logic.','Design posting rules with finance. Treat the GL entries in Level 6 as insurance knowledge only.'],
  ['High','No calculation formulas','Cession split (retention, lines, QS %), reinstatement premium, profit commission, sliding scale and GNPI adjustment are not given as formulas.','Get formulas from the platform team. Until then, mark derived expected results with * in test cases.'],
  ['High','Cancel vs Terminate (inward)','Both are allowed for In Force or Expired treaties and both go to review. The difference is not explained. Cancel checks for statements; what happens if one exists is not stated.','Agree definitions with the client and platform team; test the "statement exists" case.'],
  ['Medium','Status names inconsistent','Outward: "New to be Reviewed"; inward: "New Pending Review" and "To Be Reviewed"; screenshot: "Newly built". Settlement and adjustment statuses for outward treaties are not named.','Take status names from the system, not the document, in test scripts.'],
@@ -450,7 +450,7 @@ const GAPS=[
  ['Medium','Facility subsection screenshot','The text describes the subsection layer, but the screenshot shows the Subsection Total table of the agreement layer. Only the proportional subsection is described.','Ask for the subsection screen and non-proportional facility details.'],
  ['Medium','Recovery Management rules differ','Treaty Recovery: active for "waiting for handle and waiting for review". Facultative Recovery: only when "Manual adjustment? = Yes and Review Status is waiting for review".','Confirm whether the difference is intended.'],
  ['Medium','Cash call payment terms','Cash call limit and release are described, but not the deadline for reinsurers to pay or ageing of unpaid cash calls.','Add as a requirement if the client needs credit control on cash calls.'],
- ['Medium','Profit commission and sliding scale periods','The bills exist but the source does not say when they are generated or how deficits carry forward (Loss Rollover Period is a field).','Confirm generation timing and carry-forward rules.'],
+ ['Medium','Profit commission and sliding scale periods','The bills exist but the InsureMO XRI guide does not say when they are generated or how deficits carry forward (Loss Rollover Period is a field).','Confirm generation timing and carry-forward rules.'],
  ['Low','Copy errors in button text','"Facultative Non-Proportional Reinsurance Participants … add proportional arrangements"; inward statement review "Back: return to the facultative statement inquiry page"; Policy Information "Back: return to the main page of Reinsurance Workbench"; Claim History "same as the amortization page".','Correct in the next document version; do not copy into training scripts.'],
  ['Low','Copy rule differs','Outward and facility button lists say "Copy: select a treaty / agreement"; the procedures say "select one in force".','Test copy on a non-effective treaty and record the result.'],
  ['Low','Revoke and Withdraw not shown','Settlement Statement inquiry mentions "revoking statements" and Cession Adjustment mentions "withdrawing", but no such buttons are listed.','Confirm whether these actions exist.'],

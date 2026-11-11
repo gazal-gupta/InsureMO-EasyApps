@@ -1,4 +1,4 @@
-/* ===================== REINSURANCE BUSINESS KNOWLEDGE (domain context unless stated) ===================== */
+/* ===================== REINSURANCE BUSINESS KNOWLEDGE (insurance knowledge unless stated) ===================== */
 /* [name, who they are, money, in XRI] */
 const PARTIES=[
  ['Insured / policyholder','The person or company that buys the original policy. Has no contract with the reinsurer and cannot claim from it directly.','Pays premium to the insurer; receives claims from the insurer only.','Appears only as Insured / Policy Holder Name on allocation and recovery screens (data from Easy PA).'],
@@ -63,7 +63,7 @@ const REAL={
  A4:'An audit finds a marine cargo risk was ceded to the property treaty. The cession is corrected from inception, and the difference appears in the next quarterly account as return premium for the property treaty and new premium for the marine treaty.',
  R1:'A burst pipe causes a 100,000 claim on a home policy with a 40% quota share. XRI calculates a 40,000 recovery and includes it in the Q3 account as loss paid.',
  R2:'A factory fire costs 5m. The policy is 40% ceded to a quota share with a 1m cash call limit. The reinsurers’ share of 2m exceeds the limit, so the RI user raises a cash call. The reinsurers pay in 21 days, and the cash call is credited back in the quarterly account.',
- R3:'Source example (screenshot): an enterprise property claim with net retention 900,000 on a layer 500,000 xs 500,000. Recovery = 900,000 − 500,000 = 400,000 (within the 500,000 limit). XRI shows applicable reinstatement fees of 8,000: for one reinstatement at 100% pro rata as to amount, that equals a layer premium of 10,000 (8,000 = 400,000 / 500,000 × 10,000). The premium figure is inferred, not in the source.',
+ R3:'Source example (screenshot): an enterprise property claim with net retention 900,000 on a layer 500,000 xs 500,000. Recovery = 900,000 − 500,000 = 400,000 (within the 500,000 limit). XRI shows applicable reinstatement fees of 8,000: for one reinstatement at 100% pro rata as to amount, that equals a layer premium of 10,000 (8,000 = 400,000 / 500,000 × 10,000). The premium figure is inferred, not in the InsureMO XRI guide.',
  R4:'A 1m loss on the factory’s facultative part (3m placed 60/40). The fac share of the loss is 10% (3m of 30m) = 100,000: Reinsurer A pays 60,000 and Reinsurer B 40,000. The FACRecovery SOA shows loss paid only.',
  R5:'A reinsurer refuses to pay a recovery because the loss falls under a war exclusion in the treaty. After review, the cedant agrees, and the RI user reduces the recovery to zero with a note and sends it for review.',
  S1:'Q2 for a 40% QS: ceded premium 1,000,000, commission 32.5% = 325,000, claims paid 400,000. Balance = 1,000,000 − 325,000 − 400,000 = 275,000 due to reinsurers, split by each reinsurer’s share.',
@@ -145,7 +145,7 @@ const GLOSS=[
  ['Limit of indemnity','Contract terms','Maximum the layer pays per loss or event.','20m.','Limit of Indemnity'],
  ['Annual aggregate limit (AAL)','Contract terms','Maximum the layer pays in total for the year.','40m (limit + 1 reinstatement).','Annual aggregate limit'],
  ['Retention','Contract terms','What the cedant keeps for its own account.','Keeps 60% under a 40% QS.','Retention Limit; Retention Base'],
- ['Net retention','Contract terms','The cedant’s share after all proportional reinsurance; the base for XoL.','900,000 in the source example.','Net Retention (OS / Actual Loss)'],
+ ['Net retention','Contract terms','The cedant’s share after all proportional reinsurance; the base for XoL.','900,000 in the InsureMO XRI guide example.','Net Retention (OS / Actual Loss)'],
  ['Capacity','Contract terms','The maximum the treaty can accept per risk.','QS limit 100m.','Ceded Limit; Treaty Limit'],
  ['Cession','Cession','The share passed to a reinsurer, and its record.','Cede 40% of a policy.','Cession engine'],
  ['Ceded premium','Accounting','Premium paid to reinsurers for the ceded share.','40% × 50,000 = 20,000.','Cession Premium on SOA'],
@@ -162,7 +162,7 @@ const GLOSS=[
  ['GNPI / EPI','Accounting','Gross net premium income (base for XoL rating) / estimated premium income.','GNPI 100m.','EPI; XOL GNPI adjustment bill'],
  ['Adjustment premium','Accounting','Year-end XoL premium top-up when rate × actual GNPI exceeds the MDP.','0.5m.','Adjustment rate; GNPI bill'],
  ['Reinstatement','Claims & recovery','Restoring an XoL limit after a loss.','1 reinstatement.','Reinstatement block'],
- ['Reinstatement premium','Claims & recovery','Premium paid to reinstate the limit, often pro rata as to amount and / or time.','8,000 in the source example.','Applicable Reinstatement Fees'],
+ ['Reinstatement premium','Claims & recovery','Premium paid to reinstate the limit, often pro rata as to amount and / or time.','8,000 in the InsureMO XRI guide example.','Applicable Reinstatement Fees'],
  ['Pro rata as to amount / time','Claims & recovery','Reinstatement premium proportional to the limit used and / or the time left.','400k of 500k used = 80%.','Calculation based on amount / time'],
  ['Hours clause','Claims & recovery','Defines one catastrophe event as losses within a set number of hours.','72 hours for windstorm.','Not in source'],
  ['Event limit','Contract terms','Maximum the treaty pays per event.','50m per event.','Event Limit block'],

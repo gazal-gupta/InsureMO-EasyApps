@@ -59,13 +59,17 @@ Script order is fixed in `build.py`: c_data → e_fields → g_shots → h_biz �
 
 ## v2 additions (Reinsurance engine in reinsurance-learning-guide/src/)
 - `SCEN` steps are `xri` (process from the source) and `ind` (industry process). Rename both keys together in `d_app.js`, `f_lens.js` and the toolkit if a module needs normal / reversal instead.
-- `I(lane, kind, text, opts)` = `S(...)` with `tag:'inf'`: the step gets an IND badge and an amber role label; other steps get an XRI badge.
+- `I(lane, kind, text, opts)` = `S(...)` with `tag:'inf'`: the step gets an INS (Insurance knowledge) badge and an amber role label; other steps get an XRI badge.
 - `GRP` in `d_app.js`: scenario groups → `[label, tag class]`.
 - `h_biz.js` adds `PRIMER` (`[idea, plain words, example]`), `STAGES` (`{n, id, name, menu, freq, plain, analogy, start, end, example, sc[], steps[]}`) and `LIFECYCLES` (`{id, name, why, start, end, freq, roles, menu, st (STATES key), sc[], steps[]}`). In steps, `s` is shown as the result.
 - `stepTable(steps, id, resultLabel)`: pass `'Result'` for process maps.
 - `STATES` node order is the sequence number shown on the diagram; keep at least 240 px between node x positions.
 - Reference tables: `CONTRACT` (data needed from other modules), `SOATYPES`, `STATUSREF`, `DTABLES` (`[field, values, screen]`), `APIS` (architecture services).
 - Storage prefix `xriguide:`; export app id `insuremo-xri-guide`.
+
+## v2 in Easy PA and Claims (2026-11-11)
+- Easy PA: `engine/k_v2.js` holds `PRIMER`, `STAGES`, `LIFECYCLES` (loaded after `j_protec.js`); renderers copied from the BCP engine into `d_app.js`; lifecycle `st` keys are `proposal`, `endo`, `policy`.
+- Claims: `PRIMER`, `STAGES`, `LIFECYCLES` and the renderers sit just before `function init()`; flow links use `#fl-<id>`; `graphSvg(m)` numbers arrows when `m.num` is set, and `#stSeq` lists them in the same order as `m.edges`.
 
 ## Claims guide (`claims-learning-guide/index.html`)
 

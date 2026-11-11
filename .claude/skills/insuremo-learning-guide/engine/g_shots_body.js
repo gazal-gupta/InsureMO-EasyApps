@@ -1,4 +1,4 @@
-/* ===== Screenshots from the source guide, placed by screen and step =====
+/* ===== Screenshots from the InsureMO BCP guide, placed by screen and step =====
    step: 'pre' = prerequisite, number = index in the screen's steps list (0-based) */
 const IMG_DIR='img/';
 const imgSrc=n=>(typeof IMG_DATA!=='undefined'&&IMG_DATA[n])||(IMG_DIR+n);
