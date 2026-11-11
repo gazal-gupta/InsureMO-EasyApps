@@ -259,7 +259,7 @@ def main():
     shell = page
     page = page.replace('<!--EA_DATA-->', f'<script type="application/json" id="ea-data">{script_json(data)}</script>')
     page = page.replace('<!--EA_MODULES-->', payload)
-    page = page.replace('/*EA_APP*/', read(os.path.join(SRC, 'hub.js')))
+    page = page.replace('/*EA_APP*/', read(os.path.join(SRC, 'extra.js')) + read(os.path.join(SRC, 'hub.js')))
     assert '<!--EA_' not in page and '/*EA_APP*/' not in page
     standalone = ('<!doctype html>\n<html lang="en"><head><meta charset="utf-8">'
                   '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
@@ -272,7 +272,7 @@ def main():
     if a.artifact_dir:
         os.makedirs(os.path.join(a.artifact_dir, 'm'), exist_ok=True)
         light = shell.replace('<!--EA_DATA-->', f'<script type="application/json" id="ea-data">{script_json(data)}</script>')
-        light = light.replace('<!--EA_MODULES-->', '').replace('/*EA_APP*/', read(os.path.join(SRC, 'hub.js'))).replace('<!--BODY-->', '', 1)
+        light = light.replace('<!--EA_MODULES-->', '').replace('/*EA_APP*/', read(os.path.join(SRC, 'extra.js')) + read(os.path.join(SRC, 'hub.js'))).replace('<!--BODY-->', '', 1)
         with open(os.path.join(a.artifact_dir, 'index.html'), 'w', encoding='utf-8') as fh:
             fh.write(light)
         for k, html in mod_html.items():

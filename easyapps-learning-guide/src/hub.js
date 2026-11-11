@@ -5,11 +5,15 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 const D=JSON.parse($('#ea-data').textContent);
 const ORDER=D.order,MOD=D.mods;
 const MODS_RE=new RegExp('^('+ORDER.join('|')+')(?:--(.+))?$');
-const PAGES=['home','map','cross','gaps','glossary'];
+const X=window.EA_EXTRA||null;
+const PAGES=['home','map','cross','gaps','glossary'].concat(X?[X.page]:[]);
+if(X){D.ext.gen='General insurance';
+  X.gloss.forEach(([t,m])=>{const key=t.toLowerCase();const hit=D.gloss.find(g=>g.t.toLowerCase()===key);const e={mod:'gen',c:'Additional insurance areas',m,e:'',w:''};if(hit)hit.e.push(e);else D.gloss.push({t,e:[e]})});
+  D.gloss.sort((a,b)=>a.t.toLowerCase()<b.t.toLowerCase()?-1:1)}
 const store={get(k,d){try{const v=localStorage.getItem('eaguide:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
              set(k,v){try{localStorage.setItem('eaguide:'+k,JSON.stringify(v))}catch(e){}}};
 const NAME=k=>MOD[k]?MOD[k].name:(D.ext[k]||k);
-const COL=k=>MOD[k]?'var(--'+MOD[k].col+')':(k==='sc'?'var(--sc)':k==='gl'?'var(--gl)':'var(--ext)');
+const COL=k=>MOD[k]?'var(--'+MOD[k].col+')':(k==='sc'?'var(--sc)':k==='gl'?'var(--gl)':k==='gen'?'var(--int)':'var(--ext)');
 const mtag=k=>`<span class="mt" style="--c:${COL(k)}">${esc(NAME(k))}</span>`;
 const link=(m,h)=>'#'+m+(h&&h!=='start'?'--'+h:'');
 const lvName=(m,id)=>{const l=MOD[m].levels.find(x=>x[0]===id);return l?l[2]:id};
@@ -65,6 +69,7 @@ function route(){
   quiet=null;
   const m=h.match(MODS_RE);
   if(m){showMod(m[1],m[2]||'start');return}
+  if(X&&/^area-/.test(h)){showPage(X.page);X.open(h.slice(5));crumb();return}
   showPage(PAGES.includes(h)?h:'home');
 }
 let curPage=null;
@@ -87,7 +92,8 @@ function tabs(){
   const cur=curMod||curPage;
   const T=[['home','Home'],['map','Capability map'],['cross','Cross-module'],['gaps','Source gaps'],['glossary','Glossary']];
   $('#tabs').innerHTML=T.map(([id,n])=>`<a href="#${id}" ${cur===id?'aria-current="page"':''}>${n}</a>`).join('')+'<span class="sep" aria-hidden="true"></span>'+
-    ORDER.map(k=>`<a href="#${k}" ${cur===k?'aria-current="page"':''}><span class="dot" style="--c:${COL(k)}"></span>${esc(MOD[k].short)} · ${esc(MOD[k].name)}</a>`).join('');
+    ORDER.map(k=>`<a href="#${k}" ${cur===k?'aria-current="page"':''}><span class="dot" style="--c:${COL(k)}"></span>${esc(MOD[k].short)} · ${esc(MOD[k].name)}</a>`).join('')+
+    (X?`<span class="sep" aria-hidden="true"></span><a href="#${X.page}" ${cur===X.page?'aria-current="page"':''}><span class="dot" style="--c:var(--int)"></span>${esc(X.title)}</a>`:'');
 }
 function crumb(){
   let s='<a href="#home">Easy Apps</a>';
@@ -95,7 +101,7 @@ function crumb(){
     s+=' › <a href="#'+k+'">'+esc(MOD[k].full)+'</a>';
     const vt=n.title||viewTitle(k,n.h)||'';if(vt)s+=' › '+esc(vt);
     const it=TITLE[k+'|'+n.h];if(it)s+=' › <b>'+esc(it)+'</b>';
-  }else if(curPage&&curPage!=='home'){s+=' › <b>'+esc($('#h-'+curPage).dataset.title)+'</b>'}
+  }else if(curPage&&curPage!=='home'){s+=' › <b>'+esc($('#h-'+curPage).dataset.title)+'</b>';if(X&&curPage===X.page&&X.cur){const a=X.areas.find(z=>z.id===X.cur());if(a)s+=' › '+esc(a.n)}}
   $('#crumb').innerHTML=s;
 }
 
@@ -154,6 +160,7 @@ function renderHome(){
       return `<li><div class="row">${head}<span class="small muted">${esc(p.why)}</span></div><div class="lv">${links}</div></li>`}).join('')}</ol>
   </section>
   <section>
+    ${X?`<div><span class="eyebrow">Beyond the system guides</span><h2>Additional insurance areas</h2></div><p class="muted small">General insurance knowledge that is not in the InsureMO guides, labelled Domain context.</p><ol class="chain" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">${X.areas.map((a,i)=>`<li style="--c:var(--int)"><a href="#area-${a.id}"><span class="st">Area ${i+1}</span><b>${esc(a.n)}</b><span class="d">${esc(a.short)}</span></a></li>`).join('')}</ol></section>\n  <section>`:''}
     <div><span class="eyebrow">By role</span><h2>What each guide asks of your role</h2></div>
     <div class="chips" id="roleChips" role="group" aria-label="Role">${[['ba','Business analyst'],['qa','Tester'],['dev','Developer']].map(([r,n])=>`<button class="chip" type="button" data-r="${r}">${n}</button>`).join('')}</div>
     <div class="rolegrid" id="roleGrid"></div>
@@ -404,6 +411,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.search'))$('#result
 
 /* ---------- init ---------- */
 const RENDER={home:renderHome,map:renderMap,cross:renderCross,gaps:renderGaps,glossary:renderGlossary};
+if(X){RENDER[X.page]=()=>X.render($('#h-'+X.page));X.onNav=id=>{quietHash('area-'+id);crumb()};X.search.forEach(a=>SIDX.push({m:'gen',k:'Additional insurance area',t:a.t,x:a.x,go:'area-'+a.id}))}
 document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('.en[data-go]');if(g)go(g.dataset.go.slice(1))});
 window.addEventListener('hashchange',route);
 route();

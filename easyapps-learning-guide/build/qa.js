@@ -22,7 +22,7 @@ async function state(fr){return fr.evaluate(()=>{const v=document.querySelector(
   page.on('pageerror',e=>errs.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!/fonts\.g/.test(m.text()))errs.push('console: '+m.text())});
   await page.goto(base+'/guide.html');await page.waitForSelector('#h-home .mcard');
   const D=await page.evaluate(()=>window.EA.D);
-  for(const p of ['home','map','cross','gaps','glossary']){
+  for(const p of ['home','map','cross','gaps','glossary','areas']){
     await page.evaluate(h=>location.hash=h,p);await sleep(300);
     const n=await page.$eval('#h-'+p,e=>e.hidden?0:e.innerText.length);ok(n>500,`hub page ${p} renders (${n} chars)`);
     if(shots&&p!=='gaps')await page.screenshot({path:path.join(shots,'hub-'+p+'.png'),fullPage:p==='home'});
@@ -84,7 +84,7 @@ async function state(fr){return fr.evaluate(()=>{const v=document.querySelector(
   // phone width
   const m=await b.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});const merr=[];m.on('pageerror',e=>merr.push(e.message));
   await m.goto(base+'/guide.html');await m.waitForSelector('#h-home .mcard');
-  for(const p of ['home','map','cross','gaps','glossary']){await m.evaluate(h=>location.hash=h,p);await sleep(250);
+  for(const p of ['home','map','cross','gaps','glossary','areas']){await m.evaluate(h=>location.hash=h,p);await sleep(250);
     const ov=await m.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);ok(ov<=1,`390px: ${p} has no horizontal page scroll (${ov})`);
     if(shots&&(p==='home'||p==='map'))await m.screenshot({path:path.join(shots,'phone-'+p+'.png')})}
   await m.evaluate(()=>location.hash='pa--sc-N1');await sleep(1500);

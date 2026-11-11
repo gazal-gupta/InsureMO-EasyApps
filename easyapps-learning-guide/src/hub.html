@@ -247,6 +247,32 @@ details.sub > summary .cnt{font-size:12.5px;color:var(--ink-2)}
 .def .c{font-size:11.5px;color:var(--ink-2)}
 .letter{font-family:var(--f-display);font-size:13px;font-weight:700;padding:6px 14px;background:var(--surface-2);border-bottom:1px solid var(--line);color:var(--ink-2)}
 
+/* additional insurance areas */
+.xa-layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:980px){.xa-layout{grid-template-columns:minmax(0,1fr)}}
+.xa-nav{display:flex;flex-direction:column;gap:4px;position:sticky;top:calc(var(--barH) + 12px);max-height:calc(100vh - var(--barH) - 24px);overflow:auto}
+@media (max-width:980px){.xa-nav{position:static;max-height:none}}
+.xa-nav button{display:flex;gap:10px;align-items:baseline;text-align:left;width:100%;border:1px solid transparent;background:none;border-radius:var(--r);padding:7px 9px;cursor:pointer;font-size:14px;line-height:1.35}
+.xa-nav button:hover{background:var(--surface-2)}
+.xa-nav button[aria-pressed="true"]{border-color:var(--ink);background:var(--surface)}
+.xa-nav .jid{font-family:var(--f-mono);font-size:11px;color:var(--int);flex:0 0 auto}
+.xa-body{display:flex;flex-direction:column;gap:14px;min-width:0}
+.xa-block{display:flex;flex-direction:column;gap:10px;min-width:0;padding-top:6px}
+.xa-block h3{font-size:17px}
+.xa-list{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px;max-width:80ch}
+.xa-svg{display:block;width:100%;height:auto;min-width:560px}
+.xa-node{fill:var(--ink);font-size:13px;font-weight:600;font-family:var(--f-body)}
+.xa-msg{fill:var(--ink);font-size:12px;font-family:var(--f-body)}
+.xa-small{fill:var(--ink-2);font-size:10.5px;font-family:var(--f-body)}
+.xa-num{fill:var(--bg);font-size:11px;font-weight:600;font-family:var(--f-mono)}
+.xa-calc{border:1px solid var(--line);border-left:4px solid var(--int);border-radius:var(--r);background:var(--surface);padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:14px}
+@media (max-width:760px){.xa-calc{grid-template-columns:minmax(0,1fr)}}
+.xa-in{display:grid;gap:8px}
+.xa-in label{display:flex;flex-direction:column;gap:3px}
+.xa-quiz{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.xa-q{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;display:flex;flex-direction:column;gap:4px;width:100%;margin:0}
+.xa-q legend{font-weight:600;padding:0 4px}
+.xa-fb.ok{color:var(--in);font-weight:600}.xa-fb.no{color:var(--cancel);font-weight:600}
 /* module stage */
 #stage{position:fixed;left:0;right:0;bottom:0;top:calc(env(safe-area-inset-top,0px) + var(--barH));background:var(--bg);z-index:10}
 #stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg)}
@@ -292,6 +318,7 @@ details.sub > summary .cnt{font-size:12.5px;color:var(--ink-2)}
   <div class="page" id="h-cross" data-title="Cross-module" hidden></div>
   <div class="page" id="h-gaps" data-title="Source gaps" hidden></div>
   <div class="page" id="h-glossary" data-title="Glossary" hidden></div>
+  <div class="page" id="h-areas" data-title="Additional insurance areas" hidden></div>
 </main>
 <div id="stage" hidden><div class="loading" id="loading">Opening the module guide…</div></div>
 
