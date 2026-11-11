@@ -52,6 +52,15 @@ async function state(fr){return fr.evaluate(()=>{const v=document.querySelector(
     ok(img.n>20&&img.bad===0,`module ${k}: ${img.n} screenshots on ${img.scr} screens decode, ${img.bad} broken`);
     const crumb=await page.$eval('#crumb',e=>e.innerText);ok(crumb.includes(D.mods[k].full),`module ${k} breadcrumb shows module`);
   }
+  // real clicks on each guide's own menu: links must stay inside the guide (a srcdoc page resolves '#x' against the hub's URL)
+  for(const k of D.order){
+    await page.evaluate(h=>location.hash=h,k);await sleep(400);const fr=await modFrame(page,k);if(!fr){ok(false,'frame '+k);continue}
+    const links=await fr.evaluate(()=>[...document.querySelectorAll('#railNav a')].map(a=>a.getAttribute('href')));const bad=[];
+    for(const h of links){await fr.evaluate(h=>{[...document.querySelectorAll('#railNav a')].find(a=>a.getAttribute('href')===h).click()},h);await sleep(150);
+      const s=await fr.evaluate(()=>({hub:!!document.querySelector('#hbar'),src:location.href.startsWith('about:srcdoc'),v:'#'+((document.querySelector('section.view:not([hidden])')||{}).id||'').slice(2)}));
+      if(s.hub||!s.src||s.v!==h)bad.push(h+' '+JSON.stringify(s))}
+    ok(bad.length===0,`module ${k}: clicking all ${links.length} menu links keeps each page inside the guide${bad.length?' '+bad.slice(0,3).join(', '):''}`);
+  }
   if(shots){await page.evaluate(()=>location.hash='bcp--sc-C1');await sleep(800);await page.screenshot({path:path.join(shots,'module-bcp.png')})}
   // role and theme reach the guides
   await page.selectOption('#role','qa');await sleep(300);

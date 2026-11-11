@@ -28,8 +28,9 @@ function frame(k){
   if(el){f.srcdoc=JSON.parse(el.textContent)}
   else{
     const url=new URL('m/'+k+'.html',document.baseURI).href;
-    fetch(url).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(t=>{f.srcdoc=t})
-      .catch(e=>{loadErr[k]='fetch '+url+': '+(e&&e.message||e);f.removeAttribute('srcdoc');f.src=url});
+    fetch(url).then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.text()})
+      .then(h=>{if(h.indexOf('var M="'+k+'"')<0)throw new Error('the file is not the '+MOD[k].name+' guide ('+h.length+' bytes)');f.srcdoc=h})
+      .catch(e=>{loadErr[k]='fetch '+url+': '+(e&&e.message||e);showLoadError(k)});
     setTimeout(()=>{if(!ready[k])showLoadError(k)},20000);
   }
   return f;
