@@ -113,6 +113,7 @@ function renderSc(){
    <h2 style="margin:0">${esc(s.name)}</h2><p style="max-width:75ch">${esc(s.desc)}</p>${REAL[s.id]?`<div class="realex"><span class="eyebrow">Real-world example · illustrative amounts</span><p>${esc(REAL[s.id])}</p></div>`:''}
    <div class="row"><div class="seg" role="group" aria-label="Flow"><button type="button" data-m="normal" aria-pressed="${curMode==='normal'}">Normal flow</button><button type="button" data-m="reversal" aria-pressed="${curMode==='reversal'}">Exception flow</button></div><span class="small muted">Source: ${esc(s.src)}</span></div></div>
    <div id="scDia"><div class="diagram">${swimlane(steps,{extraLanes:lanesExtra,uid:'sc',label:s.name})}</div>${stepTable(steps,'scTbl')}</div>
+   ${typeof walkHTML==='function'?walkHTML(s.id):''}
    ${s.variants?`<h3>Producer collection variants</h3><div class="tbl"><table><thead><tr><th>Commission offset</th><th>ARAP offset</th><th>Flow</th><th>Fees</th></tr></thead><tbody>${s.variants.map(v=>`<tr><td>${v[0]}</td><td>${v[1]}</td><td>${esc(v[2])}</td><td class="mono small">${esc(v[3])}</td></tr>`).join('')}</tbody></table></div>`:''}
    ${s.cancels?`<h3>What can be cancelled</h3><div class="tbl"><table><thead><tr><th>Record</th><th>Cancel fees</th><th>Reversible</th></tr></thead><tbody>${s.cancels.map(v=>`<tr><td>${esc(v[0])}</td><td class="mono small">${esc(v[1])}</td><td>No</td></tr>`).join('')}</tbody></table></div>`:''}
    ${roleBlocksScenario(s)}
@@ -315,7 +316,7 @@ function doSearch(){
 
 /* ---------- init ---------- */
 function init(){
-  renderStatic();renderStates();renderHub();renderJourneys();renderFF();runCalc();renderToolkit();renderAllChecks();renderFinal();renderCoverage();buildIndex();
+  renderStatic();renderStates();renderHub();renderJourneys();renderFF();runCalc();renderToolkit();renderAllChecks();renderFinal();renderCoverage();if(typeof renderProtec==='function')renderProtec();buildIndex();
   setRole(store.get('role','all'));
   $$('.roles .chip').forEach(c=>c.addEventListener('click',()=>setRole(c.dataset.role)));
   $$('[data-done]').forEach(c=>c.addEventListener('change',()=>{const d=store.get('done',{});d[c.dataset.done]=c.checked;store.set('done',d);renderRail()}));

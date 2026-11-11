@@ -279,7 +279,11 @@ def main():
         print(f'light page {len(light.encode())/1e6:.2f} MB + modules ' + ', '.join(f'{k} {len(v.encode())/1e6:.1f} MB' for k, v in mod_html.items()) + f' -> {a.artifact_dir}')
     mb = len(standalone.encode()) / 1e6
     print(f'images {stats["before"]/1e6:.2f} MB -> {stats["after"]/1e6:.2f} MB; page {mb:.2f} MB -> {a.out}')
-    assert mb < 15.5, 'page is too large for an artifact (16 MB limit)'
+    if mb >= 15.5:
+        print(f'note: the offline file is {mb:.1f} MB; publish the light page (--artifact-dir), not this file')
+    if a.artifact_dir:
+        for f in [os.path.join(a.artifact_dir, 'index.html')] + [os.path.join(a.artifact_dir, 'm', k + '.html') for k in ORDER]:
+            assert os.path.getsize(f) < 15.5e6, f + ' is too large for an artifact file (16 MB limit)'
 
 
 if __name__ == '__main__':

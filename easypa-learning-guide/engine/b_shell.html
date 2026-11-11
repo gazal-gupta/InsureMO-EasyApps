@@ -365,6 +365,13 @@
   </section>
 
   <section class="block">
+    <h2>After the policy is issued</h2>
+    <p class="muted" style="max-width:80ch"><span class="tag protec">Protec manual</span> The Protec process overview shows what the platform triggers once a policy is issued:</p>
+    <p class="mono small">Policy Issued &gt; DocGen (documents) &gt; NotiHub (notifications) &gt; E-Invoice &gt; BCP Push</p>
+    <p class="small">Cash before cover is shown end to end in scenario N2: Send Prepayment, Premium Pre-Paid collection in BCP, receipt, then automatic issue. See the walkthrough under Business scenarios &gt; N2.</p>
+  </section>
+
+  <section class="block">
     <h2>End-to-end journeys across modules</h2>
     <p class="muted">These journeys join Easy PA with BCP, XRI, Claims and outside parties (garage, surveyor, TPA, hospital) in one business story. Use them for end-to-end and regression testing, and to explain insurance to new joiners.</p>
     <div class="tabs" role="tablist" id="jTabs"></div>
@@ -391,6 +398,12 @@
     <h2>Endorsement calculation in three steps</h2>
     <ol class="steps"><li>Calculate new business premium again on the latest policy version (key field AnnualPremium).</li><li>Calculate the delta between new and old premium with the POI rate (GrossPremiumDelta, BeforeVatPremiumDelta, DuePremiumDelta).</li><li>Add the delta to the prior version to get the new GrossPremium, BeforeVatPremium and DuePremium.</li></ol>
     <div class="tbl"><table><thead><tr><th>Field</th><th>Meaning</th></tr></thead><tbody id="txRefBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Worked calculation: Protec PCV third-party premium</h2>
+    <p class="muted" style="max-width:80ch"><span class="tag protec">Protec manual</span> A real calculation from a client implementation: a passenger-carrying vehicle with long-term third-party cover, compulsory personal accident cover for the owner-driver, and add-on IMT liabilities. The table recomputes the tax from the screen figures.</p>
+    <div id="protecCalc"></div>
   </section>
 
   <section class="block">
@@ -522,6 +535,65 @@
   <section class="block">
     <h2>RI and integration fields</h2>
     <div class="tbl"><table><thead><tr><th>Field / table</th><th>Purpose</th></tr></thead><tbody id="apiBody"></tbody></table></div>
+  </section>
+
+  <section class="block">
+    <h2>Product and system configuration</h2>
+    <p class="muted" style="max-width:80ch"><span class="tag protec">Protec manual</span> Configuration has two areas, product and system. Both are done in the MC (Master Configuration) environment with the GI Expert Designer (insureMO Portal &gt; Console &gt; GI Expert Designer), exported as Bizdata and deployed from Development to UAT to Production.</p>
+    <div class="grid g2">
+      <div class="card"><h4>GI Expert Designer tools</h4><div class="tbl"><table><thead><tr><th>Tool</th><th>Purpose</th></tr></thead><tbody>
+        <tr><td>Product Factory</td><td>Build and assemble insurance products</td></tr><tr><td>Data Dictionary</td><td>Define data fields and map them to the API JSON model</td></tr>
+        <tr><td>Rule Engine</td><td>Validation, underwriting and clause-attachment rules (Groovy)</td></tr><tr><td>Rating Engine</td><td>Premium calculation algorithms</td></tr>
+        <tr><td>Tables</td><td>Data tables, code tables, configuration tables</td></tr><tr><td>Context</td><td>Error message codes and translations</td></tr></tbody></table></div></div>
+      <div class="card"><h4>Product configuration in four steps</h4><ol class="clean" style="padding-left:18px;list-style:decimal">
+        <li><b>Component library:</b> risk (Private Car Vehicle), coverage (Own Damage, Third Party Liability), benefit (Medical Expenses, Towing), non-coverage form (exclusion clause).</li>
+        <li><b>Technical product:</b> a superset template for one line of business, assembled from the components.</li>
+        <li><b>Market product:</b> the sellable product used by the Policy and Endorsement APIs.</li>
+        <li><b>Release:</b> export as Bizdata and deploy through CI/CD.</li></ol>
+        <p class="small"><b>Structure:</b> Policy &gt; Product &gt; Risk &gt; Coverage &gt; Benefit, with coverage forms and non-coverage forms. Premium rolls up Benefit &gt; Coverage &gt; Risk &gt; Product &gt; Policy.</p></div>
+    </div>
+    <div class="grid g2">
+      <div class="card"><h4>Four rule types</h4><div class="tbl"><table><thead><tr><th>Type</th><th>Effect</th><th>Example</th></tr></thead><tbody>
+        <tr><td>Validation</td><td>Hard stop</td><td>Block if vehicle age &gt; 10 years</td></tr><tr><td>Underwriting</td><td>Routes to manual UW</td><td>Refer if sum insured &gt; threshold</td></tr>
+        <tr><td>Clause attachment</td><td>Attaches clauses by coverage</td><td>Attach exclusion clause</td></tr><tr><td>Warning</td><td>One-time reminder, no block</td><td>Duplicate proposal exists</td></tr></tbody></table></div></div>
+      <div class="card"><h4>System configuration</h4><div class="tbl"><table><thead><tr><th>Item</th><th>Where</th></tr></thead><tbody>
+        <tr><td>URP (users, roles, permissions)</td><td>GI Expert Designer &gt; Foundation</td></tr><tr><td>Labels in several languages</td><td>Translation Management</td></tr>
+        <tr><td>Drop-down values</td><td>Data Dictionary &gt; Code Table</td></tr><tr><td>Batch jobs (renewal extraction, premium-due reminder)</td><td>Batch Process Configuration</td></tr></tbody></table></div></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Customer Management</h2>
+    <p class="muted" style="max-width:80ch"><span class="tag protec">Protec manual</span> A common module used by Policy, Endorsement and Claims. Customer records are created and changed only here; a policy can search for a customer and change the customer, but never edit one. To bring a change onto a policy, use Endorsement &gt; Policy Customer &gt; Synchronize.</p>
+    <div class="grid g2">
+      <div class="card"><h4>What a customer record holds</h4><ul class="clean">
+        <li><b>Basic:</b> name, type, date of birth or incorporation, gender; organisation name for corporates.</li><li><b>Contact:</b> mobile, alternate mobile, email, alternate email, landline.</li>
+        <li><b>Addresses</b> (repeatable), auto-filled from the PIN code.</li><li><b>KYC:</b> document type and number (PAN, Aadhaar, passport, GST certificate, CIN/LLPIN) and KYC status.</li>
+        <li><b>Bank accounts</b> (repeatable) for refunds, claim payouts and NEFT/UPI.</li><li><b>Payment mandate</b> (NACH, UPI, eNACH) for recurring premium.</li>
+        <li><b>Risk assessment:</b> occupation, income, AML/PEP screening.</li><li><b>Consents</b> and preferred channels.</li></ul></div>
+      <div class="card"><h4>Rules that testers check</h4><ul class="clean">
+        <li>Search needs at least one field; non-empty fields are combined with AND; at most 50 records, otherwise refine the search.</li>
+        <li>View masks sensitive fields (Aadhaar, full account number) by role.</li>
+        <li>Only Active customers can be selected. Inactive: "Customer is inactive. Please contact administrator." Suspended: "Customer is suspended due to [reason]. Cannot proceed."</li>
+        <li>Duplicate checks: same mobile or email (warning with the matching customer ID); individual name + date of birth; organisation name + GST number.</li>
+        <li>KYC: PAN through the Income Tax Department API, Aadhaar through UIDAI OTP eKYC; the result (Verified, Pending, Failed) comes back by callback.</li>
+        <li>Status Active needs KYC Verified; KYC Verified sets the customer Active and queues a welcome email and SMS.</li></ul></div>
+    </div>
+    <p class="small"><span class="tag inf">Domain context</span> PAN, Aadhaar, GST numbers and NACH/UPI mandates are Indian; another market will use its own identity documents and mandates.</p>
+  </section>
+
+  <section class="block">
+    <h2>Sales Channel and URP set-up</h2>
+    <div class="grid g2">
+      <div class="card"><h4>Sales Channel <span class="tag protec">Protec manual</span></h4><ul class="clean">
+        <li><b>Maintain Producer:</b> producer code, name, Active or Inactive.</li><li><b>Agreement Maintenance:</b> product authority, validity period and commission terms per producer.</li>
+        <li>Only Active producers with a valid agreement for the product and effective date appear in the proposal lookup.</li>
+        <li>On the proposal: Primary Sales Channel (required), Commission Rate (required, from the agreement, not editable), Secondary Sales Channel rows with their own share rates.</li></ul></div>
+      <div class="card"><h4>URP <span class="tag protec">Protec manual</span></h4><ul class="clean">
+        <li><b>User:</b> staff account, credentials and branch.</li><li><b>Role:</b> named permission set, for example Underwriter, Front-office, Branch Manager.</li>
+        <li><b>Permission:</b> menu and function rights (view, create, edit, approve) on a role.</li><li><b>Branch hierarchy:</b> which branches' data a user can see, including subordinates.</li>
+        <li>A user needs the right role and menu access before processing policies, together with product release and Sales Channel set-up.</li></ul></div>
+    </div>
   </section>
 
   <section class="block">

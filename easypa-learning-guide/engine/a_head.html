@@ -101,6 +101,12 @@ section.block{display:flex;flex-direction:column;gap:14px}
 .tag.in{background:var(--in-soft);color:var(--in)} .tag.out{background:var(--out-soft);color:var(--out)} .tag.int{background:var(--int-soft);color:var(--int)} .tag.cancel{background:var(--cancel-soft);color:var(--cancel)}
 .tag.pa{color:var(--pa)} .tag.clm{color:var(--clm)} .tag.ri{color:var(--ri)} .tag.sc{color:var(--sc)} .tag.gl{color:var(--gl)} .tag.bcp{color:var(--sys)} .tag.cm{color:var(--gl)}
 .tag.src{background:none;border:1px solid var(--line)}
+.tag.protec{background:var(--int-soft);color:var(--int)}
+details.walk{border:1px solid var(--line);border-left:3px solid var(--int);border-radius:0 var(--r) var(--r) 0;background:var(--surface);padding:10px 14px;display:flex;flex-direction:column;gap:12px;margin:6px 0}
+details.walk>summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;list-style:none}
+details.walk>summary::-webkit-details-marker{display:none}
+details.walk>summary::before{content:'▸';color:var(--int)}details.walk[open]>summary::before{content:'▾'}
+details.walk[open]>summary{margin-bottom:10px}
 .tag.inf{background:var(--warn-soft);color:var(--warn)}
 .card>.tag{align-self:flex-start}
 .callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 14px;border-radius:0 var(--r) var(--r) 0;max-width:80ch}
