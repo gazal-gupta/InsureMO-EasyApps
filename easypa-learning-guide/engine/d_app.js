@@ -34,7 +34,7 @@ function swimlaneH(steps,opts={}){
   return s+'</svg>';
 }
 function stepTable(steps,id){
-  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Screen / menu</th><th>Status after</th><th>Fee / note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}${s.tag==='inf'?' <span class="tag inf">Domain context</span>':''}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Screen / menu</th><th>Status after</th><th>Fee / note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}${s.tag==='inf'?' <span class="tag inf">Insurance knowledge</span>':''}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function linkDiagram(root){
   $$('.node',root).forEach(n=>{const go=()=>{const i=n.dataset.i;$$('.node',root).forEach(x=>x.classList.toggle('hl',x===n));$$('tbody tr',root).forEach(r=>r.classList.toggle('hl',r.dataset.i===i));const r=$(`tbody tr[data-i="${i}"]`,root);if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})};n.addEventListener('click',go);n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
@@ -134,7 +134,7 @@ function renderScreens(){
   $('#screenDetail').innerHTML=`<div class="card" style="gap:14px"><span class="eyebrow">${esc(s.g)} menu</span><h2 style="margin:0">${esc(s.n)}</h2>${AKA[s.id]?`<p class="small muted">Label in the system screenshots: <b>${esc(AKA[s.id])}</b></p>`:''}<p>${esc(s.p)}</p>
    <dl class="kv"><dt>Before you start</dt><dd>${esc(s.pre)}</dd></dl>
    ${stepsWithShots(s)}
-   <div class="callout"><b>Validation and rules</b>${s.rules.length?`<ul class="clean" style="margin-top:6px">${s.rules.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="small">No extra rules in the source.</p>'}</div>
+   <div class="callout"><b>Validation and rules</b>${s.rules.length?`<ul class="clean" style="margin-top:6px">${s.rules.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="small">No extra rules in the InsureMO Easy PA guide.</p>'}</div>
    ${s.fields.length?`<h4>Key fields</h4><div class="tbl"><table><thead><tr><th>Field</th><th>Behaviour</th></tr></thead><tbody>${s.fields.map(f=>`<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td></tr>`).join('')}</tbody></table></div>`:''}
    ${fieldRef(s.id)}${roleBlocksScreen(s)}
    ${s.sc.length?'<h4>Used in scenarios</h4>':''}<div class="filter-row">${s.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id} · ${esc(SCEN.find(x=>x.id===id).name)}</a>`).join('')}</div></div>`;
@@ -150,6 +150,33 @@ function renderStates(){
   const nm=Object.fromEntries(m.nodes.map(n=>[n.id,n.t]));
   $('#stTable').innerHTML=m.steps.map((r,i)=>`<tr data-i="${i}"><td class="num"><span class="st-badge">${i+1}</span></td><td>${esc(nm[r[0]])}</td><td>${esc(r[0]===r[1]?nm[r[1]]+' (same status)':nm[r[1]])}</td><td>${esc(r[3])}</td><td class="small">${esc(r[4])}</td></tr>`).join('');
   $$('#stDiagram .st-step').forEach(g=>{g.style.cursor='pointer';g.addEventListener('click',()=>{const i=g.dataset.i;$$('#stTable tr').forEach(r=>r.classList.toggle('hl',r.dataset.i===i));$$('#stDiagram .st-step').forEach(x=>x.classList.toggle('on',x===g));const r=$(`#stTable tr[data-i="${i}"]`);if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})})});
+}
+
+/* ---------- primer, five stages, four lifecycles ---------- */
+const stepList=steps=>`<ol class="stg-steps">${steps.map(x=>`<li><span class="role ${x.tag==='inf'||x.k==='ext'?'ext':''}">${esc(LANES[x.l])}</span><span class="act">${esc(x.t)}${x.m?` <span class="muted small">(${esc(x.m)})</span>`:''}</span>${x.s?`<span class="res">→ ${esc(x.s)}</span>`:''}</li>`).join('')}</ol>`;
+function renderStages(){
+  $('#primer').innerHTML=PRIMER.map((p,i)=>`<div class="card prim"><span class="stg-n">${i+1}</span><h4>${esc(p[0])}</h4><p class="small">${esc(p[1])}</p><p class="small muted"><b>Example:</b> ${esc(p[2])}</p></div>`).join('');
+  $('#stageRibbon').innerHTML=STAGES.map(st=>`<a class="stg" href="#start" data-stg="${st.id}"><span class="stg-n">${st.n}</span><b>${esc(st.name)}</b><span class="small muted">${esc(st.menu)}</span></a>`).join('<i class="stg-arrow" aria-hidden="true">→</i>');
+  $$('#stageRibbon [data-stg]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=$('#stg-'+a.dataset.stg);if(t)t.scrollIntoView({behavior:'smooth'})}));
+  $('#stageCards').innerHTML=STAGES.map(st=>`<article class="card stg-card" id="stg-${st.id}"><div class="stg-head"><span class="stg-n big">${st.n}</span><div><span class="eyebrow">Stage ${st.n} of 5 · Easy PA menu: ${esc(st.menu)}</span><h3>${esc(st.name)}</h3><p>${esc(st.plain)}</p></div></div>
+   <div class="stg-cols"><div class="stg-box start"><span class="eyebrow">Starts when</span><p>${esc(st.start)}</p></div><div class="stg-box"><span class="eyebrow">Steps · who does what → result</span>${stepList(st.steps)}</div><div class="stg-box end"><span class="eyebrow">Ends with</span><p>${esc(st.end)}</p><span class="eyebrow">How often</span><p class="small">${esc(st.freq)}</p></div></div>
+   <div class="stg-foot"><p class="small"><b>Everyday comparison:</b> ${esc(st.analogy)}</p><p class="small"><b>Example:</b> ${esc(st.example)}</p><div class="filter-row"><span class="small muted">See it in detail:</span>${st.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id}</a>`).join('')}</div></div></article>`).join('');
+}
+let curLC=LIFECYCLES[0].id;
+function renderLifecycles(){
+  $('#lcCards').innerHTML=LIFECYCLES.map((l,i)=>`<article class="card lc-card"><div class="stg-head"><span class="stg-n big">${i+1}</span><div><h3>${esc(l.name)}</h3><p>${esc(l.why)}</p></div></div>
+   <dl class="kv"><dt>Starts when</dt><dd>${esc(l.start)}</dd><dt>Ends when</dt><dd>${esc(l.end)}</dd><dt>How often</dt><dd>${esc(l.freq)}</dd><dt>Who is involved</dt><dd>${esc(l.roles)}</dd><dt>Easy PA menu</dt><dd>${esc(l.menu)}</dd>${l.rev?`<dt>To reverse</dt><dd>${esc(l.rev)}</dd>`:''}</dl>
+   ${stepList(l.steps)}
+   <div class="filter-row"><span class="small muted">Scenarios:</span>${l.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id}</a>`).join('')}<button type="button" class="btn ghost" data-lcmap="${l.id}">Show as swimlane</button></div></article>`).join('');
+  $$('[data-lcmap]').forEach(b=>b.addEventListener('click',()=>{curLC=b.dataset.lcmap;renderLcMap();$('#lcMapBlock').scrollIntoView({behavior:'smooth'})}));
+  renderLcMap();
+}
+function renderLcMap(){
+  $('#lcTabs').innerHTML=LIFECYCLES.map(l=>`<button role="tab" type="button" data-k="${l.id}" aria-selected="${l.id===curLC}">${esc(l.name)}</button>`).join('');
+  $$('#lcTabs button').forEach(b=>b.addEventListener('click',()=>{curLC=b.dataset.k;renderLcMap()}));
+  const l=LIFECYCLES.find(x=>x.id===curLC);
+  $('#lcMap').innerHTML=`<p class="small"><b>Start:</b> ${esc(l.start)} <b>End:</b> ${esc(l.end)} <b>Status model:</b> see the "${esc(STATES[l.st].name)}" tab below.</p><div id="lcDia" style="display:flex;flex-direction:column;gap:12px"><div class="diagram">${swimlane(l.steps,{uid:'lc',label:l.name})}</div>${stepTable(l.steps,'lcTbl')}</div>`;
+  linkDiagram($('#lcDia'));if(typeof addFullButtons==='function')addFullButtons();
 }
 
 /* ---------- journeys ---------- */
@@ -202,7 +229,7 @@ function runCalc(){
   ${af?`<tr><td>Admin fee + GST on fee</td><td class="num mono">${f2(af)} + ${f2(fg)}</td><td class="small muted">AdminFeeForEndorsement</td></tr>`:''}
   <tr><td><b>Endorsement premium due</b></td><td class="num mono"><b>${f2(due)}</b></td><td class="small muted">${due<0?'refund payable to client (BCP AP)':'additional receivable (BCP AR)'}</td></tr>
   <tr><td>Endorsement commission</td><td class="num mono">${f2(com)}</td><td class="small muted">${com<0?'clawback from the sales channel; BCP fee 100600 sign +':'payable to the sales channel; BCP fee 100600 sign −'}</td></tr>
-  </tbody></table></div>${calcNote?`<p class="small"><b>Check against the source:</b> ${esc(calcNote)}</p>`:''}
+  </tbody></table></div>${calcNote?`<p class="small"><b>Check against the InsureMO Easy PA guide:</b> ${esc(calcNote)}</p>`:''}
   <p class="small muted">Premium rounded to 2 decimals first; GST and commission on the rounded premium. Installments are not allowed for cancellation and POI changes.</p>`;
 }
 
@@ -227,11 +254,11 @@ function renderToolkit(){
     const fin=st=>st.filter(x=>x.s).map(x=>x.s).slice(-1)[0]||'';
     const rows=[];SCEN.forEach(s=>{rows.push([s.id+'-N',s.id,s.name,'Normal',s.normal.filter(x=>x.k==='op'||x.k==='x').map(x=>x.t).join(' → ')||'—',fin(s.normal),s.normal.map(x=>x.f).filter(Boolean).join('; ')]);
       rows.push([s.id+'-X',s.id,s.name,'Exception',s.reversal.filter(x=>x.k!=='sys'&&x.k!=='gl').map(x=>x.t).join(' → '),fin(s.reversal),s.reversal.map(x=>x.r||x.f).filter(Boolean).join('; ')])});
-    h=`<p class="prose">Every scenario needs at least a normal and an exception test. Add the validation tests below. For each issued transaction check the status, the premium totals, the BCP fee rows (Level 6) and the XRI record. Before you lock expected results, read "Source gaps": several labels and rules conflict in the source. Use the Level 6 calculator to produce expected premium.</p>
+    h=`<p class="prose">Every scenario needs at least a normal and an exception test. Add the validation tests below. For each issued transaction check the status, the premium totals, the BCP fee rows (Level 6) and the XRI record. Before you lock expected results, read "InsureMO Easy PA gaps": several labels and rules conflict in the InsureMO Easy PA guide. Use the Level 6 calculator to produce expected premium.</p>
     <div class="filter-row"><label for="tFilter" class="small">Filter</label><input id="tFilter" type="search" placeholder="e.g. K2, cancellation, underwriting"><select id="tType" aria-label="Test type"><option value="">All types</option><option>Normal</option><option>Exception</option></select></div>
     <div class="tbl"><table><thead><tr><th>Test ID</th><th>Scenario</th><th>Type</th><th>User steps</th><th>Expected end status</th><th>Expected fees / rules</th></tr></thead><tbody id="tBody">${rows.map(r=>`<tr data-t="${esc((r.join(' ')).toLowerCase())}" data-type="${r[3]}"><td class="mono small">${r[0]}</td><td><a href="#sc-${r[1]}">${esc(r[2])}</a></td><td>${r[3]==='Exception'?'<span class="tag out">Exception</span>':'<span class="tag in">Normal</span>'}</td><td class="small">${esc(r[4])}</td><td class="small">${esc(r[5])}</td><td class="mono small">${esc(r[6])}</td></tr>`).join('')}</tbody></table></div>
     <h3>Validation and negative tests</h3><div class="tbl"><table><thead><tr><th>ID</th><th>Screen</th><th>Test</th><th>Expected</th></tr></thead><tbody>${TESTS_EXTRA.map(r=>`<tr><td class="mono small">${r[0]}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>
-    <p class="small muted">Expected results marked * are derived from a stated rule. The source does not give the exact system response, so confirm the message text in the system.</p>
+    <p class="small muted">Expected results marked * are derived from a stated rule. The InsureMO Easy PA guide does not give the exact system response, so confirm the message text in the system.</p>
     <h3>Test data checklist</h3><ul class="clean"><li>Single policy (TBTI) and group policy (RG001).</li><li>SI values on each side of every UW threshold (99,999 / 100,000 / 199,999 / 200,000).</li><li>Users: Ops, PA-UW1, PA-UW2, FN, a user without Undo authority, users in parent and child branches.</li><li>No installment, monthly and custom installments; customer and agent billing; credit card pay mode.</li><li>A policy with two issued endorsements (for undo and cancellation date tests).</li><li>A policy with a reported claim (for POI shortening and undo alert tests).</li><li>A co-insurance policy as leader and as follower.</li><li>A product with isEnabledRI on and one with it off.</li></ul>`;
   } else {
     h=`<div class="grid g2"><div class="card"><h3>Integration checklist</h3><ol class="steps"><li>BCP: produce fee rows per scenario (Level 6) with correct sign, ARAP flag and FNLOB split; test leader billing (scenario 6) so BCP does not double-count.</li><li>BCP: Send to BCP prepayment order and the auto-issue callback; make the callback idempotent and handle issue failure.</li><li>XRI: risk unit per PolicyRiskList entry; mandatory fields; deltas on endorsement; calls at UW tab, bind, issue; removal on rejection after fac.</li><li>Claims: loss-date lookup for POI change and undo checks; RiskName present.</li><li>Customer: Search and Synchronize; sync after endorsement issue.</li><li>Undo: confirm how reversals reach BCP and XRI.</li></ol></div>
@@ -316,7 +343,7 @@ function doSearch(){
 
 /* ---------- init ---------- */
 function init(){
-  renderStatic();renderStates();renderHub();renderJourneys();renderFF();runCalc();renderToolkit();renderAllChecks();renderFinal();renderCoverage();if(typeof renderProtec==='function')renderProtec();buildIndex();
+  renderStatic();renderStages();renderLifecycles();renderStates();renderHub();renderJourneys();renderFF();runCalc();renderToolkit();renderAllChecks();renderFinal();renderCoverage();if(typeof renderProtec==='function')renderProtec();buildIndex();
   setRole(store.get('role','all'));
   $$('.roles .chip').forEach(c=>c.addEventListener('click',()=>setRole(c.dataset.role)));
   $$('[data-done]').forEach(c=>c.addEventListener('change',()=>{const d=store.get('done',{});d[c.dataset.done]=c.checked;store.set('done',d);renderRail()}));

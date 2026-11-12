@@ -45,7 +45,7 @@ function roleBlocksScreen(s){
 }
 function fieldRef(id){
   const secs=FIELDS[id];if(!secs)return '';
-  return `<details class="fref"><summary>Full field reference (${secs.length} sections, from the source)</summary><div style="display:flex;flex-direction:column;gap:12px;margin-top:10px">${secs.map(sec=>{
+  return `<details class="fref"><summary>Full field reference (${secs.length} sections, from the InsureMO Easy PA guide)</summary><div style="display:flex;flex-direction:column;gap:12px;margin-top:10px">${secs.map(sec=>{
     if(sec.b)return `<div><h4>${esc(sec.h)}</h4><p class="small">${esc(sec.b)}</p></div>`;
     if(sec.f)return `<div><h4>${esc(sec.h)}</h4><div class="tbl"><table><thead><tr>${FT.map(t=>`<th>${t}</th>`).join('')}</tr></thead><tbody>${sec.f.map(r=>`<tr>${r.split('|').map((c,i)=>`<td class="${i===5?'mono small':i===6?'small':''}">${i===2&&c==='Yes'?'<b>Yes</b>':esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`;
     return `<div><h4>${esc(sec.h)}</h4><div class="tbl"><table><thead><tr>${CT.map(t=>`<th>${t}</th>`).join('')}</tr></thead><tbody>${sec.c.map(r=>{const i=r.indexOf('|');return `<tr><td>${esc(r.slice(0,i))}</td><td class="small">${esc(r.slice(i+1))}</td></tr>`}).join('')}</tbody></table></div></div>`}).join('')}</div></details>`;

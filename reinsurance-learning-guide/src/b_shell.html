@@ -26,7 +26,7 @@
       <span class="eyebrow">Learning guide · basic to advanced</span>
       <h1>Follow the risk from insurer to reinsurer</h1>
       <p class="lede">XRI is the InsureMO reinsurance module. It holds every reinsurance contract the company buys (outward) or sells (inward), cedes each policy automatically to the right treaties, places facultative cover, recovers claims from reinsurers, and produces the statements of account that are settled in cash.</p>
-      <p class="muted small">Built from the InsureMO XRI User Guide. Content marked <span class="tag inf">Domain context</span> or <b>IND</b> is reinsurance market practice added to help you learn. It is not in the source guide, so confirm it with your project before you rely on it. Example amounts are illustrative.</p>
+      <p class="muted small">Built from the InsureMO XRI User Guide. Content marked <span class="tag inf">Insurance knowledge</span> or <b>INS</b> is reinsurance market practice added to help you learn. It is not in the InsureMO XRI guide, so confirm it with your project before you rely on it. Example amounts are illustrative.</p>
     </header>
     <div class="card">
       <span class="eyebrow">The five stages in XRI (details below)</span>
@@ -52,7 +52,7 @@
     <p class="muted">Everything XRI does falls into five stages that follow each other. Each stage below says when it starts, who does what (role → action → result), and how it ends. Click a stage to jump to it.</p>
     <div class="stg-ribbon" id="stageRibbon"></div>
     <div style="display:flex;flex-direction:column;gap:16px" id="stageCards"></div>
-    <p class="small muted">Roles: <b>RI user (maker)</b> enters and submits; <b>RI reviewer (checker)</b> approves with Review Pass; <b>XRI system</b> calculates automatically. Amber role labels are steps outside XRI (market practice, domain context).</p>
+    <p class="small muted">Roles: <b>RI user (maker)</b> enters and submits; <b>RI reviewer (checker)</b> approves with Review Pass; <b>XRI system</b> calculates automatically. Amber role labels are steps outside XRI (market practice, insurance knowledge).</p>
   </section>
 
   <section class="block">
@@ -79,10 +79,10 @@
       <span><i style="border-color:var(--in);background:var(--in-soft)"></i>End state</span>
       <span><i style="border-color:var(--out);background:var(--out-soft)"></i>Withdraw / cancel adjustment</span>
       <span><i style="border-color:var(--cancel);background:var(--cancel-soft)"></i>Irreversible step</span>
-      <span><b class="badge-xri">XRI</b> step described in the XRI source</span>
-      <span><b class="badge-ind">IND</b> industry step or domain context</span>
+      <span><b class="badge-xri">XRI</b> step described in the InsureMO XRI</span>
+      <span><b class="badge-ind">INS</b> industry step or insurance knowledge</span>
     </div>
-    <p class="muted small">Lanes are columns (one per actor); steps run from top to bottom so the whole flow fits the page width. Every scenario has two views: <b>XRI process</b> (from the source) and <b>Industry process</b> (how the same event runs in the market). Click a box to highlight its row in the step table. Use <b>Full screen</b> on any diagram to see it at full width and height.</p>
+    <p class="muted small">Lanes are columns (one per actor); steps run from top to bottom so the whole flow fits the page width. Every scenario has two views: <b>XRI process</b> (from the InsureMO XRI guide) and <b>Industry process</b> (how the same event runs in the market). Click a box to highlight its row in the step table. Use <b>Full screen</b> on any diagram to see it at full width and height.</p>
   </section>
 </section>
 
@@ -152,12 +152,12 @@
         <tr><td>Claim recovery (40% × 1,000,000)</td><td class="num">400,000</td><td class="small">Treaty Recovery; loss paid on SOA</td></tr>
         <tr><td><b>Net quarter: reinsurers owe the cedant</b></td><td class="num"><b>386,000</b></td><td class="small">Negative balance (receivable)</td></tr>
       </tbody></table></div>
-      <div class="tbl"><table><thead><tr><th>Event (domain context)</th><th>Debit</th><th>Credit</th></tr></thead><tbody>
+      <div class="tbl"><table><thead><tr><th>Event (insurance knowledge)</th><th>Debit</th><th>Credit</th></tr></thead><tbody>
         <tr><td>Cession booked</td><td>Reinsurance premium ceded 20,000</td><td>Due to reinsurers 20,000</td></tr>
         <tr><td>Commission earned</td><td>Due to reinsurers 6,000</td><td>Reinsurance commission income 6,000</td></tr>
         <tr><td>Recovery booked</td><td>Due from reinsurers 400,000</td><td>Reinsurance recoveries (claims) 400,000</td></tr>
         <tr><td>Net settlement</td><td>Bank 386,000; Due to reinsurers 14,000</td><td>Due from reinsurers 400,000</td></tr>
-      </tbody></table><p class="small muted">Account names are typical, not from the source. XRI posting rules are a <a href="#gaps">source gap</a>.</p></div>
+      </tbody></table><p class="small muted">Account names are typical, not from the InsureMO XRI guide. XRI posting rules are a <a href="#gaps">source gap</a>.</p></div>
     </div>
   </section>
 
@@ -206,7 +206,7 @@
   <p class="lede">XRI consolidates all reinsurance contracts (inward, outward, retrocession; proportional and non-proportional) in one application, cedes business automatically by rules, recovers claims, and produces accounts and settlements. Users are the RI department and other authorised staff.</p></header>
 
   <section class="block">
-    <h2>Key features in the source</h2>
+    <h2>Key features in the InsureMO XRI guide</h2>
     <div class="grid g2">
       <ul class="clean small"><li>All contract types digital in one place: inward, outward, retrocession; proportional and non-proportional.</li><li>Easier renewal with centralised data.</li><li>Contract structure that mirrors real contracts: multi-currency; sections and subsections by risk class and coverage.</li><li>Special features: loss participation or corridor, sliding scale commission, profit commission.</li><li>Mix of quota share and surplus; risk attaching and losses occurring in one contract.</li><li>Automatic and manual exclusions; special clauses; clean-cut and run-off treaties.</li></ul>
       <ul class="clean small"><li>Rules-based automatic cession, including mid-term endorsements.</li><li>Detailed accounting and transaction entries; ready for requirements such as IFRS 17.</li><li>Combine policies of the same risk; attach overlapping periods or coverage to the right treaties.</li><li>Adjust cessions after contract binding.</li><li>Automated settlement and claims recovery.</li><li>Real-time dashboard, inquiries, statements of account and out-of-the-box reports.</li></ul>
@@ -247,7 +247,7 @@
 
   <section class="block">
     <h2>Maker-checker review</h2>
-    <p class="prose">Treaties, facilities, parties, adjustments, facultative tasks, manual recoveries, manual and semi-auto SOAs and settlement summaries all follow the same pattern: the maker saves and submits; the checker opens a read-only page, can attach documents with Image Management, and clicks <b>Review Pass</b>. Some screens also have <b>Failed Review</b> (send back) and <b>batch review</b> (select several records). Nothing takes effect before Review Pass. The source describes one review level; approval limits by amount are not described.</p>
+    <p class="prose">Treaties, facilities, parties, adjustments, facultative tasks, manual recoveries, manual and semi-auto SOAs and settlement summaries all follow the same pattern: the maker saves and submits; the checker opens a read-only page, can attach documents with Image Management, and clicks <b>Review Pass</b>. Some screens also have <b>Failed Review</b> (send back) and <b>batch review</b> (select several records). Nothing takes effect before Review Pass. The InsureMO XRI guide describes one review level; approval limits by amount are not described.</p>
   </section>
 
   <section class="block">
@@ -315,7 +315,7 @@
 <!-- L3 SCENARIOS -->
 <section class="view" id="v-scenarios" data-title="Business scenarios" hidden>
   <header><span class="eyebrow">Level 3</span><h1>Business scenarios</h1>
-  <p class="lede">25 end-to-end flows built from the source chapters. Each has two swimlane views: the <b>XRI process</b> from the source, and the <b>Industry process</b> showing how the same event runs in the reinsurance market. Steps are marked XRI or IND. Each scenario has a real example, the source rules and notes for each role.</p></header>
+  <p class="lede">25 end-to-end flows built from the InsureMO XRI guide chapters. Each has two swimlane views: the <b>XRI process</b> from the InsureMO XRI guide, and the <b>Industry process</b> showing how the same event runs in the reinsurance market. Steps are marked XRI or IND. Each scenario has a real example, the InsureMO XRI guide rules and notes for each role.</p></header>
   <div class="explorer">
     <div class="sc-list" id="scList"></div>
     <div class="sc-detail">
@@ -330,7 +330,7 @@
 <!-- L4 SCREENS -->
 <section class="view" id="v-screens" data-title="Screens" hidden>
   <header><span class="eyebrow">Level 4</span><h1>Screens and operations</h1>
-  <p class="lede">Every XRI screen in the source: purpose, what must be true first, the steps with screenshots under the step they show, validation rules, and the full field reference read from the screenshots (search fields, result columns, buttons; required fields marked by the red asterisk). Pick a screen.</p></header>
+  <p class="lede">Every XRI screen in the InsureMO XRI guide: purpose, what must be true first, the steps with screenshots under the step they show, validation rules, and the full field reference read from the screenshots (search fields, result columns, buttons; required fields marked by the red asterisk). Pick a screen.</p></header>
   <div class="menu-tree" id="menuTree"></div>
   <div id="screenDetail"></div>
   <div data-cp="screens"></div>
@@ -348,7 +348,7 @@
 
   <section class="block">
     <h2>Data XRI needs from other modules</h2>
-    <p class="muted">Derived from the fields on XRI screens. The source shows the data but does not specify the interfaces.</p>
+    <p class="muted">Derived from the fields on XRI screens. The InsureMO XRI guide shows the data but does not specify the interfaces.</p>
     <div class="tbl"><table><thead><tr><th>Data</th><th>From</th><th>Used for</th><th>Evidence in source</th></tr></thead><tbody id="contractBody"></tbody></table></div>
   </section>
 
@@ -386,7 +386,7 @@
       <tr><td>Taxes (VAT, withholding)</td><td class="mono">±</td><td>Provisional VAT; VAT Invoice Info</td></tr>
       <tr><td>Outstanding loss (for information and reserves)</td><td class="mono">info</td><td>OS Loss</td></tr>
     </tbody></table></div>
-    <p class="small muted">Domain context: item list and signs follow market practice. XRI source lists cession premium, OS loss, loss paid and "additional deductions defined in the treaty".</p>
+    <p class="small muted">Insurance knowledge: item list and signs follow market practice. InsureMO XRI lists cession premium, OS loss, loss paid and "additional deductions defined in the treaty".</p>
   </section>
 
   <section class="block">
@@ -413,13 +413,13 @@
       <tr><td>Reinstatement premium</td><td>Reinstatement premium ceded</td><td>Reinsurance payable</td></tr>
       <tr><td>Settlement</td><td>Reinsurance payable</td><td>Bank (or net against receivable)</td></tr>
     </tbody></table></div>
-    <p class="small muted">Domain context only. The source does not give XRI GL rules (see Source gaps). Use as a starting point with finance.</p>
+    <p class="small muted">Insurance knowledge only. The InsureMO XRI guide does not give XRI GL rules (see InsureMO XRI gaps). Use as a starting point with finance.</p>
   </section>
 
   <section class="block">
     <h2>IFRS 17 view of reinsurance held</h2>
     <ul class="clean"><li>Reinsurance contracts held are measured separately from the underlying insurance contracts.</li><li>The contractual service margin (CSM) on reinsurance held can be a net cost or a net gain; it is released as services are received.</li><li>A loss-recovery component recognises the recovery of losses on onerous underlying contracts.</li><li>Grouping by portfolio, profitability and year matters. XRI’s IFRS17 Condition block (Profit Level, Split Period Type, Portfolio Name) holds data for this grouping.</li><li>Non-performance risk of the reinsurer is reflected in the measurement.</li></ul>
-    <p class="small muted">Certain (public standard). How XRI feeds an IFRS 17 engine is not in the source.</p>
+    <p class="small muted">Certain (public standard). How XRI feeds an IFRS 17 engine is not in the InsureMO XRI guide.</p>
   </section>
 
   <section class="block">
@@ -465,7 +465,7 @@
   </section>
 
   <section class="block">
-    <h2>Drop-down values seen in the source</h2>
+    <h2>Drop-down values seen in the InsureMO XRI guide</h2>
     <div class="filter-row"><label for="dtFilter" class="small">Filter</label><input id="dtFilter" type="search" placeholder="e.g. SOA, reinstatement"></div>
     <div class="tbl"><table><thead><tr><th>Field</th><th>Values (seen in text or screenshots)</th><th>Screen</th></tr></thead><tbody id="dtBody"></tbody></table></div>
     <p class="small muted">"Seen" values come from one screenshot. Get the full lists from the system.</p>
@@ -474,7 +474,7 @@
   <section class="block">
     <h2>Architecture services</h2>
     <div class="tbl"><table><thead><tr><th>Service</th><th>Role</th></tr></thead><tbody id="apiBody"></tbody></table></div>
-    <p class="small muted">These are components on the architecture diagram, not API endpoints. The source names no endpoints.</p>
+    <p class="small muted">These are components on the architecture diagram, not API endpoints. The InsureMO XRI guide names no endpoints.</p>
   </section>
 
   <section class="block">
@@ -500,15 +500,15 @@
 </section>
 
 <!-- GAPS -->
-<section class="view" id="v-gaps" data-title="Source gaps" hidden>
-  <header><span class="eyebrow">Consultant review</span><h1>Source gaps to resolve</h1>
+<section class="view" id="v-gaps" data-title="InsureMO XRI gaps" hidden>
+  <header><span class="eyebrow">Consultant review</span><h1>InsureMO XRI gaps to resolve</h1>
   <p class="lede">While building this guide I found places where the XRI user guide is incomplete or contradicts itself. Close these with the InsureMO platform team before you sign off requirements or lock expected test results.</p></header>
-  <div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What the source says</th><th>Recommended action</th></tr></thead><tbody id="gapBody"></tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What the InsureMO XRI guide says</th><th>Recommended action</th></tr></thead><tbody id="gapBody"></tbody></table></div>
 </section>
 
 <!-- COVERAGE -->
-<section class="view" id="v-coverage" data-title="Source coverage" hidden>
-  <header><span class="eyebrow">Completeness check</span><h1>Source coverage</h1>
+<section class="view" id="v-coverage" data-title="InsureMO XRI coverage" hidden>
+  <header><span class="eyebrow">Completeness check</span><h1>InsureMO XRI coverage</h1>
   <p class="lede">Every chapter of the XRI user guide and where it sits in this learning guide.</p></header>
   <div class="tbl"><table><thead><tr><th>#</th><th>Source chapter / content</th><th>Where in this guide</th><th>Coverage</th></tr></thead><tbody id="covBody"></tbody></table></div>
 </section>
@@ -544,6 +544,6 @@
   <div class="grid" id="finalBody" style="max-width:860px"></div>
 </section>
 
-<p class="foot">Source: InsureMO XRI User Guide (introduction, preparation, Reinsurance Definition, Risk Allocation, Reinsurance Recovery, Reinsurance Statement, Settlement, Reinsurance Query). Items marked Domain context or IND are general reinsurance practice. Confirm project-specific behaviour with the platform team.</p>
+<p class="foot">Source: InsureMO XRI User Guide (introduction, preparation, Reinsurance Definition, Risk Allocation, Reinsurance Recovery, Reinsurance Statement, Settlement, Reinsurance Query). Items marked Insurance knowledge or INS are general reinsurance practice. Confirm project-specific behaviour with the platform team.</p>
 </main>
 </div>

@@ -123,7 +123,7 @@ In the BCP source: two fee codes for the same step (700009 vs 403000), opposite 
 - **Diff the rendered guides, not the sources.** Dump each guide's navigation and every h1-h3 in a headless browser; the topics only one guide has are the port list.
 - **Port into the master with its own renderers and labels.** Lift each block by its h2 (the whole enclosing `<section>`), convert the labels ("Insurance knowledge" to "Domain context", the product-name tag to "Source"), and map lanes and step kinds onto the master's swimlane (`mountSwim`, `stepTable`) instead of copying a second engine.
 - **Keep one running customer.** Rename the other build's customer (Riya) to the master's (Priya) after checking that no figures clash.
-- **Mark what the source does not say.** Steps in a lane the source is silent on (reinsurance in Claims) get the Domain context tag automatically.
+- **Mark what the source does not say.** Steps in a lane the source is silent on (reinsurance in Claims) get the Insurance knowledge tag automatically.
 - **Check that screenshots already exist before importing images.** All seven health screenshots were already in the master under other numbers.
 - **Remove the superseded build after the port.** Its `build.py` wrote to the same `index.html` and would have overwritten the master.
 - **A publish to an artifact made in another conversation needs a full read of the live page first.** For a 337 KB page that is about 90k tokens; plan it as its own step.
@@ -142,3 +142,9 @@ In the BCP source: two fee codes for the same step (700009 vs 403000), opposite 
 - **Test with real clicks.** `qa.js` now clicks every left-menu link in every guide and fails if the hub appears inside a guide.
 - **Do not add a fallback that loads a page you cannot verify.** The first fallback (load `m/<k>.html` as the frame's src) would itself nest the hub on a host that answers with its own page. The hub now checks that the fetched text is the requested guide (`var M="<k>"`) and otherwise shows a clear error with a link to the module's own page.
 - **Ask for a screenshot early.** "It doesn't open" had three plausible causes; the user's screenshot (two hub bars) identified the real one at once.
+
+# Suite re-label and v2 completion (2026-11-11)
+- **A word-level rename needs a human read.** "the source" became "the InsureMO X guide" in about 150 places, but 6 meant something else: "source of truth", "the source policy" (the policy being copied), and "the source BCP guide" (doubled). Grep the diff for "guide of", "guide <Module> guide" and screen-step text after any rename.
+- **One numbering script for four engines.** All four guides wrap diagrams in `div.diagram`, so one idempotent script (MutationObserver, writes only on change) numbers them all. Titles come from the svg `aria-label`, else the nearest heading; duplicate labels (a lifecycle swimlane and a status model both called "Claim (case)") must be made distinct.
+- **Numbered arrow labels need about 300 px between states.** The Claims status models had 200 to 240 px; the number circle pushed labels onto the boxes. Widen the layout rather than shorten business labels.
+- **Check the section order after an insert.** Searching for the first `</section>` after an anchor found the wrong section and placed the Easy PA swimlanes after the process maps; the figure numbers exposed it.

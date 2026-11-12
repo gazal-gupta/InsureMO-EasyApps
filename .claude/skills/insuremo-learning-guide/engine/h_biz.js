@@ -94,7 +94,7 @@ const COMBOS=[
  ['Installments × multiple','Installments and several payers','Periods × payers records.','The same group health policy paid quarterly → 4 quarters × 2 payers = 8 ARs of 10,000 (employer) and 2,500 (employees).']
 ];
 
-/* Elaboration of the source process maps */
+/* Elaboration of the InsureMO BCP guide process maps */
 const MAPSTEPS={
  collection:[
   ['1','Easy PA','New business premium, additional premium from an endorsement, or a cash call (urgent large-loss payment requested from a reinsurer).','AR generation'],

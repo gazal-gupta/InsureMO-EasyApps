@@ -5,7 +5,7 @@
 (function(){
   const add=(id,shot)=>{(SHOTS[id]=SHOTS[id]||[]).push(shot)};
   add('otcreate',SHOT('protec-ri-06.png',3,'Protec manual: Section Summary with one section, 100004-Accident Insurance, quota share, currency USD.'));
-  add('otsub',SHOT('protec-ri-16.png',1,'Protec manual: motor quota share subsection. Risk category Motor, contract type quota share, retention base Gross Premium; limits by coverage category (Goods Carrying, Passenger Carrying, Private Car, Two Wheeler Liability) at QS 4.0000%. Domain context: this matches the Indian obligatory cession to GIC Re (4% in recent years).'));
+  add('otsub',SHOT('protec-ri-16.png',1,'Protec manual: motor quota share subsection. Risk category Motor, contract type quota share, retention base Gross Premium; limits by coverage category (Goods Carrying, Passenger Carrying, Private Car, Two Wheeler Liability) at QS 4.0000%. Insurance knowledge: this matches the Indian obligatory cession to GIC Re (4% in recent years).'));
   add('tsview',SHOT('protec-ri-28.png',0,'Protec manual: VAT Invoice Info for the domestic reinsurer B0001GIC Re. Branch Gujarat, Motor-Goods Carrying Vehicle, GST 7,464.96 charged as IGST; CGST and SGST 0.00.'));
   const sv=SCREENS.find(s=>s.id==='tsview');
   sv.rules.push(

@@ -25,7 +25,7 @@
       <span class="eyebrow">Learning guide · basic to advanced</span>
       <h1>Follow the policy through InsureMO</h1>
       <p class="lede">Easy PA (Policy Administration) is where a policy is born and lives. It records the proposal, prices it, routes it to underwriting, issues the policy, and then handles every change: endorsements, cancellations, undo and renewal. Each step sends data to BCP (money), Reinsurance (XRI) and the Customer module, and Claims depends on the policy it creates.</p>
-      <p class="muted small">Built from the InsureMO Easy PA module guide (New Business and Renewal, Endorsement, Common Function, Underwriting, Group Policy, PA Installment Fee, Reinsurance Integration, Policy Authority). Content marked <span class="tag inf">Domain context</span> is general insurance practice added to help you learn. It is not in the source guide, so confirm it with your project before you rely on it. Example amounts are illustrative unless they say "source example".</p>
+      <p class="muted small">Built from the InsureMO Easy PA module guide (New Business and Renewal, Endorsement, Common Function, Underwriting, Group Policy, PA Installment Fee, Reinsurance Integration, Policy Authority). Content marked <span class="tag inf">Insurance knowledge</span> is general insurance practice added to help you learn. It is not in the InsureMO Easy PA guide, so confirm it with your project before you rely on it. Example amounts are illustrative unless they say "source example".</p>
     </header>
     <div class="card">
       <span class="eyebrow">The three journeys in Easy PA</span>
@@ -37,6 +37,20 @@
       <p class="small muted">Underwriting and Prepayment are optional stages. Decline can happen from Quote, Underwriting or Bound and is final.</p>
     </div>
   </div>
+
+  <section class="block">
+    <h2>New to insurance? Read this first</h2>
+    <p class="muted">Seven ideas in the order you need them. Each one builds on the one before. If you know insurance already, skip to the five stages.</p>
+    <div class="grid g3" id="primer"></div>
+  </section>
+
+  <section class="block">
+    <h2>The five stages in Easy PA, explained</h2>
+    <p class="muted">Everything Easy PA does falls into five stages. Each stage below says when it starts, who does what (role → action → result), and how it ends. Click a stage to jump to it.</p>
+    <div class="stg-ribbon" id="stageRibbon"></div>
+    <div style="display:flex;flex-direction:column;gap:16px" id="stageCards"></div>
+    <p class="small muted">Roles: <b>PA operations user</b> records, calculates and issues; <b>Underwriter</b> decides on referred risks; <b>Easy PA system</b> rates, checks rules and generates numbers. Amber role labels are steps outside Easy PA (customer, agent) or general practice.</p>
+  </section>
 
   <section class="block">
     <h2>Pick your learning path</h2>
@@ -110,7 +124,7 @@
 
   <section class="block">
     <h2>Anatomy of a premium</h2>
-    <p class="prose">One worked example from rating to accounts. A travel policy, gross premium 1,000, campaign discount 10%, GST 7% (the rate used in the source), commission 10% through an agent. Account names are typical; your chart of accounts decides the real ones.</p>
+    <p class="prose">One worked example from rating to accounts. A travel policy, gross premium 1,000, campaign discount 10%, GST 7% (the rate used in the InsureMO Easy PA guide), commission 10% through an agent. Account names are typical; your chart of accounts decides the real ones.</p>
     <div class="grid g2">
       <div class="tbl"><table><thead><tr><th>Layer</th><th class="num">Amount</th><th>Easy PA field / BCP fee</th></tr></thead><tbody>
         <tr><td>Annual (formula) premium × POI rate = gross premium</td><td class="num">1,000.00</td><td class="mono small">GrossPremium</td></tr>
@@ -129,7 +143,7 @@
         <tr><td>Commission clawback</td><td>Commission payable 52.77</td><td>Commission expense 52.77</td></tr>
       </tbody></table></div>
     </div>
-    <p class="small muted">Cancellation line: 900 × 214 ÷ 365 = 527.67; GST 36.94; clawback 52.77. This is the pro-rata version of the source Policy C (which uses short-rate 80% and refunds 422.14).</p>
+    <p class="small muted">Cancellation line: 900 × 214 ÷ 365 = 527.67; GST 36.94; clawback 52.77. This is the pro-rata version of the InsureMO Easy PA guide's Policy C (which uses short-rate 80% and refunds 422.14).</p>
   </section>
 
   <section class="block">
@@ -145,7 +159,7 @@
 
   <section class="block">
     <h2>How underwriting decides</h2>
-    <p class="prose">An underwriter asks three questions: how likely is a loss, how big could it be, and is the price right for it? Rules in the product factory handle standard cases automatically; people handle the rest. <span class="tag inf">Domain context</span></p>
+    <p class="prose">An underwriter asks three questions: how likely is a loss, how big could it be, and is the price right for it? Rules in the product factory handle standard cases automatically; people handle the rest. <span class="tag inf">Insurance knowledge</span></p>
     <div class="grid g2">
       <div class="card"><h3>What underwriters look at</h3><ul class="clean small"><li><b>Travel / personal accident:</b> age, destination, trip length, war or dangerous activities, sum insured.</li><li><b>Health:</b> age, medical history (questionnaire), pre-existing conditions, waiting periods.</li><li><b>Motor:</b> driver age and history, vehicle value and use, claims history (no-claim discount).</li><li><b>Property:</b> construction, fire protection, location (flood), sum insured against treaty capacity.</li></ul></div>
       <div class="card"><h3>What they can decide</h3><ul class="clean small"><li><b>Accept</b> on standard terms (Approve).</li><li><b>Accept with a loading</b> (Underwriting Loading +%) or an exclusion clause.</li><li><b>Ask for more information</b> or correction (Requote).</li><li><b>Refer upwards</b> (Escalate to level 2).</li><li><b>Buy reinsurance first</b> (Facultative).</li><li><b>Decline</b> (final).</li></ul></div>
@@ -154,7 +168,7 @@
 
   <section class="block">
     <h2>Claims: who does what</h2>
-    <p class="prose">Easy PA does not run claims, but every claim starts from the policy it issued. Knowing the claim process explains why Easy PA blocks some endorsements. <span class="tag inf">Domain context</span></p>
+    <p class="prose">Easy PA does not run claims, but every claim starts from the policy it issued. Knowing the claim process explains why Easy PA blocks some endorsements. <span class="tag inf">Insurance knowledge</span></p>
     <div class="tbl"><table><thead><tr><th>#</th><th>Step</th><th>Who</th><th>Motor example</th><th>Health example</th><th>Link to Easy PA</th></tr></thead><tbody>
       <tr><td class="num">1</td><td>Notification (FNOL)</td><td>Insured / claimant</td><td>Driver reports a crash on 15 May</td><td>Patient admitted to a network hospital</td><td>Policy must be in force on the date of loss</td></tr>
       <tr><td class="num">2</td><td>Coverage check</td><td>Claims handler / TPA</td><td>Is the driver named? Is own damage covered?</td><td>Is the member active? Waiting period over?</td><td>Coverages, insured persons, POI from Easy PA</td></tr>
@@ -195,7 +209,7 @@
     <div class="grid g3">
       <div class="card"><h3>1. New business and renewal</h3><p>Captures the proposal, rates it, runs validation and underwriting rules, routes it to underwriters and reinsurance, and issues the policy. Renewal copies an expiring policy into a new proposal.</p></div>
       <div class="card"><h3>2. Policy servicing</h3><p>Endorsements change the issued policy: customer and coverage changes, period changes, cancellation, and undo of the last endorsement. Each one recalculates the premium difference.</p></div>
-      <div class="card"><h3>3. Common functions</h3><p>Worklist, sales channel, customer, clause, discount and loading, installments, delivery, documents, notes, versions and print work the same for every product. The source calls these the hardest part to implement.</p></div>
+      <div class="card"><h3>3. Common functions</h3><p>Worklist, sales channel, customer, clause, discount and loading, installments, delivery, documents, notes, versions and print work the same for every product. The InsureMO Easy PA guide calls these the hardest part to implement.</p></div>
     </div>
     <div id="mapOverview"></div>
     <div class="callout"><b>Why it matters:</b> Easy PA is the source of truth for the policy. BCP bills from its fees, XRI cedes from its risk units, and Claims checks cover against its dates and coverages. A wrong field here becomes a wrong bill, a wrong reinsurance share or a wrong claim decision.</div>
@@ -259,13 +273,17 @@
   <p class="lede">Every scenario in Easy PA is a variation of three journeys. Learn the journeys and the status changes, and the scenarios become easy.</p></header>
 
   <section class="block">
-    <h2>The three journeys</h2>
-    <div class="grid g3">
-      <div class="card"><span class="tag in">New business</span><h3>Quote → Bound → Issued</h3><ol class="steps"><li>Ops team records and saves the proposal (Quote).</li><li>Buy runs validation, rating, auto UW and the RI call.</li><li>Rule hit → Underwriting (and maybe Fac Out). No hit → Bound.</li><li>From Bound: Issue, or Send to BCP → Prepayment → auto-issue.</li></ol></div>
-      <div class="card"><span class="tag out">Endorsement</span><h3>Quote → Bound → Issued</h3><ol class="steps"><li>New Endorsement with type, sub type and effective date.</li><li>Change data, Save (Endorsement No.), Calculate (deltas).</li><li>UW rule hit → Underwriting; otherwise Bound.</li><li>Issue Endorsement. If wrong, Endorsement Undo (last only).</li></ol></div>
-      <div class="card"><span class="tag int">Renewal</span><h3>Copy → new business</h3><ol class="steps"><li>New Proposal → Policy No. → New Renewal.</li><li>Data copied; dates one year later.</li><li>Any field can change.</li><li>Then the new business journey.</li></ol></div>
-    </div>
+    <h2>The four lifecycles</h2>
+    <p class="muted">Every Easy PA scenario is a variation of these four lifecycles. For each: why it exists, when it starts and ends, how often it runs, who is involved, how to reverse it, and the numbered steps with results.</p>
+    <div style="display:flex;flex-direction:column;gap:16px" id="lcCards"></div>
     <div class="callout"><b>Permission rule across statuses:</b> when a case moves to the next status and the same user has authority for it, they can continue. If not, the case goes back to the sharing pool for someone who has.</div>
+  </section>
+
+  <section class="block" id="lcMapBlock">
+    <h2>Lifecycle swimlanes</h2>
+    <p class="muted">Each lifecycle as a swimlane: one column per actor, steps from top to bottom, and the result of every step in the table. Click a box to highlight its row; use Full screen to enlarge.</p>
+    <div class="tabs" role="tablist" id="lcTabs"></div>
+    <div id="lcMap" style="margin-top:12px"></div>
   </section>
 
   <section class="block">
@@ -275,13 +293,14 @@
     <h3>Endorsement</h3><div id="mapPayment"></div>
   </section>
 
+
   <section class="block">
     <h2>Status models</h2>
     <p class="muted">Pick a record type. Each arrow carries a number in process order: the main path first, then loops back, then exits (Decline, Reject). The same number appears in the table, so arrow 7 is row 7. Click a numbered label to highlight its row. Testers: every numbered arrow is at least one test case.</p>
     <div class="tabs" role="tablist" id="stTabs"></div>
     <div class="diagram" id="stDiagram"></div>
     <div class="tbl"><table><thead><tr><th>#</th><th>From</th><th>To</th><th>Trigger</th><th>Screen / team</th></tr></thead><tbody id="stTable"></tbody></table></div>
-    <p class="small muted">The source names statuses differently from the system: Quote = Entry, Declined = Rejected, Prepayment = Waiting For Payment. Both names are shown where they differ.</p>
+    <p class="small muted">The InsureMO Easy PA guide names statuses differently from the system: Quote = Entry, Declined = Rejected, Prepayment = Waiting For Payment. Both names are shown where they differ.</p>
   </section>
 
   <section class="block">
@@ -308,7 +327,7 @@
 <!-- L3 SCENARIOS -->
 <section class="view" id="v-scenarios" data-title="Business scenarios" hidden>
   <header><span class="eyebrow">Level 3</span><h1>Business scenarios</h1>
-  <p class="lede">All flows in the source guide as 18 scenarios. Each one shows a top-to-bottom swimlane for the normal path and an exception path, the screens used, status changes, fee codes, business rules, a real example and notes for each role.</p></header>
+  <p class="lede">All flows in the InsureMO Easy PA guide as 18 scenarios. Each one shows a top-to-bottom swimlane for the normal path and an exception path, the screens used, status changes, fee codes, business rules, a real example and notes for each role.</p></header>
   <div class="explorer">
     <div class="sc-list" id="scList"></div>
     <div class="sc-detail">
@@ -323,7 +342,7 @@
 <!-- L4 SCREENS -->
 <section class="view" id="v-screens" data-title="Screens" hidden>
   <header><span class="eyebrow">Level 4</span><h1>Screens and operations</h1>
-  <p class="lede">What each Easy PA screen and section is for, what must be true before you use it, the steps with the screenshot under each step, the rules, and the full field reference from the source (every field, column and button). Pick a screen.</p></header>
+  <p class="lede">What each Easy PA screen and section is for, what must be true before you use it, the steps with the screenshot under each step, the rules, and the full field reference from the InsureMO Easy PA guide (every field, column and button). Pick a screen.</p></header>
   <div class="menu-tree" id="menuTree"></div>
   <div id="screenDetail"></div>
   <div data-cp="screens"></div>
@@ -355,7 +374,7 @@
 
   <section class="block">
     <h2>Easy PA ↔ Claims rules</h2>
-    <div class="tbl"><table><thead><tr><th>Easy PA action</th><th>Claims rule from the source</th><th>Why it matters (business)</th></tr></thead><tbody>
+    <div class="tbl"><table><thead><tr><th>Easy PA action</th><th>Claims rule from the InsureMO Easy PA guide</th><th>Why it matters (business)</th></tr></thead><tbody>
       <tr><td>Cancellation</td><td>A claim can still be submitted on a cancelled policy if the loss date is within the POI and before the cancellation date.</td><td>Cover was in force when the loss happened; cancelling later cannot remove it.</td></tr>
       <tr><td>POI extension / shortening</td><td>The new POI must cover every reported claim (date of loss).</td><td>Shortening must not leave a reported loss outside cover.</td></tr>
       <tr><td>Endorsement Undo</td><td>Alert (not block) if a registered claim has an accident date between the endorsement date and the undo date.</td><td>The claim may have been assessed on the endorsed terms; teams must agree how to handle it.</td></tr>
@@ -469,7 +488,7 @@
     <p class="muted">From the PA Installment Fee chapter. Pick a scenario to see every fee record Easy PA produces. Co-insurance: if we lead and collect full premium = Yes → scenario 3; = No → scenario 4. If we follow with customer / agent billing → scenario 5; with leader billing → scenario 6.</p>
     <div class="tabs" role="tablist" id="ffTabs"></div>
     <div id="ffDetail"></div>
-    <div class="callout warn"><b>Scenario 6 warning from the source:</b> detail rows intentionally overlap the consolidated ARAP, so BCP must not simply add up all fee rows.</div>
+    <div class="callout warn"><b>Scenario 6 warning from the InsureMO Easy PA guide:</b> detail rows intentionally overlap the consolidated ARAP, so BCP must not simply add up all fee rows.</div>
   </section>
 
   <section class="block">
@@ -579,7 +598,7 @@
         <li>KYC: PAN through the Income Tax Department API, Aadhaar through UIDAI OTP eKYC; the result (Verified, Pending, Failed) comes back by callback.</li>
         <li>Status Active needs KYC Verified; KYC Verified sets the customer Active and queues a welcome email and SMS.</li></ul></div>
     </div>
-    <p class="small"><span class="tag inf">Domain context</span> PAN, Aadhaar, GST numbers and NACH/UPI mandates are Indian; another market will use its own identity documents and mandates.</p>
+    <p class="small"><span class="tag inf">Insurance knowledge</span> PAN, Aadhaar, GST numbers and NACH/UPI mandates are Indian; another market will use its own identity documents and mandates.</p>
   </section>
 
   <section class="block">
@@ -617,7 +636,7 @@
 <!-- L8 TOOLKIT -->
 <section class="view" id="v-toolkit" data-title="Role toolkits" hidden>
   <header><span class="eyebrow">Level 8 · Apply</span><h1>Role toolkits</h1>
-  <p class="lede">Ready-to-use material for workshops, test design and build. All of it comes from the source rules.</p></header>
+  <p class="lede">Ready-to-use material for workshops, test design and build. All of it comes from the InsureMO Easy PA guide rules.</p></header>
   <div class="tabs" role="tablist" id="tkTabs">
     <button role="tab" aria-selected="true" data-tk="ba">Business analyst</button>
     <button role="tab" aria-selected="false" data-tk="qa">Tester</button>
@@ -629,16 +648,16 @@
 </section>
 
 <!-- GAPS -->
-<section class="view" id="v-gaps" data-title="Source gaps" hidden>
-  <header><span class="eyebrow">Consultant review</span><h1>Source gaps to resolve</h1>
-  <p class="lede">While building this guide I found places where the source guide contradicts itself, differs from its own screenshots, or is incomplete. Close these with the InsureMO platform team before you sign off requirements or lock expected test results.</p></header>
-  <div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What the source says</th><th>Recommended action</th></tr></thead><tbody id="gapBody"></tbody></table></div>
+<section class="view" id="v-gaps" data-title="InsureMO Easy PA gaps" hidden>
+  <header><span class="eyebrow">Consultant review</span><h1>InsureMO Easy PA gaps to resolve</h1>
+  <p class="lede">While building this guide I found places where the InsureMO Easy PA guide contradicts itself, differs from its own screenshots, or is incomplete. Close these with the InsureMO platform team before you sign off requirements or lock expected test results.</p></header>
+  <div class="tbl"><table><thead><tr><th>#</th><th>Impact</th><th>Topic</th><th>What the InsureMO Easy PA guide says</th><th>Recommended action</th></tr></thead><tbody id="gapBody"></tbody></table></div>
 </section>
 
 <!-- COVERAGE -->
-<section class="view" id="v-coverage" data-title="Source coverage" hidden>
-  <header><span class="eyebrow">Completeness check</span><h1>Source coverage</h1>
-  <p class="lede">Every chapter of the source Easy PA guide and where it sits in this learning guide. Use it to confirm nothing is missing.</p></header>
+<section class="view" id="v-coverage" data-title="InsureMO Easy PA coverage" hidden>
+  <header><span class="eyebrow">Completeness check</span><h1>InsureMO Easy PA coverage</h1>
+  <p class="lede">Every chapter of the InsureMO Easy PA guide and where it sits in this learning guide. Use it to confirm nothing is missing.</p></header>
   <div class="tbl"><table><thead><tr><th>#</th><th>Source chapter / content</th><th>Where in this guide</th><th>Coverage</th></tr></thead><tbody id="covBody"></tbody></table></div>
 </section>
 
@@ -673,6 +692,6 @@
   <div class="tbl"><table><thead><tr><th>Term</th><th>Category</th><th>Meaning</th><th>Example</th><th>In InsureMO Easy PA</th></tr></thead><tbody id="glBody"></tbody></table></div>
 </section>
 
-<p class="foot">Source: InsureMO Easy PA module guide (New Business and Renewal Flow, Endorsement Flow, Common Function, Underwriting History, Group Policy Flow, PA Installment Fee, Reinsurance Integration, Policy Authority). Items marked Domain context are general insurance practice. Confirm project-specific behaviour with the platform team.</p>
+<p class="foot">Source: InsureMO Easy PA module guide (New Business and Renewal Flow, Endorsement Flow, Common Function, Underwriting History, Group Policy Flow, PA Installment Fee, Reinsurance Integration, Policy Authority). Items marked Insurance knowledge are general insurance practice. Confirm project-specific behaviour with the platform team.</p>
 </main>
 </div>

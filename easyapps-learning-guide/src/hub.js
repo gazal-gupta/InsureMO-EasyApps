@@ -85,7 +85,7 @@ function showMod(k,inner){
 }
 function tabs(){
   const cur=curMod||curPage;
-  const T=[['home','Home'],['map','Capability map'],['cross','Cross-module'],['gaps','Source gaps'],['glossary','Glossary']];
+  const T=[['home','Home'],['map','Capability map'],['cross','Cross-module'],['gaps','InsureMO guide gaps'],['glossary','Glossary']];
   $('#tabs').innerHTML=T.map(([id,n])=>`<a href="#${id}" ${cur===id?'aria-current="page"':''}>${n}</a>`).join('')+'<span class="sep" aria-hidden="true"></span>'+
     ORDER.map(k=>`<a href="#${k}" ${cur===k?'aria-current="page"':''}><span class="dot" style="--c:${COL(k)}"></span>${esc(MOD[k].short)} · ${esc(MOD[k].name)}</a>`).join('');
 }
@@ -126,9 +126,9 @@ function renderHome(){
     <span class="eyebrow">InsureMO Easy Apps · learning guide · basic to advanced</span>
     <h1>One guide to the four Easy Apps modules</h1>
     <p class="lede">A policy is sold and issued in <b>Easy PA</b>. Its premium is billed and collected in <b>BCP</b>. When the customer has a loss, <b>Easy Claim</b> reserves and pays it through BCP. <b>XRI</b> passes part of the risk and part of each loss to reinsurers. This guide joins the four module guides so you can follow one policy, one payment and one claim across all of them.</p>
-    <div class="prose small muted"><p>Every module guide is complete inside this file: process flows, status models, swimlanes, screenshots with steps, field references, calculators, checkpoints and final assessments. The file works offline. The hub pages add what no single guide has: one capability map, the interfaces between modules seen from both sides, end-to-end journeys, and one list of source gaps, terms and search.</p></div>
-    <div class="basis"><span><span class="tag">Source</span> stated in a module source guide</span><span><span class="tag inf">Domain context</span> general insurance practice, confirm with your project</span><span><span class="tag certain">certain</span> <span class="tag likely">likely</span> <span class="tag guessing">guessing</span> confidence of an analysis note</span></div>
-    <div class="totals"><span><b>4</b>modules</span><span><b class="num">${c.caps}</b>capabilities</span><span><b class="num">${c.screens}</b>screens</span><span><b class="num">${c.states}</b>status models</span><span><b class="num">${c.journeys}</b>journeys and industry processes</span><span><b class="num">${c.terms}</b>glossary terms</span><span><b class="num">${c.gaps}</b>source gaps (${c.high} high)</span></div>
+    <div class="prose small muted"><p>Every module guide is complete inside this file: process flows, status models, swimlanes, screenshots with steps, field references, calculators, checkpoints and final assessments. The file works offline. The hub pages add what no single guide has: one capability map, the interfaces between modules seen from both sides, end-to-end journeys, and one list of InsureMO guide gaps, terms and search.</p></div>
+    <div class="basis"><span><span class="tag">InsureMO module</span> stated in an InsureMO module guide</span><span><span class="tag inf">Insurance knowledge</span> general insurance practice, confirm with your project</span><span><span class="tag certain">certain</span> <span class="tag likely">likely</span> <span class="tag guessing">guessing</span> confidence of an analysis note</span></div>
+    <div class="totals"><span><b>4</b>modules</span><span><b class="num">${c.caps}</b>capabilities</span><span><b class="num">${c.screens}</b>screens</span><span><b class="num">${c.states}</b>status models</span><span><b class="num">${c.journeys}</b>journeys and industry processes</span><span><b class="num">${c.terms}</b>glossary terms</span><span><b class="num">${c.gaps}</b>InsureMO guide gaps (${c.high} high)</span></div>
   </section>
   <section>
     <div><span class="eyebrow">The insurance value chain</span><h2>Where each module sits</h2></div>
@@ -140,7 +140,7 @@ function renderHome(){
     <div class="mods">${ORDER.map(k=>{const m=MOD[k],n=m.n;return `<article class="mcard">
       <h3><span class="dot" style="--c:${COL(k)}"></span>${esc(m.name)}</h3><p class="full">${esc(m.full)}</p>
       <p class="small">${esc(m.what)} ${esc(m.money)}</p>
-      <dl class="kv"><dt>Sub modules</dt><dd>${n.groups}</dd><dt>Capabilities (scenarios and flows)</dt><dd>${n.caps}</dd><dt>Screens</dt><dd>${n.screens}</dd><dt>Status models</dt><dd>${n.states}</dd><dt>End-to-end journeys</dt><dd>${n.journeys}${n.iflows?' + '+n.iflows+' industry':''}</dd><dt>Glossary terms</dt><dd>${n.gloss}</dd><dt>Source gaps (high)</dt><dd>${n.gaps} (${n.high})</dd><dt>Final assessment questions</dt><dd>${n.final}</dd></dl>
+      <dl class="kv"><dt>Sub modules</dt><dd>${n.groups}</dd><dt>Capabilities (scenarios and flows)</dt><dd>${n.caps}</dd><dt>Screens</dt><dd>${n.screens}</dd><dt>Status models</dt><dd>${n.states}</dd><dt>End-to-end journeys</dt><dd>${n.journeys}${n.iflows?' + '+n.iflows+' industry':''}</dd><dt>Glossary terms</dt><dd>${n.gloss}</dd><dt>InsureMO guide gaps (high)</dt><dd>${n.gaps} (${n.high})</dd><dt>Final assessment questions</dt><dd>${n.final}</dd></dl>
       <div class="acts"><a class="btn pri" href="#${k}">Open guide</a><a class="btn" href="#map" data-mapmod="${k}">Capabilities</a></div></article>`}).join('')}</div>
   </section>
   <section>
@@ -177,7 +177,7 @@ function renderMap(){
   <section>
     <span class="eyebrow">Easy Apps · all modules</span>
     <h1>Capability map</h1>
-    <p class="lede">Every business capability of the four modules, grouped the way an insurer runs its business. A capability is a business scenario or process flow from the source guide. Its features are the screens, process flow and status changes that deliver it. Every link opens the exact page in the module guide.</p>
+    <p class="lede">Every business capability of the four modules, grouped the way an insurer runs its business. A capability is a business scenario or process flow from the InsureMO guides guide. Its features are the screens, process flow and status changes that deliver it. Every link opens the exact page in the module guide.</p>
     <div class="legend"><span class="lvl">Main module</span><span class="arr">›</span><span class="lvl">Sub module</span><span class="arr">›</span><span class="lvl">Capability</span><span class="arr">›</span><span class="lvl">Feature</span></div>
   </section>
   <section>
@@ -308,7 +308,7 @@ function drawPair(){
   const V={agree:'Both guides agree','one-sided':'Described on one side only',gap:'Gap in both sources'}[p.verdict];
   const srcs=[...new Set(E.map(e=>e.src))];
   const side=src=>{const es=E.filter(e=>e.src===src);
-    const dirs=[[p.a,p.b],[p.b,p.a]].map(([a,b])=>{const l=es.filter(e=>e.a===a&&e.b===b);return l.length?`<div class="dir">${esc(NAME(a))} → ${esc(NAME(b))}</div><ul>${l.map(e=>`<li>${/^Domain context/.test(e.t)||e.basis==='inf'?'<span class="tag inf">Domain context</span> ':''}${esc(e.t.replace(/^Domain context:\s*/,''))}</li>`).join('')}</ul>`:''}).join('');
+    const dirs=[[p.a,p.b],[p.b,p.a]].map(([a,b])=>{const l=es.filter(e=>e.a===a&&e.b===b);return l.length?`<div class="dir">${esc(NAME(a))} → ${esc(NAME(b))}</div><ul>${l.map(e=>`<li>${/^Insurance knowledge/.test(e.t)||e.basis==='inf'?'<span class="tag inf">Insurance knowledge</span> ':''}${esc(e.t.replace(/^Insurance knowledge:\s*/,''))}</li>`).join('')}</ul>`:''}).join('');
     return `<div class="side"><h4>As the ${esc(NAME(src))} guide describes it</h4>${dirs||'<p class="small muted">Nothing stated.</p>'}<a class="small" href="#${src}--integration">Open Cross-module in the ${esc(NAME(src))} guide</a></div>`};
   $('#pairPanel').innerHTML=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><h3>${esc(NAME(p.a))} ↔ ${esc(NAME(p.b))}</h3><span class="verdict ${p.verdict}">${V}</span></div>
     <p class="small"><span class="tag ${p.tag}">${p.tag}</span> ${esc(p.note)}</p>
@@ -342,7 +342,7 @@ const gapState={mod:'all',sev:'all',q:''};
 function renderGaps(){
   const sevs=['High','Medium','Low'];
   const tbl=`<div class="tw"><table class="gtbl"><thead><tr><th>Module</th>${sevs.map(s=>`<th class="n">${s}</th>`).join('')}<th class="n">Total</th></tr></thead><tbody>${ORDER.map(k=>{const g=D.gaps.filter(x=>x[0]===k);return `<tr><td>${mtag(k)}</td>${sevs.map(s=>`<td class="n">${g.filter(x=>x[1]===s).length}</td>`).join('')}<td class="n"><b>${g.length}</b></td></tr>`}).join('')}</tbody></table></div>`;
-  $('#h-gaps').innerHTML=`<section><span class="eyebrow">Reference</span><h1>Source gaps across all modules</h1>
+  $('#h-gaps').innerHTML=`<section><span class="eyebrow">Reference</span><h1>InsureMO guide gaps across all modules</h1>
     <p class="lede">Contradictions, missing rules and arithmetic errors found in the four source documents. Confirm each one with the InsureMO platform team before you lock a requirement or a test expectation on it.</p>${tbl}</section>
     <section><div class="toolbar"><span class="lbl">Module</span><div class="chips" id="gMod"></div></div>
     <div class="toolbar"><span class="lbl">Severity</span><div class="chips" id="gSev"></div><input class="field" id="gQ" type="search" placeholder="Filter gaps" aria-label="Filter gaps" style="flex:1 1 200px;max-width:320px"></div>
