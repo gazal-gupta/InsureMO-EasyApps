@@ -10,7 +10,7 @@ const fmt=x=>(Math.round(x*100)/100).toLocaleString('en-US',{minimumFractionDigi
 function wrap(t,n){const w=String(t).split(/\s+/),out=[];let line='';for(const x of w){if((line+' '+x).trim().length>n&&line){out.push(line);line=x}else line=(line+' '+x).trim()}if(line)out.push(line);return out}
 
 function stepTable(steps,id,resLbl){
-  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Source</th><th>Screen / menu</th><th>${resLbl||'Status after'}</th><th>Output / note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}</td><td>${s.tag==='inf'?'<span class="tag inf">Industry · domain context</span>':s.k==='ext'?'<span class="tag src">External</span>':'<span class="tag int">XRI source</span>'}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
+  return `<div class="tbl"><table id="${id}"><thead><tr><th>#</th><th>Actor</th><th>Action</th><th>Basis</th><th>Screen / menu</th><th>${resLbl||'Status after'}</th><th>Output / note</th></tr></thead><tbody>${steps.map((s,i)=>`<tr data-i="${i}"><td class="num">${i+1}</td><td>${esc(LANES[s.l])}</td><td>${esc(s.t)}${s.r?`<div class="small muted">Rule: ${esc(s.r)}</div>`:''}</td><td>${s.tag==='inf'?'<span class="tag inf">Insurance knowledge</span>':s.k==='ext'?'<span class="tag src">External</span>':'<span class="tag int">InsureMO XRI</span>'}</td><td class="small">${esc(s.m||'')}</td><td class="small">${esc(s.s||'')}</td><td class="mono small">${esc(s.f||'')}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function linkDiagram(root){
   $$('.node',root).forEach(n=>{const go=()=>{const i=n.dataset.i;$$('.node',root).forEach(x=>x.classList.toggle('hl',x===n));$$('tbody tr',root).forEach(r=>r.classList.toggle('hl',r.dataset.i===i));const r=$(`tbody tr[data-i="${i}"]`,root);if(r)r.scrollIntoView({block:'nearest',behavior:'smooth'})};n.addEventListener('click',go);n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
@@ -85,7 +85,7 @@ function renderHub(){
   <h4>XRI screens involved</h4><p class="small">${esc(m.screens)}</p>
   ${m.sc.length?`<h4>Scenarios</h4><div class="filter-row">${m.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id} · ${esc(SCEN.find(x=>x.id===id).name)}</a>`).join('')}</div>`:''}
   <div class="notes"><div class="note" data-r="ba"><span class="who">Business analyst</span>${esc(m.ba)}</div><div class="note" data-r="qa"><span class="who">Tester</span>${esc(m.qa)}</div><div class="note" data-r="dev"><span class="who">Developer</span>${esc(m.dev)}</div></div>
-  <p class="small muted">Interfaces are not specified in the source guide. Items here describe what the screens show and what the business needs; see Source gaps.</p></div>`;
+  <p class="small muted">Interfaces are not specified in the InsureMO XRI guide. Items here describe what the screens show and what the business needs; see InsureMO XRI gaps.</p></div>`;
 }
 
 /* ---------- scenarios ---------- */
@@ -101,11 +101,11 @@ function renderSc(){
   const nInd=steps.filter(x=>x.tag==='inf').length;
   $('#scDetail').innerHTML=`<div class="sc-head"><div class="row"><span class="tag ${gc}">${gl}</span>${s.mods.map(m=>`<span class="tag ${m}">${MODTAG[m]}</span>`).join('')}<span class="tag src">${s.id}</span></div>
    <h2 style="margin:0">${esc(s.name)}</h2><p style="max-width:75ch">${esc(s.desc)}</p>${REAL[s.id]?`<div class="realex"><span class="eyebrow">Real-world example · illustrative amounts</span><p>${esc(REAL[s.id])}</p></div>`:''}
-   <div class="row"><div class="seg" role="group" aria-label="Process view"><button type="button" data-m="xri" aria-pressed="${curMode==='xri'}">XRI process (source)</button><button type="button" data-m="ind" aria-pressed="${curMode==='ind'}">Industry process (domain context)</button></div><span class="small muted">Source: ${esc(s.src)}</span></div>
-   <p class="small ${curMode==='ind'?'':'muted'}">${curMode==='xri'?`Steps from the XRI user guide${nInd?`; ${nInd} step${nInd>1?'s':''} marked IND add industry context the source does not describe`:''}.`:'How the same business event runs in the reinsurance market. Steps marked XRI are where the system is used; IND steps happen outside XRI or are general practice.'}</p></div>
+   <div class="row"><div class="seg" role="group" aria-label="Process view"><button type="button" data-m="xri" aria-pressed="${curMode==='xri'}">XRI process (source)</button><button type="button" data-m="ind" aria-pressed="${curMode==='ind'}">Industry process (insurance knowledge)</button></div><span class="small muted">Source: ${esc(s.src)}</span></div>
+   <p class="small ${curMode==='ind'?'':'muted'}">${curMode==='xri'?`Steps from the XRI user guide${nInd?`; ${nInd} step${nInd>1?'s':''} marked INS add industry context the InsureMO XRI guide does not describe`:''}.`:'How the same business event runs in the reinsurance market. Steps marked XRI are where the system is used; INS steps happen outside XRI or are general practice.'}</p></div>
    <div id="scDia"><div class="diagram">${swimlane(steps,{uid:'sc',label:s.id+' · '+s.name+(curMode==='xri'?' (XRI process)':' (industry process)')})}</div>${stepTable(steps,'scTbl')}</div>
    ${roleBlocksScenario(s)}
-   <div class="grid g2"><div class="card"><h4>Business rules (from the source)</h4><ul class="clean">${s.rules.map(r=>`<li>${esc(r)}</li>`).join('')}</ul></div>
+   <div class="grid g2"><div class="card"><h4>Business rules (from the InsureMO XRI guide)</h4><ul class="clean">${s.rules.map(r=>`<li>${esc(r)}</li>`).join('')}</ul></div>
    <div class="notes" style="grid-template-columns:1fr"><div class="note" data-r="ba"><span class="who">Business analyst</span>${esc(s.ba)}</div><div class="note" data-r="qa"><span class="who">Tester</span>${esc(s.qa)}</div><div class="note" data-r="dev"><span class="who">Developer</span>${esc(s.dev)}</div></div></div>`;
   $$('#scDetail .seg button').forEach(b=>b.addEventListener('click',()=>{curMode=b.dataset.m;renderSc()}));
   linkDiagram($('#scDia'));applyLens();
@@ -122,7 +122,7 @@ function renderScreens(){
   $('#screenDetail').innerHTML=`<div class="card" style="gap:14px"><span class="eyebrow">${esc(s.g)}</span><h2 style="margin:0">${esc(s.n)}</h2>${AKA[s.id]?`<p class="small muted">Label in the system screenshots: <b>${esc(AKA[s.id])}</b></p>`:''}<p>${esc(s.p)}</p>
    <dl class="kv"><dt>Before you start</dt><dd>${esc(s.pre)}</dd></dl>
    ${stepsWithShots(s)}
-   <div class="callout"><b>Validation and rules</b>${s.rules.length?`<ul class="clean" style="margin-top:6px">${s.rules.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="small">No extra rules in the source.</p>'}</div>
+   <div class="callout"><b>Validation and rules</b>${s.rules.length?`<ul class="clean" style="margin-top:6px">${s.rules.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="small">No extra rules in the InsureMO XRI guide.</p>'}</div>
    ${s.fields.length?`<h4>Key fields and buttons</h4><div class="tbl"><table><thead><tr><th>Field / button</th><th>Behaviour</th></tr></thead><tbody>${s.fields.map(f=>`<tr><td>${esc(f[0])}</td><td>${esc(f[1])}</td></tr>`).join('')}</tbody></table></div>`:''}
    ${fieldRef(s.id)}${roleBlocksScreen(s)}
    ${s.sc.length?'<h4>Used in scenarios</h4>':''}<div class="filter-row">${s.sc.map(id=>`<a class="tag src" href="#sc-${id}">${id} · ${esc(SCEN.find(x=>x.id===id).name)}</a>`).join('')}</div></div>`;
@@ -215,7 +215,7 @@ function runCalc(){
     const reinstAvail=Math.max(lim*n-prior,0);const reinAmt=Math.min(rec,reinstAvail);const reinPrem=lim?reinAmt/lim*prem*pct*time:0;
     h=`<div class="tbl"><table><tbody><tr><td>Loss above attachment</td><td class="num">${fmt(Math.max(loss-att,0))}</td></tr><tr><td><b>Recovery from the layer</b></td><td class="num"><b>${fmt(rec)}</b></td></tr><tr><td>Cedant keeps (retention + any excess over limit)</td><td class="num">${fmt(kept)}</td></tr><tr><td>Annual aggregate limit (limit × (1 + reinstatements))</td><td class="num">${fmt(aal)}</td></tr><tr><td>Limit reinstated</td><td class="num">${fmt(reinAmt)}</td></tr><tr><td><b>Reinstatement premium</b> = reinstated ÷ limit × premium × rate${time<1?' × time left':''}</td><td class="num"><b>${fmt(reinPrem)}</b></td></tr><tr><td>Net recovery after reinstatement premium</td><td class="num">${fmt(rec-reinPrem)}</td></tr><tr><td>Aggregate limit left after this loss</td><td class="num">${fmt(Math.max(avail-rec,0))}</td></tr></tbody></table></div>
     ${loss-att>lim?'<p class="small bad">The loss exceeds the top of the layer; the excess returns to the cedant or a higher layer.</p>':''}${reinAmt<rec?'<p class="small bad">Not all used limit can be reinstated: reinstatements are exhausted.</p>':''}
-    <p class="small muted">Formula is standard market practice (domain context). The source shows the inputs and results (layer info, recovery paid, applicable reinstatement fees) but not the formula. Confirm before using as expected results.</p>`;
+    <p class="small muted">Formula is standard market practice (insurance knowledge). The InsureMO XRI guide shows the inputs and results (layer info, recovery paid, applicable reinstatement fees) but not the formula. Confirm before using as expected results.</p>`;
   } else {
     const p=num('c_sprem'),c=num('c_comm')/100,cl=num('c_claims'),ccr=num('c_ccr'),rw=num('c_resw'),rr=num('c_resr'),it=num('c_int'),pc=num('c_pc');
     const items=[['Ceded premium','+',p],['Ceding commission','−',p*c],['Claims paid','−',cl],['Cash calls already received (release)','+',ccr],['Premium reserve withheld','−',rw],['Premium reserve released','+',rr],['Interest on reserves (paid to reinsurer)','+',it],['Profit commission','−',pc]];
@@ -223,7 +223,7 @@ function runCalc(){
     const shares=($('#c_shares').value||'').split(/[,;\s]+/).map(Number).filter(x=>x>0);const tot=shares.reduce((a,b)=>a+b,0);
     h=`<div class="tbl"><table><thead><tr><th>Item</th><th>Sign (due to reinsurers)</th><th class="num">Amount</th></tr></thead><tbody>${items.map(r=>`<tr><td>${r[0]}</td><td class="mono">${r[1]}</td><td class="num">${fmt(r[2])}</td></tr>`).join('')}<tr><td><b>Balance</b></td><td></td><td class="num"><b>${fmt(Math.abs(bal))}</b> ${bal>=0?'<span class="tag out">due to reinsurers (AP)</span>':'<span class="tag in">due from reinsurers (AR)</span>'}</td></tr></tbody></table></div>
     ${shares.length?`<div class="tbl"><table><thead><tr><th>Reinsurer</th><th class="num">Share</th><th class="num">Balance</th></tr></thead><tbody>${shares.map((s,i)=>`<tr><td>Reinsurer ${String.fromCharCode(65+i)}</td><td class="num">${s}%</td><td class="num">${fmt(bal*s/100)}</td></tr>`).join('')}</tbody></table></div>${Math.abs(tot-100)>0.001?`<p class="small bad">Shares add up to ${tot}%, not 100%.</p>`:''}`:''}
-    <p class="small muted">Sign convention from the cedant’s view: + increases what the cedant pays. Item names follow market practice (domain context); XRI SOA contents list cession premium, OS loss, loss paid and additional deductions.</p>`;
+    <p class="small muted">Sign convention from the cedant’s view: + increases what the cedant pays. Item names follow market practice (insurance knowledge); XRI SOA contents list cession premium, OS loss, loss paid and additional deductions.</p>`;
   }
   $('#calcOut').innerHTML=h;
 }
@@ -237,7 +237,7 @@ function renderToolkit(){
   $$('#tkTabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tk===curTk));
   let h='';
   if(curTk==='ba'){
-    h=`<p class="prose">Use these questions in requirement workshops. Each one maps to a decision the source guide does not make for you.</p><div class="grid g2">${BAQ.map(g=>`<div class="card"><h3>${esc(g[0])}</h3><ol class="steps">${g.slice(1).map(q=>`<li>${esc(q)}</li>`).join('')}</ol></div>`).join('')}</div>
+    h=`<p class="prose">Use these questions in requirement workshops. Each one maps to a decision the InsureMO XRI guide does not make for you.</p><div class="grid g2">${BAQ.map(g=>`<div class="card"><h3>${esc(g[0])}</h3><ol class="steps">${g.slice(1).map(q=>`<li>${esc(q)}</li>`).join('')}</ol></div>`).join('')}</div>
     <h3>Fit-gap starter</h3><div class="tbl"><table><thead><tr><th>Need</th><th>Standard XRI (per source)</th><th>Configure</th><th>Partner build (BFF) or confirm</th></tr></thead><tbody>
     <tr><td>Outward QS, surplus, XoL, facility, inward treaties</td><td>Yes</td><td>Treaty, section, subsection fields</td><td>—</td></tr>
     <tr><td>Automatic cession by treaty rules; endorsement slices</td><td>Yes</td><td>Retention tables, execution order</td><td>Policy feed from Easy PA</td></tr>
@@ -252,14 +252,14 @@ function renderToolkit(){
   } else if(curTk==='qa'){
     const rows=[];SCEN.forEach(s=>{rows.push([s.id+'-X',s.id,s.name,'XRI process',s.xri.filter(x=>x.k==='op'||x.k==='x'||x.k==='rev').map(x=>x.t).join(' → ')||'System only',s.xri.filter(x=>x.s).map(x=>x.s).slice(-1)[0]||'',s.xri.map(x=>x.f).filter(Boolean).join('; ')]);
       rows.push([s.id+'-B',s.id,s.name,'Business check','Compare the result with the industry outcome: '+s.ind[s.ind.length-1].t,'',''])});
-    h=`<p class="prose">Each scenario gets an XRI process test (steps and statuses from the source) and a business check (does the result match what the market expects). Add the validation tests below. Use the Level 6 calculators for expected amounts and mark derived values with *.</p>
+    h=`<p class="prose">Each scenario gets an XRI process test (steps and statuses from the InsureMO XRI guide) and a business check (does the result match what the market expects). Add the validation tests below. Use the Level 6 calculators for expected amounts and mark derived values with *.</p>
     <div class="filter-row"><label for="tFilter" class="small">Filter</label><input id="tFilter" type="search" placeholder="e.g. R2, cash call, settlement"><select id="tType" aria-label="Test type"><option value="">All types</option><option>XRI process</option><option>Business check</option></select></div>
     <div class="tbl"><table><thead><tr><th>Test ID</th><th>Scenario</th><th>Type</th><th>User steps</th><th>Expected end status</th><th>Expected output</th></tr></thead><tbody id="tBody">${rows.map(r=>`<tr data-t="${esc((r.join(' ')).toLowerCase())}" data-type="${r[3]}"><td class="mono small">${r[0]}</td><td><a href="#sc-${r[1]}">${esc(r[2])}</a></td><td>${r[3]==='XRI process'?'<span class="tag int">XRI process</span>':'<span class="tag inf">Business check</span>'}</td><td class="small">${esc(r[4])}</td><td class="small">${esc(r[5])}</td><td class="mono small">${esc(r[6])}</td></tr>`).join('')}</tbody></table></div>
     <h3>Validation and negative tests</h3><div class="tbl"><table><thead><tr><th>ID</th><th>Screen</th><th>Test</th><th>Expected</th></tr></thead><tbody>${TESTS_EXTRA.map(r=>`<tr><td class="mono small">${r[0]}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')}</tbody></table></div>
-    <p class="small muted">Expected results marked * are derived from a stated rule; the source does not give the exact system message.</p>
+    <p class="small muted">Expected results marked * are derived from a stated rule; the InsureMO XRI guide does not give the exact system message.</p>
     <h3>Test data checklist</h3><ul class="clean"><li>One proportional treaty (QS + surplus), one per-risk XoL and one cat XoL with reinstatements.</li><li>A facultative facility and an inward treaty.</li><li>Policies below, at and above treaty capacity; one with an endorsement mid-term.</li><li>Claims below and above the cash call limit; one large loss hitting an XoL layer; one on a fac-ceded risk.</li><li>Reinsurers with different shares, one via a broker; one party made invalid.</li><li>Two currencies, for settlement rate and tax currency tests.</li><li>Users with maker and checker roles.</li></ul>`;
   } else {
-    h=`<div class="grid g2"><div class="card"><h3>Integration checklist</h3><ol class="steps"><li>Policy feed from Easy PA: policy, endorsement, risk units, risk category, sums insured, premium by coverage, dates, coinsurance share.</li><li>Trigger points: issue, endorsement, renewal, cancellation, reinstatement.</li><li>Claims feed: case, date of loss, cause, CAT code, appraisal and loss paid changes by currency.</li><li>Settlement Summary to AR/AP (BCP or ERP) and the write-off callback.</li><li>GL postings by treaty, period and IFRS 17 group.</li><li>Image Management to the document system.</li></ol><p class="small muted">None of these interfaces is specified in the source. Request the API catalogue.</p></div>
+    h=`<div class="grid g2"><div class="card"><h3>Integration checklist</h3><ol class="steps"><li>Policy feed from Easy PA: policy, endorsement, risk units, risk category, sums insured, premium by coverage, dates, coinsurance share.</li><li>Trigger points: issue, endorsement, renewal, cancellation, reinstatement.</li><li>Claims feed: case, date of loss, cause, CAT code, appraisal and loss paid changes by currency.</li><li>Settlement Summary to AR/AP (BCP or ERP) and the write-off callback.</li><li>GL postings by treaty, period and IFRS 17 group.</li><li>Image Management to the document system.</li></ol><p class="small muted">None of these interfaces is specified in the InsureMO XRI guide. Request the API catalogue.</p></div>
     <div class="card"><h3>Data and configuration checklist</h3><ol class="steps"><li>Reinsurance parties with bank accounts, tax, contacts, ratings.</li><li>Risk categories, risk types and coverage categories aligned with Easy PA products.</li><li>Retention tables and treaty capacity ratios per section.</li><li>SOA frequency, notification and settlement periods.</li><li>Currency for tax: exchange rate model and agreed rates.</li><li>Drop-down values (Level 7 table).</li><li>Maker and checker user roles.</li></ol></div></div>
     <div class="card"><h3>Build split (from the architecture)</h3><p>insureMO provides standard APIs and the app framework. The partner builds BFF customisation and new features, either as a new application calling XRI APIs or by customising the provided app frameworks.</p></div>`;
   }
@@ -320,7 +320,7 @@ function buildIndex(){
   PROC.forEach(p=>INDEX.push({k:'Business process',t:p[0],x:p.join(' ').toLowerCase(),h:'business'}));
   SOATYPES.forEach(f=>INDEX.push({k:'SOA type',t:f[0],x:f.join(' ').toLowerCase(),h:'fees'}));
   DTABLES.forEach(d=>INDEX.push({k:'Drop-down values',t:d[0],x:d.join(' ').toLowerCase(),h:'config'}));
-  GAPS.forEach(g=>INDEX.push({k:'Source gap · '+g[0],t:g[1],x:g.join(' ').toLowerCase(),h:'gaps'}));
+  GAPS.forEach(g=>INDEX.push({k:'InsureMO XRI gap · '+g[0],t:g[1],x:g.join(' ').toLowerCase(),h:'gaps'}));
   Object.values(MODS).forEach(m=>INDEX.push({k:'Module',t:m.n,x:(m.n+' '+m.sends.join(' ')+' '+m.gets.join(' ')).toLowerCase(),h:'integration'}));
   LEVELS.forEach(l=>INDEX.push({k:'Level',t:l.n+' · '+l.name,x:(l.name+' '+(l.learn||'')).toLowerCase(),h:l.id}));
 }

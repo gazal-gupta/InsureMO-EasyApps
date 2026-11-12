@@ -13,7 +13,7 @@ Requires Pillow (PIL) for image sizes.
 import argparse, base64, json, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-JS_ORDER = ['c_data.js', 'e_fields.js', 'g_shots.js', 'h_biz.js', 'j_protec.js', 'i_track.js', 'f_lens.js', 'd_app.js']
+JS_ORDER = ['c_data.js', 'e_fields.js', 'g_shots.js', 'h_biz.js', 'j_protec.js', 'k_v2.js', 'i_track.js', 'f_lens.js', 'd_app.js']
 
 
 def read(name):

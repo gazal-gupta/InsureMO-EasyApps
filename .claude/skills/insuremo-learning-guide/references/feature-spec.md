@@ -60,7 +60,7 @@ Release state: F1-F10 shipped in every module guide. F11-F12 ship in XRI and BCP
 - **Accept when:** export → reset → import restores the scores.
 
 ## F9. Reference pages
-- Source gaps: number, impact (High / Medium / Low / Info), topic, what the source says, recommended action.
+- InsureMO <module> gaps: number, impact (High / Medium / Low / Info), topic, what the source says, recommended action.
 - Source coverage: every source chapter → where it is in the guide → Full / Added / Not included.
 - Glossary: term, category, meaning, example, where used in the module; filter by text and category.
 - Global search across scenarios, screens, glossary, fee types, configuration, modules, processes and levels.
@@ -81,7 +81,7 @@ Release state: F1-F10 shipped in every module guide. F11-F12 ship in XRI and BCP
 - Swimlane boxes at least 180 px wide in the viewBox, 13.5 px step text, 3 lines plus a result line, ellipsis when cut; full text in the step table and tooltip.
 - No height cap on in-page swimlanes; width capped at 1.2 × the viewBox so a three-lane diagram does not blow up; full screen fits the width and scrolls vertically.
 - Scenario list sits above the diagram, so the diagram uses the full content width.
-- Every step is badged by source (system step from the source, or industry / domain context).
+- Every step is badged by source (system step from the InsureMO module guide, or INS for insurance knowledge).
 - Status models number every status in sequence; the transition table is numbered and repeats those numbers.
 - **Accept when:** step text in a 5-lane scenario swimlane renders at 12 px or more at 1366 px, and no label overlaps in any status model tab.
 

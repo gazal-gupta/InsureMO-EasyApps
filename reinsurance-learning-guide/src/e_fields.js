@@ -8,7 +8,7 @@ const SCREENS=[
 /* ---- Getting started ---- */
 {id:'prep',g:SG.start,n:'Preparation and browser settings',p:'Check the network connection and add the XRI address to trusted sites before first use.',pre:'A computer with network access and the XRI URL from your administrator.',
  steps:['Check the network icon on the task bar. The first two icons mean connected; the last two mean not connected.','Open Internet Options from the Tools menu.','On the Security tab click Trusted Sites, then Sites.','Enter the XRI URL, untick the circled option (server verification) and click OK.'],
- fields:[],rules:['The source describes Internet Explorer settings. Internet Explorer is retired; use current browser guidance from your IT team.'],sc:[]},
+ fields:[],rules:['The InsureMO XRI guide describes Internet Explorer settings. Internet Explorer is retired; use current browser guidance from your IT team.'],sc:[]},
 {id:'nav',g:SG.start,n:'Menu bar, quick bar and personal settings',p:'Move around XRI: two-level menu, system help, messages and personal settings.',pre:'Logged in. You see only the menus you are authorised for.',
  steps:['Click a main menu to open its sub-menus (two levels).','Use the quick bar at the top of every page: system help, system message, personal settings.','System messages: RI alerts appear in the quick bar for users with authority, with the time sent.','Click the account name to view account information and choose the system language. Click Logout to leave.','Common icons: the pencil edits a saved record; the plus adds a row, section or subsection.'],
  fields:[['Menus','Reinsurance Definition, Risk Allocation, Reinsurance Recovery, Reinsurance Statement, Settlement, Reinsurance Query']],rules:['Only authorised menus are shown.'],sc:[]},
@@ -59,7 +59,7 @@ const SCREENS=[
  fields:[],rules:[],sc:['N1']},
 {id:'itcancel',g:SG.def,n:'Cancel or terminate inward treaty',p:'End an inward treaty that is In Force or Expired.',pre:'Treaty In Force or Expired.',
  steps:['Cancel: select, click Cancel. The system checks for statements; if none, the read-only cancel page opens. Click Cancel and confirm to start review.','Terminate: select, click Terminate. The read-only terminate page opens. Click Terminate, then Confirm to start review.'],
- fields:[],rules:['Cancel is blocked when a statement exists (exact behaviour not in source).','The difference between Cancel and Terminate is not defined in the source.'],sc:['N2']},
+ fields:[],rules:['Cancel is blocked when a statement exists (exact behaviour not in source).','The difference between Cancel and Terminate is not defined in the InsureMO XRI guide.'],sc:['N2']},
 /* ---- Party ---- */
 {id:'rpsearch',g:SG.def,n:'Reinsurance Party Management: search',p:'Entry point for reinsurers, brokers and cedants.',pre:'Menu: Reinsurance Definition > Reinsurance Party Management.',
  steps:['Search by party number, company name, business type. Results sort by party number, newest first.','Click the party number to view; use row icons to edit or delete parties not yet in force.','Buttons: Export Inquiry Results (Excel), Update Reinsurer’s Credit Rating (upload), Template Download, Create, Edit (in force), Review (to be reviewed).'],
@@ -84,7 +84,7 @@ const SCREENS=[
  steps:['Task progress bar: Quotation, Review, Complete (grey = not started, blue outline = in progress, blue = done).','Policy Basic Information (tabs if several merged policies).','Risk Position (read-only).','Reinsurance Arrangement Adjustment: proportional plan of the selected risk position; Confirm Reinsurance Result.','Facultative Proportional Arrangement: add rows or upload a template; Binding only if Placement confirmed = Yes.','Facultative Non Proportional Arrangement: layers (attachment, loss limit, premium).','Facultative Non-Proportional Reinsurance Participants: add participants; Binding rule as above.','Reinsurance Arrangement Feedback: communication log; Feedback Recorded and Placement confirmed toggles.','Buttons: Image Management, Close (choose reason), Save, Submission Review, Back.'],
  fields:[['Binding','Only when Placement confirmed = Yes'],['Close','Requires a closing reason']],rules:['Submission Review records you as the operator.'],sc:['A2']},
 {id:'ncfcopy',g:SG.alloc,n:'Copy a facultative arrangement',p:'Reuse another policy’s facultative programme.',pre:'Task with Allocation Status To be claimed.',
- steps:['Select the task and click Copy. A window opens.','Enter Policy Number or Risk Unit Number of the source and click Search.','Check Facultative Reinsurance Program and Task List, then Confirm.','The arrangement is copied and goes to review.'],
+ steps:['Select the task and click Copy. A window opens.','Enter Policy Number or Risk Unit Number of the source policy and click Search.','Check Facultative Reinsurance Program and Task List, then Confirm.','The arrangement is copied and goes to review.'],
  fields:[],rules:[],sc:['A2']},
 {id:'ncfreview',g:SG.alloc,n:'View and review facultative tasks',p:'Approve facultative placements.',pre:'Task with Review Status To review.',
  steps:['View: click Business Number (read-only).','Review: select tasks, click Review. Several → batch confirm; one → read-only page.','Failed Review (confirm box, back to search) or Review Pass (changes take effect).'],
@@ -259,5 +259,5 @@ const COVERAGE=[
  ['Cross-module data needs and journeys','Level 5','Added'],
  ['RI accounting, calculators, IFRS 17 view','Level 6','Added'],
  ['Glossary, checkpoints, final assessment, tracker','Reference and Assess','Added'],
- ['API specifications, GL posting rules, calculation formulas','Not in source; logged in Source gaps','Not included']
+ ['API specifications, GL posting rules, calculation formulas','Not in source; logged in InsureMO XRI gaps','Not included']
 ];

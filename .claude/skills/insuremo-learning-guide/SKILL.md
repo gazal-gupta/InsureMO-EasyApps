@@ -28,8 +28,8 @@ Never edit a generated HTML file by hand. Change the engine or data, rebuild, th
 - Plain, simple English for business leaders. No idioms, no filler.
 - Challenge the request first: say what is missing or risky before building, and give one recommendation.
 - Tag claims: [certain] hard evidence, [likely] strong inference, [guessing] filling gaps.
-- Separate source facts from added knowledge. Anything not in the source document is labelled "Domain context" in the page, and market rules carry a confidence tag and a "re-check" note.
-- Never copy source errors into expected results. Log every contradiction or arithmetic error on the Source gaps page. Recompute every worked example.
+- Separate source facts from added knowledge. Facts from the source are called by the product name ("InsureMO <module>"); anything not in the source document is labelled "Insurance knowledge" (badge INS) in the page, and market rules carry a confidence tag and a "re-check" note.
+- Never copy source errors into expected results. Log every contradiction or arithmetic error on the "InsureMO <module> gaps" page. Recompute every worked example.
 - Never fabricate fee codes, API names, screen names or field rules. If the source does not give it, write "not in source".
 - Insurance first, module second: learners want the parties, the policy lifecycle and the money before the screens.
 
@@ -72,12 +72,14 @@ Curated hub content (sub module names, value chain, interface verdicts and notes
 | fees | 6 Accounting logic | Fee and GL rules, fee flow tables, a calculator for every formula in the source with one preset per worked example and a "check against the source" line |
 | config | 7 Configuration | Platform vs iComposer, configuration items, data tables, APIs |
 | toolkit | 8 Toolkits | BA questions and fit-gap, test matrix and validation tests, developer checklists |
-| gaps, coverage, glossary | Reference | Source gaps, source coverage map, glossary (category, meaning, example, where used) |
+| gaps, coverage, glossary | Reference | InsureMO <module> gaps, coverage map, glossary (category, meaning, example, where used) |
 | tracker, quiz, assessment | Assess | Progress with objective → question → result traceability, all checkpoints, final assessment (pass mark 70%) |
 
 The feature list with acceptance criteria is `references/feature-spec.md`. Treat it as the definition of done.
 
 ## Diagram rules (user decisions)
+
+- Every diagram carries "Figure <level>.<n> · <title>" above it. Embed `scripts/fig_numbers.js` in every guide (the BCP, Easy PA and XRI engines append it to `i_track.js`; Claims has it before `</body>`). Give each diagram a distinct `aria-label`; the script uses it as the title.
 
 - Swimlanes run top to bottom (one column per actor) so they fit the page width; each box links to a step table. Every diagram has a Full screen button and fits 1366 px without sideways scrolling.
 - Status models: number every arrow in process order (main path, then loops back, then exits), with the same number in the table. Draw "status unchanged" actions as a loop. For an A→B / B→A pair, use the same offset sign for both edges (the normal flips with direction), or both curves land on one side.

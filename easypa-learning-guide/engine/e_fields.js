@@ -1,4 +1,4 @@
-/* ===================== FULL FIELD REFERENCE (from the source) =====================
+/* ===================== FULL FIELD REFERENCE (from the InsureMO Easy PA guide) =====================
    f rows: Name|Type|Req|Read only|Default|Data source|Description ; c rows: Column|Description ; b: buttons */
 const FT=['Field','Type','Req.','Read only','Default','Data source','Description'];
 const CT=['Column','Description'];
@@ -57,8 +57,8 @@ const FIELDS={
  uwdecision:[
   {h:'UW Decision',f:['UW Reason|Auto text|No|Yes|From trigger|UW rule|Why the case went to UW','Decision|Radio|Yes|No|—|—|Approve / Decline','Reason|Free text|Yes|No|—|—|Required when Decline']},
   {h:'Buttons',b:'Exit · Calculate · Yes'}],
- polquery:[{h:'Status tabs',c:['Entry / Bound / Issued / Rejected / UnderWriting / Waiting For Payment / Quotation In Progress|System tabs in the screenshot','Quote / Underwriting / Bound / Waiting For Payment / Issued / Rejected|Tabs listed in the source text']},{h:'Result columns',c:['Proposal No.|Link','Policy No.|After issue','Product|Product','Effective Date / Expiry Date|POI','Proposal Status|e.g. UnderWriting, Issued','Policy Status|Not Effective / Effective']},{h:'Buttons',b:'Search · Reset · Advanced Search · Export All · New Proposal'}],
- endoquery:[{h:'Status tabs',c:['Entry / Underwriting / Bound / Issued / Rejected / Undo|System tabs','Underwriting Approve / Underwriting Decline / Deleted|Also listed in the source text']},{h:'Result columns',c:['Endorsement No.|Number','Policy No.|Policy','Policy Type|Single Policy','Product Code|Product','Endorsement Type|e.g. Basic Information Endorsement','Customer/Company Name|Name','Operation|View Endo, View Policy']},{h:'Buttons',b:'Search · Reset · Advanced Search · Export All · New Endorsement'}],
+ polquery:[{h:'Status tabs',c:['Entry / Bound / Issued / Rejected / UnderWriting / Waiting For Payment / Quotation In Progress|System tabs in the screenshot','Quote / Underwriting / Bound / Waiting For Payment / Issued / Rejected|Tabs listed in the InsureMO Easy PA guide text']},{h:'Result columns',c:['Proposal No.|Link','Policy No.|After issue','Product|Product','Effective Date / Expiry Date|POI','Proposal Status|e.g. UnderWriting, Issued','Policy Status|Not Effective / Effective']},{h:'Buttons',b:'Search · Reset · Advanced Search · Export All · New Proposal'}],
+ endoquery:[{h:'Status tabs',c:['Entry / Underwriting / Bound / Issued / Rejected / Undo|System tabs','Underwriting Approve / Underwriting Decline / Deleted|Also listed in the InsureMO Easy PA guide text']},{h:'Result columns',c:['Endorsement No.|Number','Policy No.|Policy','Policy Type|Single Policy','Product Code|Product','Endorsement Type|e.g. Basic Information Endorsement','Customer/Company Name|Name','Operation|View Endo, View Policy']},{h:'Buttons',b:'Search · Reset · Advanced Search · Export All · New Endorsement'}],
  uwhistory:[
   {h:'Search',f:['Proposal No.|Text|No|No|—|—|Proposal','Policy No.|Text|No|No|—|—|Policy','Endorsement No.|Text|No|No|—|—|Endorsement']},
   {h:'Results',c:['No|Sequence','Proposal No.|Proposal','Policy No.|Policy','Underwriting Time|e.g. 2023-03-18 05:37:34','Message|Optional text','Status|Approve or Decline']}],
@@ -77,7 +77,7 @@ const COVERAGE=[
  ['NB & Renewal Flow: Stage Detail (Quote, Underwriting, Fac Out, Bound, Prepayment, permission validation)','Level 2 status table; scenarios N1-N5','Full'],
  ['NB & Renewal Flow: Basic UI Operation for Standard Policy, steps 1-8','Scenario N1; screens Worklist, New Proposal, Proposal entry, Bound','Full'],
  ['NB & Renewal Flow: Renewal','Scenario N6; screen New Renewal','Full'],
- ['NB & Renewal Flow: Auto Decline Batch (heading only)','Source gaps #7','Not included (no content in source)'],
+ ['NB & Renewal Flow: Auto Decline Batch (heading only)','InsureMO Easy PA gaps #7','Not included (no content in source)'],
  ['Endorsement Flow: Basic UI Operation steps 1-6','Scenario E1; screen New Endorsement','Full'],
  ['Basic Information Endorsement: introduction, premium calculation, example','Scenarios E1, E7; Level 6 calculator','Full'],
  ['Cancellation: introduction (13 items), reasons, inception and mid-term formulas, Policies A, B, C','Scenarios K1-K3; Level 6 calculator and worked examples','Full'],

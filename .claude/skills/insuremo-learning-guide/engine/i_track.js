@@ -34,7 +34,7 @@ const CHECKS={
   Q('C3','Range search on a date field fails. Likely cause?',['Index field mapped with the wrong type','Wrong branch','Missing payment method'],0,'Number and date fields must have the correct index type.'),
   Q('C4','Tolerance approval limits are…',['Standard configuration','An iComposer build item','A data dictionary field'],1,'Authority rules are listed as iComposer extensions.')],
  toolkit:[Q('T1','Minimum tests per scenario?',['Normal only','Normal and reversal','Reversal only'],1,'Every scenario needs both, plus validation tests.'),
-  Q('T2','The source shows two different fee codes for the same step. What do you do before fixing expected results?',['Pick one','Resolve it with the platform team','Skip fee checks'],1,'See Source gaps.'),
+  Q('T2','The InsureMO BCP guide shows two different fee codes for the same step. What do you do before fixing expected results?',['Pick one','Resolve it with the platform team','Skip fee checks'],1,'See InsureMO BCP gaps.'),
   Q('T3','Where do you verify fee records after a test?',['Query BizTransaction and Query GL','Statistics only','Premium Pre-Paid'],0,'BizTransaction shows fees; GL shows vouchers.'),
   Q('T4','"Do producers remit gross or net?" decides…',['Whether Use Commission is standard practice','The GST rate','Index rebuild timing'],0,'Net remittance means commission is netted at collection.')]
 };
@@ -158,10 +158,10 @@ function swimlane(steps,opts={}){
   s+=Math.abs(x1-x2)<1?`<path class="edge" d="M${x1},${y1} V${y2-2}" marker-end="url(#ah${uid})"/>`:`<path class="edge" d="M${x1},${y1} V${y1+(y2-y1)/2} H${x2} V${y2-2}" marker-end="url(#ah${uid})"/>`}
  steps.forEach((st,i)=>{const p=pos[i];const ind=st.tag==='inf';const sub=st.s||st.f||st.m||'';
   s+=`<g class="node k-${st.k}${ind?' ind':''}" data-i="${i}" tabindex="0"><rect x="${p.x}" y="${p.y}" width="${BW}" height="${BH}" rx="${st.k==='ev'||st.k==='end'?14:4}"/><circle class="numbg" cx="${p.x+3}" cy="${p.y+3}" r="11"/><text class="num" x="${p.x+3}" y="${p.y+7.5}" text-anchor="middle">${i+1}</text>`;
-  if(ind)s+=`<rect class="indbg" x="${p.x+BW-36}" y="${p.y-7}" width="38" height="15" rx="3"/><text class="indt" x="${p.x+BW-17}" y="${p.y+4}" text-anchor="middle">IND</text>`;
+  if(ind)s+=`<rect class="indbg" x="${p.x+BW-36}" y="${p.y-7}" width="38" height="15" rx="3"/><text class="indt" x="${p.x+BW-17}" y="${p.y+4}" text-anchor="middle">INS</text>`;
   const full=wrap(st.t,24);const lines=full.slice(0,3);if(full.length>3)lines[2]=lines[2].replace(/\s*\S*$/,'')+'…';const ty=p.y+(sub?22:BH/2-(lines.length-1)*8+5);lines.forEach((t,j)=>{s+=`<text class="t" x="${p.x+BW/2}" y="${ty+j*16}" text-anchor="middle">${esc(t)}</text>`});
   if(sub){const w=wrap(sub,27);s+=`<text class="f" x="${p.x+BW/2}" y="${p.y+BH-9}" text-anchor="middle">${esc(w[0]+(w.length>1?'…':''))}</text>`}
-  s+=`<title>${esc((ind?'[Domain context] ':'')+st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:'')+(st.r?' — Rule: '+st.r:''))}</title></g>`});
+  s+=`<title>${esc((ind?'[Insurance knowledge] ':'')+st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:'')+(st.r?' — Rule: '+st.r:''))}</title></g>`});
  return s+'</svg>';
 }
 
@@ -207,3 +207,42 @@ function renderBusiness(){
  $('#mapOverview').innerHTML=mt(MAPSTEPS.overview,['Function group','Screens / blocks','Purpose']);
  const cats=[...new Set(GLOSS.map(g=>g[1]))];$('#glCat').innerHTML='<option value="">All categories</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join('');
 }
+
+/* ===== FIGURE NUMBERS (master copy: .claude/skills/insuremo-learning-guide/scripts/fig_numbers.js) =====
+   Puts "Figure <level>.<n> · <title>" above every div.diagram in the open view.
+   Level number comes from LEVELS[].n; title from the svg aria-label, else the nearest heading.
+   Idempotent: runs after any DOM change, writes only when the text differs. */
+(function(){
+  if(window.__figNumbers)return;window.__figNumbers=1;
+  const GENERIC=/^(swimlane|swimlane diagram|diagram|flowchart|chart)$/i;
+  function levelNo(id){try{const l=(typeof LEVELS!=='undefined'?LEVELS:[]).find(x=>x.id===id);if(l&&l.n!=null)return String(l.n)}catch(e){}return id}
+  function titleOf(d){
+    const svg=d.querySelector('svg');let t=svg?(svg.getAttribute('aria-label')||''):'';
+    if(!t||GENERIC.test(t.trim())){
+      const box=d.closest('.sc-detail,.lc-card,.stage-card,.card,section.block,section,article');
+      const h=box&&box.querySelector('h1,h2,h3,h4');t=h?h.textContent:'';
+    }
+    return t.replace(/\s+/g,' ').trim().replace(/^\d+(\.\d+)*\s*[·.:-]\s*/,'');
+  }
+  function run(){
+    const v=[...document.querySelectorAll('section.view')].find(x=>!x.hidden&&x.offsetParent!==null);
+    if(!v)return;
+    const no=levelNo(v.id.replace(/^v-/,''));let k=0;
+    v.querySelectorAll('.diagram').forEach(d=>{
+      if(d.parentElement&&d.parentElement.closest('.diagram'))return;
+      const svg=d.querySelector('svg');if(!svg)return;
+      k++;const txt='Figure '+no+'.'+k+(titleOf(d)?' · '+titleOf(d):'');
+      let cap=d.previousElementSibling;
+      if(!cap||!cap.classList||!cap.classList.contains('fig-no')){cap=document.createElement('div');cap.className='fig-no';d.parentNode.insertBefore(cap,d)}
+      if(cap.textContent!==txt)cap.textContent=txt;
+    });
+  }
+  let t=null;const later=()=>{clearTimeout(t);t=setTimeout(run,60)};
+  const st=document.createElement('style');
+  st.textContent='.fig-no{font-family:var(--f-display,inherit);font-weight:700;font-size:13.5px;color:var(--ink,inherit);margin:6px 0 4px;letter-spacing:.01em}@media print{.fig-no{break-after:avoid}}';
+  document.head.appendChild(st);
+  window.addEventListener('hashchange',later);
+  document.addEventListener('DOMContentLoaded',()=>{later();new MutationObserver(later).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']})});
+  if(document.readyState!=='loading'){later();new MutationObserver(later).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']})}
+})();
+/* ===== END FIGURE NUMBERS ===== */

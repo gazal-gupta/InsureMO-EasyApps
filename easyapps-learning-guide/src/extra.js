@@ -1,6 +1,6 @@
 /* ===== Additional insurance areas =====
    General insurance knowledge that is not taken from the InsureMO source guides.
-   Everything here is Domain context. Market rules carry a confidence tag; amounts are illustrative.
+   Everything here is Insurance knowledge. Market rules carry a confidence tag; amounts are illustrative.
    The hub reads window.EA_EXTRA (page renderer, glossary terms, search items). */
 (function(){
 'use strict';
@@ -402,7 +402,7 @@ let cur=AREAS[0].id;
 function render(el){
   el.innerHTML=`<section><span class="eyebrow">Additional insurance areas · general insurance knowledge</span><h1>Additional insurance areas</h1>
    <p class="lede">Ten areas that every insurance implementation meets but that the system guides cover thinly or not at all: what happens when customers do not pay, how claims leakage and litigation are controlled, how catastrophes, renewals and pricing work, how transactions reach the ledger, and IFRS 17.</p>
-   <div class="basis"><span><span class="tag inf">Domain context</span> general insurance practice, not taken from any InsureMO guide</span><span>${T('certain')} ${T('likely')} ${T('guessing')} confidence of market facts</span><span>Amounts are illustrative; every worked figure is recomputed on the page.</span></div></section>
+   <div class="basis"><span><span class="tag inf">Insurance knowledge</span> general insurance practice, not taken from any InsureMO guide</span><span>${T('certain')} ${T('likely')} ${T('guessing')} confidence of market facts</span><span>Amounts are illustrative; every worked figure is recomputed on the page.</span></div></section>
    <section><div class="xa-layout"><nav class="xa-nav" aria-label="Areas">${AREAS.map((a,i)=>`<button type="button" data-a="${a.id}"><span class="jid">${String(i+1).padStart(2,'0')}</span><span>${esc(a.n)}<br><span class="small muted">${esc(a.short)}</span></span></button>`).join('')}</nav><article class="xa-body" id="xaBody"></article></div></section>`;
   el.querySelectorAll('.xa-nav button').forEach(b=>b.addEventListener('click',()=>open(b.dataset.a)));
   open(cur,true);
@@ -410,7 +410,7 @@ function render(el){
 function open(id,quiet){
   const a=AREAS.find(x=>x.id===id)||AREAS[0];cur=a.id;const body=document.getElementById('xaBody');if(!body)return;
   document.querySelectorAll('.xa-nav button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.a===a.id));
-  body.innerHTML=`<span class="eyebrow">Area ${AREAS.indexOf(a)+1} of ${AREAS.length} · <span class="tag inf">Domain context</span></span><h2>${esc(a.n)}</h2><p class="lede" style="font-size:16px">${esc(a.why)}</p>${a.blocks.map((b,i)=>`<div class="xa-block">${block(b,a.id,i)}</div>`).join('')}`;
+  body.innerHTML=`<span class="eyebrow">Area ${AREAS.indexOf(a)+1} of ${AREAS.length} · <span class="tag inf">Insurance knowledge</span></span><h2>${esc(a.n)}</h2><p class="lede" style="font-size:16px">${esc(a.why)}</p>${a.blocks.map((b,i)=>`<div class="xa-block">${block(b,a.id,i)}</div>`).join('')}`;
   body.querySelectorAll('.xa-calc').forEach(c=>{runCalc(c);c.addEventListener('input',()=>runCalc(c))});
   body.querySelectorAll('[data-check]').forEach(btn=>btn.addEventListener('click',()=>{const qz=btn.closest('.xa-quiz');let ok=0,n=0;
     qz.querySelectorAll('.xa-q').forEach(f=>{n++;const sel=f.querySelector('input:checked');const right=sel&&+sel.value===+f.dataset.a;if(right)ok++;

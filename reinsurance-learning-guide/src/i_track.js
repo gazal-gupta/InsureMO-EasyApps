@@ -15,15 +15,15 @@ const CHECKS={
   Q('M4','Which SOA cannot be settled in Settlement Management?',['An SOA with Estimate = Yes','A quarterly bill','A FACRecovery SOA'],0,'Only Estimate = No can be settled.')],
  scenarios:[Q('S1','In the XRI process for a new facultative placement, when can Binding be ticked?',['Any time','Only when Placement confirmed = Yes','Only after Review Pass'],1,'Binding is allowed only when placement is confirmed.'),
   Q('S2','Which step in a treaty set-up happens in the market, not in XRI?',['Review Pass','Following reinsurers take shares to complete 100%','Adding a subsection'],1,'Placement with reinsurers happens through the broker; XRI records the result.'),
-  Q('S3','An XoL layer is 500,000 xs 500,000. Net retained loss is 900,000. Recovery?',['500,000','400,000','900,000'],1,'900,000 − 500,000 = 400,000, below the 500,000 limit. This matches the source screenshot.'),
-  Q('S4','A cedant gives notice to end an inward treaty from 31 December, with run-off of existing business. Which inward action fits best (domain usage)?',['Cancel','Terminate','Copy'],1,'Terminate ends cover going forward. The source does not define the XRI difference, so confirm it.')],
+  Q('S3','An XoL layer is 500,000 xs 500,000. Net retained loss is 900,000. Recovery?',['500,000','400,000','900,000'],1,'900,000 − 500,000 = 400,000, below the 500,000 limit. This matches the InsureMO XRI guide screenshot.'),
+  Q('S4','A cedant gives notice to end an inward treaty from 31 December, with run-off of existing business. Which inward action fits best (domain usage)?',['Cancel','Terminate','Copy'],1,'Terminate ends cover going forward. The InsureMO XRI guide does not define the XRI difference, so confirm it.')],
  screens:[Q('R1','Which field is required on the Treaty Settlement page?',['Mutually Agreed Date','Settlement Target','Notes'],1,'Planned Settlement Date and Settlement Target are required.'),
   Q('R2','On the Modification History List, which record can you Edit?',['Any record','Only the latest record','Only reviewed records'],1,'Edit applies to the latest modification only.'),
   Q('R3','Where do you set the SOA frequency of a treaty?',['Financial Condition on the Treaty Level','Section Basic Info','SOA Printing'],0,'Financial Condition holds SOA Frequency, notification and settlement periods.'),
   Q('R4','On Semi Auto SOA for a non-proportional treaty, which SOA type is offered?',['Settlement bill','XOL GNPI adjustment bill','Profit commission bill'],1,'Non-proportional: only XOL GNPI adjustment bill.')],
  integration:[Q('I1','Which module provides the date of loss used to pick the ceding ratio for a recovery?',['Easy PA','Claims','BCP'],1,'Claims sends claim data; XRI applies the ceding ratio at the date of loss.'),
   Q('I2','Where does Settlement Summary take the payer’s bank account from?',['The user types it','Reinsurance Party Management (latest account in settlement currency)','Easy PA'],1,'Account Information is read-only and comes from the party master.'),
-  Q('I3','Which integration is fully specified in the source?',['Easy PA to XRI policy feed','Claims to XRI recovery feed','None: the source gives no API or payload specifications'],2,'This is a High gap. Request specifications.'),
+  Q('I3','Which integration is fully specified in the InsureMO XRI guide?',['Easy PA to XRI policy feed','Claims to XRI recovery feed','None: the InsureMO XRI guide gives no API or payload specifications'],2,'This is a High gap. Request specifications.'),
   Q('I4','A policy is endorsed to raise the sum insured on a risk with facultative cover. What does XRI raise?',['A cession adjustment automatically approved','An endorsement facultative task','A manual SOA'],1,'Endorsement Facultative handles fac tasks from endorsements.')],
  fees:[Q('F1','Quarter: ceded premium 1,000,000, commission 30%, claims paid 500,000. Balance?',['200,000 due to reinsurers','500,000 due to reinsurers','200,000 due to cedant'],0,'1,000,000 − 300,000 − 500,000 = 200,000 owed to reinsurers.'),
   Q('F2','XoL rate 2% on GNPI. Estimated GNPI 50m, MDP 80%. Actual GNPI 40m. Final premium?',['800,000 (MDP applies)','1,000,000','640,000'],0,'Deposit 2% × 50m = 1m; MDP 80% = 800k. Actual 2% × 40m = 800k, equal to the MDP, so 800k.'),
@@ -33,8 +33,8 @@ const CHECKS={
   Q('C2','Where do you set when VAT exchange rates apply on SOAs?',['Currency for Tax','Event Limit','Treaty Rules'],0,'Currency for Tax holds the exchange rate model and agreed rates.'),
   Q('C3','Small Cession and Recalculate on Loss Ratio apply to…',['All treaties','Life reinsurance only','XoL only'],1,'Source: these fields apply only to Life reinsurance.'),
   Q('C4','How do you update credit ratings for many reinsurers at once?',['Edit each party','Template Download, then Update Reinsurer’s Credit Rating','Cession Adjustment'],1,'Batch update supports capital, solvency and rating.')],
- toolkit:[Q('T1','The source gives no reinstatement formula. How should a tester set the expected reinstatement premium?',['Copy the screenshot value','Derive it, mark it with * and confirm with the platform team','Skip the check'],1,'Never lock expected results on an open source gap.'),
-  Q('T2','Which BA question decides whether facultative must be bound before policy issue?',['Who may bind and when cover must be in force','What the GL account is','Which printer to use'],0,'Binding timing and authority are business decisions not in the source.'),
+ toolkit:[Q('T1','The InsureMO XRI guide gives no reinstatement formula. How should a tester set the expected reinstatement premium?',['Copy the screenshot value','Derive it, mark it with * and confirm with the platform team','Skip the check'],1,'Never lock expected results on an open source gap.'),
+  Q('T2','Which BA question decides whether facultative must be bound before policy issue?',['Who may bind and when cover must be in force','What the GL account is','Which printer to use'],0,'Binding timing and authority are business decisions not in the InsureMO XRI guide.'),
   Q('T3','Minimum test set for a scenario in this guide?',['XRI happy path only','XRI process, industry checks and negative / validation tests','Only validation tests'],1,'Test the process, its controls and the business outcome.'),
   Q('T4','A developer must send claim changes to XRI. Which detail matters most?',['Each change in appraisal or loss paid creates a new reinsurance claim number','Claims never change','Only closed claims are sent'],0,'Recovery is tracked per change.')]
 };
@@ -60,7 +60,7 @@ const FINAL=[
  Q('X19','A reinsurer is downgraded below the client’s minimum rating. Which XRI area holds the rating data?',['Reinsurance Party Management (credit rating update)','Cession Adjustment','Treaty Rules'],0,'Ratings, capital and solvency are on the party, with batch update.'),
  Q('X20','A claim’s loss paid changes three times. How many reinsurance claim numbers in Claim Payment Info?',['1','3 (one per change)','0'],1,'Every change in Appraisal Amount or Loss Paid generates a new number.'),
  Q('X21','Treaty is "risk attaching" for 2025. A 2025 policy has a loss in March 2026. Which treaty year responds?',['2026','2025','Neither'],1,'Risk attaching follows the policy inception year.'),
- Q('X22','The source shows reinstatement fees of 8,000 on a 400,000 recovery of a 500,000 layer. Assuming one reinstatement at 100% pro rata as to amount, the layer premium is…',['8,000','10,000','400,000'],1,'8,000 = 400/500 × premium → premium 10,000. Inferred, not stated in the source.'),
+ Q('X22','The InsureMO XRI guide shows reinstatement fees of 8,000 on a 400,000 recovery of a 500,000 layer. Assuming one reinstatement at 100% pro rata as to amount, the layer premium is…',['8,000','10,000','400,000'],1,'8,000 = 400/500 × premium → premium 10,000. Inferred, not stated in the InsureMO XRI guide.'),
  Q('X23','Which statement is a source gap you must raise before integration design?',['No API or payload is specified for Easy PA, Claims, BCP or GL','The menu has six groups','Treaties have three levels'],0,'High-impact gap.'),
  Q('X24','Inward: you hold a 5% line. The cedant’s quarter on 100%: premium 2m, commission 600k, claims 900k. Your balance?',['25,000 receivable','25,000 payable','500,000 receivable'],0,'(2m − 600k − 900k) × 5% = 25k due to you as reinsurer.')
 ];
@@ -163,11 +163,11 @@ function swimlane(steps,opts={}){
   s+=Math.abs(x1-x2)<1?`<path class="edge" d="M${x1},${y1} V${y2-2}" marker-end="url(#ah${uid})"/>`:`<path class="edge" d="M${x1},${y1} V${y1+(y2-y1)/2} H${x2} V${y2-2}" marker-end="url(#ah${uid})"/>`}
  steps.forEach((st,i)=>{const p=pos[i];const ind=st.tag==='inf';const sub=st.s||st.f||st.m||'';
   s+=`<g class="node k-${st.k}${ind?' ind':''}" data-i="${i}" tabindex="0"><rect x="${p.x}" y="${p.y}" width="${BW}" height="${BH}" rx="${st.k==='ev'||st.k==='end'?14:4}"/><circle class="numbg" cx="${p.x+3}" cy="${p.y+3}" r="11"/><text class="num" x="${p.x+3}" y="${p.y+7.5}" text-anchor="middle">${i+1}</text>`;
-  if(ind)s+=`<rect class="indbg" x="${p.x+BW-36}" y="${p.y-7}" width="38" height="15" rx="3"/><text class="indt" x="${p.x+BW-17}" y="${p.y+4}" text-anchor="middle">IND</text>`;
+  if(ind)s+=`<rect class="indbg" x="${p.x+BW-36}" y="${p.y-7}" width="38" height="15" rx="3"/><text class="indt" x="${p.x+BW-17}" y="${p.y+4}" text-anchor="middle">INS</text>`;
   else if(st.k!=='ext')s+=`<rect class="xribg" x="${p.x+BW-36}" y="${p.y-7}" width="38" height="15" rx="3"/><text class="xrit" x="${p.x+BW-17}" y="${p.y+4}" text-anchor="middle">XRI</text>`;
   const full=wrap(st.t,24);const lines=full.slice(0,3);if(full.length>3)lines[2]=lines[2].replace(/\s*\S*$/,'')+'…';const ty=p.y+(sub?22:BH/2-(lines.length-1)*8+5);lines.forEach((t,j)=>{s+=`<text class="t" x="${p.x+BW/2}" y="${ty+j*16}" text-anchor="middle">${esc(t)}</text>`});
   if(sub){const w=wrap(sub,27);s+=`<text class="f" x="${p.x+BW/2}" y="${p.y+BH-9}" text-anchor="middle">${esc(w[0]+(w.length>1?'…':''))}</text>`}
-  s+=`<title>${esc((ind?'[Industry / domain context] ':'[XRI] ')+st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:'')+(st.r?' — Rule: '+st.r:''))}</title></g>`});
+  s+=`<title>${esc((ind?'[Insurance knowledge] ':'[InsureMO XRI] ')+st.t+(st.s?' — '+st.s:'')+(st.f?' — '+st.f:'')+(st.r?' — Rule: '+st.r:''))}</title></g>`});
  return s+'</svg>';
 }
 
@@ -210,3 +210,42 @@ function renderBusiness(){
  $('#mapOverview').innerHTML=mt(MAPSTEPS.overview,['Menu','Screens','Purpose']);
  const cats=[...new Set(GLOSS.map(g=>g[1]))];$('#glCat').innerHTML='<option value="">All categories</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join('');
 }
+
+/* ===== FIGURE NUMBERS (master copy: .claude/skills/insuremo-learning-guide/scripts/fig_numbers.js) =====
+   Puts "Figure <level>.<n> · <title>" above every div.diagram in the open view.
+   Level number comes from LEVELS[].n; title from the svg aria-label, else the nearest heading.
+   Idempotent: runs after any DOM change, writes only when the text differs. */
+(function(){
+  if(window.__figNumbers)return;window.__figNumbers=1;
+  const GENERIC=/^(swimlane|swimlane diagram|diagram|flowchart|chart)$/i;
+  function levelNo(id){try{const l=(typeof LEVELS!=='undefined'?LEVELS:[]).find(x=>x.id===id);if(l&&l.n!=null)return String(l.n)}catch(e){}return id}
+  function titleOf(d){
+    const svg=d.querySelector('svg');let t=svg?(svg.getAttribute('aria-label')||''):'';
+    if(!t||GENERIC.test(t.trim())){
+      const box=d.closest('.sc-detail,.lc-card,.stage-card,.card,section.block,section,article');
+      const h=box&&box.querySelector('h1,h2,h3,h4');t=h?h.textContent:'';
+    }
+    return t.replace(/\s+/g,' ').trim().replace(/^\d+(\.\d+)*\s*[·.:-]\s*/,'');
+  }
+  function run(){
+    const v=[...document.querySelectorAll('section.view')].find(x=>!x.hidden&&x.offsetParent!==null);
+    if(!v)return;
+    const no=levelNo(v.id.replace(/^v-/,''));let k=0;
+    v.querySelectorAll('.diagram').forEach(d=>{
+      if(d.parentElement&&d.parentElement.closest('.diagram'))return;
+      const svg=d.querySelector('svg');if(!svg)return;
+      k++;const txt='Figure '+no+'.'+k+(titleOf(d)?' · '+titleOf(d):'');
+      let cap=d.previousElementSibling;
+      if(!cap||!cap.classList||!cap.classList.contains('fig-no')){cap=document.createElement('div');cap.className='fig-no';d.parentNode.insertBefore(cap,d)}
+      if(cap.textContent!==txt)cap.textContent=txt;
+    });
+  }
+  let t=null;const later=()=>{clearTimeout(t);t=setTimeout(run,60)};
+  const st=document.createElement('style');
+  st.textContent='.fig-no{font-family:var(--f-display,inherit);font-weight:700;font-size:13.5px;color:var(--ink,inherit);margin:6px 0 4px;letter-spacing:.01em}@media print{.fig-no{break-after:avoid}}';
+  document.head.appendChild(st);
+  window.addEventListener('hashchange',later);
+  document.addEventListener('DOMContentLoaded',()=>{later();new MutationObserver(later).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']})});
+  if(document.readyState!=='loading'){later();new MutationObserver(later).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']})}
+})();
+/* ===== END FIGURE NUMBERS ===== */

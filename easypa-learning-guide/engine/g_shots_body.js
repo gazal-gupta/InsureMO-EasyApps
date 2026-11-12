@@ -1,4 +1,4 @@
-/* ===== Screenshots from the source guide, placed by screen and step =====
+/* ===== Screenshots from the InsureMO Easy PA guide, placed by screen and step =====
    step: 'pre' = prerequisite, number = index in the screen's steps list (0-based) */
 const IMG_DIR='img/';
 const imgSrc=n=>(typeof IMG_DATA!=='undefined'&&IMG_DATA[n])||(IMG_DIR+n);
@@ -13,7 +13,7 @@ const SHOTS={
   SHOT('image5.jpeg',0,'Common sections, bottom of the page: Questionnaire (5 health questions), Payment Information and Delivery Information, with Exit, Save, Calculate and Buy.'),
   SHOT('image4.jpeg',1,'Product section: Coverage Information. Accident Death & Dismemberment 100,000, Sudden Death 200,000 and War 150,000 are ticked. Below: Clause/Form and Campaign & Discount & Loading (Campaign -10%, Underwriting Loading 0%).'),
   SHOT('image6.jpeg',2,'After Save: the Proposal No. (highlighted, PABTBTI0001298157) is assigned; Proposal Status Entry and Policy Status Not Effective.'),
-  SHOT('image7.jpeg',3,'After Calculate: monthly installment schedule (12 rows of premium before tax, tax, interest, total, commission) and the totals bar: Premium Before Tax 812.22, Tax 72.20, Commission 97.47, Due Premium 974.66, Total Premium 1,018.88. These totals do not reconcile; see Source gaps.')],
+  SHOT('image7.jpeg',3,'After Calculate: monthly installment schedule (12 rows of premium before tax, tax, interest, total, commission) and the totals bar: Premium Before Tax 812.22, Tax 72.20, Commission 97.47, Due Premium 974.66, Total Premium 1,018.88. These totals do not reconcile; see InsureMO Easy PA gaps.')],
  polinfo:[SHOT('image21.png',0,'Policy Information: TBTI - Global Travel, Proposal Status Entry, Effective 2026-07-10 00:00:00, Expiry 2027-07-09 23:59:59, Organization EasyApp, currency CNY, exchange rate 1.00.')],
  saleschan:[SHOT('image22.png',0,'Sales Channel Information (highlighted) on another product (MI - Singapore Maid): Primary Sales Channel PTY10000043050011 | cc, Commission Rate 10.00%, empty secondary channel table.')],
  customer:[SHOT('image23.png',2,'Customer Information table (highlighted) with Customer Type, Name and the role columns Is PolicyHolder, Is Insured, Is Coinsured, Is Beneficiary. Shown on a group policy page, so Coverage Group and Insured Information follow.')],
@@ -47,7 +47,7 @@ const SHOTS={
  polquery:[SHOT('image34.jpeg',1,'Policy Query: tabs Entry, Bound, Issued, Rejected, UnderWriting, Waiting For Payment, Quotation In Progress. Proposal PABTBTI0001298157 shows status UnderWriting (highlighted).')],
  endoquery:[SHOT('image35.jpeg',1,'Endorsement Query: tabs Entry, Underwriting, Bound, Issued, Rejected, Undo; rows of Basic Information Endorsement with View Endo and View Policy.')],
  uwhistory:[SHOT('image41.png',0,'Standalone UW History page (Policy Admin > UW History) with Proposal No., Policy No. and Endorsement No. search.'),
-  SHOT('image40.jpeg',2,'UW History results: two decisions on the same proposal, Approve at 05:37:34 and Decline at 05:37:47 (the source labels this image as the Policy Query tab).')],
+  SHOT('image40.jpeg',2,'UW History results: two decisions on the same proposal, Approve at 05:37:34 and Decline at 05:37:47 (the InsureMO Easy PA guide labels this image as the Policy Query tab).')],
  uwroles:[SHOT('image37.jpeg',0,'URP User Management: role template EasyPA-Underwriting and the permission tree with Policy Task Authority (NB / Endo Underwriting 1 and 2) highlighted.'),
   SHOT('image38.jpeg',1,'User UW001 with role template PA-UW1: Policy Task Authority NB UnderWriting1 and Endo Underwriting1.'),
   SHOT('image39.jpeg',2,'User UW002 with role template PA-UW2: NB UnderWriting2 and Endo Underwriting2.')],

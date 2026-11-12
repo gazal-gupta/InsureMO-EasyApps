@@ -22,7 +22,7 @@ const CHECKS={
   Q('R3','When is the Reason field mandatory on the UW Decision panel?',['Always','When Decision is Decline','Never'],1,'Reason is required for Decline.'),
   Q('R4','In Customer Information Detail, what does Synchronize do?',['Fetches data from the Customer module','Pushes the policy customer data to the Customer module','Deletes the customer'],1,'Search fetches; Synchronize pushes.')],
  integration:[Q('I1','Which module receives the facultative request?',['BCP','XRI (Reinsurance)','Claims'],1,'Facultative sends a request to XRI; status Fac Out.'),
-  Q('I2','At which points does Easy PA call XRI for treaty allocation?',['Only at issue','Underwriting tab, bind and issue','Only at renewal'],1,'The source lists three points.'),
+  Q('I2','At which points does Easy PA call XRI for treaty allocation?',['Only at issue','Underwriting tab, bind and issue','Only at renewal'],1,'The InsureMO Easy PA guide lists three points.'),
   Q('I3','A claim was reported with loss date 15 Sept. Can the policy be shortened to end 31 Aug?',['Yes','No; the new POI must cover the reported claim','Only with admin fee'],1,'POI changes must cover reported claims.'),
   Q('I4','Which switch turns RI integration on?',['isEnabledRI in PolicyAdminConfig','Product_Vat_Rate','arapFieldAllowUpdate'],0,'isEnabledRI controls RI integration.')],
  fees:[Q('F1','Commission fee 100600 on an endorsement refund has which sign?',['−','+','No sign'],1,'Refunds reverse the NB sign: commission − on NB, + on refund (clawback received).'),
@@ -34,9 +34,9 @@ const CHECKS={
   Q('C3','A property product has no RiskName. What is needed?',['Nothing','RiskNameMapping configuration','A new endorsement type'],1,'RiskName is mandatory for RI and Claims; the mapping table fills it (e.g. from Address).'),
   Q('C4','Who calculates the new expiry date in a POI Move?',['The API validates it','Tenant UI, code, rating or rules','The reinsurer'],1,'No API validation on expiry for POI Move; tenant logic must derive it.')],
  toolkit:[Q('T1','Minimum tests per scenario?',['Normal only','Normal and exception','Exception only'],1,'Every scenario needs both, plus validation tests.'),
-  Q('T2','The source text says "Decline" but the UI button says "Reject". In a test script you write…',['Decline','Reject, and note the text name','Either'],1,'Use system labels; keep the mapping.'),
-  Q('T3','The source says SI is both editable and non-editable in BIE. Before locking expected results you…',['Pick the UI behaviour','Resolve it with the platform team','Skip the test'],1,'See Source gaps.'),
-  Q('T4','"SI above treaty capacity must go facultative" is…',['Enforced by the platform','A business rule to agree and possibly build','Not relevant'],1,'The source says there is no automated validation.')]
+  Q('T2','The InsureMO Easy PA guide text says "Decline" but the UI button says "Reject". In a test script you write…',['Decline','Reject, and note the text name','Either'],1,'Use system labels; keep the mapping.'),
+  Q('T3','The InsureMO Easy PA guide says SI is both editable and non-editable in BIE. Before locking expected results you…',['Pick the UI behaviour','Resolve it with the platform team','Skip the test'],1,'See InsureMO Easy PA gaps.'),
+  Q('T4','"SI above treaty capacity must go facultative" is…',['Enforced by the platform','A business rule to agree and possibly build','Not relevant'],1,'The InsureMO Easy PA guide says there is no automated validation.')]
 };
 const FINAL=[
  Q('X1','A travel proposal with War SI 120,000 is bought. What happens?',['Issued directly','Send to Underwriting dialog: uwLevel 1','Declined'],1,'100,000 to below 200,000 triggers UW1 on TBTI.'),
@@ -208,3 +208,42 @@ function renderBusiness(){
  $('#mapOverview').innerHTML=mt(MAPSTEPS.overview,['Function group','Screens / blocks','Purpose']);
  const cats=[...new Set(GLOSS.map(g=>g[1]))];$('#glCat').innerHTML='<option value="">All categories</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join('');
 }
+
+/* ===== FIGURE NUMBERS (master copy: .claude/skills/insuremo-learning-guide/scripts/fig_numbers.js) =====
+   Puts "Figure <level>.<n> · <title>" above every div.diagram in the open view.
+   Level number comes from LEVELS[].n; title from the svg aria-label, else the nearest heading.
+   Idempotent: runs after any DOM change, writes only when the text differs. */
+(function(){
+  if(window.__figNumbers)return;window.__figNumbers=1;
+  const GENERIC=/^(swimlane|swimlane diagram|diagram|flowchart|chart)$/i;
+  function levelNo(id){try{const l=(typeof LEVELS!=='undefined'?LEVELS:[]).find(x=>x.id===id);if(l&&l.n!=null)return String(l.n)}catch(e){}return id}
+  function titleOf(d){
+    const svg=d.querySelector('svg');let t=svg?(svg.getAttribute('aria-label')||''):'';
+    if(!t||GENERIC.test(t.trim())){
+      const box=d.closest('.sc-detail,.lc-card,.stage-card,.card,section.block,section,article');
+      const h=box&&box.querySelector('h1,h2,h3,h4');t=h?h.textContent:'';
+    }
+    return t.replace(/\s+/g,' ').trim().replace(/^\d+(\.\d+)*\s*[·.:-]\s*/,'');
+  }
+  function run(){
+    const v=[...document.querySelectorAll('section.view')].find(x=>!x.hidden&&x.offsetParent!==null);
+    if(!v)return;
+    const no=levelNo(v.id.replace(/^v-/,''));let k=0;
+    v.querySelectorAll('.diagram').forEach(d=>{
+      if(d.parentElement&&d.parentElement.closest('.diagram'))return;
+      const svg=d.querySelector('svg');if(!svg)return;
+      k++;const txt='Figure '+no+'.'+k+(titleOf(d)?' · '+titleOf(d):'');
+      let cap=d.previousElementSibling;
+      if(!cap||!cap.classList||!cap.classList.contains('fig-no')){cap=document.createElement('div');cap.className='fig-no';d.parentNode.insertBefore(cap,d)}
+      if(cap.textContent!==txt)cap.textContent=txt;
+    });
+  }
+  let t=null;const later=()=>{clearTimeout(t);t=setTimeout(run,60)};
+  const st=document.createElement('style');
+  st.textContent='.fig-no{font-family:var(--f-display,inherit);font-weight:700;font-size:13.5px;color:var(--ink,inherit);margin:6px 0 4px;letter-spacing:.01em}@media print{.fig-no{break-after:avoid}}';
+  document.head.appendChild(st);
+  window.addEventListener('hashchange',later);
+  document.addEventListener('DOMContentLoaded',()=>{later();new MutationObserver(later).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']})});
+  if(document.readyState!=='loading'){later();new MutationObserver(later).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden']})}
+})();
+/* ===== END FIGURE NUMBERS ===== */
