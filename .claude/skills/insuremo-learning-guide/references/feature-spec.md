@@ -106,6 +106,12 @@ Release state: F1-F10 shipped in every module guide. F11-F12 ship in XRI and BCP
 - One role picker and one theme switch that reach every embedded guide; links between guides stay inside the hub.
 - **Accept when:** `qa.js` prints ALL PASSED: every capability-map link lands on the right page, every screenshot on every screen decodes, no horizontal scroll at 390 px, and the guide works in a sandboxed frame with no same-origin access.
 
+## F16. Additional insurance areas (general knowledge, outside the module guides)
+- A separate tab and page with ten areas; each area states why it matters, then gives process flows (swimlanes), status models with numbered transitions, worked examples, calculators, test scenarios or BA questions, and a three-question check with explanations.
+- Accounting covers written, earned and unearned premium, outstanding claims, IBNR, incurred claims, DAC, ratios, a journal-entry walk-through and the month-end close; IFRS 17 covers the three models, building blocks, CSM and PAA calculators, IFRS 4 comparison and the data that core systems must feed.
+- Everything is labelled as general knowledge, and market facts carry a confidence tag.
+- **Accept when:** every calculator default reproduces its stated example, every quiz scores 3 of 3 with the right answers, deep links `#area-<id>` open the area, and no area scrolls sideways at 390 px.
+
 ## Backlog (not built)
 1. Bring every module guide to one engine with all features F1-F14 (start from XRI v2; port Easy PA F13 and Claims F14), so fixes are made once.
 2. Sales Channel guide (agreements, commission rates, commission settlement); it is the missing stage in the Easy Apps value chain.

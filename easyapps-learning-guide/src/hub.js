@@ -5,11 +5,15 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;',
 const D=JSON.parse($('#ea-data').textContent);
 const ORDER=D.order,MOD=D.mods;
 const MODS_RE=new RegExp('^('+ORDER.join('|')+')(?:--(.+))?$');
-const PAGES=['home','map','cross','gaps','glossary'];
+const X=window.EA_EXTRA||null;
+const PAGES=['home','map','cross','gaps','glossary'].concat(X?[X.page]:[]);
+if(X){D.ext.gen='General insurance';
+  X.gloss.forEach(([t,m])=>{const key=t.toLowerCase();const hit=D.gloss.find(g=>g.t.toLowerCase()===key);const e={mod:'gen',c:'Additional insurance areas',m,e:'',w:''};if(hit)hit.e.push(e);else D.gloss.push({t,e:[e]})});
+  D.gloss.sort((a,b)=>a.t.toLowerCase()<b.t.toLowerCase()?-1:1)}
 const store={get(k,d){try{const v=localStorage.getItem('eaguide:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
              set(k,v){try{localStorage.setItem('eaguide:'+k,JSON.stringify(v))}catch(e){}}};
 const NAME=k=>MOD[k]?MOD[k].name:(D.ext[k]||k);
-const COL=k=>MOD[k]?'var(--'+MOD[k].col+')':(k==='sc'?'var(--sc)':k==='gl'?'var(--gl)':'var(--ext)');
+const COL=k=>MOD[k]?'var(--'+MOD[k].col+')':(k==='sc'?'var(--sc)':k==='gl'?'var(--gl)':k==='gen'?'var(--int)':'var(--ext)');
 const mtag=k=>`<span class="mt" style="--c:${COL(k)}">${esc(NAME(k))}</span>`;
 const link=(m,h)=>'#'+m+(h&&h!=='start'?'--'+h:'');
 const lvName=(m,id)=>{const l=MOD[m].levels.find(x=>x[0]===id);return l?l[2]:id};
@@ -65,6 +69,7 @@ function route(){
   quiet=null;
   const m=h.match(MODS_RE);
   if(m){showMod(m[1],m[2]||'start');return}
+  if(X&&/^area-/.test(h)){showPage(X.page);X.open(h.slice(5));crumb();return}
   showPage(PAGES.includes(h)?h:'home');
 }
 let curPage=null;
@@ -87,7 +92,8 @@ function tabs(){
   const cur=curMod||curPage;
   const T=[['home','Home'],['map','Capability map'],['cross','Cross-module'],['gaps','InsureMO guide gaps'],['glossary','Glossary']];
   $('#tabs').innerHTML=T.map(([id,n])=>`<a href="#${id}" ${cur===id?'aria-current="page"':''}>${n}</a>`).join('')+'<span class="sep" aria-hidden="true"></span>'+
-    ORDER.map(k=>`<a href="#${k}" ${cur===k?'aria-current="page"':''}><span class="dot" style="--c:${COL(k)}"></span>${esc(MOD[k].short)} · ${esc(MOD[k].name)}</a>`).join('');
+    ORDER.map(k=>`<a href="#${k}" ${cur===k?'aria-current="page"':''}><span class="dot" style="--c:${COL(k)}"></span>${esc(MOD[k].short)} · ${esc(MOD[k].name)}</a>`).join('')+
+    (X?`<span class="sep" aria-hidden="true"></span><a href="#${X.page}" ${cur===X.page?'aria-current="page"':''}><span class="dot" style="--c:var(--int)"></span>${esc(X.title)}</a>`:'');
 }
 function crumb(){
   let s='<a href="#home">Easy Apps</a>';
@@ -95,7 +101,7 @@ function crumb(){
     s+=' › <a href="#'+k+'">'+esc(MOD[k].full)+'</a>';
     const vt=n.title||viewTitle(k,n.h)||'';if(vt)s+=' › '+esc(vt);
     const it=TITLE[k+'|'+n.h];if(it)s+=' › <b>'+esc(it)+'</b>';
-  }else if(curPage&&curPage!=='home'){s+=' › <b>'+esc($('#h-'+curPage).dataset.title)+'</b>'}
+  }else if(curPage&&curPage!=='home'){s+=' › <b>'+esc($('#h-'+curPage).dataset.title)+'</b>';if(X&&curPage===X.page&&X.cur){const a=X.areas.find(z=>z.id===X.cur());if(a)s+=' › '+esc(a.n)}}
   $('#crumb').innerHTML=s;
 }
 
@@ -154,6 +160,7 @@ function renderHome(){
       return `<li><div class="row">${head}<span class="small muted">${esc(p.why)}</span></div><div class="lv">${links}</div></li>`}).join('')}</ol>
   </section>
   <section>
+    ${X?`<div><span class="eyebrow">Beyond the system guides</span><h2>Additional insurance areas</h2></div><p class="muted small">General insurance knowledge that is not in the InsureMO guides, labelled Insurance knowledge.</p><ol class="chain" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">${X.areas.map((a,i)=>`<li style="--c:var(--int)"><a href="#area-${a.id}"><span class="st">Area ${i+1}</span><b>${esc(a.n)}</b><span class="d">${esc(a.short)}</span></a></li>`).join('')}</ol></section>\n  <section>`:''}
     <div><span class="eyebrow">By role</span><h2>What each guide asks of your role</h2></div>
     <div class="chips" id="roleChips" role="group" aria-label="Role">${[['ba','Business analyst'],['qa','Tester'],['dev','Developer']].map(([r,n])=>`<button class="chip" type="button" data-r="${r}">${n}</button>`).join('')}</div>
     <div class="rolegrid" id="roleGrid"></div>
@@ -264,7 +271,7 @@ function renderCross(){
     <div><span class="eyebrow">Integration map</span><h2>Interfaces between modules</h2></div>
     <div class="imap">
       <div class="svgwrap">${imapSvg()}
-        <div class="vlegend"><span><i style="border-color:var(--in)"></i>Both guides agree</span><span><i style="border-color:var(--warn);border-top-style:dashed"></i>Described on one side only</span><span><i style="border-color:var(--cancel);border-top-style:dotted"></i>Gap in both sources</span><span>Numbers count the statements in both guides.</span></div>
+        <div class="vlegend"><span>→ Arrowheads show which way data moves; two heads mean both ways</span><span><i style="border-color:var(--in)"></i>Both guides agree</span><span><i style="border-color:var(--warn);border-top-style:dashed"></i>Described on one side only</span><span><i style="border-color:var(--cancel);border-top-style:dotted"></i>Gap in both sources</span><span>Numbers count the statements in both guides.</span></div>
       </div>
       <div class="panel" id="pairPanel"></div>
     </div>
@@ -288,12 +295,16 @@ function renderCross(){
 }
 function imapSvg(){
   const W=760,H=372,NW=150,NH=40;
-  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Integration map of Easy PA, BCP, Easy Claim, XRI, Sales Channel and GL">`;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Integration map of Easy PA, BCP, Easy Claim, XRI, Sales Channel and GL"><defs><marker id="eah" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-2)"/></marker></defs>`;
+  // line ends stop at the node edge so the arrowheads show; heads follow the direction of the statements
+  const clip=(px,py,tx,ty)=>{const dx=tx-px,dy=ty-py;const t=Math.min(Math.abs(dx)>0?(NW/2+3)/Math.abs(dx):1e9,Math.abs(dy)>0?(NH/2+3)/Math.abs(dy):1e9);return[px+dx*t,py+dy*t]};
   D.pairs.forEach(p=>{
-    const [x1,y1]=NODE[p.a],[x2,y2]=NODE[p.b];const n=pairEdges(p).length;let d,lx,ly;
-    if(p.a==='clm'&&p.b==='ri'){const cx=380,cy=410;d=`M${x1},${y1} Q${cx},${cy} ${x2},${y2}`;lx=.25*x1+.5*cx+.25*x2;ly=.25*y1+.5*cy+.25*y2}
-    else{const t=LBL[p.a+'|'+p.b]||.5;d=`M${x1},${y1} L${x2},${y2}`;lx=x1+(x2-x1)*t;ly=y1+(y2-y1)*t}
-    s+=`<g class="ee ${p.verdict}" data-pair="${p.a}|${p.b}" tabindex="0" role="button" aria-label="${esc(NAME(p.a))} and ${esc(NAME(p.b))}: ${n} statements"><path class="hit" d="${d}"/><path class="ln" d="${d}"/><g class="lb"><rect x="${lx-15}" y="${ly-10}" width="30" height="20" rx="10"/><text x="${lx}" y="${ly+4}" text-anchor="middle">${n}</text></g></g>`;
+    const [x1,y1]=NODE[p.a],[x2,y2]=NODE[p.b];const E=pairEdges(p),n=E.length;let d,dl,lx,ly;
+    const fw=E.some(e=>e.a===p.a&&e.b===p.b),bw=E.some(e=>e.a===p.b&&e.b===p.a);
+    const mk=`${fw?' marker-end="url(#eah)"':''}${bw?' marker-start="url(#eah)"':''}`;
+    if(p.a==='clm'&&p.b==='ri'){const cx=380,cy=410;d=`M${x1},${y1} Q${cx},${cy} ${x2},${y2}`;const [sx,sy]=clip(x1,y1,cx,cy),[ex,ey]=clip(x2,y2,cx,cy);dl=`M${sx},${sy} Q${cx},${cy} ${ex},${ey}`;lx=.25*x1+.5*cx+.25*x2;ly=.25*y1+.5*cy+.25*y2}
+    else{const t=LBL[p.a+'|'+p.b]||.5;d=`M${x1},${y1} L${x2},${y2}`;const [sx,sy]=clip(x1,y1,x2,y2),[ex,ey]=clip(x2,y2,x1,y1);dl=`M${sx},${sy} L${ex},${ey}`;lx=x1+(x2-x1)*t;ly=y1+(y2-y1)*t}
+    s+=`<g class="ee ${p.verdict}" data-pair="${p.a}|${p.b}" tabindex="0" role="button" aria-label="${esc(NAME(p.a))} and ${esc(NAME(p.b))}: ${n} statements"><path class="hit" d="${d}"/><path class="ln" d="${dl}"${mk}/><g class="lb"><rect x="${lx-15}" y="${ly-10}" width="30" height="20" rx="10"/><text x="${lx}" y="${ly+4}" text-anchor="middle">${n}</text></g></g>`;
   });
   Object.entries(NODE).forEach(([k,[x,y]])=>{
     const go=MOD[k]?'#'+k+'--integration':'';
@@ -321,17 +332,14 @@ function drawJourney(){
   const LN=MOD[j.mod].lanes,LM=MOD[j.mod].laneMod;const lc=l=>COL(LM[l]||'ext');
   const touched=[...new Set(lanes.map(l=>LM[l]).filter(x=>x&&x!=='ext'))];
   const KIND={ev:'Event',op:'User action',sys:'System',ext:'External party',gl:'GL posting',end:'End',bcp:'BCP',ri:'Reinsurance',x:'Exception'};
-  let g=`<div class="swim" style="grid-template-columns:34px repeat(${lanes.length},minmax(150px,240px))"><div class="lh" style="--c:var(--line)"></div>`+
-    lanes.map(l=>`<div class="lh" style="--c:${lc(l)}">${esc(LN[l]||l)}<small>${esc(LM[l]&&LM[l]!=='ext'?NAME(LM[l]):'Outside InsureMO')}</small></div>`).join('');
-  path.steps.forEach((s,i)=>{
-    g+=`<div class="nlab">${i+1}</div>`+lanes.map(l=>`<div class="cell${i%2?' alt':''}">${l===s.l?`<div class="step" style="--c:${lc(l)}"><span class="k">${esc(KIND[s.k]||s.k)}</span><span>${esc(s.t)}</span>${s.m?`<span class="x">${esc(s.m)}</span>`:''}${s.s?`<span class="x">Status: ${esc(s.s)}</span>`:''}${s.f?`<span class="x">${esc(s.f)}</span>`:''}${s.d?`<span class="d">${esc(s.d)}</span>`:''}</div>`:''}</div>`).join('');
-  });
-  g+='</div>';
+  const SW=window.EA_EXTRA&&window.EA_EXTRA.swim;
+  const g=SW(lanes.map(l=>({id:l,n:LN[l]||l,sub:LM[l]&&LM[l]!=='ext'?NAME(LM[l]):'Outside InsureMO',c:lc(l)})),path.steps.map(s=>({l:s.l,k:KIND[s.k]||s.k,t:s.t})),j.n,
+    path.steps.map(s=>[LN[s.l]||s.l,KIND[s.k]||s.k,s.t,[s.m,s.s?'Status: '+s.s:'',s.f,s.d].filter(Boolean).join(' · ')]),['Actor','Type','Step','Detail']);
   $('#jView').innerHTML=`<div style="display:flex;gap:8px;align-items:baseline;flex-wrap:wrap"><span class="eyebrow">${esc(j.kind==='industry'?'Industry process':'Journey')} ${esc(j.id)} · from the ${esc(MOD[j.mod].name)} guide</span></div>
     <h3>${esc(j.n)}</h3><p class="small">${esc(j.d)}</p>
     <div class="chips"><span class="small muted">Modules in this flow</span>${touched.map(mtag).join('')}</div>
     ${j.paths.length>1?`<div class="chips" role="group" aria-label="Path">${j.paths.map((p,i)=>`<button class="chip" type="button" data-p="${i}" aria-pressed="${i===selPath}">${esc(p.n||'Path '+(i+1))}</button>`).join('')}</div>`:''}
-    <div class="swimwrap">${g}</div>
+    ${g}
     ${j.note?`<div class="notebox">${esc(j.note)}</div>`:''}
     <p class="small"><a href="${link(j.mod,j.h)}">Open this ${j.kind==='industry'?'process':'journey'} in the ${esc(MOD[j.mod].name)} guide</a>${j.kind==='journey'?' (Cross-module level, journeys)':''}</p>`;
   $$('#jView [data-p]').forEach(b=>b.addEventListener('click',()=>{selPath=+b.dataset.p;drawJourney()}));
@@ -404,6 +412,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.search'))$('#result
 
 /* ---------- init ---------- */
 const RENDER={home:renderHome,map:renderMap,cross:renderCross,gaps:renderGaps,glossary:renderGlossary};
+if(X){RENDER[X.page]=()=>X.render($('#h-'+X.page));X.onNav=id=>{quietHash('area-'+id);crumb()};X.search.forEach(a=>SIDX.push({m:'gen',k:'Additional insurance area',t:a.t,x:a.x,go:'area-'+a.id}))}
 document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('.en[data-go]');if(g)go(g.dataset.go.slice(1))});
 window.addEventListener('hashchange',route);
 route();

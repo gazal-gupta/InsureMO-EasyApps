@@ -35,3 +35,9 @@ Folder: `easyapps-learning-guide/`. Output: `index.html` (offline, everything em
 3. Add `mods.<key>` to `meta.json` with every scenario group and lane; add new `pairs` for its interfaces with a tag and a verdict.
 4. Add a colour token in `hub.html` if the module needs a new one, in all three theme blocks.
 5. Rebuild, run `qa.js`, republish.
+
+## Additional insurance areas (src/extra.js)
+- Loaded before `hub.js` in the same script; it sets `window.EA_EXTRA` = {page, title, areas, render(el), open(id), cur(), gloss, search, onNav}. The hub adds the page and tab, routes `#areas` and `#area-<id>`, merges `gloss` into the glossary under the key `gen` (General insurance) and adds the areas to search.
+- Content is data: `AREAS` [{id, n, short, why, blocks}]. Block types: list, table, callout (tag certain / likely / guessing), swim (lane keys in `LANE`), states (nodes with x, y; edges numbered in a table), seq (sequence diagram), diagram (`blocks` IFRS 17, `buildup` premium, `er` data model), journal (debit / credit rows), calc (`xol`, `price`, `upr`, `csm`, `paa`), quiz (three questions with explanations).
+- Swimlanes (area flows and the hub journeys) are drawn by one SVG renderer in `extra.js` (`EA_EXTRA.swim`): one column per actor, a numbered box per step, an arrow from each step to the next, a Full screen button (CSS overlay, works in the artifact sandbox) and the steps as a table. `qa.js` checks n boxes and n−1 arrows per journey.
+- Every worked figure must be recomputed by script before publishing; the rating example had two arithmetic errors on the first pass.

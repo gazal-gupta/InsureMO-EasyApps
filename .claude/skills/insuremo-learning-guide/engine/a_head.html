@@ -273,6 +273,7 @@ ol.shotsteps>li{display:flex;flex-direction:column;gap:10px;padding-left:0}
 .diagram svg.mf{width:100%;height:auto;display:block;max-width:1100px;margin:0 auto}
 .diagram{position:relative}
 .dg-full{position:absolute;top:8px;right:8px;z-index:2;font-size:12px}
+.diagram:has(>.dg-full){padding-top:44px}
 #dgfull{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 10px) max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 10px) max(12px,env(safe-area-inset-left,0px))}
 #dgfull[hidden]{display:none!important}
 #dgfull .lb-bar,#dgfull .lb-cap{color:var(--ink)}

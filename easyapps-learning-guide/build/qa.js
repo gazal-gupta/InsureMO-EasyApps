@@ -22,7 +22,7 @@ async function state(fr){return fr.evaluate(()=>{const v=document.querySelector(
   page.on('pageerror',e=>errs.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!/fonts\.g/.test(m.text()))errs.push('console: '+m.text())});
   await page.goto(base+'/guide.html');await page.waitForSelector('#h-home .mcard');
   const D=await page.evaluate(()=>window.EA.D);
-  for(const p of ['home','map','cross','gaps','glossary']){
+  for(const p of ['home','map','cross','gaps','glossary','areas']){
     await page.evaluate(h=>location.hash=h,p);await sleep(300);
     const n=await page.$eval('#h-'+p,e=>e.hidden?0:e.innerText.length);ok(n>500,`hub page ${p} renders (${n} chars)`);
     if(shots&&p!=='gaps')await page.screenshot({path:path.join(shots,'hub-'+p+'.png'),fullPage:p==='home'});
@@ -31,8 +31,8 @@ async function state(fr){return fr.evaluate(()=>{const v=document.querySelector(
   await page.evaluate(()=>location.hash='cross');await sleep(200);
   for(const pr of D.pairs){await page.click(`.chip[data-pair="${pr.a}|${pr.b}"]`);const t=await page.$eval('#pairPanel',e=>e.innerText);if(!t.includes('describes it')){ok(false,'pair panel '+pr.a+'-'+pr.b);}}
   ok(true,`${D.pairs.length} interface pairs open`);
-  let jbad=0;for(const j of D.journeys){await page.click(`#jList button[data-j="${j.mod}|${j.id}"]`);const n=await page.$$eval('#jView .step',x=>x.length);if(n!==j.paths[0].steps.length)jbad++}
-  ok(jbad===0,`${D.journeys.length} journeys draw every step as a swimlane`);
+  let jbad=0;for(const j of D.journeys){await page.click(`#jList button[data-j="${j.mod}|${j.id}"]`);const n=await page.$$eval('#jView .xa-swim .step',x=>x.length);const a=await page.$$eval('#jView .xa-swim path[marker-end]',x=>x.length);if(n!==j.paths[0].steps.length||a!==n-1)jbad++}
+  ok(jbad===0,`${D.journeys.length} journeys draw every step as a numbered box with an arrow to the next`);
   if(shots){await page.click('#jList button[data-j="pa|J1"]');await (await page.$('#jView')).screenshot({path:path.join(shots,'hub-journey.png')})}
   // modules: open, then follow every capability-map link
   const links={};for(const k of D.order){links[k]=new Set(['start']);D.tree[k].forEach(g=>g.caps.forEach(c=>{links[k].add(c.h);c.f.forEach(f=>links[k].add(f.h))}));D.menu[k].groups.forEach(g=>g.s.forEach(s=>links[k].add(s.h)))}
@@ -84,7 +84,7 @@ async function state(fr){return fr.evaluate(()=>{const v=document.querySelector(
   // phone width
   const m=await b.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});const merr=[];m.on('pageerror',e=>merr.push(e.message));
   await m.goto(base+'/guide.html');await m.waitForSelector('#h-home .mcard');
-  for(const p of ['home','map','cross','gaps','glossary']){await m.evaluate(h=>location.hash=h,p);await sleep(250);
+  for(const p of ['home','map','cross','gaps','glossary','areas']){await m.evaluate(h=>location.hash=h,p);await sleep(250);
     const ov=await m.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);ok(ov<=1,`390px: ${p} has no horizontal page scroll (${ov})`);
     if(shots&&(p==='home'||p==='map'))await m.screenshot({path:path.join(shots,'phone-'+p+'.png')})}
   await m.evaluate(()=>location.hash='pa--sc-N1');await sleep(1500);
