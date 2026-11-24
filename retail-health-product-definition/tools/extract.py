@@ -23,6 +23,16 @@ SUBS = [  # order matters: longest / most specific first
     (r'Smart Family Benefit', 'Family Starter Benefit'), (r'Smart_Family_benefit', 'Family_starter'),
     (r'Smart Lifetime Bonus', 'Lifetime Loyalty Bonus'), (r'Smart Network Cover', 'Network Choice Cover'),
     (r'Pro Fit', ''), (r'Insure rProduct', 'Insurer Product'),
+    # source-document cross references
+    (r'\s*\((?:confirmation in |method pending, )?QA No\.\s*[\d, No.]+\)', ''), (r'\s*\(QA No\.[^)]*\)', ''),
+    (r';?\s*confirmation in QA No\.\d+', ''), (r'QA No\.\s*\d+[, ]*(No\.\d+)?', 'open point'),
+    (r'\s*\(Word[^)]*\)', ''), (r'Word FRS', 'original specification'), (r'Word note', 'specification note'),
+    (r'\bWord(:|;)?\s*', ''), (r'the Excel open-claim block is not applied', 'an open-claim block is not applied'),
+    (r'\s*\(RHE-[A-Z]{2}-\d{3}(, RHE-[A-Z]{2}-\d{3})*\)', ''), (r'RHE-[A-Z]{2}-\d{3}\s*', ''),
+    (r'Unlike the previous version of this sheet,[^.]*\.\s*', ''), (r'see QA list', 'open point'),
+    (r'pending clarification from QA and will need to be updated once QA provides clarification', 'an open point to be confirmed'),
+    (r'^QA$', ''), (r'\bsheets?\b', 'section'),
+    (r'\(FRS Product Code\)', '(insurer product code)'), (r'\s*\(Phase \d\)', ''),
 ]
 CJK = re.compile(r'[　-〿㐀-鿿＀-￯]+')
 
@@ -31,9 +41,10 @@ def clean(v):
         return ''
     s = ' '.join(str(v).split())
     s = s.replace('（', '(').replace('）', ')')
+    s = CJK.sub('', s).strip()
     for a, b in SUBS:
         s = re.sub(a, b, s)
-    s = CJK.sub('', s).strip()
+    s = s.strip()
     if re.fullmatch(r'\d+\.\d{7,}', s):  # long floats from the rate tables
         s = repr(float(s))
     return s
@@ -90,8 +101,11 @@ def main(docx, out):
     d['rateTables'] = blocks(wb['Rate Tables'], 2)
     d['premiumCalc'] = blocks(wb['Premium Calculation'], 2)
     d['endorsement'] = blocks(wb['Endorsement'], 2)
+    for b in d['endorsement']:  # drop source-document reference columns
+        if b['rows'] and b['rows'][0][:5] and b['rows'][0][3:5] == ['Word FRS Ref'.replace('Word FRS', 'original specification'), 'Excel Ref (Type / Sub-type) / CBR']:
+            b['rows'] = [r[:3] + r[5:] for r in b['rows']]
     text = json.dumps(d, ensure_ascii=False)
-    for bad in (r'\bPro[Tt]ec\b', 'Nikhil', 'AXIS', 'HDFC', 'Merlin', 'Megha', 'Dhivya', 'IPDH01', 'Smart'):
+    for bad in (r'\bWord\b', r'QA No', r'\bFRS\b', r'Excel', r'RHE-', r'\bQA\b', r'\bPro[Tt]ec\b', 'Nikhil', 'AXIS', 'HDFC', 'Merlin', 'Megha', 'Dhivya', 'IPDH01', 'Smart'):
         m = re.search(bad, text)
         assert not m, (bad, text[max(0, m.start() - 80):m.end() + 40])
     with open(out, 'w', encoding='utf-8') as f:

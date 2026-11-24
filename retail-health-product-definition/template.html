@@ -123,7 +123,7 @@ details.trace>div{padding:0 16px 14px}
 
 <header class="top"><div class="wrap">
   <div class="brand"><h1>Retail Health Indemnity</h1>
-  <span class="meta">Generic Indian retail health product · Individual and Family Floater · InsureMO product <span class="mono">RHI01</span> · built from a live implementation BSD and product memo, names removed</span>
+  <span class="meta">Generic Indian retail health product · Individual and Family Floater · InsureMO product <span class="mono">RHI01</span> · product definition, review and live quote</span>
   <span class="tag">Approved rates · confidential</span></div>
   <nav class="tabs" id="tabs" aria-label="Sections"></nav>
 </div></header>
@@ -253,13 +253,13 @@ const ZONES=['Zone1','Zone2','Zone3','Zone4','Zone5','Zone6','Zone7'];
 const planFor=age=>age<=35?1:age<=55?2:3; // proposed rule PLN-01
 const constructOf=ms=>{const a=ms.filter(m=>m.adult).length,c=ms.length-a;return a+'A'+(c?'+'+c+'C':'')};
 const CONSTRUCTS=['1A','2A','2A+1C','2A+2C','2A+3C','2A+4C','1A+1C','1A+2C','1A+3C','1A+4C'];
-function uwFor(m,si,nb){ // current BSD medical rules; returns [outcome, rule, gapProposal]
+function uwFor(m,si,nb){ // baseline medical rules; returns [outcome, rule, gapProposal]
  const a=m.age,S=si===UNL?1e12:si;
  if(PED[m.ped].path==='mc') return ['Not issuable','BR-RHI-084/091','Managed-care condition: standard issuance not permitted'];
  if(PED[m.ped].path==='ppc') return ['Pre-policy check-up','BR-RHI-064','Heart condition: physical medical evaluation'];
  if(m.bmi>40) return ['Not issuable','BR-RHI-094','BMI above 40: managed-care bucket'];
  if(m.tob) return ['Refer to underwriter','BR-RHI-122','Lifestyle above the defined limits'];
- if(m.ped!=='NONE') return ['Gap → refer','NEW-UW-01','No BSD rule for a declared, controlled PED. Proposed: Tele-MER + UW, PED loading '+PED[m.ped].load+'%'];
+ if(m.ped!=='NONE') return ['Gap → refer','NEW-UW-01','No baseline rule for a declared, controlled PED. Proposed: Tele-MER + UW, PED loading '+PED[m.ped].load+'%'];
  if(a<=50&&S<=CR) return ['Instant issue','BR-RHI-074',''];
  if(a<=60&&S<=50*L) return ['Instant issue','BR-RHI-065',''];
  if(a>=18&&a<=45&&S>3*CR) return ['Tele-MER','BR-RHI-127',''];
@@ -268,7 +268,7 @@ function uwFor(m,si,nb){ // current BSD medical rules; returns [outcome, rule, g
  if(a>65&&S>CR) return ['Tele-MER','BR-RHI-133',''];
  if(a>65&&S>=50*L) return ['Tele-MER','BR-RHI-132',''];
  const prop=a<18?'Instant issue up to ₹1 Cr, Tele-MER above':a<=55?'Tele-MER':a<=65?'Tele-MER (makes BR-RHI-069 workable)':'Tele-MER, then pre-policy check-up';
- return ['Gap → '+prop.split(',')[0],'NEW-UW-02','No BSD rule for age '+a+' at '+siL(si)+'. Proposed: '+prop];
+ return ['Gap → '+prop.split(',')[0],'NEW-UW-02','No baseline rule for age '+a+' at '+siL(si)+'. Proposed: '+prop];
 }
 function quote(S,o={}){
  const T=[];const fire=(id,res,scope,d)=>T.push({id,res,scope,d});
@@ -339,7 +339,7 @@ function quote(S,o={}){
  function m0(){return 'Proposer'}
 }
 function defOpt(c,P){if(c==='PACOV')return 10*L;if(c==='TRVSMT')return 10000;if(OPTS[c])return OPTS[c][0];return 'Yes'}
-function elig(c,P,S){ // returns reason if NOT eligible (BSD coverage rules, ATR sheet)
+function elig(c,P,S){ // returns reason if NOT eligible (baseline coverage rules, ATR)
  const si=P.si,ms=P.members,fem=ms.some(m=>m.adult&&m.g==='F'&&m.age>=18&&m.age<=45&&(m.rel==='SELF'||m.rel==='SPOUSE'));
  if(PM[c]&&PM[c][P.plan]==='NA') return 'not available on this plan';
  if(c==='MATERN'){if(si!==UNL&&si<=5*L)return 'needs sum insured above ₹5 L (ATR_116)';if(!['1A','1A+1C','2A','2A+1C'].includes(P.construct))return 'only for 1A, 1A+1C, 2A, 2A+1C (ATR_203)';if(!fem)return 'needs a female self or spouse aged 18–45'}
@@ -429,7 +429,7 @@ function rail(){
  <div style="display:grid;gap:6px"><h3>Discounts and tax</h3>
   <label class="check"><input type="checkbox" id="d-woman" ${S.womanProposer?'checked':''}> Woman proposer (2.5%)</label>
   <label class="check"><input type="checkbox" id="d-gmc" ${S.gmc?'checked':''}> Holds a corporate GMC policy (5%)</label>
-  <label class="f">Premium tax<select id="i-gst">${opt([0,0.18],S.gst,v=>v?'18% GST, as the BSD states':'GST exempt (individual health, from 22 Sep 2025)')}</select></label></div>
+  <label class="f">Premium tax<select id="i-gst">${opt([0,0.18],S.gst,v=>v?'18% GST (baseline design)':'GST exempt (individual health, from 22 Sep 2025)')}</select></label></div>
  </div>`;
 }
 function diff(q){
@@ -457,7 +457,7 @@ function outHTML(q){
  h+=`<div class="panel summary"><div><div class="lab">Total premium, ${S.term} year${S.term>1?'s':''}, selected plans</div><div class="big num">${fmt(q.total)}</div></div>
   <div><div class="lab">Per year</div><div class="num" style="font-size:18px;font-weight:600">${fmt(q.total/S.term)}</div></div>
   <div><div class="lab">Policies</div><div style="font-size:18px;font-weight:600">${q.pols.length}</div></div>
-  <div class="muted" style="font-size:12px;flex-basis:100%">Approved rate tables. ${S.gst?'GST 18% as the BSD states.':'GST exempt.'} Indicative until underwriting.</div></div>`;
+  <div class="muted" style="font-size:12px;flex-basis:100%">Approved rate tables. ${S.gst?'GST 18% (baseline design).':'GST exempt.'} Indicative until underwriting.</div></div>`;
  h+=`<div class="panel change" aria-live="polite"><div><span class="pill p-rec">What changed</span> <span style="margin-left:6px">${esc(last)}</span></div>${d.length?`<ul>${d.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<div class="muted" style="font-size:13px">First calculation. Change any input to see the effect.</div>'}</div>`;
  if(q.advice.length) h+=`<div class="panel" style="padding:12px 16px"><div class="adv">${q.advice.map(a=>`<div><span class="rid new">${a[0]}</span><span>${esc(a[1])}</span></div>`).join('')}</div></div>`;
  q.pols.forEach((p,i)=>{
@@ -485,7 +485,7 @@ function outHTML(q){
   <details class="trace" style="border-top:1px solid var(--line)"><summary style="padding-inline:0">Premium build-up (approved rates)</summary><div style="padding-inline:0">${buildUp(p)}</div></details>
   </section>`;
  });
- h+=`<details class="panel trace"><summary>Rule trace · ${q.T.length} results</summary><div><div class="tbl-wrap"><table><thead><tr><th>#</th><th>Rule</th><th>Result</th><th>Scope</th><th>Detail</th></tr></thead><tbody>${q.T.map((t,i)=>`<tr><td class="muted">${i+1}</td><td><span class="rid ${t.id.startsWith('NEW')?'new':''}">${t.id}</span></td><td class="res-${t.res}">${t.res}</td><td>${esc(t.scope)}</td><td>${esc(t.d)}</td></tr>`).join('')}</tbody></table></div><p class="muted" style="font-size:12px;margin-top:6px">Gold rule IDs (NEW-…) are rules this definition adds; blue IDs come from the BSD.</p></div></details>`;
+ h+=`<details class="panel trace"><summary>Rule trace · ${q.T.length} results</summary><div><div class="tbl-wrap"><table><thead><tr><th>#</th><th>Rule</th><th>Result</th><th>Scope</th><th>Detail</th></tr></thead><tbody>${q.T.map((t,i)=>`<tr><td class="muted">${i+1}</td><td><span class="rid ${t.id.startsWith('NEW')?'new':''}">${t.id}</span></td><td class="res-${t.res}">${t.res}</td><td>${esc(t.scope)}</td><td>${esc(t.d)}</td></tr>`).join('')}</tbody></table></div><p class="muted" style="font-size:12px;margin-top:6px">Gold rule IDs (NEW-…) are rules this definition adds; blue IDs are baseline rules.</p></div></details>`;
  return h;
 }
 function buildUp(p){
@@ -534,7 +534,7 @@ document.addEventListener('input',e=>{
  if(id==='d-gmc'){S.gmc=el.checked;change('GMC holder discount '+(el.checked?'on':'off')+'.')}
 });
 
-/* ================= authored analysis (review of the BSD) ================= */
+/* ================= authored analysis (review of the baseline design) ================= */
 const ISSUES=/*__ISSUES__*/[];
 const NEWRULES=/*__NEWRULES__*/[];
 const INTEG=/*__INTEG__*/[];
@@ -546,8 +546,8 @@ const tbl=(h,rows)=>`<div class="tbl-wrap"><table><thead><tr>${h.map(x=>`<th>${x
 const tagC=t=>`<span class="pill ${t==='certain'?'p-good':t==='likely'?'p-warn':'p-bad'}">${t}</span>`;
 function vReview(){
  const sev=s=>ISSUES.filter(i=>i[2]===s).length;
- return `<div class="section"><h2>Review summary</h2><p class="lede">Source: a live InsureMO implementation BSD (v0.1) for a retail indemnity health product and its embedded product memo (v1.5, 17 sheets). Company, people and partner names are removed; brand-like cover names are generic; codes and approved rates are kept. This page turns that material into one product definition and a working quote.</p>
- <div class="tiles">${[['Coverages',D.coverages.length],['Benefits',D.benefits.length],['Plans',PLANS.length],['Fields',D.fields.length],['Code tables',D.dataTables.filter(b=>b.rows.length).length],['Rules (BSD)',D.rules.length],['Rules added',NEWRULES.length],['Issues found',ISSUES.length]].map(t=>`<div class="panel tile"><div class="lab">${t[0]}</div><div class="v num">${t[1]}</div></div>`).join('')}</div></div>
+ return `<div class="section"><h2>Review summary</h2><p class="lede">A generic Indian retail indemnity health product, defined for configuration on InsureMO. This page holds the full definition, a review of its baseline design and a working quote that runs on the approved rate tables.</p>
+ <div class="tiles">${[['Coverages',D.coverages.length],['Benefits',D.benefits.length],['Plans',PLANS.length],['Fields',D.fields.length],['Code tables',D.dataTables.filter(b=>b.rows.length).length],['Rules (baseline)',D.rules.length],['Rules added',NEWRULES.length],['Issues found',ISSUES.length]].map(t=>`<div class="panel tile"><div class="lab">${t[0]}</div><div class="v num">${t[1]}</div></div>`).join('')}</div></div>
  <div class="section"><h2>Verdict</h2><div class="panel" style="padding:14px 18px;display:grid;gap:8px">
  <p><b>Strong on structure, not yet ready to configure.</b> The rating chain, coverage register and endorsement design are detailed and mostly consistent. ${sev('High')} high-severity issues block a clean build: GST at 18% on a product that is now exempt, plans named by age with no age rule, packages that contain covers with no approved premium, a medical grid with gaps, conflicting zone and room-rent rules, an NRI rule that contradicts the NRI discount, and renewal-only benefits sold in an MVP without renewal.</p>
  <p>Recommendation: close the ${sev('High')} high items in one workshop with the insurer's product, actuarial and underwriting leads before configuration starts; take the ${sev('Medium')} medium items into the configuration sprint backlog. Each issue on the Issues tab has a proposed decision.</p></div></div>
@@ -560,13 +560,13 @@ function ratingCheck(){
  const P={type:'FF',members:[{age:30,adult:true,rel:'SELF',ped:'NONE'},{age:28,adult:true,rel:'SPOUSE',ped:'NONE'}],construct:'2A',si:10*L,covers:{'2XSID1':'Yes',HR2HOS:'Yes',CONSUM:'Yes'}};
  const a=ratePolicy(P,S0).units[0].yrRows[0].annual;
  const ok1=Math.abs(b-11675.929254)<0.01,ok2=Math.abs(a-14917.102942)<0.01;
- return `<p class="lede">The live quote runs the memo's own formulas on the approved tables. It reproduces the memo's worked examples to the paisa:</p>${tbl(['Memo worked example','Memo value','This engine','Result'],[['Floater 2A, eldest 30, SI ₹10 L, Zone1, single private AC, unlimited restoration, loyalty 20%–100%: base premium','₹11,675.93',fmt2(b),`<span class="pill ${ok1?'p-good':'p-bad'}">${ok1?'Match':'Differs'}</span>`],['Same, plus 2X SI, 2-hour hospitalisation and consumables: annual premium','₹14,917.10',fmt2(a),`<span class="pill ${ok2?'p-good':'p-bad'}">${ok2?'Match':'Differs'}</span>`]])}
+ return `<p class="lede">The live quote runs the specified formulas on the approved tables. It reproduces the specification's worked examples to the paisa:</p>${tbl(['Specification worked example','Specified value','This engine','Result'],[['Floater 2A, eldest 30, SI ₹10 L, Zone1, single private AC, unlimited restoration, loyalty 20%–100%: base premium','₹11,675.93',fmt2(b),`<span class="pill ${ok1?'p-good':'p-bad'}">${ok1?'Match':'Differs'}</span>`],['Same, plus 2X SI, 2-hour hospitalisation and consumables: annual premium','₹14,917.10',fmt2(a),`<span class="pill ${ok2?'p-good':'p-bad'}">${ok2?'Match':'Differs'}</span>`]])}
  <div class="note">The worked example itself breaks two product rules: it rates a ₹10 L policy on a single private AC room although ₹10 L and above is "no restriction up to Deluxe" (issue I-07), and it uses loyalty 20%–100% although the default for age 30 is 100%–1000% (issue I-09). The live quote uses the rule defaults.</div>`;
 }
-function vIdentity(){return `<div class="section"><h2>Product identity</h2><p class="lede">Generic definition. "Refined" values differ from the BSD; see the Issues tab for the reason.</p><div class="panel kv">${IDENT.map(r=>`<div>${esc(r[0])}</div><div>${esc(r[1])}${r[2]?` <span class="pill p-warn">refined</span>`:''}</div>`).join('')}</div></div>`}
+function vIdentity(){return `<div class="section"><h2>Product identity</h2><p class="lede">Generic definition. "Refined" values differ from the baseline design; see the Issues tab for the reason.</p><div class="panel kv">${IDENT.map(r=>`<div>${esc(r[0])}</div><div>${esc(r[1])}${r[2]?` <span class="pill p-warn">refined</span>`:''}</div>`).join('')}</div></div>`}
 function vPlans(){
  const cell=v=>v==='Base Cover'?'<span class="av-B">Base</span>':v.startsWith('Mandatory')?`<span class="av-P">Pkg ${v.slice(-1)}</span>`:v==='Optional Cover'?'<span class="av-O">Optional</span>':'<span class="av-N">NA</span>';
- return `<div class="section"><h2>Plans and packages</h2><p class="lede">A plan sets which covers are offered; it does not set the sum insured. "Pkg n" covers are preselected and can be removed only as a whole package. The BSD names three plans by age but has no rule enforcing it; proposed rule <span class="rid new">NEW-PLN-01</span> adds one (Young up to 35, Prime 36–55, Senior 56+, Classic any age). The names "&lt;35" and "36–55" leave age 35 in no plan.</p>
+ return `<div class="section"><h2>Plans and packages</h2><p class="lede">A plan sets which covers are offered; it does not set the sum insured. "Pkg n" covers are preselected and can be removed only as a whole package. The baseline names three plans by age but has no rule enforcing it; proposed rule <span class="rid new">NEW-PLN-01</span> adds one (Young up to 35, Prime 36–55, Senior 56+, Classic any age). The names "&lt;35" and "36–55" leave age 35 in no plan.</p>
  <div class="grid2">${PLANS.map((pn,pi)=>{const pk=PKGS(pi);return `<div class="panel" style="padding:12px;display:grid;gap:6px"><b>${pn}</b>${Object.keys(pk).length?Object.entries(pk).map(([k,c])=>{const bad=c.filter(x=>NO_RATE[x]);return `<div style="font-size:13px">Package ${k}: ${c.map(x=>COV[x].n).join(', ')} ${bad.length?`<span class="pill p-bad">no rate: ${bad.map(x=>COV[x].n).join(', ')}</span>`:'<span class="pill p-good">priced</span>'}</div>`}).join(''):'<div class="muted" style="font-size:13px">No packages; every add-on optional.</div>'}</div>`}).join('')}</div></div>
  <div class="section"><h2>Plan cover relation</h2>${tbl(['Cover','Code',...PLANS],D.planMatrix.map(r=>[esc(r[0]),`<span class="mono">${r[1]}</span>`,...r.slice(2,6).map(cell)]))}</div>`;
 }
@@ -581,7 +581,7 @@ function vCovers(){
 function vClauses(){
  const add=[['CL-NEW-01','Customer Information Sheet','Policy','Mandatory','Issue the CIS with every policy and record the customer acknowledgement.'],['CL-NEW-02','Cashless turnaround','Policy','Mandatory','Cashless pre-authorisation decided within 1 hour; final authorisation within 3 hours of the discharge request.'],['CL-NEW-03','Senior citizen protection','Policy','Conditionally mandatory','Members aged 60+: dedicated grievance channel and premium increase limits as per IRDAI circulars.'],['CL-NEW-04','Policy pause (Travel Pause cover)','Policy','Optional','Cover paused for up to 30 days of overseas travel; expiry extended by the same days. Needs the Policy Pause endorsement.']];
  return `<div class="section"><h2>Clauses</h2>${tbl(['#','Clause','Level','Mandatory','Related cover','Wording summary'],D.clauses.map(c=>[`<span class="mono">${c[0]}</span>`,esc(c[1]),esc(c[2]),esc(c[4]),esc(c[5]),esc(c[3])]))}</div>
- <div class="section"><h2>Clauses to add</h2><p class="lede">Gaps against IRDAI's 2024 health master circular and against covers the BSD sells. [likely]</p>${tbl(['#','Clause','Level','Mandatory','Wording summary'],add.map(r=>[`<span class="rid new">${r[0]}</span>`,r[1],r[2],r[3],r[4]]))}</div>`;
+ <div class="section"><h2>Clauses to add</h2><p class="lede">Gaps against IRDAI's 2024 health master circular and against covers the product sells. [likely]</p>${tbl(['#','Clause','Level','Mandatory','Wording summary'],add.map(r=>[`<span class="rid new">${r[0]}</span>`,r[1],r[2],r[3],r[4]]))}</div>`;
 }
 function vFields(){
  const secs=[...new Set(D.fields.map(f=>f[0]))];
@@ -600,28 +600,28 @@ function vRating(){
  const rts=D.rateTables.filter(b=>b.rows.length).map(b=>`<div style="display:grid;gap:6px;align-content:start;min-width:0"><b class="mono">${esc(b.title)}</b>${tbl(b.rows[0].map(esc),b.rows.slice(1).map(r=>r.map(c=>/^\d+\.\d{4,}$/.test(c)?(+c).toFixed(4):esc(c))))}</div>`).join('');
  return `<div class="section"><h2>Rating</h2><p class="lede">Base premium is multiplicative; add-ons are additive (Class A: % of base; Class B: table value); discounts sit on the gross premium with a 15% cap, multi-year and porting outside the cap; PED loading is added on gross. The live quote implements every step below.</p>${ratingCheck()}</div>
  <div class="section"><h2>Calculation specification</h2>${pc}</div>
- <div class="section"><h2>Approved rate tables</h2><div class="note">Confidential actuarial values of the source insurer. Share this page only within the engagement. Values shown to 4 decimals; the engine uses full precision.</div><div class="grid2">${rts}</div></div>`;
+ <div class="section"><h2>Approved rate tables</h2><div class="note">Confidential actuarial values. Share this page only within the engagement. Values shown to 4 decimals; the engine uses full precision.</div><div class="grid2">${rts}</div></div>`;
 }
 function vUW(){
  const ages=[['Child 91 days–17',10],['18–45',40],['46–50',48],['51–55',53],['56–60',58],['61–65',63],['66+',70]];
  const sis=[10*L,50*L,CR,2*CR,UNL];
  const cell=(a,s)=>{const u=uwFor({age:a,ped:'NONE',bmi:24,tob:false},s,true);const c=u[0].startsWith('Instant')?'c-stp':u[0].startsWith('Gap')?'c-gap':u[0].startsWith('Tele')?'c-tele':'c-ppmc';return `<td class="${c}">${u[0].startsWith('Gap')?'Gap':esc(u[0])}<br><span class="mono" style="font-size:11px">${u[1]}</span></td>`};
  const mc=D.rules.filter(r=>/Managed Care/i.test(r[2])||/Managed Care/i.test(r[4]));
- return `<div class="section"><h2>Medical grid (new business, no PED)</h2><p class="lede">Each cell shows the BSD rule that decides the case. Red cells have no rule: the system cannot decide whether to issue, call for Tele-MER or a check-up. Rule <span class="rid new">NEW-UW-02</span> proposes the missing cells; the live quote shows the proposal.</p>
+ return `<div class="section"><h2>Medical grid (new business, no PED)</h2><p class="lede">Each cell shows the baseline rule that decides the case. Red cells have no rule: the system cannot decide whether to issue, call for Tele-MER or a check-up. Rule <span class="rid new">NEW-UW-02</span> proposes the missing cells; the live quote shows the proposal.</p>
  <div class="tbl-wrap"><table class="grid-uw"><thead><tr><th>Age</th>${sis.map(s=>`<th style="text-align:center">SI ${s===10*L?'₹3 L–₹25 L':siL(s)}</th>`).join('')}</tr></thead><tbody>${ages.map(a=>`<tr><td style="text-align:left">${a[0]}</td>${sis.map(s=>cell(a[1],s)).join('')}</tr>`).join('')}</tbody></table></div>
  <div class="note">Also missing: any path for a declared, controlled PED (diabetes on tablets, controlled blood pressure). All STP rules require "no PED" and only heart and managed-care conditions have rules. Proposed: <span class="rid new">NEW-UW-01</span> Tele-MER plus underwriter decision with the PED loading grid (5%–100%).</div></div>
  <div class="section"><h2>Managed-care conditions (not issuable on this product)</h2>${tbl(['Rule','Condition','Outcome','Team'],mc.map(r=>[`<span class="rid">${r[0]}</span>`,esc(r[3]),esc(r[4]),esc(r[8])]))}</div>`;
 }
 function vRules(){
  const cats=[...new Set(D.rules.map(r=>r[11]||'other'))];
- return `<div class="section"><h2>Business rules</h2><p class="lede">${D.rules.length} BSD rules and ${NEWRULES.length} proposed rules. Rules marked out of MVP scope are kept so the backlog is visible.</p><div class="toolbar"><div class="chips" id="r-chips"><button class="chip" aria-pressed="true" data-c="">All</button>${cats.map(c=>`<button class="chip" aria-pressed="false" data-c="${esc(c)}">${esc(c)}</button>`).join('')}<button class="chip" aria-pressed="false" data-c="NEW">Proposed</button></div><input type="search" id="r-q" placeholder="Search rules"></div><div id="r-t">${rT('','')}</div></div>`;
+ return `<div class="section"><h2>Business rules</h2><p class="lede">${D.rules.length} baseline rules and ${NEWRULES.length} proposed rules. Rules marked out of MVP scope are kept so the backlog is visible.</p><div class="toolbar"><div class="chips" id="r-chips"><button class="chip" aria-pressed="true" data-c="">All</button>${cats.map(c=>`<button class="chip" aria-pressed="false" data-c="${esc(c)}">${esc(c)}</button>`).join('')}<button class="chip" aria-pressed="false" data-c="NEW">Proposed</button></div><input type="search" id="r-q" placeholder="Search rules"></div><div id="r-t">${rT('','')}</div></div>`;
 }
 function rT(c,q){q=q.toLowerCase();
  const rows=c==='NEW'?NEWRULES.map(r=>[`<span class="rid new">${r[0]}</span>`,esc(r[1]),esc(r[2]),esc(r[3]),'Proposed',esc(r[4])]):D.rules.filter(r=>!c||(r[11]||'other')===c).map(r=>[`<span class="rid">${r[0]}</span>`,esc(r[1]),esc(r[3]),esc(r[4]),esc(r[5])+' · '+esc(r[7]),esc(r[10])+(/out of mvp/i.test(r[10])?' <span class="pill p-warn">out of MVP</span>':'')]);
  return tbl(['Rule','Function / name','Condition','Outcome','Type · trigger','Remarks'],rows.filter(r=>!q||r.join(' ').toLowerCase().includes(q)));}
 function vEndorse(){return `<div class="section"><h2>Endorsements</h2><p class="lede">Basic Information Endorsement (BIE) for data and member changes, plus Cancellation. Re-rating uses the same engine as new business; the delta is pro-rated by policy year.</p>${D.endorsement.filter(b=>b.rows.length).map(b=>`<div style="display:grid;gap:6px;margin-bottom:12px"><b>${esc(b.title)}</b>${tbl((b.rows[0].length>2?b.rows[0]:['Item','Rule']).map(esc),(b.rows[0].length>2?b.rows.slice(1):b.rows).map(r=>r.filter((x,i)=>i<9).map(esc)))}</div>`).join('')}</div>`}
-function vInteg(){return `<div class="section"><h2>External integrations</h2><p class="lede">The BSD section 2.9 is empty. These interfaces are implied by its fields and rules; each needs a specification before build.</p>${tbl(['Interface','Direction','Used by','Data','MVP'],INTEG)}</div>`}
-function vIssues(){return `<div class="section"><h2>Issues and decisions</h2><p class="lede">${ISSUES.length} findings from reading the BSD against its memo, against itself and against Indian market and regulatory practice. Each has a proposed decision for the insurer to confirm. Confidence: certain = the documents contradict each other; likely = strong inference from regulation or market practice; guessing = assumption to confirm.</p>
+function vInteg(){return `<div class="section"><h2>External integrations</h2><p class="lede">The baseline design does not specify external interfaces. These are implied by its fields and rules; each needs a specification before build.</p>${tbl(['Interface','Direction','Used by','Data','MVP'],INTEG)}</div>`}
+function vIssues(){return `<div class="section"><h2>Issues and decisions</h2><p class="lede">${ISSUES.length} findings from reading the baseline design against itself and against Indian market and regulatory practice. Each has a proposed decision for the insurer to confirm. Confidence: certain = the documents contradict each other; likely = strong inference from regulation or market practice; guessing = assumption to confirm.</p>
  <div class="chips" id="i-chips"><button class="chip" aria-pressed="true" data-v="">All</button>${['High','Medium','Low'].map(s=>`<button class="chip" aria-pressed="false" data-v="${s}">${s} (${ISSUES.filter(i=>i[2]===s).length})</button>`).join('')}</div><div id="i-t">${iT('')}</div></div>
  <div class="section"><h2>Proposed rules</h2>${tbl(['Rule','Name','Condition','Outcome','Closes'],NEWRULES.map(r=>[`<span class="rid new">${r[0]}</span>`,esc(r[1]),esc(r[2]),esc(r[3]),esc(r[4])]))}</div>`}
 const iT=v=>tbl(['#','Area','Severity','Finding','Evidence','Proposed decision','Confidence'],ISSUES.filter(i=>!v||i[2]===v).map(i=>[`<span class="mono">${i[0]}</span>`,i[1],`<span class="sev-${i[2]}">${i[2]}</span>`,esc(i[3]),`<span class="muted">${esc(i[4])}</span>`,esc(i[5]),tagC(i[6])]));
