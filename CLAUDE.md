@@ -11,6 +11,7 @@ Learning material for the InsureMO Easy Apps modules for business analysts, test
 | Reinsurance (XRI) | `reinsurance-learning-guide/` | `reinsurance-learning-guide/src/` (v2 template) | https://claude.ai/artifact/Q3LqqcJvLVLntmFCZATymY |
 | **Easy Apps (all four)** | `easyapps-learning-guide/` | `easyapps-learning-guide/src/` + `build/` | https://claude.ai/artifact/D4YUYkPsfJHucPw8yUpiW7 |
 
+- `apex-health-shield-demo/index.html`: client demo for NxSure (not part of the learning suite). Refined Apex Health Shield retail health product configured for InsureMO GI (identity, element tree, data dictionary, code tables, rules, rating) plus a live quote whose engine reads the same tables. Hand-written single file; no build step. Shared page: https://claude.ai/artifact/JSXPNxtYsKjudG8ABDRmAK. Rates are illustrative.
 - `.claude/skills/insuremo-learning-guide/`: the product-manager skill for the whole suite. SKILL.md has the rebuild command for every guide; `references/` has the data model, feature spec (definition of done), lessons learned, publishing rules and the combined-guide architecture (`easyapps-hub.md`).
 - Every shared page is private to the owner until shared from its Share menu. The Easy Apps page is currently set to "Anyone with the link".
 

@@ -1,0 +1,947 @@
+<title>Apex Health Shield</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky product header + tab bar; demo = input rail on the left, live quote on the right; spec tabs = full-width tables. */
+:root{
+  --bg:#f3f6f6; --surface:#ffffff; --sunk:#e9efef; --ink:#13242a; --muted:#5b6c72; --line:#d6e0e1;
+  --accent:#0d6f6b; --accent-soft:#d9eeec; --accent-ink:#ffffff;
+  --gold:#9a6512; --gold-soft:#f6ead3; --good:#23784a; --good-soft:#dcefe3; --bad:#a83a30; --bad-soft:#f6dedb;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1719; --surface:#152226; --sunk:#1b2b30; --ink:#e2ebec; --muted:#93a7ac; --line:#26383d;
+  --accent:#43b3ab; --accent-soft:#173a3a; --accent-ink:#06201f;
+  --gold:#e3aa52; --gold-soft:#3a2d17; --good:#5cc685; --good-soft:#163323; --bad:#ea8478; --bad-soft:#3c1e1b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1719; --surface:#152226; --sunk:#1b2b30; --ink:#e2ebec; --muted:#93a7ac; --line:#26383d;
+  --accent:#43b3ab; --accent-soft:#173a3a; --accent-ink:#06201f;
+  --gold:#e3aa52; --gold-soft:#3a2d17; --good:#5cc685; --good-soft:#163323; --bad:#ea8478; --bad-soft:#3c1e1b; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1320px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.brand{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;padding-block:12px 4px}
+.brand h1{font-size:20px;margin:0;letter-spacing:-.01em}
+.brand .meta{color:var(--muted);font-size:12.5px}
+.brand .tag{font-family:var(--mono);font-size:11.5px;background:var(--gold-soft);color:var(--gold);padding:2px 7px;border-radius:4px}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+nav.tabs a{white-space:nowrap;padding:9px 12px;color:var(--muted);text-decoration:none;font-weight:500;border-bottom:2px solid transparent;font-size:13.5px}
+nav.tabs a:hover{color:var(--ink)}
+nav.tabs a[aria-current="page"]{color:var(--accent);border-bottom-color:var(--accent)}
+nav.tabs a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{padding-block:20px 48px}
+h2{font-size:18px;margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;margin:0;text-wrap:balance}
+p{margin:0}
+.lede{color:var(--muted);max-width:75ch;margin-bottom:16px}
+.mono{font-family:var(--mono);font-size:12.5px}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.pill{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:99px;letter-spacing:.02em;white-space:nowrap}
+.p-rec{background:var(--accent);color:var(--accent-ink)}
+.p-alt{background:var(--sunk);color:var(--muted)}
+.p-no{background:var(--bad-soft);color:var(--bad)}
+.p-good{background:var(--good-soft);color:var(--good)}
+.p-warn{background:var(--gold-soft);color:var(--gold)}
+.p-bad{background:var(--bad-soft);color:var(--bad)}
+.rid{font-family:var(--mono);font-size:11.5px;color:var(--accent);background:var(--accent-soft);padding:1px 6px;border-radius:4px;white-space:nowrap}
+button{font:inherit;cursor:pointer}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 11px;border-radius:6px;font-size:13px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--sunk);font-weight:600;font-size:12px;letter-spacing:.02em;color:var(--muted);position:sticky;top:0}
+tr:last-child td{border-bottom:none}
+td.r,th.r{text-align:right}
+.section{display:grid;gap:12px;margin-bottom:28px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.kv{display:grid;grid-template-columns:minmax(140px,220px) 1fr;gap:0}
+.kv>div{padding:7px 12px;border-bottom:1px solid var(--line)}
+.kv>div:nth-child(odd){color:var(--muted);font-size:13px}
+.note{border-left:3px solid var(--gold);background:var(--gold-soft);padding:9px 12px;border-radius:0 6px 6px 0;font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:4px 10px;border-radius:99px;font-size:12.5px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+input[type=search],input[type=number],select{font:inherit;font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 8px;min-width:0}
+input[type=number]{width:64px}
+label.f{display:grid;gap:3px;font-size:12px;color:var(--muted)}
+/* demo */
+.demo{display:grid;grid-template-columns:360px minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:920px){.demo{grid-template-columns:minmax(0,1fr)}}
+.rail{padding:14px;display:grid;gap:14px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 96px);max-height:calc(100vh - 110px);overflow:auto}
+@media (max-width:920px){.rail{position:static;max-height:none}}
+.rail h3{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.member{border:1px solid var(--line);border-radius:6px;padding:8px;display:grid;gap:6px;background:var(--bg)}
+.member .mh{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.member .mh b{font-size:13px}
+.member .mf{display:flex;flex-wrap:wrap;gap:6px;align-items:end}
+.member .mf select{max-width:100%}
+.x{border:none;background:none;color:var(--muted);font-size:12px;padding:2px 4px}
+.x:hover{color:var(--bad)}
+.check{display:flex;gap:7px;align-items:center;font-size:13px}
+.script{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}
+.script .lbl{font-size:12px;color:var(--muted);margin-right:4px}
+.out{display:grid;gap:14px;min-width:0}
+.summary{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;padding:14px 16px}
+.summary .big{font-size:26px;font-weight:700;letter-spacing:-.01em}
+.summary .lab{font-size:12px;color:var(--muted)}
+.change{padding:12px 16px;display:grid;gap:8px;border-color:var(--accent)}
+.change ul{margin:0;padding-left:18px;display:grid;gap:3px}
+.policy{padding:14px 16px;display:grid;gap:12px}
+.ph{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;justify-content:space-between}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.cards{grid-template-columns:minmax(0,1fr)}}
+.card{border:1px solid var(--line);border-radius:8px;padding:11px;display:grid;gap:7px;align-content:start;background:var(--surface);text-align:left;color:var(--ink)}
+.card.sel{border:2px solid var(--accent);padding:10px}
+.card[disabled]{opacity:.62;cursor:not-allowed}
+.card .t{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.card .t b{font-size:15px}
+.card .price{font-size:20px;font-weight:700}
+.card ul{margin:0;padding-left:16px;font-size:12.5px;color:var(--muted);display:grid;gap:2px}
+.card .why{font-size:12px;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.adv{display:grid;gap:6px}
+.adv div{font-size:13px;display:flex;gap:8px;align-items:baseline}
+.addons{display:grid;gap:6px}
+.addon{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 10px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:7px 10px}
+.addon .nm{font-size:13px;font-weight:500}
+.addon .rs{grid-column:2/4;font-size:12px;color:var(--muted)}
+.addon.na{background:var(--bg)}
+details.trace{padding:0}
+details.trace>summary{cursor:pointer;padding:11px 16px;font-weight:600}
+details.trace>div{padding:0 16px 14px}
+.res-Fired{color:var(--accent)} .res-Pass{color:var(--good)} .res-Fail{color:var(--bad)} .res-Advice{color:var(--gold)}
+/* flow */
+.pipe{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:900px){.pipe{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.pipe{grid-template-columns:minmax(0,1fr)}}
+.step{padding:12px;display:grid;gap:5px;align-content:start}
+.step .n{font-family:var(--mono);font-size:11.5px;color:var(--accent)}
+.step b{font-size:14px}
+.step p{font-size:12.5px;color:var(--muted)}
+.step .obj{font-size:12px;border-top:1px dashed var(--line);padding-top:5px}
+.seq{margin:0;padding-left:20px;display:grid;gap:6px}
+.tree td.code{white-space:nowrap}
+.tree .ind{display:inline-block}
+.av{font-family:var(--mono);font-weight:500;text-align:center}
+.av-M,.av-B{color:var(--good)} .av-O{color:var(--accent)} .av-N{color:var(--muted)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.formula{font-family:var(--mono);font-size:13px;background:var(--sunk);border-radius:8px;padding:12px 14px;line-height:1.7;overflow-x:auto;white-space:pre}
+.err{background:var(--bad-soft);color:var(--bad);padding:10px 14px;border-radius:8px;font-size:13px}
+@media (prefers-reduced-motion:no-preference){.card,.chip,.btn{transition:border-color .15s,background .15s}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <h1>Apex Health Shield</h1>
+      <span class="meta">Retail indemnity health · India · INR · Product code <span class="mono">APHS01</span> · InsureMO GI configuration and live quote demo for NxSure</span>
+      <span class="tag">Illustrative rates · not filed</span>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+  </div>
+</header>
+<main class="wrap" id="main"></main>
+
+<script>
+/* ===================== CONFIGURATION (single source for spec tabs and live engine) ===================== */
+const L=1e5, CR=1e7;
+const C={
+ tiers:[
+  {code:'ESS',name:'Essential',factor:1.00,si:[3*L,5*L,7.5*L,10*L],pitch:'Value cover for young buyers and tier-2/3 towns'},
+  {code:'ADV',name:'Advantage',factor:1.20,si:[10*L,15*L,20*L,25*L,50*L],pitch:'Mainstream family cover with no room-rent cap'},
+  {code:'ELT',name:'Elite',factor:1.45,si:[50*L,75*L,1*CR,2*CR,3*CR,5*CR],pitch:'High sum insured, richest built-in benefits'}],
+ siFactor:{300000:.72,500000:1,750000:1.25,1000000:1.45,1500000:1.70,2000000:1.90,2500000:2.05,5000000:2.60,7500000:2.95,10000000:3.20,20000000:3.70,30000000:4.00,50000000:4.40},
+ ageBands:[
+  {code:'CH',from:0,to:17,base:2400,label:'0–17 (child)'},
+  {code:'A1',from:18,to:35,base:4800,label:'18–35'},
+  {code:'A2',from:36,to:45,base:6600,label:'36–45'},
+  {code:'A3',from:46,to:55,base:10500,label:'46–55'},
+  {code:'A4',from:56,to:60,base:16000,label:'56–60'},
+  {code:'A5',from:61,to:65,base:21500,label:'61–65'},
+  {code:'A6',from:66,to:70,base:29000,label:'66–70'},
+  {code:'A7',from:71,to:75,base:38000,label:'71–75'}],
+ zones:{A:{name:'Zone A · metro',factor:1.15},B:{name:'Zone B · tier-2',factor:1.00},C:{name:'Zone C · rest of India',factor:0.90}},
+ cities:[['Mumbai','A'],['Delhi NCR','A'],['Bengaluru','A'],['Chennai','A'],['Hyderabad','A'],['Kolkata','A'],['Pune','A'],['Ahmedabad','A'],
+  ['Jaipur','B'],['Lucknow','B'],['Indore','B'],['Kochi','B'],['Chandigarh','B'],['Nagpur','B'],['Coimbatore','B'],['Bhubaneswar','B'],
+  ['Varanasi','C'],['Siliguri','C'],['Hubballi','C'],['Other town or rural area','C']],
+ floater:{1:1,2:.85,3:.80,4:.75,5:.72,6:.70},
+ lifestyle:{NONE:{n:'None',f:1},TOB:{n:'Tobacco user',f:1.10},ALC:{n:'Regular alcohol',f:1.05},BOTH:{n:'Tobacco and alcohol',f:1.15}},
+ ped:{NONE:{n:'None',st:'NONE',f:1},DM2:{n:'Type 2 diabetes, controlled',st:'CONTROLLED',f:1.15},HTN:{n:'Hypertension, controlled',st:'CONTROLLED',f:1.10},
+  THY:{n:'Thyroid disorder, controlled',st:'CONTROLLED',f:1.05},AST:{n:'Asthma, mild',st:'CONTROLLED',f:1.10},DMHTN:{n:'Diabetes and hypertension, controlled',st:'CONTROLLED',f:1.25},
+  DMC:{n:'Diabetes with complications',st:'COMPLICATED',f:1.25},CAR:{n:'Cardiac history',st:'COMPLICATED',f:1.25}},
+ volDed:{0:0,25000:.05,50000:.10,100000:.15,200000:.20,500000:.25},
+ copay:{0:0,10:.05,20:.10,30:.15},
+ term:{1:0,2:.075,3:.10},
+ relations:{SELF:{n:'Self',grp:'FAM',kind:'ADULT'},SPOUSE:{n:'Spouse',grp:'FAM',kind:'ADULT'},SON:{n:'Son',grp:'FAM',kind:'CHILD',g:'M'},DAUGHTER:{n:'Daughter',grp:'FAM',kind:'CHILD',g:'F'},
+  FATHER:{n:'Father',grp:'PAR',kind:'PARENT',g:'M'},MOTHER:{n:'Mother',grp:'PAR',kind:'PARENT',g:'F'},FIL:{n:'Father-in-law',grp:'PIL',kind:'PARENT',g:'M'},MIL:{n:'Mother-in-law',grp:'PIL',kind:'PARENT',g:'F'}},
+ groups:[{key:'FAM',n:'Family'},{key:'PAR',n:'Parents'},{key:'PIL',n:'Parents-in-law'}],
+ adequacy:{A:10*L,B:7.5*L,C:5*L},
+ matPrice:{25000:3200,50000:6000,100000:11000,150000:15500},
+ opdPrice:{5000:3100,10000:6000,15000:8700,25000:14000},
+ ciRate:{A1:85,A2:210,A3:520,A4:1050,A5:1600},
+ hdcRate:{CH:400,A1:700,A2:700,A3:1300,A4:1300,A5:2400,A6:2400,A7:2400},
+ paRate:{1:45,2:70}
+};
+const fmt=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const siL=v=>v>=CR?'₹'+(v/CR)+' Cr':'₹'+(v/L)+' L';
+const allSI=[...new Set(C.tiers.flatMap(t=>t.si))].sort((a,b)=>a-b);
+const tierOf=c=>C.tiers.find(t=>t.code===c);
+const bandOf=a=>C.ageBands.find(b=>a>=b.from&&a<=b.to)||null;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const BENEFITS=[
+ ['IPH','In-patient hospitalisation','Up to SI · single private AC room','Up to SI · any room','Up to SI · any room'],
+ ['PREHOSP','Pre-hospitalisation','30 days','60 days','60 days'],
+ ['POSTHOSP','Post-hospitalisation','60 days','180 days','180 days'],
+ ['DAYCARE','Day-care treatment','Up to SI','Up to SI','Up to SI'],
+ ['DOMHOSP','Domiciliary hospitalisation','Up to SI','Up to SI','Up to SI'],
+ ['AYUSH','AYUSH treatment','Up to SI','Up to SI','Up to SI'],
+ ['RESTORE','Automatic restoration','100%, once a year','100%, unlimited times a year','100%, unlimited, same illness included'],
+ ['NCB','Cumulative bonus','+50% a year, max 100%; falls 50% after a claim','+50% a year, max 100%; falls 50% after a claim','+50% a year, max 100%; does not fall after a claim'],
+ ['SIGROW','Sum insured growth','Not included','+25% after year 1, +50% after year 2','+50% after year 1, +100% after year 2'],
+ ['ORGDON','Organ donor expenses','Up to SI','Up to SI','Up to SI'],
+ ['AMBROA','Road ambulance','₹2,000 per hospitalisation','₹5,000 per hospitalisation','₹10,000 per hospitalisation'],
+ ['HLTHCHK','Health check-up','Once every 2 policy years','Every year from first renewal','Every year from inception'],
+ ['MODTRT','Modern treatment methods','Up to 25% of SI','Up to 50% of SI','Up to SI'],
+ ['CONSM','Consumables and non-payables','Optional add-on','Optional add-on','Built in'],
+ ['SMO','Second medical opinion','Not available','Optional add-on','Built in'],
+ ['WAIT','PED waiting period','36 months','36 months (24 with buy-back)','36 months (12 with buy-back)']];
+const CARD_POINTS={ESS:['Single private AC room','Restoration once a year','PED wait 36 months'],ADV:['Any room, no cap','Unlimited restoration','SI grows to +50% in 2 years'],ELT:['Consumables and second opinion built in','Bonus does not fall after a claim','SI grows to +100% in 2 years']};
+
+/* Add-ons: avail M=mandatory/built in, O=optional, N=not available */
+const ADDONS=[
+ {code:'CONSM',n:'Consumables and non-payables',lvl:'Policy',avail:{ESS:'O',ADV:'O',ELT:'B'},basis:'5% of base premium',
+  price:x=>x.base*.05,
+  suggest:(p,S,z)=>(z==='A'||p.si>=25*L)?['REC-08',z==='A'?'Metro hospital bills carry more non-payable items':'High sum insured buyers expect full bill cover']:null},
+ {code:'AMBAIR',n:'Air ambulance',lvl:'Policy',avail:{ESS:'N',ADV:'O',ELT:'O'},basis:'₹450 (Advantage, limit ₹2.5 L) / ₹900 (Elite, limit ₹10 L)',
+  price:x=>x.tier==='ADV'?450:900},
+ {code:'PEDBUY',n:'PED buy-back',lvl:'Policy',avail:{ESS:'N',ADV:'O',ELT:'O'},basis:'20% (Advantage) / 35% (Elite) of the premium share of members with PED',
+  cond:p=>p.pedCtl,price:x=>x.base*x.pedShare*(x.tier==='ADV'?.20:.35),
+  suggest:p=>p.pedCtl?['REC-06','A member has a controlled pre-existing disease; cuts the wait to '+(p.tier==='ADV'?'24':'12')+' months']:null},
+ {code:'MATNB',n:'Maternity and newborn',lvl:'Policy',avail:{ESS:'N',ADV:'O',ELT:'O'},opts:[25000,50000,100000,150000],optL:v=>'Limit '+fmt(v),basis:'Flat by limit: ₹3,200 / ₹6,000 / ₹11,000 / ₹15,500',
+  cond:p=>p.matEligible,price:(x,o)=>C.matPrice[o],
+  suggest:(p,S)=>(p.matEligible&&S.needs.family)?['REC-05','Planning a child; 24-month waiting period starts now']:null},
+ {code:'OPDWEL',n:'OPD and wellness',lvl:'Policy',avail:{ESS:'O',ADV:'O',ELT:'O'},opts:[5000,10000,15000,25000],optL:v=>'Limit '+fmt(v)+' a year',basis:'Flat by limit: ₹3,100 / ₹6,000 / ₹8,700 / ₹14,000',
+  price:(x,o)=>C.opdPrice[o],
+  suggest:p=>p.members.some(m=>m.age<6)?['REC-09','Child under 6: frequent doctor visits and vaccinations']:null},
+ {code:'CRIT',n:'Critical illness lump sum',lvl:'Member',avail:{ESS:'O',ADV:'O',ELT:'O'},opts:[5*L,10*L,25*L,50*L],optL:v=>siL(v)+' per adult',basis:'Rate per ₹1 L by age band, adults 18–65',
+  cond:p=>p.members.some(m=>m.age>=18&&m.age<=65),
+  price:(x,o)=>x.p.members.filter(m=>m.age>=18&&m.age<=65).reduce((s,m)=>s+C.ciRate[m.band.code]*o/L,0),
+  suggest:(p,S)=>(p.members.some(m=>m.age>=40&&m.age<=65)||S.needs.ci)?['REC-07',S.needs.ci?'Family history of critical illness':'Adult aged 40 or above: lump sum replaces lost income']:null},
+ {code:'HDC',n:'Hospital daily cash',lvl:'Member',avail:{ESS:'O',ADV:'O',ELT:'O'},opts:[1000,2000,3000,5000],optL:v=>fmt(v)+' a day, up to 30 days',basis:'Rate per ₹1,000 a day by age band',
+  price:(x,o)=>x.p.members.reduce((s,m)=>s+C.hdcRate[m.band.code]*o/1000,0)},
+ {code:'WORLD',n:'Worldwide emergency treatment',lvl:'Policy',avail:{ESS:'N',ADV:'N',ELT:'O'},basis:'8% of base premium',
+  price:x=>x.base*.08,
+  suggest:(p,S)=>S.needs.travel?['REC-11',p.tier==='ELT'?'Travels abroad often':'Travels abroad often; this cover needs Elite']:null},
+ {code:'PA',n:'Personal accident',lvl:'Member',avail:{ESS:'O',ADV:'O',ELT:'O'},opts:[10*L,25*L,50*L,1*CR],optL:v=>siL(v)+' per adult',basis:'Rate per ₹1 L: ₹45 (occupation class 1), ₹70 (class 2)',
+  cond:(p,S)=>S.occ<3&&p.members.some(m=>(m.rel==='SELF'||m.rel==='SPOUSE')&&m.age<=65),
+  price:(x,o,S)=>x.p.members.filter(m=>(m.rel==='SELF'||m.rel==='SPOUSE')&&m.age<=65).reduce((s,m)=>s+C.paRate[m.rel==='SELF'?S.occ:1]*o/L,0),
+  suggest:(p,S)=>(S.occ===2&&p.members.some(m=>m.rel==='SELF'))?['REC-10','Field or travel-heavy job raises accident risk']:null},
+ {code:'SMO',n:'Second medical opinion',lvl:'Policy',avail:{ESS:'N',ADV:'O',ELT:'B'},basis:'₹300 a policy (Advantage)',price:()=>300}
+];
+
+/* ===================== ENGINE: derive → validate → eligibility → recommend → rate → UW ===================== */
+function rate(p,tier,si,S,zone){
+ const t=tierOf(tier);
+ const rows=p.members.map(m=>{const base=m.band.base*C.siFactor[si]*t.factor;const life=C.lifestyle[m.tob].f, pf=C.ped[m.ped].f;return {m,base,life,pf,prem:base*life*pf}});
+ const sum=rows.reduce((s,r)=>s+r.prem,0);
+ const n=p.members.length, ff=n===1?1:C.floater[Math.min(n,6)];
+ const zf=C.zones[zone].factor;
+ const effCopay=Math.max(S.copay,p.compCopay);
+ const dd=C.volDed[S.ded]||0, cd=C.copay[effCopay]||0;
+ const base=sum*ff*zf*(1-dd)*(1-cd);
+ const pedSum=rows.filter(r=>C.ped[r.m.ped].st==='CONTROLLED').reduce((s,r)=>s+r.prem,0);
+ return {rows,sum,ff,zf,dd,cd,effCopay,base,pedShare:sum?pedSum/sum:0};
+}
+function addonList(p,tier,S,zone,r,picked){
+ const out=[];
+ const ctx={p,tier,base:r.base,pedShare:r.pedShare};
+ const pp={...p,tier,si:p.si};
+ for(const a of ADDONS){
+  const av=a.avail[tier];
+  if(a.cond&&!a.cond(pp,S)) continue;
+  const sug=(a.suggest&&av!=='B')?a.suggest(pp,S,zone):null;
+  if(av==='N'&&!sug) continue;
+  const opt=a.opts?(picked&&picked[a.code]!=null&&a.opts.includes(picked[a.code])?picked[a.code]:a.opts[0]):null;
+  const price=av==='O'?Math.round(a.price(ctx,opt,S)):0;
+  out.push({a,av,sug,opt,price,on:av==='O'&&!!(picked&&a.code in picked)});
+ }
+ return out;
+}
+function quote(S,opts={}){
+ const T=[];const fire=(id,res,scope,detail)=>T.push({id,res,scope,detail});
+ const errors=[];
+ const zone=(C.cities.find(c=>c[0]===S.city)||['','B'])[1];
+ fire('DRV-04','Fired','Policy',`${S.city} → Zone ${zone} (factor ${C.zones[zone].factor})`);
+ // validations
+ const rc={};S.members.forEach(m=>rc[m.rel]=(rc[m.rel]||0)+1);
+ const dup=Object.entries(rc).filter(([r,c])=>C.relations[r].kind!=='CHILD'&&c>1);
+ fire('VAL-02',dup.length?'Fail':'Pass','Policy',dup.length?'Duplicate relationship: '+dup.map(d=>C.relations[d[0]].n).join(', '):'Relationships unique');
+ if(dup.length) errors.push('VAL-02: each relationship except child can appear once.');
+ if(S.ded&&S.copay){fire('VAL-05','Fail','Policy','Voluntary deductible and co-pay both chosen');errors.push('VAL-05: choose a voluntary deductible or a voluntary co-pay, not both.');}
+ else fire('VAL-05','Pass','Policy','Deductible and co-pay are not combined');
+ const kids=S.members.filter(m=>C.relations[m.rel].kind==='CHILD').length;
+ if(kids>4){fire('ELG-04','Fail','Family','More than 4 children');errors.push('ELG-04: a family floater covers at most 4 children.');}
+ if(!S.members.length){errors.push('VAL-01: add at least one person to insure.');fire('VAL-01','Fail','Policy','No insured person');}
+ // members: derive + eligibility
+ const ms=S.members.map(m=>{const r=C.relations[m.rel];const band=bandOf(m.age);
+  const g=r.g||m.g||'M';const nm=r.n+(r.kind==='CHILD'?' ('+m.age+')':'');
+  let ok=true,rule='';
+  if(r.kind==='ADULT'){rule='ELG-01';ok=m.age>=18&&m.age<=65;}
+  else if(r.kind==='PARENT'){rule='ELG-02';ok=m.age>=18&&m.age<=75;}
+  else {rule='ELG-03';ok=m.age>=0&&m.age<=25;}
+  fire('DRV-02','Fired',r.n,`Age ${m.age} → band ${band?band.code+' ('+band.label+')':'none'}`);
+  if(!ok){fire(rule,'Fail',r.n,`Age ${m.age} is outside the entry age for ${r.kind==='ADULT'?'self/spouse (18–65)':r.kind==='PARENT'?'parents (up to 75)':'dependent children (91 days–25)'}`);fire('UW-01','Fail',r.n,'Decline this member; the rest of the quote continues');}
+  return {...m,r,band,g,nm,ok};
+ });
+ const declined=ms.filter(m=>!m.ok);
+ const policies=[];
+ for(const grp of C.groups){
+  const mem=ms.filter(m=>m.ok&&m.r.grp===grp.key);
+  if(!mem.length) continue;
+  const p={key:grp.key,name:grp.n,members:mem};
+  p.cover=mem.length===1?'IND':(grp.key==='FAM'?'FF':'PF');
+  fire('DRV-06','Fired',grp.n,`${mem.map(m=>m.r.n).join(', ')} → ${({IND:'Individual',FF:'Family floater',PF:'Parents floater'})[p.cover]}`);
+  if(grp.key!=='FAM') fire('ELG-05','Fired',grp.n,'Parents are insured on their own floater, not on the family floater');
+  p.adults=mem.filter(m=>m.age>=18).length;p.children=mem.length-p.adults;
+  p.eldest=Math.max(...mem.map(m=>m.age));
+  p.senior=mem.some(m=>m.age>=60);
+  p.compCopay=mem.some(m=>m.age>=66)?20:0;
+  if(p.compCopay) fire('DRV-09','Fired',grp.n,'Member entering at 66 or above → compulsory 20% co-pay');
+  p.pedAny=mem.some(m=>m.ped!=='NONE');p.pedCtl=mem.some(m=>C.ped[m.ped].st==='CONTROLLED');
+  p.matEligible=mem.some(m=>(m.rel==='SELF'||m.rel==='SPOUSE')&&m.g==='F'&&m.age>=18&&m.age<=45);
+  // packages per tier
+  const des=S.si;
+  p.pk=C.tiers.map(t=>{
+   const fit=t.si.includes(des);
+   const si=fit?des:(des<t.si[0]?t.si[0]:t.si[t.si.length-1]);
+   let elig=true,why='';
+   if(S.res==='NRI'&&t.code!=='ELT'){elig=false;why='ELG-07: NRIs are covered only on Elite'}
+   const r=rate(p,t.code,si,S,zone);
+   return {t,si,fit,elig,why,r};
+  });
+  let rec=null;const fits=p.pk.filter(k=>k.elig&&k.fit);
+  if(S.res==='NRI'){rec=p.pk[2];fire('ELG-07','Fired',grp.n,'NRI proposer → Elite only, medical screening required');}
+  else if(fits.length===1){rec=fits[0];fire('REC-01','Fired',grp.n,`Desired ${siL(des)} falls in the ${rec.t.name} range`);}
+  else if(fits.length===2){const hi=p.eldest>=46||p.pedAny;rec=hi?fits[1]:fits[0];
+   fire('REC-02','Fired',grp.n,`${siL(des)} is offered by ${fits[0].t.name} and ${fits[1].t.name} → ${rec.t.name} (${hi?'member aged 46+ or with PED':'no member aged 46+ and no PED'})`);}
+  if(p.senior&&rec.t.code==='ESS'){rec=p.pk[1];fire('REC-04','Fired',grp.n,`Member aged ${p.eldest} → recommend at least Advantage ${siL(rec.si)} (no room-rent cap, unlimited restoration)`);}
+  else if(p.senior) fire('REC-04','Pass',grp.n,`Member aged 60+; ${rec.t.name} already meets the minimum`);
+  p.rec=rec;
+  const want=S.sel[grp.key];
+  p.selPk=(want&&p.pk.find(k=>k.t.code===want&&k.elig))||rec;
+  p.tier=p.selPk.t.code;p.si=p.selPk.si;
+  // advice
+  p.advice=[];
+  let sug=C.adequacy[zone]+(mem.length>=3?5*L:0)+(p.eldest>=56?10*L:0);
+  const sugSI=allSI.find(v=>v>=sug)||sug;
+  if(p.si<sugSI){fire('REC-03','Advice',grp.n,`Suggested SI ${siL(sugSI)} for Zone ${zone}, ${mem.length} member(s), eldest ${p.eldest}`);p.advice.push(['REC-03',`Sum insured looks low. For Zone ${zone}, ${mem.length} member(s) and eldest age ${p.eldest}, we suggest at least ${siL(sugSI)}.`]);}
+  if(S.needs.family&&!p.matEligible&&grp.key==='FAM') p.advice.push(['REC-05','Maternity needs a female self or spouse aged 18–45 on this policy.']);
+  if(S.needs.family&&p.matEligible&&p.tier==='ESS'){fire('REC-05','Advice',grp.n,'Maternity is not available on Essential');p.advice.push(['REC-05','Maternity cover is available only on Advantage or Elite. Pick Advantage to add it.']);}
+  // addons for selected
+  p.addons=addonList(p,p.tier,S,zone,p.selPk.r,S.addons[grp.key]);
+  p.addons.filter(x=>x.sug).forEach(x=>fire(x.sug[0],'Fired',grp.n,`Suggest ${x.a.n}: ${x.sug[1]}`));
+  p.addonSum=p.addons.filter(x=>x.on).reduce((s,x)=>s+x.price,0);
+  p.annual=Math.round(p.selPk.r.base)+p.addonSum;
+  p.termPrem=p.annual*S.term*(1-C.term[S.term]);
+  // UW
+  const uw=[];const rank={STP:1,LOAD:2,MED:3,REFER:4};let dec='STP';const up=d=>{if(rank[d]>rank[dec])dec=d};
+  mem.forEach(m=>{
+   if(m.bmi>40||m.bmi<15){uw.push(['UW-02',m.r.n,`BMI ${m.bmi} outside 15–40 → refer`]);up('REFER');}
+   const pd=C.ped[m.ped];
+   if(pd.st==='CONTROLLED'){uw.push(['UW-03',m.r.n,`${pd.n} → accept with ${Math.round((pd.f-1)*100)}% loading`]);up('LOAD');}
+   if(pd.st==='COMPLICATED'){uw.push(['UW-04',m.r.n,`${pd.n} → refer to underwriter; price is indicative`]);up('REFER');}
+   if(m.tob!=='NONE'){uw.push(['UW-06',m.r.n,`${C.lifestyle[m.tob].n} → ${Math.round((C.lifestyle[m.tob].f-1)*100)}% loading`]);up('LOAD');}
+   if(m.age>=50){uw.push(['UW-07',m.r.n,`Age ${m.age} ≥ 50 → pre-policy medical check-up`]);up('MED');}
+   if(m.age>=60){uw.push(['UW-13',m.r.n,'Senior citizen: accept; renewal increase capped at 10% a year; senior grievance channel']);}
+  });
+  if(p.si>=25*L){uw.push(['UW-07','Policy',`Sum insured ${siL(p.si)} ≥ ₹25 L → pre-policy medical check-up`]);up('MED');}
+  if(S.occ===3&&mem.some(m=>m.rel==='SELF')){uw.push(['UW-05','Self','Hazardous occupation → refer']);up('REFER');}
+  if(S.res==='NRI'){uw.push(['UW-17','Policy','NRI → medical screening mandatory']);up('MED');}
+  if(!uw.length) uw.push(['UW-00','Policy','No underwriting trigger → straight-through issue']);
+  uw.forEach(u=>fire(u[0],u[0]==='UW-00'?'Pass':'Fired',u[1]==='Policy'?grp.n:u[1],u[2]));
+  p.uw=uw;p.dec=dec;
+  fire('RAT-01','Fired',grp.n,`${p.selPk.t.name} ${siL(p.si)}: annual ${fmt(p.annual)}`);
+  policies.push(p);
+ }
+ const total=policies.reduce((s,p)=>s+p.annual,0);
+ const termTotal=policies.reduce((s,p)=>s+p.termPrem,0);
+ const basketAdvice=[];
+ if(S.term===1&&policies.length) basketAdvice.push(['REC-13',`A 3-year term saves ${fmt(total*3*.10)} over three years (10% term discount) and locks today's rate.`]);
+ if(S.budget&&total>S.budget&&!opts.noBudget&&policies.length){
+  let fitDed=null;
+  if(!S.copay) for(const d of [25000,50000,100000,200000,500000]){ if(d>S.ded&&policies.every(p=>d<=p.si/2)){const q=quote({...S,ded:d},{noBudget:true});if(q.total<=S.budget){fitDed=[d,q.total];break;}}}
+  const msg=fitDed?`Total ${fmt(total)} is above the ${fmt(S.budget)} budget. A voluntary deductible of ${fmt(fitDed[0])} brings it to ${fmt(fitDed[1])}.`:`Total ${fmt(total)} is above the ${fmt(S.budget)} budget and no deductible closes the gap. Lower the sum insured or the tier.`;
+  basketAdvice.push(['REC-12',msg]);fire('REC-12','Advice','Basket',msg);
+ }
+ basketAdvice.forEach(a=>{if(a[0]==='REC-13')fire('REC-13','Advice','Basket',a[1])});
+ const decAll=policies.reduce((d,p)=>({STP:1,LOAD:2,MED:3,REFER:4}[p.dec]>({STP:1,LOAD:2,MED:3,REFER:4}[d])?p.dec:d),'STP');
+ return {zone,policies,total,termTotal,T,errors,declined,basketAdvice,dec:decAll};
+}
+
+/* ===================== DEMO STATE ===================== */
+let uid=10;
+const mk=(rel,age,extra={})=>({id:++uid,rel,age,tob:'NONE',ped:'NONE',bmi:24,g:rel==='SPOUSE'?'F':'M',...extra});
+const base=()=>({city:'Bengaluru',res:'RI',occ:1,budget:0,si:10*L,term:1,ded:0,copay:0,needs:{family:false,travel:false,ci:false},
+ members:[mk('SELF',34),mk('SPOUSE',32),mk('SON',4)],sel:{},addons:{}});
+let S=base(); let prev=null; let lastChange='Starting quote: Self 34, Spouse 32, Son 4 in Bengaluru, desired ₹10 L.';
+const SCRIPT=[
+ ['1 · Young family',()=>{S=base();return 'Starting quote: Self 34, Spouse 32, Son 4 in Bengaluru, desired ₹10 L.'}],
+ ['2 · Add father, 63',()=>{if(!S.members.some(m=>m.rel==='FATHER'))S.members.push(mk('FATHER',63,{ped:'HTN'}));S.sel={};return 'Added Father, age 63, controlled hypertension.'}],
+ ['3 · Add mother, 58',()=>{if(!S.members.some(m=>m.rel==='MOTHER'))S.members.push(mk('MOTHER',58,{g:'F'}));S.sel={};return 'Added Mother, age 58.'}],
+ ['4 · Raise SI to ₹25 L',()=>{const o=S.si;S.si=25*L;S.sel={};return 'Desired sum insured changed '+siL(o)+' → ₹25 L.'}],
+ ['5 · Planning a child',()=>{S.needs.family=true;return 'Customer is planning a child.'}],
+ ['6 · Budget ₹1,20,000',()=>{S.budget=120000;return 'Annual budget set to ₹1,20,000.'}]
+];
+
+/* ===================== RENDER: DEMO ===================== */
+function relOptions(){const used=new Set(S.members.map(m=>m.rel));
+ return Object.entries(C.relations).filter(([k,r])=>r.kind==='CHILD'?S.members.filter(m=>C.relations[m.rel].kind==='CHILD').length<4:!used.has(k)).map(([k,r])=>`<option value="${k}">${r.n}</option>`).join('');}
+function selOpts(obj,cur,lab){return Object.keys(obj).map(k=>`<option value="${k}" ${String(k)===String(cur)?'selected':''}>${esc(lab(k,obj[k]))}</option>`).join('');}
+function railHTML(){
+ return `<div class="panel rail" id="rail">
+ <div style="display:grid;gap:8px"><h3>Where and who</h3>
+  <label class="f">City (sets the rating zone)<select id="i-city">${C.cities.map(c=>`<option ${c[0]===S.city?'selected':''}>${c[0]}</option>`).join('')}</select></label>
+  <div class="row2"><label class="f">Residency<select id="i-res"><option value="RI" ${S.res==='RI'?'selected':''}>Resident Indian</option><option value="NRI" ${S.res==='NRI'?'selected':''}>NRI</option></select></label>
+  <label class="f">Self occupation<select id="i-occ"><option value="1" ${S.occ===1?'selected':''}>Class 1 · office</option><option value="2" ${S.occ===2?'selected':''}>Class 2 · field work</option><option value="3" ${S.occ===3?'selected':''}>Class 3 · hazardous</option></select></label></div>
+ </div>
+ <div style="display:grid;gap:8px"><h3>People to insure</h3>
+  ${S.members.map(m=>{const r=C.relations[m.rel];return `<div class="member" data-id="${m.id}">
+   <div class="mh"><b>${r.n}</b><button class="x" data-act="rm" aria-label="Remove ${r.n}">Remove</button></div>
+   <div class="mf">
+    <label class="f">Age<input type="number" id="age-${m.id}" data-k="age" min="0" max="99" value="${m.age}"></label>
+    ${(r.kind==='ADULT')?`<label class="f">Gender<select id="g-${m.id}" data-k="g"><option value="M" ${m.g==='M'?'selected':''}>Male</option><option value="F" ${m.g==='F'?'selected':''}>Female</option><option value="T" ${m.g==='T'?'selected':''}>Transgender</option></select></label>`:''}
+    <label class="f">BMI<input type="number" id="bmi-${m.id}" data-k="bmi" min="10" max="60" step="0.5" value="${m.bmi}"></label>
+    ${r.kind!=='CHILD'?`<label class="f">Tobacco / alcohol<select id="tob-${m.id}" data-k="tob">${selOpts(C.lifestyle,m.tob,(k,v)=>v.n)}</select></label>`:''}
+    <label class="f" style="flex-basis:100%">Pre-existing disease<select id="ped-${m.id}" data-k="ped">${selOpts(C.ped,m.ped,(k,v)=>v.n)}</select></label>
+   </div></div>`}).join('')}
+  <div class="toolbar"><select id="i-addrel" aria-label="Relationship to add">${relOptions()}</select><button class="btn" id="b-add">Add person</button></div>
+ </div>
+ <div style="display:grid;gap:8px"><h3>Cover wanted</h3>
+  <div class="row2"><label class="f">Desired sum insured<select id="i-si">${allSI.map(v=>`<option value="${v}" ${v===S.si?'selected':''}>${siL(v)}</option>`).join('')}</select></label>
+  <label class="f">Policy term<select id="i-term">${[1,2,3].map(t=>`<option value="${t}" ${t===S.term?'selected':''}>${t} year${t>1?'s':''}${C.term[t]?' (−'+C.term[t]*100+'%)':''}</option>`).join('')}</select></label></div>
+  <div class="row2"><label class="f">Voluntary deductible<select id="i-ded">${selOpts(C.volDed,S.ded,(k,v)=>+k?fmt(+k)+' (−'+v*100+'%)':'None')}</select></label>
+  <label class="f">Voluntary co-pay<select id="i-copay">${selOpts(C.copay,S.copay,(k,v)=>+k?k+'% (−'+v*100+'%)':'None')}</select></label></div>
+  <label class="f">Annual budget, optional (₹)<input type="number" id="i-budget" min="0" step="5000" style="width:140px" value="${S.budget||''}" placeholder="No budget"></label>
+ </div>
+ <div style="display:grid;gap:6px"><h3>Needs</h3>
+  <label class="check"><input type="checkbox" id="n-family" ${S.needs.family?'checked':''}> Planning a child in the next 2–3 years</label>
+  <label class="check"><input type="checkbox" id="n-travel" ${S.needs.travel?'checked':''}> Travels abroad often</label>
+  <label class="check"><input type="checkbox" id="n-ci" ${S.needs.ci?'checked':''}> Family history of critical illness</label>
+ </div></div>`;
+}
+const DEC={STP:['Instant issue','p-good'],LOAD:['Accept with loading','p-warn'],MED:['Medicals required','p-warn'],REFER:['Refer to underwriter','p-bad']};
+const COVN={IND:'Individual',FF:'Family floater',PF:'Parents floater'};
+function diff(q){
+ if(!prev) return [];
+ const out=[];
+ const pm=Object.fromEntries(prev.policies.map(p=>[p.key,p]));
+ const cm=Object.fromEntries(q.policies.map(p=>[p.key,p]));
+ for(const p of q.policies){const o=pm[p.key];
+  if(!o){out.push(`New policy: <b>${p.name}</b> (${COVN[p.cover]}) → ${p.rec.t.name} ${siL(p.rec.si)} recommended, ${fmt(p.annual)} a year.`);continue;}
+  if(o.rec.t.code!==p.rec.t.code||o.rec.si!==p.rec.si) out.push(`${p.name}: recommendation moved from ${o.rec.t.name} ${siL(o.rec.si)} to <b>${p.rec.t.name} ${siL(p.rec.si)}</b>.`);
+  if(o.cover!==p.cover) out.push(`${p.name}: cover type changed from ${COVN[o.cover]} to ${COVN[p.cover]}.`);
+  if(Math.round(o.annual)!==Math.round(p.annual)){const d=p.annual-o.annual;out.push(`${p.name}: premium ${fmt(o.annual)} → <b>${fmt(p.annual)}</b> (${d>0?'+':'−'}${fmt(Math.abs(d))}).`);}
+  if(o.dec!==p.dec) out.push(`${p.name}: underwriting outcome ${DEC[o.dec][0]} → <b>${DEC[p.dec][0]}</b>.`);
+ }
+ for(const o of prev.policies) if(!cm[o.key]) out.push(`Policy removed: ${o.name}.`);
+ const key=t=>t.id+'|'+t.scope+'|'+t.res;
+ const before=new Set(prev.T.filter(t=>t.res!=='Pass'&&!t.id.startsWith('DRV')&&t.id!=='RAT-01').map(key));
+ const now=q.T.filter(t=>t.res!=='Pass'&&!t.id.startsWith('DRV')&&t.id!=='RAT-01');
+ const added=[...new Map(now.filter(t=>!before.has(key(t))).map(t=>[t.id+t.scope,t])).values()];
+ const nowSet=new Set(now.map(key));
+ const gone=[...new Map(prev.T.filter(t=>t.res!=='Pass'&&!t.id.startsWith('DRV')&&t.id!=='RAT-01'&&!nowSet.has(key(t))).map(t=>[t.id+t.scope,t])).values()];
+ if(added.length) out.push('Rules now firing: '+added.slice(0,10).map(t=>`<span class="rid">${t.id}</span> ${esc(t.scope)}`).join(', ')+(added.length>10?' …':''));
+ if(gone.length) out.push('Rules no longer firing: '+gone.slice(0,8).map(t=>`<span class="rid">${t.id}</span> ${esc(t.scope)}`).join(', '));
+ if(Math.round(prev.total)!==Math.round(q.total)) out.push(`Basket annual premium ${fmt(prev.total)} → <b>${fmt(q.total)}</b>.`);
+ return out;
+}
+function outHTML(q){
+ const d=diff(q);
+ let h='';
+ if(q.errors.length) h+=`<div class="err">${q.errors.map(esc).join('<br>')}</div>`;
+ h+=`<div class="panel summary">
+  <div><div class="lab">Annual premium, selected packages</div><div class="big num">${fmt(q.total)}</div></div>
+  <div><div class="lab">${S.term}-year premium${S.term>1?' after term discount':''}</div><div class="num" style="font-size:18px;font-weight:600">${fmt(q.termTotal)}</div></div>
+  <div><div class="lab">Policies in basket</div><div style="font-size:18px;font-weight:600">${q.policies.length}</div></div>
+  <div><div class="lab">Underwriting</div><span class="pill ${DEC[q.dec][1]}">${DEC[q.dec][0]}</span></div>
+  <div class="muted" style="font-size:12px;flex-basis:100%">GST 0% on individual and floater health premiums. Indicative price; final premium after underwriting.</div></div>`;
+ h+=`<div class="panel change" aria-live="polite"><div><span class="pill p-rec">What changed</span> <span style="margin-left:6px">${esc(lastChange)}</span></div>${d.length?`<ul>${d.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<div class="muted" style="font-size:13px">First calculation. Change any input on the left to see the effect here.</div>'}</div>`;
+ if(q.declined.length) h+=`<div class="err">${q.declined.map(m=>`${m.r.n}, age ${m.age}: not eligible (UW-01 decline). The rest of the family is still quoted.`).join('<br>')}</div>`;
+ if(q.basketAdvice.length) h+=`<div class="panel" style="padding:12px 16px"><div class="adv">${q.basketAdvice.map(a=>`<div><span class="rid">${a[0]}</span><span>${a[1]}</span></div>`).join('')}</div></div>`;
+ q.policies.forEach((p,i)=>{
+  h+=`<section class="panel policy"><div class="ph"><h3>Policy ${i+1} · ${p.name} · ${COVN[p.cover]}</h3><span class="muted" style="font-size:12.5px">${p.members.map(m=>`${m.r.n} ${m.age}`).join(', ')} · Zone ${q.zone}${p.compCopay?' · compulsory 20% co-pay':''}</span></div>
+  <div class="cards">${p.pk.map(k=>{const st=!k.elig?['Not eligible','p-no']:k===p.rec?['Recommended','p-rec']:['Alternative','p-alt'];
+   const sel=k===p.selPk;
+   return `<button class="card ${sel?'sel':''}" data-pol="${p.key}" data-tier="${k.t.code}" ${k.elig?'':'disabled'} aria-pressed="${sel}">
+    <div class="t"><b>${k.t.name}</b><span class="pill ${st[1]}">${st[0]}</span></div>
+    <div><span class="price num">${fmt(k.r.base)}</span> <span class="muted" style="font-size:12px">a year · SI ${siL(k.si)}</span></div>
+    <ul>${CARD_POINTS[k.t.code].map(x=>`<li>${x}</li>`).join('')}</ul>
+    <div class="why">${!k.elig?esc(k.why):k===p.rec?(p.T_rec||''):k.fit?'<span class="muted">Also offers this sum insured</span>':`<span class="muted">Nearest SI on this tier: ${siL(k.si)}</span>`}</div>
+    ${sel&&k!==p.rec?'<div class="muted" style="font-size:12px">Selected by customer</div>':''}
+   </button>`}).join('')}</div>
+  ${p.advice.length?`<div class="adv">${p.advice.map(a=>`<div><span class="rid">${a[0]}</span><span>${a[1]}</span></div>`).join('')}</div>`:''}
+  <div style="display:grid;gap:6px"><div style="font-weight:600;font-size:13px">Coverage options on ${p.selPk.t.name}</div>
+  <div class="addons">${p.addons.map(x=>{const a=x.a;
+   const right=x.av==='B'?'<span class="pill p-good">Built in</span>':x.av==='N'?'<span class="pill p-alt">Not on '+p.selPk.t.name+'</span>':`<span class="num" style="font-weight:600">+${fmt(x.price)}</span>`;
+   return `<div class="addon ${x.av==='N'?'na':''}">
+    ${x.av==='O'?`<input type="checkbox" id="ad-${p.key}-${a.code}" data-pol="${p.key}" data-add="${a.code}" ${x.on?'checked':''} aria-label="${esc(a.n)}">`:'<span></span>'}
+    <label class="nm" for="ad-${p.key}-${a.code}">${a.n} <span class="muted" style="font-weight:400;font-size:12px">· ${a.lvl.toLowerCase()} level</span>${x.sug?` <span class="pill p-warn">Suggested</span>`:''}</label>
+    <span>${right}</span>
+    <div class="rs">${x.sug?`<span class="rid">${x.sug[0]}</span> ${esc(x.sug[1])}. `:''}${a.opts&&x.av==='O'?`<select data-pol="${p.key}" data-opt="${a.code}" aria-label="${esc(a.n)} limit">${a.opts.map(o=>`<option value="${o}" ${o===x.opt?'selected':''}>${a.optL(o)}</option>`).join('')}</select>`:''}</div>
+   </div>`}).join('')}</div></div>
+  <div style="display:grid;gap:4px"><div style="font-weight:600;font-size:13px">Underwriting pre-check <span class="pill ${DEC[p.dec][1]}">${DEC[p.dec][0]}</span></div>
+   ${p.uw.map(u=>`<div style="font-size:12.5px"><span class="rid">${u[0]}</span> ${esc(u[1])}: ${esc(u[2])}</div>`).join('')}</div>
+  <details class="trace" style="border-top:1px solid var(--line)"><summary style="padding-inline:0">Rating trace · ${p.selPk.t.name} ${siL(p.si)}</summary><div style="padding-inline:0">${ratingTrace(p,q.zone)}</div></details>
+  </section>`;
+ });
+ h+=`<details class="panel trace"><summary>Rule trace · ${q.T.length} rule results in execution order</summary><div><div class="tbl-wrap"><table><thead><tr><th>#</th><th>Rule</th><th>Result</th><th>Scope</th><th>Detail</th></tr></thead><tbody>
+  ${q.T.map((t,i)=>`<tr><td class="num muted">${i+1}</td><td><span class="rid">${t.id}</span></td><td class="res-${t.res}">${t.res}</td><td>${esc(t.scope)}</td><td>${esc(t.detail)}</td></tr>`).join('')}</tbody></table></div></div></details>`;
+ return h;
+}
+function ratingTrace(p,zone){
+ const r=p.selPk.r,t=p.selPk.t;
+ let rows=r.rows.map(x=>`<tr><td><span class="rid">RAT-01/02</span></td><td>${x.m.r.n} ${x.m.age} · band ${x.m.band.code}</td><td class="mono">${fmt(x.m.band.base)} × SI ${C.siFactor[p.si]} × ${t.name} ${t.factor} × lifestyle ${x.life} × PED ${x.pf}</td><td class="r num">${fmt(x.prem)}</td></tr>`).join('');
+ let v=r.sum*r.ff;
+ rows+=`<tr><td><span class="rid">RAT-03</span></td><td>Sum of members × floater factor</td><td class="mono">${fmt(r.sum)} × ${r.ff} (${p.members.length} member${p.members.length>1?'s':''})</td><td class="r num">${fmt(v)}</td></tr>`;
+ v*=r.zf;rows+=`<tr><td><span class="rid">RAT-04</span></td><td>Zone factor</td><td class="mono">× ${r.zf} (Zone ${zone})</td><td class="r num">${fmt(v)}</td></tr>`;
+ if(r.dd){v*=1-r.dd;rows+=`<tr><td><span class="rid">RAT-05</span></td><td>Voluntary deductible discount</td><td class="mono">× ${(1-r.dd).toFixed(2)} (${fmt(S.ded)})</td><td class="r num">${fmt(v)}</td></tr>`;}
+ if(r.cd){v*=1-r.cd;rows+=`<tr><td><span class="rid">RAT-05</span></td><td>${p.compCopay&&r.effCopay===p.compCopay?'Compulsory':'Voluntary'} co-pay discount</td><td class="mono">× ${(1-r.cd).toFixed(2)} (${r.effCopay}% co-pay)</td><td class="r num">${fmt(v)}</td></tr>`;}
+ const on=p.addons.filter(x=>x.on);
+ on.forEach(x=>rows+=`<tr><td><span class="rid">RAT-06</span></td><td>Add-on: ${x.a.n}</td><td class="mono">${esc(x.a.basis)}</td><td class="r num">+${fmt(x.price)}</td></tr>`);
+ rows+=`<tr><td><span class="rid">RAT-07</span></td><td><b>Annual premium</b></td><td></td><td class="r num"><b>${fmt(p.annual)}</b></td></tr>`;
+ rows+=`<tr><td><span class="rid">RAT-08</span></td><td>${S.term}-year premium</td><td class="mono">× ${S.term} × ${(1-C.term[S.term]).toFixed(3)}</td><td class="r num">${fmt(p.termPrem)}</td></tr>`;
+ rows+=`<tr><td><span class="rid">RAT-09</span></td><td>GST</td><td class="mono">0% (individual and floater health, from 22 Sep 2025)</td><td class="r num">₹0</td></tr>`;
+ return `<div class="tbl-wrap"><table><thead><tr><th>Step</th><th>What</th><th>Calculation</th><th class="r">Amount</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function renderDemo(full){
+ const m=document.getElementById('main');
+ if(full||!document.getElementById('rail')){
+  m.innerHTML=`<div class="script"><span class="lbl">NxSure demo script:</span>${SCRIPT.map((s,i)=>`<button class="btn" data-step="${i}">${s[0]}</button>`).join('')}</div>
+  <div class="demo">${railHTML()}<div class="out" id="out"></div></div>`;
+ }
+ const q=quote(S);
+ // tag the recommended card reason
+ q.policies.forEach(p=>{const t=q.T.filter(x=>x.scope===p.name&&['REC-01','REC-02','REC-04','ELG-07'].includes(x.id)&&x.res==='Fired').map(x=>`<span class="rid">${x.id}</span>`).join(' ');p.T_rec=t?t+' <span class="muted">drove this</span>':'';});
+ document.getElementById('out').innerHTML=outHTML(q);
+ prev=q;
+}
+function change(desc,structural){lastChange=desc;renderDemo(structural);}
+document.addEventListener('click',e=>{
+ const st=e.target.closest('[data-step]');if(st){const s=SCRIPT[+st.dataset.step];const d=s[1]();if(st.dataset.step==='0')prev=null;change(d,true);return;}
+ const card=e.target.closest('.card[data-pol]');if(card&&!card.disabled){S.sel[card.dataset.pol]=card.dataset.tier;change(`Customer selected ${tierOf(card.dataset.tier).name} for the ${C.groups.find(g=>g.key===card.dataset.pol).n.toLowerCase()} policy.`);return;}
+ if(e.target.id==='b-add'){const rel=document.getElementById('i-addrel').value;if(!rel)return;const r=C.relations[rel];const age=r.kind==='CHILD'?2:r.kind==='PARENT'?62:30;
+  S.members.push(mk(rel,age,{g:r.g||'M'}));S.sel={};change(`Added ${r.n}, age ${age}.`,true);return;}
+ const rm=e.target.closest('[data-act="rm"]');if(rm){const id=+rm.closest('.member').dataset.id;const m=S.members.find(x=>x.id===id);S.members=S.members.filter(x=>x.id!==id);S.sel={};change(`Removed ${C.relations[m.rel].n}.`,true);}
+});
+document.addEventListener('input',e=>{
+ const el=e.target;if(!document.getElementById('rail')||!el.closest('#rail,#out'))return;
+ if(el.dataset.add){const a=S.addons[el.dataset.pol]=S.addons[el.dataset.pol]||{};const ad=ADDONS.find(x=>x.code===el.dataset.add);
+  if(el.checked)a[el.dataset.add]=ad.opts?ad.opts[0]:null;else delete a[el.dataset.add];change(`${el.checked?'Added':'Removed'} ${ad.n}.`);return;}
+ if(el.dataset.opt){const a=S.addons[el.dataset.pol]=S.addons[el.dataset.pol]||{};a[el.dataset.opt]=+el.value;const ad=ADDONS.find(x=>x.code===el.dataset.opt);change(`${ad.n} limit changed to ${ad.optL(+el.value)}.`);return;}
+ const mem=el.closest('.member');
+ if(mem){const m=S.members.find(x=>x.id===+mem.dataset.id);const k=el.dataset.k;const r=C.relations[m.rel];
+  if(k==='age'||k==='bmi'){if(el.value==='')return;const v=+el.value;if(Number.isNaN(v))return;const o=m[k];m[k]=v;S.sel={};change(`${r.n} ${k==='age'?'age':'BMI'} changed ${o} → ${v}.`);}
+  else {m[k]=el.value;const lab=k==='ped'?C.ped[el.value].n:k==='tob'?C.lifestyle[el.value].n:({M:'Male',F:'Female',T:'Transgender'})[el.value];S.sel={};change(`${r.n}: ${({ped:'pre-existing disease',tob:'lifestyle',g:'gender'})[k]} set to ${lab}.`);}
+  return;}
+ const id=el.id;
+ if(id==='i-city'){const z=C.cities.find(c=>c[0]===el.value)[1];S.city=el.value;change(`City changed to ${el.value} (Zone ${z}).`);}
+ else if(id==='i-res'){S.res=el.value;S.sel={};change(`Residency set to ${el.value==='NRI'?'NRI':'Resident Indian'}.`);}
+ else if(id==='i-occ'){S.occ=+el.value;change(`Self occupation set to class ${el.value}.`);}
+ else if(id==='i-si'){const o=S.si;S.si=+el.value;S.sel={};change(`Desired sum insured changed ${siL(o)} → ${siL(S.si)}.`);}
+ else if(id==='i-term'){S.term=+el.value;change(`Policy term set to ${el.value} year(s).`);}
+ else if(id==='i-ded'){S.ded=+el.value;change(`Voluntary deductible set to ${+el.value?fmt(+el.value):'none'}.`);}
+ else if(id==='i-copay'){S.copay=+el.value;change(`Voluntary co-pay set to ${+el.value?el.value+'%':'none'}.`);}
+ else if(id==='i-budget'){S.budget=+el.value||0;change(S.budget?`Annual budget set to ${fmt(S.budget)}.`:'Budget cleared.');}
+ else if(id.startsWith('n-')){const k={'n-family':'family','n-travel':'travel','n-ci':'ci'}[id];S.needs[k]=el.checked;change(`${({family:'Planning a child',travel:'Travels abroad often',ci:'Family history of critical illness'})[k]}: ${el.checked?'yes':'no'}.`);}
+});
+
+/* ===================== SPEC DATA ===================== */
+const IDENTITY=[
+ ['Product code','APHS01'],['Product name','Apex Health Shield'],['Tenant','NxSure General Insurance (demo)'],['Product version','1.0 · effective date set at filing'],
+ ['Line of business','Health · retail indemnity (individual and floater)'],['Insured object','Human life: hospitalisation and related medical expenses'],
+ ['Plans (tiers)','Essential (ESS), Advantage (ADV), Elite (ELT)'],['Cover types','Individual (IND), Family floater (FF), Parents floater (PF)'],
+ ['Currency','INR'],['Region','India; NRIs on Elite only'],['Policy term','1, 2 or 3 years; premium paid upfront in v1'],['Renewability','Lifelong, subject to timely payment'],
+ ['Entry age','Self and spouse 18–65 · parents and parents-in-law up to 75 · dependent children 91 days to 25 years'],
+ ['Sum insured','Essential ₹3 L–₹10 L · Advantage ₹10 L–₹50 L · Elite ₹50 L–₹5 Cr (overlap at ₹10 L and ₹50 L is deliberate)'],
+ ['Waiting periods','Initial 30 days (accidents excluded) · specific illnesses 24 months · PED 36 months (24 / 12 with buy-back) · maternity 24 months · moratorium 60 months'],
+ ['Free look / grace','30 days free look · 30 days grace on annual premium'],['Tax','GST 0% on individual and floater health premiums (from 22 Sep 2025)'],
+ ['Channels','Agency, POSP, brokers, web aggregators, bancassurance, direct digital, embedded / API partners'],
+ ['Filing','IRDAI Use & File under Insurance Products Regulations 2024; UIN allotted on filing; Appointed Actuary and PMC sign-off']];
+const TREE=[
+ [0,'APHS01','Apex Health Shield','Product','1','—','—','—','Tenant NxSure; version 1.0'],
+ [1,'POLICY','Policy','Policy','1','—','—','—','Tier, cover type, term, SI, zone, deductible, co-pay, premium'],
+ [2,'POLICYHOLDER','Policyholder (proposer)','Policy customer','1','—','—','—','IsPolicyHolder = Y. Need not be insured (a son buying for parents).'],
+ [2,'INSURED','Insured person','Risk','1–6','—','—','—','One per covered life: relationship, age, band, BMI, lifestyle, PED'],
+ [3,'APHS01_COV_CRIT','Critical illness lump sum','Member coverage','0–1','O','O','O','Adults 18–65; limit ₹5 L–₹50 L'],
+ [3,'APHS01_COV_HDC','Hospital daily cash','Member coverage','0–1','O','O','O','₹1,000–₹5,000 a day, up to 30 days'],
+ [3,'APHS01_COV_PA','Personal accident','Member coverage','0–1','O','O','O','Self and spouse 18–65; occupation class 1–2'],
+ [2,'PLAN','Shared sum insured plan','Plan','1','M','M','M','The floater SI shared by every insured person on the policy'],
+ [3,'APHS01_COV_IPH','In-patient hospitalisation','Core coverage','1','M','M','M','Benefits: room, ICU, surgeon, medicines, diagnostics. Limits: SI, room cap (ESS), deductible, co-pay. Clauses: proportionate deduction (ESS), cashless, network'],
+ [3,'APHS01_COV_PREHOSP','Pre-hospitalisation','Core coverage','1','M','M','M','30 / 60 / 60 days, within SI'],
+ [3,'APHS01_COV_POSTHOSP','Post-hospitalisation','Core coverage','1','M','M','M','60 / 180 / 180 days, within SI'],
+ [3,'APHS01_COV_DAYCARE','Day-care treatment','Core coverage','1','M','M','M','IRDAI day-care list, up to SI'],
+ [3,'APHS01_COV_DOMHOSP','Domiciliary hospitalisation','Core coverage','1','M','M','M','Up to SI'],
+ [3,'APHS01_COV_AYUSH','AYUSH treatment','Core coverage','1','M','M','M','At par with allopathy, up to SI'],
+ [3,'APHS01_COV_ORGDON','Organ donor expenses','Core coverage','1','M','M','M','Up to SI'],
+ [3,'APHS01_COV_AMBROA','Road ambulance','Core coverage','1','M','M','M','₹2,000 / ₹5,000 / ₹10,000 per hospitalisation'],
+ [3,'APHS01_COV_MODTRT','Modern treatment methods','Core coverage','1','M','M','M','25% / 50% of SI / up to SI'],
+ [3,'APHS01_COV_HLTHCHK','Annual health check-up','Core coverage','1','M','M','M','Every 2 years / every renewal / every year'],
+ [3,'APHS01_COV_RESTORE','Automatic restoration','Core benefit','1','M','M','M','Once a year / unlimited / unlimited incl. same illness'],
+ [3,'APHS01_COV_NCB','Cumulative bonus','Core benefit','1','M','M','M','+50% a year, max 100%; non-reducing on Elite'],
+ [3,'APHS01_COV_SIGROW','Sum insured growth','Core benefit','1','N','M','M','+25%/+50% (ADV), +50%/+100% (ELT)'],
+ [3,'APHS01_COV_CONSM','Consumables and non-payables','Optional coverage','0–1','O','O','B','Built in on Elite'],
+ [3,'APHS01_COV_AMBAIR','Air ambulance','Optional coverage','0–1','N','O','O','₹2.5 L (ADV) / ₹10 L (ELT)'],
+ [3,'APHS01_COV_PEDBUY','PED buy-back','Optional coverage','0–1','N','O','O','PED wait to 24 / 12 months; pre-screening required'],
+ [3,'APHS01_COV_MATNB','Maternity and newborn','Optional coverage','0–1','N','O','O','₹25,000–₹1.5 L; newborn to ₹1 L; 24-month wait'],
+ [3,'APHS01_COV_OPDWEL','OPD and wellness','Optional coverage','0–1','O','O','O','₹5,000–₹25,000 a year, floater'],
+ [3,'APHS01_COV_WORLD','Worldwide emergency treatment','Optional coverage','0–1','N','N','O','Listed critical illnesses treated abroad'],
+ [3,'APHS01_COV_SMO','Second medical opinion','Optional coverage','0–1','N','O','B','Built in on Elite'],
+ [1,'APHS01_COV_VOLDED','Voluntary deductible / co-pay','Retired as a coverage','—','—','—','—','Now two policy fields (VolDeductible, VolCopay) with a rating discount. See refinement R6.']];
+const DD=[
+ ['Policy','ProductCode','Product code','String','—','Y','System','APHS01'],
+ ['Policy','PlanTier','Plan tier','Code','PLAN_TIER','Y','Input (package chosen)','ELG-06, ELG-08–15, RAT-01'],
+ ['Policy','CoverType','Cover type','Code','COVER_TYPE','Y','Derived','DRV-06, RAT-03'],
+ ['Policy','PolicyTerm','Policy term (years)','Code','POLICY_TERM','Y','Input','RAT-08, REC-13'],
+ ['Policy','EffectiveDate','Start date','Date','—','Y','Input','DRV-01, DRV-10'],
+ ['Policy','ExpiryDate','End date','Date','—','Y','Derived','DRV-10'],
+ ['Policy','SumInsured','Sum insured (shared)','Amount','SI_OPTION','Y','Input','VAL-04, ELG-06, REC-01–03, UW-07, RAT-01'],
+ ['Policy','DesiredSumInsured','Desired sum insured','Amount','SI_OPTION','N','Quote input','REC-01, REC-02'],
+ ['Policy','Pincode','Pincode of residence','String(6)','—','Y','Input','DRV-04, VAL-07'],
+ ['Policy','RatingZone','Rating zone','Code','ZONE','Y','Derived','DRV-04, REC-03, REC-08, RAT-04'],
+ ['Policy','VolDeductible','Voluntary deductible','Amount','VOL_DED','N','Input','VAL-05, VAL-10, RAT-05'],
+ ['Policy','VolCopayPct','Voluntary co-pay %','Code','VOL_COPAY','N','Input','VAL-05, RAT-05'],
+ ['Policy','CompCopayPct','Compulsory co-pay %','Number','—','N','Derived','DRV-09, RAT-05'],
+ ['Policy','MemberCount / AdultCount / ChildCount','Member counts','Number','—','Y','Derived','DRV-07, ELG-04, RAT-03'],
+ ['Policy','EldestAge','Eldest member age','Number','—','Y','Derived','DRV-07, REC-02, REC-03'],
+ ['Policy','SeniorFlag','Any member aged 60+','Y/N','YES_NO','Y','Derived','DRV-08, REC-04, UW-13'],
+ ['Policy','SalesChannel','Sales channel','Code','CHANNEL','Y','System','Commission, EoM reporting'],
+ ['Policy','UwDecision','Underwriting outcome','Code','UW_DECISION','Y','Derived','UW-01–17'],
+ ['Policy','MedicalsRequired','Pre-policy check-up needed','Y/N','YES_NO','Y','Derived','UW-07, UW-17'],
+ ['Policy','BasePremium / AddonPremium / AnnualPremium / TermPremium','Premium amounts','Amount','—','Y','Calculated','RAT-01–08'],
+ ['Policy','GstAmount','GST','Amount','—','Y','Calculated','RAT-09 (0%)'],
+ ['Quote context','NeedPlanningChild','Planning a child','Y/N','YES_NO','N','Quote input (not stored on policy)','REC-05'],
+ ['Quote context','NeedIntlTravel','Travels abroad often','Y/N','YES_NO','N','Quote input','REC-11'],
+ ['Quote context','NeedFamilyHistoryCI','Family history of critical illness','Y/N','YES_NO','N','Quote input','REC-07'],
+ ['Quote context','AnnualBudget','Annual budget','Amount','—','N','Quote input','REC-12'],
+ ['Policyholder','IsPolicyHolder','Policyholder flag','Y/N','YES_NO','Y','System','= Y'],
+ ['Policyholder','ProposerDob','Proposer date of birth','Date','—','Y','Input','VAL-08'],
+ ['Policyholder','Residency','Residency status','Code','RESIDENCY','Y','Input','ELG-07, UW-17'],
+ ['Policyholder','KycStatus','CKYC status','Code','KYC_STATUS','Y','Integration','Bind (outside demo)'],
+ ['Insured person','InsuredSeq','Insured sequence','Number','—','Y','System','—'],
+ ['Insured person','Relationship','Relationship to proposer','Code','RELATION','Y','Input','DRV-05, ELG-01–05, VAL-02'],
+ ['Insured person','Gender','Gender','Code','GENDER','Y','Input','ELG-11 (maternity)'],
+ ['Insured person','DateOfBirth','Date of birth','Date','—','Y','Input','DRV-01, VAL-03'],
+ ['Insured person','AgeAtEntry','Age last birthday at start','Number','—','Y','Derived','DRV-01, ELG-01–03, UW-07'],
+ ['Insured person','AgeBand','Rating age band','Code','AGE_BAND','Y','Derived','DRV-02, RAT-01'],
+ ['Insured person','HeightCm / WeightKg','Height and weight','Number','—','Y','Input','DRV-03, VAL-06'],
+ ['Insured person','Bmi','Body mass index','Number(1)','—','Y','Derived','DRV-03, UW-02'],
+ ['Insured person','LifestyleCode','Tobacco / alcohol use','Code','LIFESTYLE','Y','Input','UW-06, RAT-02'],
+ ['Insured person','PedCode','Pre-existing disease','Code (multi)','PED_CODE','N','Input','UW-03, UW-04, REC-06, RAT-02'],
+ ['Insured person','PedStatus','PED status','Code','PED_STATUS','Y','Derived from PedCode','UW-03, UW-04'],
+ ['Insured person','OccupationClass','Occupation class','Code','OCC_CLASS','Y','Input','UW-05, ELG-13, REC-10'],
+ ['Insured person','MemberLoadingFactor','Member loading','Number','—','Y','Derived','RAT-02'],
+ ['Insured person','MemberPremium','Member premium','Amount','—','Y','Calculated','RAT-01, RAT-02'],
+ ['Coverage','CoverageCode','Coverage code','Code','COVERAGE','Y','System','Element tree'],
+ ['Coverage','IsSelected','Selected','Y/N','YES_NO','Y','Input / default by tier','ELG-08–15'],
+ ['Coverage','LimitOption','Limit option','Code','MAT_LIMIT / OPD_LIMIT / CI_SI / HDC_AMT / PA_SI','N','Input','RAT-06'],
+ ['Coverage','CoveragePremium','Coverage premium','Amount','—','Y','Calculated','RAT-06']];
+const CODES=[
+ ['PLAN_TIER','Plan tier',[['ESS','Essential'],['ADV','Advantage'],['ELT','Elite']]],
+ ['COVER_TYPE','Cover type',[['IND','Individual'],['FF','Family floater: self, spouse, up to 4 children'],['PF','Parents floater: up to 2 parents or 2 parents-in-law']]],
+ ['RELATION','Relationship (attribute: group)',Object.entries(C.relations).map(([k,r])=>[k,r.n+' · group '+r.grp+' · '+r.kind.toLowerCase()])],
+ ['GENDER','Gender',[['M','Male'],['F','Female'],['T','Transgender (Transgender Persons Act 2019)']]],
+ ['POLICY_TERM','Policy term (attribute: discount)',[['1','1 year · 0%'],['2','2 years · 7.5%'],['3','3 years · 10%']]],
+ ['SI_OPTION','Sum insured (attribute: tiers)',allSI.map(v=>[String(v),siL(v)+' · '+C.tiers.filter(t=>t.si.includes(v)).map(t=>t.code).join(', ')])],
+ ['ZONE','Rating zone (attribute: factor)',Object.entries(C.zones).map(([k,z])=>[k,z.name+' · '+z.factor])],
+ ['ZONE_MAP','City / pincode to zone (iTable; demo uses cities)',C.cities.map(c=>[c[0],'Zone '+c[1]])],
+ ['AGE_BAND','Rating age band',C.ageBands.map(b=>[b.code,b.label])],
+ ['LIFESTYLE','Tobacco / alcohol (attribute: loading)',Object.entries(C.lifestyle).map(([k,v])=>[k,v.n+' · ×'+v.f])],
+ ['PED_CODE','Pre-existing disease (attributes: status, loading)',Object.entries(C.ped).map(([k,v])=>[k,v.n+' · '+v.st.toLowerCase()+' · ×'+v.f])],
+ ['PED_STATUS','PED status',[['NONE','No PED'],['CONTROLLED','Controlled: accept with loading'],['COMPLICATED','Complicated: refer']]],
+ ['OCC_CLASS','Occupation class',[['1','Office and professional'],['2','Field work, frequent travel, light manual'],['3','Hazardous: mining, offshore, explosives (refer)']]],
+ ['VOL_DED','Voluntary deductible (attribute: discount)',Object.entries(C.volDed).map(([k,v])=>[k,+k?fmt(+k)+' · −'+v*100+'%':'None'])],
+ ['VOL_COPAY','Voluntary co-pay (attribute: discount)',Object.entries(C.copay).map(([k,v])=>[k,+k?k+'% · −'+v*100+'%':'None'])],
+ ['MAT_LIMIT','Maternity limit',Object.keys(C.matPrice).map(k=>[k,fmt(+k)])],
+ ['OPD_LIMIT','OPD limit',Object.keys(C.opdPrice).map(k=>[k,fmt(+k)+' a year'])],
+ ['CI_SI','Critical illness sum insured',[5*L,10*L,25*L,50*L].map(v=>[String(v),siL(v)])],
+ ['HDC_AMT','Hospital cash per day',[1000,2000,3000,5000].map(v=>[String(v),fmt(v)])],
+ ['PA_SI','Personal accident sum insured',[10*L,25*L,50*L,CR].map(v=>[String(v),siL(v)])],
+ ['RESIDENCY','Residency',[['RI','Resident Indian'],['NRI','Non-resident Indian (Elite only)']]],
+ ['CHANNEL','Sales channel',[['AGENT','Individual agent'],['POSP','Point of sales person'],['BROKER','Broker'],['WEBAGG','Web aggregator'],['BANCA','Bancassurance / corporate agent'],['DIRECT','Direct digital'],['EMBED','Embedded / API partner']]],
+ ['UW_DECISION','Underwriting outcome (precedence high to low)',[['DECLINE','Decline member'],['REFER','Refer to underwriter'],['MED','Medicals required'],['LOAD','Accept with loading'],['STP','Straight-through issue']]],
+ ['REC_STATUS','Package status',[['RECOMMENDED','Recommended'],['ALTERNATIVE','Alternative'],['NOT_ELIGIBLE','Not eligible (reason shown)']]],
+ ['YES_NO','Yes / no',[['Y','Yes'],['N','No']]]];
+/* rules: id, set, stage, scope, condition, outcome, source, InsureMO object */
+const RULES=[
+ ['DRV-01','Derivation','Quote','Insured person','On every change of DOB or start date','AgeAtEntry = age last birthday on the start date','Refined','Derivation formula'],
+ ['DRV-02','Derivation','Quote','Insured person','AgeAtEntry changes','AgeBand = AGE_BAND lookup (CH, A1–A7)','Refined (bands split above 55)','Derivation formula + code table'],
+ ['DRV-03','Derivation','Quote','Insured person','Height or weight changes','Bmi = weight kg ÷ (height m)², 1 decimal','Apex UW-02','Derivation formula'],
+ ['DRV-04','Derivation','Quote','Policy','Pincode changes','RatingZone = ZONE_MAP lookup','Apex rating factors','Derivation formula + iTable'],
+ ['DRV-05','Derivation','Quote','Insured person','Relationship changes','Group = FAM (self, spouse, children), PAR (parents) or PIL (parents-in-law)','Refined','Code table attribute'],
+ ['DRV-06','Derivation','Quote','Policy','Members in a group change','1 member → IND; family group ≥2 → FF; parents group ≥2 → PF. One policy per group in the quote basket','Refined (R2)','Derivation formula; basket in journey layer'],
+ ['DRV-07','Derivation','Quote','Policy','Members change','MemberCount, AdultCount, ChildCount, EldestAge','Refined','Derivation formula'],
+ ['DRV-08','Derivation','Quote','Policy','Members change','SeniorFlag = any AgeAtEntry ≥ 60','Apex UW-13','Derivation formula'],
+ ['DRV-09','Derivation','Quote','Policy','Any member enters at 66 or above','CompCopayPct = 20','Refined (R1, R14)','Derivation formula'],
+ ['DRV-10','Derivation','Quote','Policy','Start date or term changes','ExpiryDate = start + term years − 1 day','Standard','Derivation formula'],
+ ['VAL-01','Validation','Calculate','Policy','No insured person','Block: add at least one person','Standard','Validation rule (blocking)'],
+ ['VAL-02','Validation','Calculate','Policy','Self, spouse or a parent appears twice','Block: each relationship except child once','Standard','Validation rule (blocking)'],
+ ['VAL-03','Validation','Calculate','Insured person','DOB in future, or child younger than 91 days','Block','Apex eligibility','Validation rule (blocking)'],
+ ['VAL-04','Validation','Calculate','Policy','SumInsured not in SI_OPTION for PlanTier','Block','Apex SI bands','Validation rule (blocking)'],
+ ['VAL-05','Validation','Calculate','Policy','VolDeductible > 0 and VolCopayPct > 0','Block: choose one','Refined (R6)','Validation rule (blocking)'],
+ ['VAL-06','Validation','Calculate','Insured person','Height outside 50–250 cm or weight outside 2–250 kg','Block','Standard','Validation rule (blocking)'],
+ ['VAL-07','Validation','Calculate','Policy','Pincode not in ZONE_MAP','Block: check pincode','Standard','Validation rule (blocking)'],
+ ['VAL-08','Validation','Calculate','Policyholder','Proposer under 18','Block','Apex UW-01','Validation rule (blocking)'],
+ ['VAL-09','Validation','Calculate','Coverage','Add-on limit not in its code table','Block','Standard','Validation rule (blocking)'],
+ ['VAL-10','Validation','Calculate','Policy','VolDeductible > 50% of SumInsured','Block','Refined','Validation rule (blocking)'],
+ ['ELG-01','Eligibility','Quote','Insured person','Self or spouse outside 18–65 at entry','Member not eligible → UW-01','Apex UW-01','Product availability rule'],
+ ['ELG-02','Eligibility','Quote','Insured person','Parent or parent-in-law outside 18–75 at entry','Member not eligible → UW-01','Refined (R1)','Product availability rule'],
+ ['ELG-03','Eligibility','Quote','Insured person','Child outside 91 days–25 years','Not eligible as a dependent; insure as an individual','Apex eligibility','Product availability rule'],
+ ['ELG-04','Eligibility','Quote','Policy','Family floater with >2 adults or >4 children','Block (replaces Apex UW-08 refer)','Apex UW-08, refined','Validation rule (blocking)'],
+ ['ELG-05','Eligibility','Quote','Policy','Parent or parent-in-law added','Place on own parents floater, never on the family floater','Refined (R2)','Derivation + availability rule'],
+ ['ELG-06','Eligibility','Quote','Policy','Tier selected','SI options limited to the tier list','Apex SI bands','Code table attribute'],
+ ['ELG-07','Eligibility','Quote','Policyholder','Residency = NRI','Only Elite eligible; medicals mandatory','Apex eligibility','Product availability rule'],
+ ['ELG-08','Eligibility','Quote','Coverage','Air ambulance on Essential','Not available','Apex coverages','Coverage availability by plan'],
+ ['ELG-09','Eligibility','Quote','Coverage','Worldwide on Essential or Advantage','Not available','Apex add-ons','Coverage availability by plan'],
+ ['ELG-10','Eligibility','Quote','Coverage','PED buy-back on Essential, or no PED declared','Not available','Apex add-ons','Coverage availability by plan'],
+ ['ELG-11','Eligibility','Quote','Coverage','Maternity without a female self or spouse aged 18–45, or on Essential','Not available','Refined (R10)','Coverage availability by plan'],
+ ['ELG-12','Eligibility','Quote','Coverage','Critical illness for a member outside 18–65','Member excluded from CI','Refined','Coverage availability rule'],
+ ['ELG-13','Eligibility','Quote','Coverage','PA for occupation class 3 or age > 65','Not available','Refined','Coverage availability rule'],
+ ['ELG-14','Eligibility','Quote','Coverage','Consumables on Elite','Built in (default Y, not removable)','Apex coverages','Coverage default by plan'],
+ ['ELG-15','Eligibility','Quote','Coverage','Second opinion: Essential / Advantage / Elite','Not available / optional / built in','Refined (R12)','Coverage default by plan'],
+ ['REC-01','Recommendation','Quote','Policy','Exactly one tier offers the desired SI','That tier = Recommended; others = Alternative at nearest SI','New (NxSure scenario)','Decision table (journey or rule engine)'],
+ ['REC-02','Recommendation','Quote','Policy','Desired SI is ₹10 L or ₹50 L (two tiers offer it)','Higher tier if eldest ≥ 46 or any PED; otherwise lower tier','New (R3)','Decision table'],
+ ['REC-03','Recommendation','Quote','Policy','Selected SI < zone base (A ₹10 L, B ₹7.5 L, C ₹5 L) + ₹5 L if ≥3 members + ₹10 L if eldest ≥ 56','Advice: suggested SI','New','Decision table'],
+ ['REC-04','Recommendation','Quote','Policy','Any member aged 60+ and Essential recommended','Recommend Advantage at ₹10 L minimum. Priority over REC-01/02','New','Decision table (priority 1)'],
+ ['REC-05','Recommendation','Quote','Policy','Planning a child and female self/spouse 18–45','Suggest maternity; on Essential advise Advantage','New','Decision table'],
+ ['REC-06','Recommendation','Quote','Policy','Controlled PED on Advantage or Elite','Suggest PED buy-back','New','Decision table'],
+ ['REC-07','Recommendation','Quote','Policy','Adult aged 40–65, or family history of CI','Suggest critical illness','New','Decision table'],
+ ['REC-08','Recommendation','Quote','Policy','Zone A or SI ≥ ₹25 L, on Essential or Advantage','Suggest consumables','New','Decision table'],
+ ['REC-09','Recommendation','Quote','Policy','Child under 6 on the policy','Suggest OPD and wellness','New','Decision table'],
+ ['REC-10','Recommendation','Quote','Policy','Self occupation class 2','Suggest personal accident','New','Decision table'],
+ ['REC-11','Recommendation','Quote','Policy','Travels abroad often','Suggest worldwide cover (needs Elite)','New','Decision table'],
+ ['REC-12','Recommendation','Quote','Basket','Basket premium > budget','Find the smallest voluntary deductible that fits; else advise lower SI or tier','New','Journey layer: re-calls Calculate'],
+ ['REC-13','Recommendation','Quote','Basket','Term = 1 year','Show the 3-year saving','New','Decision table'],
+ ['UW-01','Underwriting','Calculate','Insured person','Entry age outside ELG-01 / ELG-02 / ELG-03','Decline the member; quote the rest','Apex UW-01, refined','UW rule · decline'],
+ ['UW-02','Underwriting','Calculate','Insured person','BMI > 40 or < 15','Refer','Apex UW-02','UW rule · level 1'],
+ ['UW-03','Underwriting','Calculate','Insured person','Controlled PED','Accept with PED loading (PED_CODE attribute)','Apex UW-03 + rating','UW rule · auto-accept with loading'],
+ ['UW-04','Underwriting','Calculate','Insured person','Complicated PED or cardiac history','Refer; price is indicative','Apex UW-04','UW rule · level 2'],
+ ['UW-05','Underwriting','Calculate','Insured person','Occupation class 3','Refer','Apex UW-05','UW rule · level 1'],
+ ['UW-06','Underwriting','Calculate','Insured person','Tobacco or regular alcohol','Accept with lifestyle loading','Apex UW-06','UW rule · auto-accept with loading'],
+ ['UW-07','Underwriting','Calculate','Policy','Any member ≥ 50, or SI ≥ ₹25 L, or a risk flag','Medicals required before issue','Apex UW-07','UW rule · medical trigger'],
+ ['UW-08','Underwriting','Calculate','Policy','Floater composition breach','Now blocked earlier by ELG-04','Apex UW-08 (superseded)','—'],
+ ['UW-09','Underwriting','Bind','Policy','Porting in with loss ratio > 150% in prior 3 years','Refer','Apex UW-09','UW rule · level 2'],
+ ['UW-10','Underwriting','Bind','Insured person','Chronic or severe psychiatric condition','Refer; cannot decline on this ground alone','Apex UW-10 (Mental Healthcare Act)','UW rule · level 2'],
+ ['UW-11','Underwriting','Bind','Insured person','HIV/AIDS disclosed','Accept; cannot decline on this ground alone','Apex UW-11 (HIV/AIDS Act)','UW rule'],
+ ['UW-12','Underwriting','Bind','Insured person','Disability disclosed','Accept; underwrite on clinical merit','Apex UW-12 (RPWD Act)','UW rule'],
+ ['UW-13','Underwriting','Calculate','Insured person','Entry age ≥ 60','Accept; renewal increase cap 10% a year; senior grievance channel','Apex UW-13','UW rule + renewal rule'],
+ ['UW-14','Underwriting','Renewal','Policy','SI increase at renewal','Accept; fresh waiting on the increased part only','Apex UW-14','Renewal rule'],
+ ['UW-15','Underwriting','Bind','Policy','Porting in with continuity certificate','Accept; credit waiting periods served','Apex UW-15','UW rule'],
+ ['UW-16','Underwriting','Claim','Policy','Claim after 60 continuous months','Not contestable except proven fraud or a named permanent exclusion','Apex UW-16','Claims rule (Easy Claim)'],
+ ['UW-17','Underwriting','Calculate','Policy','Residency = NRI','Medicals required','Apex eligibility','UW rule · medical trigger'],
+ ['RAT-01','Rating','Calculate','Insured person','Always','Member base = BASE_RATE[AgeBand] × SI_FACTOR[SI] × TIER_FACTOR[Tier]','Apex rating, refined','Rating formula + rate tables'],
+ ['RAT-02','Rating','Calculate','Insured person','Lifestyle or PED present','Member premium = base × LIFESTYLE × PED_LOADING','Apex rating','Rating formula'],
+ ['RAT-03','Rating','Calculate','Policy','Always','Σ member premiums × FLOATER_FACTOR[member count] (1.00 for IND)','Apex rating (floater discount)','Rating formula + rate table'],
+ ['RAT-04','Rating','Calculate','Policy','Always','× ZONE factor','Apex rating','Rating formula'],
+ ['RAT-05','Rating','Calculate','Policy','Deductible or co-pay','× (1 − deductible discount) × (1 − co-pay discount); co-pay = max(voluntary, compulsory)','Apex rating, refined','Rating formula'],
+ ['RAT-06','Rating','Calculate','Coverage','Add-on selected','Add-on premium by its basis (flat, % of base, or per member rate)','Refined (values chosen)','Coverage rating formula'],
+ ['RAT-07','Rating','Calculate','Policy','Always','Annual premium = base after discounts + add-ons, rounded to ₹1','Standard','Rating formula'],
+ ['RAT-08','Rating','Calculate','Policy','Term 2 or 3 years','Term premium = annual × term × (1 − 7.5% or 10%)','Apex rating','Rating formula'],
+ ['RAT-09','Rating','Calculate','Policy','Individual or floater retail health','GST 0%','Apex pricing (Sep 2025)','Tax configuration table'],
+ ['RAT-10','Rating','Renewal','Policy','Senior member on renewal','Premium increase capped at 10% a year','Apex UW-13','Renewal rating rule'],
+ ['RNW-01','Renewal','Renewal','Policy','Paid within grace period','Renew for life; no maximum renewal age','Apex eligibility','Renewal rule'],
+ ['RNW-02','Renewal','Renewal','Policy','Claim-free year','Cumulative bonus +50% of SI, max 100%','Apex NCB','Renewal rule'],
+ ['RNW-03','Renewal','Renewal','Policy','Claim in year, Essential or Advantage','Bonus falls by 50% of SI; Elite does not fall','Apex NCB, refined (R4, R5)','Renewal rule'],
+ ['RNW-04','Renewal','Renewal','Policy','Advantage or Elite renews','Apply SI growth (+25/+50% or +50/+100%)','Apex SI growth','Renewal rule'],
+ ['CLM-01','Claims','Claim','Coverage','Claim within 30 days of first start, not an accident','Reject (initial waiting period)','Apex exclusions','Claims rule (Easy Claim)'],
+ ['CLM-02','Claims','Claim','Coverage','Listed illness within 24 months','Reject (specific waiting period)','Apex exclusions','Claims rule'],
+ ['CLM-03','Claims','Claim','Coverage','PED claim within 36 months (24 / 12 with buy-back)','Reject (PED waiting period)','Apex regulatory','Claims rule'],
+ ['CLM-04','Claims','Claim','Coverage','Essential and room above single private AC','Proportionate deduction on associated costs, not on medicines or ICU','Refined','Claims rule'],
+ ['CLM-05','Claims','Claim','Policy','SI exhausted in the year','Restore per tier (once / unlimited / unlimited incl. same illness)','Apex restoration, refined (R8)','Claims rule'],
+ ['CLM-06','Claims','Claim','Policy','Cashless request','Pre-authorise within 1 hour; final authorisation within 3 hours of discharge request','Apex regulatory','Claims SLA rule'],
+ ['CLM-07','Claims','Claim','Policy','Claim rejected','Reason must be given in the letter (Apex differentiator)','Apex differentiators','Claims letter rule']];
+const RAT_TABLES=[
+ ['BASE_RATE','Annual base premium per member at ₹5 L, Essential, Zone B',['Band','Ages','Base (₹)'],C.ageBands.map(b=>[b.code,b.label,fmt(b.base)])],
+ ['SI_FACTOR','Sum insured factor (₹5 L = 1.00; rises at a decreasing rate)',['Sum insured','Factor','Tiers'],allSI.map(v=>[siL(v),C.siFactor[v].toFixed(2),C.tiers.filter(t=>t.si.includes(v)).map(t=>t.name).join(', ')])],
+ ['TIER_FACTOR','Tier factor',['Tier','Factor','SI range'],C.tiers.map(t=>[t.name,t.factor.toFixed(2),siL(t.si[0])+' – '+siL(t.si[t.si.length-1])])],
+ ['FLOATER_FACTOR','Floater factor on the sum of member premiums',['Members','Factor','Discount'],Object.entries(C.floater).map(([k,v])=>[k,v.toFixed(2),Math.round((1-v)*100)+'%'])],
+ ['ZONE','Zone factor',['Zone','Factor','Meaning'],Object.entries(C.zones).map(([k,z])=>[k,z.factor.toFixed(2),z.name])],
+ ['LIFESTYLE','Lifestyle loading per member',['Code','Factor','Meaning'],Object.entries(C.lifestyle).map(([k,v])=>[k,v.f.toFixed(2),v.n])],
+ ['PED_LOADING','PED loading per member',['Code','Factor','Status'],Object.entries(C.ped).map(([k,v])=>[k,v.f.toFixed(2),v.n+' · '+v.st.toLowerCase()])],
+ ['VOL_DED / VOL_COPAY','Voluntary deductible and co-pay discount',['Option','Discount','Note'],[...Object.entries(C.volDed).filter(([k])=>+k).map(([k,v])=>['Deductible '+fmt(+k),v*100+'%','≤ 50% of SI']),...Object.entries(C.copay).filter(([k])=>+k).map(([k,v])=>['Co-pay '+k+'%',v*100+'%',k==='20'?'Also used for compulsory senior co-pay':''])]],
+ ['TERM_DISC','Term discount',['Term','Discount','Payment'],Object.entries(C.term).map(([k,v])=>[k+' year'+(k>1?'s':''),v*100+'%','Upfront'])],
+ ['ADDON_RATES','Add-on premium basis',['Add-on','Basis','Tiers'],ADDONS.map(a=>[a.n,a.basis,['ESS','ADV','ELT'].map(t=>t+':'+a.avail[t]).join(' ')])],
+ ['CI_RATE','Critical illness rate per ₹1 L',['Band','Rate (₹)',''],Object.entries(C.ciRate).map(([k,v])=>[k,fmt(v),''])],
+ ['HDC_RATE','Hospital cash rate per ₹1,000 a day',['Band','Rate (₹)',''],Object.entries(C.hdcRate).map(([k,v])=>[k,fmt(v),''])]];
+const REFINE=[
+ ['R1','Entry age stops at 65, but the rating table has a 66+ band and the demo needs parents added.','Self and spouse 18–65. Parents and parents-in-law up to 75. Entry at 66+ carries a compulsory 20% co-pay and medicals.','Parents\' cover is the main reason 30–45 year-olds buy family health cover. Without this, "add a parent" fails for most real parents.','likely'],
+ ['R2','"Self + parents as a separate floater" breaks UW-08 (more than 2 adults on a floater).','Parents floater holds parents only (max 2). Parents-in-law get their own floater. Self stays on the family policy. The proposer does not have to be insured.','A 3-adult floater priced on a 65-year-old makes the young member pay senior rates. Two policies are cheaper and cleaner to underwrite.','certain'],
+ ['R3','SI bands overlap at ₹10 L and ₹50 L.','Overlap kept on purpose. REC-02 breaks the tie using age and PED.','At the boundary the customer sees two real choices, which is what the demo needs.','certain'],
+ ['R4','"Claim-free history → NCB up to 100%" is listed as a rating factor.','Removed from rating. Cumulative bonus raises the sum insured at renewal (RNW-02/03); it does not discount the premium.','Pricing NCB twice (as more cover and as a lower premium) would under-price renewals.','certain'],
+ ['R5','Elite "non-reducing NCB with Shield add-on" names an add-on that is not defined anywhere.','Non-reducing bonus is built into Elite. No separate add-on.','A configuration cannot point to an element that does not exist.','certain'],
+ ['R6','Voluntary deductible appears both on in-patient cover and as an add-on (APHS01_COV_VOLDED).','One policy-level option: deductible or co-pay, never both (VAL-05), with a rating discount. Coverage code retired.','A deductible is a cost-sharing term, not a cover. Two places to set it means two places to get it wrong in claims.','certain'],
+ ['R7','Ranges where configuration needs one value: Zone C −10 to −15%, tobacco 10–15%, PED up to 25%, add-on limits.','Single values chosen (Zone C ×0.90, tobacco ×1.10, PED by condition, add-on limits as option lists).','Rate tables hold numbers, not ranges. The actuary confirms the values before filing.','certain'],
+ ['R8','Elite restoration "unlimited lifetime after first claim" is unclear.','Unlimited restorations in every policy year, same illness included, available from the first claim.','Claims staff need one reading. This matches the market\'s top-tier wording.','likely'],
+ ['R9','Modern treatment "sub-limited" has no value.','Essential 25% of SI, Advantage 50%, Elite up to SI.','A sub-limit without a number cannot be configured or explained in the CIS.','likely'],
+ ['R10','Maternity add-on does not say which tiers.','Advantage and Elite only; 24-month wait.','Maternity is a near-certain claim. On the cheapest tier it would hurt the loss ratio most.','likely'],
+ ['R11','Health check-up frequency "2-yr / renewal / annual" is ambiguous.','Essential every 2 policy years; Advantage every year from first renewal; Elite every year from inception.','Removes three possible readings.','certain'],
+ ['R12','Second opinion and consumables are "free / core on Elite" but the coverage table defaults them to N.','Default Y and not removable on Elite; optional on Advantage (and on Essential for consumables).','Defaults drive what the customer sees first in the quote.','certain'],
+ ['R13','Age band 56–65 is one band although the cost curve is steepest there.','Bands 56–60, 61–65, 66–70, 71–75.','One wide band over-charges 56-year-olds and under-charges 65-year-olds.','likely'],
+ ['R14','No co-pay for senior entrants.','Compulsory 20% co-pay for entry at 66+, priced with the 10% co-pay discount.','Common market control for late entrants; keeps the senior price affordable.','likely'],
+ ['R15','No recommendation logic in the source; the NxSure scenario needs it.','New REC rule set (REC-01 to REC-13) with a stated priority order.','Without explicit rules the "suggested package" is a black box that business users cannot change or audit.','certain'],
+ ['R16','Rates are not in the source (prices "to be filed").','Illustrative base rates built so premiums fall in observed market ranges. Not for filing.','A demo needs believable numbers; a filing needs the Appointed Actuary\'s.','guessing']];
+const OPEN=[
+ ['O1','InsureMO platform team','How the GI product factory models a floater: one shared SI at plan level across several insured-person risks, or SI on each risk with a shared limit.','Drives the element tree and claims SI erosion.'],
+ ['O2','InsureMO platform team','Can the rule engine return a list (multi-hit decision table) for recommendations, or should REC rules run in the journey / API layer?','Decides where business users maintain REC rules.'],
+ ['O3','InsureMO platform team','Calculate API response time for 3–6 parallel calls per input change, and whether a batch calculate exists.','Real-time target: under 1 second per change.'],
+ ['O4','NxSure','Pincode-to-zone source: full pincode master (about 19,000 rows) as an iTable, or city list as a code table.','Zone factor accuracy and table maintenance.'],
+ ['O5','NxSure actuary','Sign-off of base rates, factors, loadings and add-on prices.','All prices here are illustrative.'],
+ ['O6','InsureMO platform team (BCP)','One payment for a basket of two or three policies (family + parents): one receipt split across policies?','Checkout journey and collection.'],
+ ['O7','NxSure underwriting','Medical test grid for UW-07 (tests by age and SI) and who pays (IRDAI requires the insurer to bear at least 50% if the proposal is accepted).','Turnaround time and cost.']];
+
+/* ===================== RENDER: SPEC TABS ===================== */
+const TABS=[['demo','Live quote'],['flow','Solution flow'],['identity','Product identity'],['tree','Element tree'],['fields','Data dictionary'],['codes','Code tables'],['rules','Business rules'],['rating','Rating'],['refine','Refinements and open items']];
+function table(heads,rows,cls=''){return `<div class="tbl-wrap"><table class="${cls}"><thead><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;}
+function renderFlow(){
+ const steps=[
+  ['Capture','Customer changes one attribute in the quote journey (web, app, agent or partner API).','Quote JSON: policy, policyholder, insured persons, needs'],
+  ['Derive','Age, age band, BMI, zone, member groups, cover type, counts, senior flag, compulsory co-pay.','Derivation formulas on DD fields · AGE_BAND, ZONE_MAP'],
+  ['Validate','Blocking checks so the engine never prices bad data.','Validation rules VAL-01–10'],
+  ['Check eligibility','Which members, tiers and coverages are allowed for this family.','Availability rules ELG-01–15 · coverage availability by plan'],
+  ['Recommend','Score the three tiers, pick the recommended one, list suggested coverages and advice.','Decision tables REC-01–13'],
+  ['Rate','Price each candidate package: member premiums, floater, zone, discounts, add-ons, term.','Rating formulas RAT-01–09 · rate tables'],
+  ['Pre-underwrite','Show the likely outcome: instant issue, loading, medicals or refer.','UW rules UW-01–17'],
+  ['Respond','Return packages, prices, reasons and rule IDs. Save nothing until the customer saves or buys.','Quote response · Bind and Issue later']];
+ const impact=[
+  ['Add or remove a person','Relationship, DateOfBirth → AgeAtEntry, AgeBand, CoverType, counts','DRV-01/02/05–09, VAL-02, ELG-01–05, REC-01–04, UW-01/07/13','BASE_RATE, FLOATER_FACTOR','New policy in the basket, recommended tier, price, medicals flag'],
+  ['Change desired sum insured','DesiredSumInsured, SumInsured','VAL-04, ELG-06, REC-01–03, REC-08, UW-07','SI_FACTOR, TIER_FACTOR','Recommended tier switches at ₹10 L and ₹50 L; medicals at ₹25 L'],
+  ['Change city','Pincode → RatingZone','DRV-04, REC-03, REC-08','ZONE','Price, suggested SI, consumables suggestion'],
+  ['Declare tobacco or alcohol','LifestyleCode','UW-06, RAT-02','LIFESTYLE','Loading and "Accept with loading"'],
+  ['Declare a pre-existing disease','PedCode → PedStatus','UW-03/04, REC-02, REC-06, RAT-02','PED_LOADING','Loading or referral; PED buy-back suggested; tier tie-break'],
+  ['Change BMI','HeightCm, WeightKg → Bmi','DRV-03, UW-02','—','Referral outside 15–40'],
+  ['Change term','PolicyTerm','RAT-08, REC-13','TERM_DISC','Term premium and saving message'],
+  ['Choose deductible or co-pay','VolDeductible, VolCopayPct','VAL-05, VAL-10, RAT-05','VOL_DED, VOL_COPAY','Lower price'],
+  ['Tick a need (child, travel, CI history)','Quote-context flags','REC-05, REC-07, REC-11','—','Suggested coverages and upgrade advice'],
+  ['Set a budget','AnnualBudget','REC-12','All (re-rates with deductibles)','Deductible that fits the budget'],
+  ['Residency = NRI','Residency','ELG-07, UW-17','—','Only Elite eligible; medicals']];
+ return `<div class="section"><h2>How a customer change flows through the solution</h2>
+ <p class="lede">Every input change sends the full quote to the same chain of configured objects. Nothing is hard-coded in the screen: the screen only shows what the rules and rate tables return. This is what lets NxSure change a rule or a rate without a release.</p>
+ <div class="pipe">${steps.map((s,i)=>`<div class="panel step"><span class="n">Step ${i+1}</span><b>${s[0]}</b><p>${s[1]}</p><div class="obj mono">${s[2]}</div></div>`).join('')}</div></div>
+ <div class="section"><h2>Worked example: the customer adds a 63-year-old father</h2>
+ <div class="panel" style="padding:14px 18px"><ol class="seq">
+  <li><b>Capture.</b> Journey sends the quote with a new insured person: Relationship FATHER, age 63, controlled hypertension.</li>
+  <li><b>Derive.</b> <span class="rid">DRV-02</span> band A5 (61–65). <span class="rid">DRV-05</span> group PAR. <span class="rid">DRV-06</span> a second policy appears: Parents · Individual. <span class="rid">DRV-08</span> senior flag Y.</li>
+  <li><b>Eligibility.</b> <span class="rid">ELG-02</span> 63 is within 18–75 → eligible. <span class="rid">ELG-05</span> father cannot join the family floater.</li>
+  <li><b>Recommend.</b> ₹10 L is offered by Essential and Advantage, so <span class="rid">REC-02</span> breaks the tie: he is over 46 → Advantage ₹10 L. Had the customer asked for ₹5 L, <span class="rid">REC-01</span> would pick Essential and <span class="rid">REC-04</span>, which has priority, would lift it to Advantage ₹10 L because he is over 60. <span class="rid">REC-06</span> suggests PED buy-back. The family policy keeps its own recommendation (Essential).</li>
+  <li><b>Rate.</b> <span class="rid">RAT-01</span> ₹21,500 × 1.45 × 1.20, <span class="rid">RAT-02</span> × 1.10 hypertension, <span class="rid">RAT-04</span> × 1.15 Zone A.</li>
+  <li><b>Pre-underwrite.</b> <span class="rid">UW-03</span> accept with loading, <span class="rid">UW-07</span> age ≥ 50 → medicals, <span class="rid">UW-13</span> senior protections.</li>
+  <li><b>Respond.</b> The screen shows a second policy card set, a new basket total and a "What changed" list. The family policy is untouched.</li></ol>
+  <p style="margin-top:10px"><a href="#demo" class="btn primary" style="text-decoration:none;display:inline-block">Run it in the live quote</a></p></div></div>
+ <div class="section"><h2>Change impact matrix</h2><p class="lede">Use this to design test cases: each row is one input, the fields it changes, the rules that must re-run and the rate tables that move the price.</p>
+ ${table(['Customer input','Data dictionary fields','Rules re-evaluated','Rate tables','What the customer sees'],impact)}</div>
+ <div class="section"><h2>Where each layer runs</h2>
+ ${table(['Layer','Recommended home','Why'],[
+  ['Product, plans, coverages, DD fields, code tables','InsureMO GI product factory','Single product definition shared by quote, policy, renewal and claims'],
+  ['Derivation, validation, eligibility, UW, rating','InsureMO product factory rules and rate tables','Same logic at quote, endorsement and renewal; audited'],
+  ['Recommendation (REC rules)','Decision tables in the rule engine if it supports multi-hit results; otherwise a thin journey service reading the same tables (open item O2)','Recommendation is sales logic, not policy logic. It changes more often and must not change a premium.'],
+  ['Basket of 2–3 policies, budget fit','Journey / API orchestration layer','A PAS prices one policy at a time; the basket is a sales concept'],
+  ['Real-time behaviour','Debounce 300 ms; call Calculate in parallel for up to 3 tiers × 3 policies; cache code tables in the browser','Target under 1 second per change (open item O3)'],
+  ['Persistence','Create a quote record only on "Save quote" or "Buy"','Avoids thousands of dead quotes from every keystroke']])}</div>
+ <div class="section"><h2>Demo script for NxSure (about 6 minutes)</h2>
+ ${table(['Step','Action','What to point out'],[
+  ['1','Load "Young family"','Family floater; ₹10 L is offered by two tiers; REC-02 picks Essential because nobody is over 46 and there is no PED; REC-03 advises ₹15 L for a metro family of three.'],
+  ['2','Add father, 63, hypertension','A second policy appears (ELG-05). The same ₹10 L now recommends Advantage for him (REC-02, age over 46) while the family stays on Essential. Loading, medicals and senior protections show in the pre-check.'],
+  ['3','Add mother, 58','The parents policy becomes a floater; the 15% floater factor lowers the price per person.'],
+  ['4','Raise SI to ₹25 L','Both policies move to Advantage ₹25 L (REC-01); UW-07 asks for medicals on the family policy too, because SI ≥ ₹25 L.'],
+  ['5','Tick "Planning a child"','Maternity is suggested on the family policy (REC-05), with its 24-month wait.'],
+  ['6','Set a budget of ₹1,20,000','REC-12 re-rates with deductibles and names the smallest one that fits.'],
+  ['Extra','Set desired SI to ₹5 L with the father on the quote','REC-04 overrides the tier fit: the parents policy is lifted to Advantage ₹10 L because a member is over 60.']])}</div>`;
+}
+function renderIdentity(){
+ return `<div class="section"><h2>Product identity</h2><p class="lede">Product-level settings for the InsureMO GI product definition. Values marked refined differ from the Apex source; see Refinements.</p>
+ <div class="panel kv">${IDENTITY.map(r=>`<div>${r[0]}</div><div>${esc(r[1])}</div>`).join('')}</div></div>
+ <div class="section"><h2>Plans</h2><div class="grid2">${C.tiers.map(t=>`<div class="panel" style="padding:14px;display:grid;gap:6px"><div class="toolbar"><b style="font-size:16px">${t.name}</b><span class="mono muted">${t.code}</span></div><p class="muted">${t.pitch}</p><div class="mono">SI: ${t.si.map(siL).join(' · ')}</div><div class="mono">Tier factor ${t.factor.toFixed(2)}</div></div>`).join('')}</div></div>
+ <div class="section"><h2>Benefit matrix</h2>${table(['Code','Benefit','Essential','Advantage','Elite'],BENEFITS.map(b=>[`<span class="mono">${b[0]}</span>`,b[1],b[2],b[3],b[4]]))}</div>`;
+}
+function renderTree(){
+ return `<div class="section"><h2>Product structure (element tree)</h2><p class="lede">Product → Policy → Policyholder and Insured person (risk) → member coverages; and the shared sum insured plan → core and optional coverages. Availability by tier: <span class="av av-M">M</span> mandatory, <span class="av av-B">B</span> built in, <span class="av av-O">O</span> optional, <span class="av av-N">N</span> not available. Coverage codes keep the Apex source codes.</p>
+ ${table(['Element','Code','Type','Cardinality','ESS','ADV','ELT','Configuration notes'],TREE.map(r=>[`<span class="ind" style="padding-left:${r[0]*18}px">${r[0]?'└ ':''}${esc(r[2])}</span>`,`<span class="mono">${r[1]}</span>`,r[3],r[4],...[5,6,7].map(i=>`<span class="av av-${r[i]}">${r[i]}</span>`),esc(r[8])]),'tree')}</div>`;
+}
+function renderFields(){
+ const lv=[...new Set(DD.map(d=>d[0]))];
+ return `<div class="section"><h2>Data dictionary fields</h2><p class="lede">Fields by element. Source shows who sets the value. "Used by" links each field to the rules and rate tables that read it, so a change request can be traced to its impact.</p>
+ <div class="toolbar"><div class="chips" id="dd-chips"><button class="chip" aria-pressed="true" data-lv="">All (${DD.length})</button>${lv.map(l=>`<button class="chip" aria-pressed="false" data-lv="${l}">${l}</button>`).join('')}</div></div>
+ <div id="dd-t">${ddTable('')}</div></div>`;
+}
+function ddTable(lv){return table(['Element','Field code','Label','Type','Code table','Mandatory','Source','Used by'],DD.filter(d=>!lv||d[0]===lv).map(d=>[d[0],`<span class="mono">${d[1]}</span>`,d[2],d[3],d[4]==='—'?'—':`<span class="mono">${d[4]}</span>`,d[5],d[6],`<span class="mono">${d[7]}</span>`]));}
+function renderCodes(){
+ return `<div class="section"><h2>Code tables</h2><p class="lede">${CODES.length} code tables. Attributes such as discount, loading or tier list sit on the code so rules and rating read them without hard-coding. ZONE_MAP is a lookup table (iTable) in production, keyed by pincode.</p>
+ <div class="grid2">${CODES.map(c=>`<div class="panel" style="padding:12px;display:grid;gap:8px;align-content:start;min-width:0"><div class="toolbar"><b class="mono">${c[0]}</b><span class="muted" style="font-size:12.5px">${esc(c[1])}</span></div>
+ <div class="tbl-wrap" style="max-height:260px;overflow:auto"><table><thead><tr><th>Code</th><th>Description</th></tr></thead><tbody>${c[2].map(r=>`<tr><td class="mono">${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div></div>`).join('')}</div></div>`;
+}
+function renderRules(){
+ const sets=[...new Set(RULES.map(r=>r[1]))];
+ return `<div class="section"><h2>Business rules catalogue</h2><p class="lede">${RULES.length} rules in execution order: derivation, validation, eligibility, recommendation, underwriting, rating, then renewal and claims. "InsureMO object" uses product factory terms from the Easy PA source (rating formulas, UW rules, validation rules, rate and code tables); exact screen names to be confirmed with the InsureMO GI configuration team.</p>
+ <div class="toolbar"><div class="chips" id="r-chips"><button class="chip" aria-pressed="true" data-set="">All</button>${sets.map(s=>`<button class="chip" aria-pressed="false" data-set="${s}">${s} (${RULES.filter(r=>r[1]===s).length})</button>`).join('')}</div>
+ <input type="search" id="r-q" placeholder="Search rules" aria-label="Search rules"></div>
+ <div id="r-t">${rulesTable('','')}</div></div>`;
+}
+function rulesTable(set,q){q=q.toLowerCase();return table(['Rule','Set','Stage','Scope','Condition','Outcome','Source','InsureMO object'],RULES.filter(r=>(!set||r[1]===set)&&(!q||r.join(' ').toLowerCase().includes(q))).map(r=>[`<span class="rid">${r[0]}</span>`,r[1],r[2],r[3],esc(r[4]),esc(r[5]),`<span class="muted">${esc(r[6])}</span>`,esc(r[7])]));}
+function renderRating(){
+ const ex={...base(),members:[mk('SELF',34),mk('SPOUSE',32),mk('SON',4)],si:15*L};
+ const q=quote(ex);const p=q.policies[0];const r=p.selPk.r;
+ return `<div class="section"><h2>Rating configuration</h2><p class="lede">Community-rated tables by age band, sum insured, tier and zone, as the Apex pricing approach states. All values are illustrative and built to fall in observed Indian market ranges; the Appointed Actuary replaces them before filing.</p>
+ <div class="formula">Member premium  = BASE_RATE[AgeBand] × SI_FACTOR[SI] × TIER_FACTOR[Tier] × LIFESTYLE × PED_LOADING      (RAT-01, RAT-02)
+Base premium    = Σ member premiums × FLOATER_FACTOR[n] × ZONE × (1 − deductible disc) × (1 − co-pay disc)   (RAT-03–05)
+Annual premium  = Base premium + Σ add-on premiums                                                     (RAT-06, RAT-07)
+Term premium    = Annual premium × term × (1 − TERM_DISC)                                               (RAT-08)
+GST             = 0%                                                                                     (RAT-09)</div></div>
+ <div class="section"><h2>Worked example</h2><p class="lede">Self 34, Spouse 32, Son 4 · Bengaluru (Zone A) · ${p.selPk.t.name} ${siL(p.si)} · 1 year · no add-ons. Calculated by the same engine as the live quote.</p>
+ <div class="tbl-wrap"><table><thead><tr><th>Step</th><th>Calculation</th><th class="r">Amount</th></tr></thead><tbody>
+ ${r.rows.map(x=>`<tr><td>${x.m.r.n} ${x.m.age} (${x.m.band.code})</td><td class="mono">${fmt(x.m.band.base)} × ${C.siFactor[p.si]} × ${tierOf(p.tier).factor}</td><td class="r num">${fmt(x.prem)}</td></tr>`).join('')}
+ <tr><td>Floater, 3 members</td><td class="mono">${fmt(r.sum)} × ${r.ff}</td><td class="r num">${fmt(r.sum*r.ff)}</td></tr>
+ <tr><td>Zone A</td><td class="mono">× ${r.zf}</td><td class="r num">${fmt(r.base)}</td></tr>
+ <tr><td><b>Annual premium</b></td><td>GST 0%</td><td class="r num"><b>${fmt(p.annual)}</b></td></tr></tbody></table></div></div>
+ <div class="section"><h2>Rate tables</h2><div class="grid2">${RAT_TABLES.map(t=>`<div style="display:grid;gap:6px;align-content:start;min-width:0"><div><b class="mono">${t[0]}</b> <span class="muted" style="font-size:12.5px">${esc(t[1])}</span></div>${table(t[2],t[3].map(r=>r.map(c=>esc(c))))}</div>`).join('')}</div></div>
+ <div class="section"><h2>Indicative rate card: individual, Advantage, Zone B, no loadings</h2>
+ ${table(['Age','₹10 L','₹15 L','₹25 L','₹50 L'],[25,35,45,55,65].map(a=>[String(a),...[10,15,25,50].map(s=>fmt(bandOf(a).base*C.siFactor[s*L]*1.2))]))}</div>`;
+}
+function renderRefine(){
+ const tag=t=>`<span class="pill ${t==='certain'?'p-good':t==='likely'?'p-warn':'p-bad'}">${t}</span>`;
+ return `<div class="section"><h2>Refinements to the Apex source</h2><p class="lede">${REFINE.length} changes. Each one fixes a gap or conflict that would stop configuration or break the NxSure scenario. The tag shows confidence in the reasoning.</p>
+ ${table(['#','Issue in the source','Decision','Why','Confidence'],REFINE.map(r=>[`<span class="mono">${r[0]}</span>`,esc(r[1]),esc(r[2]),esc(r[3]),tag(r[4])]))}</div>
+ <div class="section"><h2>Open items to confirm before build</h2>${table(['#','Owner','Question','Impact'],OPEN.map(o=>[`<span class="mono">${o[0]}</span>`,o[1],esc(o[2]),esc(o[3])]))}</div>
+ <div class="section"><h2>Regulatory points used in the configuration</h2>
+ ${table(['Point','Configured as','Confidence'],[
+  ['PED waiting period capped at 36 months; moratorium 60 months','CLM-03, UW-16, identity','certain'],
+  ['Free-look 30 days','Product identity','likely'],
+  ['GST 0% on individual and floater health premiums from 22 Sep 2025','RAT-09','likely'],
+  ['Senior citizen premium increase capped at 10% a year without IRDAI consultation','RAT-10, UW-13','likely'],
+  ['Cashless pre-authorisation within 1 hour, final authorisation within 3 hours','CLM-06','certain'],
+  ['No decline solely on mental illness, HIV/AIDS or disability','UW-10, UW-11, UW-12','certain'],
+  ['Insurer bears at least 50% of pre-policy check-up cost if the proposal is accepted','Open item O7','likely']].map(r=>[esc(r[0]),r[1],tag(r[2])]))}
+ <div class="note">Confirm each regulatory point against the current IRDAI master circular before the product is filed. These tags reflect source documents and market knowledge, not a legal review.</div></div>`;
+}
+function route(){
+ const id=(location.hash||'#demo').slice(1);const tab=TABS.find(t=>t[0]===id)?id:'demo';
+ document.getElementById('tabs').innerHTML=TABS.map(t=>`<a href="#${t[0]}" ${t[0]===tab?'aria-current="page"':''}>${t[1]}</a>`).join('');
+ const m=document.getElementById('main');
+ if(tab==='demo'){prev=null;renderDemo(true);}
+ else m.innerHTML=({flow:renderFlow,identity:renderIdentity,tree:renderTree,fields:renderFields,codes:renderCodes,rules:renderRules,rating:renderRating,refine:renderRefine})[tab]();
+ window.scrollTo(0,0);
+}
+document.addEventListener('click',e=>{
+ const c=e.target.closest('#dd-chips .chip');if(c){document.querySelectorAll('#dd-chips .chip').forEach(x=>x.setAttribute('aria-pressed',x===c));document.getElementById('dd-t').innerHTML=ddTable(c.dataset.lv);}
+ const r=e.target.closest('#r-chips .chip');if(r){document.querySelectorAll('#r-chips .chip').forEach(x=>x.setAttribute('aria-pressed',x===r));document.getElementById('r-t').innerHTML=rulesTable(r.dataset.set,document.getElementById('r-q').value);}
+});
+document.addEventListener('input',e=>{if(e.target.id==='r-q'){const a=document.querySelector('#r-chips .chip[aria-pressed="true"]');document.getElementById('r-t').innerHTML=rulesTable(a?a.dataset.set:'',e.target.value);}});
+window.addEventListener('hashchange',route);
+route();
+</script>
