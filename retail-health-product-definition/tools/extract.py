@@ -6,34 +6,150 @@ cover names are made generic. Usage:
 import sys, re, json, zipfile, io
 import openpyxl
 
-SUBS = [  # order matters: longest / most specific first
-    (r'Protec General Insurance (Company )?Limited', 'the insurer'),
-    (r'ProTec Classic', 'Classic'), (r'ProTec <35 years', 'Young (<35)'),
-    (r'ProTec 36-55 years', 'Prime (36-55)'), (r'ProTec >55 years', 'Senior (>55)'),
-    (r'Protec Classic', 'Classic'), (r'Protec Diabetes Special', 'a diabetes-specific product'),
-    (r'\bPro[Tt]ec Health\b', 'the product'), (r"\bPro[Tt]ec's\b", "the insurer's"),
-    (r'pending by protec', 'pending with insurer'), (r'\bPro[Tt]ec\b', 'the insurer'), (r'\bprotec\b', 'the insurer'),
-    (r'IPDH01', 'RHI01'), (r'\b2001\b', 'XXXX'), (r'\b20001\b', 'XXXX'),
-    (r'\s*\(?discussed with Nikhil\)?', ''), (r'\bNikhil\b', 'the client'),
-    (r'\bAXIS\b', 'BANK PARTNER 1'), (r'\bHDFC\b', 'BANK PARTNER 2'),
-    (r'Smart Steps \(Pro Fit\)', 'Wellness Steps'), (r'Smart Steps', 'Wellness Steps'), (r'SmartSteps', 'WellnessSteps'),
-    (r'Smart No-Limit', 'No-Limit Claim'), (r'Smart_No_limit', 'No_limit'),
-    (r'Travel SmartHold', 'Travel Pause'), (r'TravelSmart_Hold', 'Travel_Pause'),
-    (r'Travel Smart \(Domestic\)', 'Domestic Travel Cover'), (r'TravelSmartDomestic', 'DomesticTravel'), (r'TravelSmart', 'DomesticTravel'), (r'Travel Smart', 'Domestic Travel Cover'),
-    (r'Smart Family Benefit', 'Family Starter Benefit'), (r'Smart_Family_benefit', 'Family_starter'),
-    (r'Smart Lifetime Bonus', 'Lifetime Loyalty Bonus'), (r'Smart Network Cover', 'Network Choice Cover'),
-    (r'Pro Fit', ''), (r'Insure rProduct', 'Insurer Product'),
-    # source-document cross references
-    (r'\s*\((?:confirmation in |method pending, )?QA No\.\s*[\d, No.]+\)', ''), (r'\s*\(QA No\.[^)]*\)', ''),
-    (r';?\s*confirmation in QA No\.\d+', ''), (r'QA No\.\s*\d+[, ]*(No\.\d+)?', 'open point'),
-    (r'\s*\(Word[^)]*\)', ''), (r'Word FRS', 'original specification'), (r'Word note', 'specification note'),
-    (r'\bWord(:|;)?\s*', ''), (r'the Excel open-claim block is not applied', 'an open-claim block is not applied'),
-    (r'\s*\(RHE-[A-Z]{2}-\d{3}(, RHE-[A-Z]{2}-\d{3})*\)', ''), (r'RHE-[A-Z]{2}-\d{3}\s*', ''),
-    (r'Unlike the previous version of this sheet,[^.]*\.\s*', ''), (r'see QA list', 'open point'),
-    (r'pending clarification from QA and will need to be updated once QA provides clarification', 'an open point to be confirmed'),
-    (r'^QA$', ''), (r'\bsheets?\b', 'section'),
-    (r'\(FRS Product Code\)', '(insurer product code)'), (r'\s*\(Phase \d\)', ''),
-]
+SUBS = [
+    [
+    "pending by protec",
+    "pending with insurer"
+    ],
+    [
+    "\\bprotec\\b",
+    "the insurer"
+    ],
+    [
+    "\\b20001\\b",
+    "XXXX"
+    ],
+    [
+    "Smart Steps",
+    "Wellness Steps"
+    ],
+    [
+    "SmartSteps",
+    "WellnessSteps"
+    ],
+    [
+    "Smart No-Limit",
+    "No-Limit Claim"
+    ],
+    [
+    "Smart_No_limit",
+    "No_limit"
+    ],
+    [
+    "Travel SmartHold",
+    "Travel Pause"
+    ],
+    [
+    "TravelSmart_Hold",
+    "Travel_Pause"
+    ],
+    [
+    "Travel Smart \\(Domestic\\)",
+    "Domestic Travel Cover"
+    ],
+    [
+    "TravelSmartDomestic",
+    "DomesticTravel"
+    ],
+    [
+    "TravelSmart",
+    "DomesticTravel"
+    ],
+    [
+    "Travel Smart",
+    "Domestic Travel Cover"
+    ],
+    [
+    "Smart Family Benefit",
+    "Family Starter Benefit"
+    ],
+    [
+    "Smart_Family_benefit",
+    "Family_starter"
+    ],
+    [
+    "Smart Lifetime Bonus",
+    "Lifetime Loyalty Bonus"
+    ],
+    [
+    "Smart Network Cover",
+    "Network Choice Cover"
+    ],
+    [
+    "\\s*\\((?:confirmation in |method pending, )?QA No\\.\\s*[\\d, No.]+\\)",
+    ""
+    ],
+    [
+    "\\s*\\(QA No\\.[^)]*\\)",
+    ""
+    ],
+    [
+    ";?\\s*confirmation in QA No\\.\\d+",
+    ""
+    ],
+    [
+    "QA No\\.\\s*\\d+[, ]*(No\\.\\d+)?",
+    "open point"
+    ],
+    [
+    "\\s*\\(Word[^)]*\\)",
+    ""
+    ],
+    [
+    "Word FRS",
+    "original specification"
+    ],
+    [
+    "Word note",
+    "specification note"
+    ],
+    [
+    "\\bWord(:|;)?\\s*",
+    ""
+    ],
+    [
+    "the Excel open-claim block is not applied",
+    "an open-claim block is not applied"
+    ],
+    [
+    "\\s*\\(RHE-[A-Z]{2}-\\d{3}(, RHE-[A-Z]{2}-\\d{3})*\\)",
+    ""
+    ],
+    [
+    "RHE-[A-Z]{2}-\\d{3}\\s*",
+    ""
+    ],
+    [
+    "Unlike the previous version of this sheet,[^.]*\\.\\s*",
+    ""
+    ],
+    [
+    "see QA list",
+    "open point"
+    ],
+    [
+    "pending clarification from QA and will need to be updated once QA provides clarification",
+    "an open point to be confirmed"
+    ],
+    [
+    "^QA$",
+    ""
+    ],
+    [
+    "\\bsheets?\\b",
+    "section"
+    ],
+    [
+    "\\s*\\(Phase \\d\\)",
+    ""
+    ]
+    ]
+# Client-specific names (insurer, people, partners, product codes) are kept out of git
+# in tools/names.local.json: {"names": [[pattern, replacement], ...], "forbidden": [pattern, ...]}
+import pathlib as _pl
+_LOCAL = _pl.Path(__file__).with_name('names.local.json')
+_NAMES = json.loads(_LOCAL.read_text()) if _LOCAL.exists() else {'names': [], 'forbidden': []}
+SUBS = [tuple(x) for x in _NAMES['names']] + SUBS
 CJK = re.compile(r'[　-〿㐀-鿿＀-￯]+')
 
 def clean(v):
@@ -105,7 +221,7 @@ def main(docx, out):
         if b['rows'] and b['rows'][0][:5] and b['rows'][0][3:5] == ['Word FRS Ref'.replace('Word FRS', 'original specification'), 'Excel Ref (Type / Sub-type) / CBR']:
             b['rows'] = [r[:3] + r[5:] for r in b['rows']]
     text = json.dumps(d, ensure_ascii=False)
-    for bad in (r'\bWord\b', r'QA No', r'\bFRS\b', r'Excel', r'RHE-', r'\bQA\b', r'\bPro[Tt]ec\b', 'Nikhil', 'AXIS', 'HDFC', 'Merlin', 'Megha', 'Dhivya', 'IPDH01', 'Smart'):
+    for bad in [r'\bWord\b', r'QA No', r'\bFRS\b', r'Excel', r'RHE-', r'\bQA\b', 'Smart'] + _NAMES['forbidden']:
         m = re.search(bad, text)
         assert not m, (bad, text[max(0, m.start() - 80):m.end() + 40])
     with open(out, 'w', encoding='utf-8') as f:
