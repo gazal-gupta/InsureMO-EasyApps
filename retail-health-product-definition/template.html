@@ -1,0 +1,643 @@
+<title>Retail Health Indemnity</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky header + tab bar. Live quote = input rail left, quote right. Definition tabs = full-width tables. */
+:root{
+  --bg:#f4f5f8; --surface:#ffffff; --sunk:#eceef4; --ink:#161b2e; --muted:#5d6479; --line:#d9dce7;
+  --accent:#2e4fb0; --accent-soft:#e1e7f8; --accent-ink:#ffffff;
+  --gold:#94600f; --gold-soft:#f7ecd6; --good:#21784a; --good-soft:#dcefe3; --bad:#a93a2e; --bad-soft:#f7dfdb;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10131d; --surface:#171b29; --sunk:#1e2334; --ink:#e3e6f0; --muted:#9aa1b8; --line:#2a3046;
+  --accent:#8aa4f2; --accent-soft:#1f2a4d; --accent-ink:#0c1226;
+  --gold:#e4ac55; --gold-soft:#382c18; --good:#5cc685; --good-soft:#163323; --bad:#ec8679; --bad-soft:#3d1f1c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10131d; --surface:#171b29; --sunk:#1e2334; --ink:#e3e6f0; --muted:#9aa1b8; --line:#2a3046;
+  --accent:#8aa4f2; --accent-soft:#1f2a4d; --accent-ink:#0c1226;
+  --gold:#e4ac55; --gold-soft:#382c18; --good:#5cc685; --good-soft:#163323; --bad:#ec8679; --bad-soft:#3d1f1c; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1360px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.brand{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;padding-block:12px 4px}
+.brand h1{font-size:20px;margin:0;letter-spacing:-.01em}
+.brand .meta{color:var(--muted);font-size:12.5px}
+.tag{font-family:var(--mono);font-size:11.5px;background:var(--gold-soft);color:var(--gold);padding:2px 7px;border-radius:4px}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+nav.tabs a{white-space:nowrap;padding:9px 11px;color:var(--muted);text-decoration:none;font-weight:500;border-bottom:2px solid transparent;font-size:13.5px}
+nav.tabs a:hover{color:var(--ink)}
+nav.tabs a[aria-current="page"]{color:var(--accent);border-bottom-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{padding-block:20px 48px}
+h2{font-size:18px;margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;margin:0;text-wrap:balance}
+p{margin:0}
+.lede{color:var(--muted);max-width:80ch;margin-bottom:14px}
+.mono{font-family:var(--mono);font-size:12.5px}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.pill{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.p-rec{background:var(--accent);color:var(--accent-ink)} .p-alt{background:var(--sunk);color:var(--muted)}
+.p-good{background:var(--good-soft);color:var(--good)} .p-warn{background:var(--gold-soft);color:var(--gold)} .p-bad{background:var(--bad-soft);color:var(--bad)}
+.rid{font-family:var(--mono);font-size:11.5px;color:var(--accent);background:var(--accent-soft);padding:1px 6px;border-radius:4px;white-space:nowrap}
+.rid.new{color:var(--gold);background:var(--gold-soft)}
+button{font:inherit;cursor:pointer}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 11px;border-radius:6px;font-size:13px}
+.btn:hover{border-color:var(--accent)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:6px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--sunk);font-weight:600;font-size:12px;color:var(--muted);position:sticky;top:0}
+tr:last-child td{border-bottom:none}
+td.r,th.r{text-align:right}
+.section{display:grid;gap:12px;margin-bottom:28px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.kv{display:grid;grid-template-columns:minmax(150px,240px) 1fr}
+.kv>div{padding:7px 12px;border-bottom:1px solid var(--line)}
+.kv>div:nth-child(odd){color:var(--muted);font-size:13px}
+.note{border-left:3px solid var(--gold);background:var(--gold-soft);padding:9px 12px;border-radius:0 6px 6px 0;font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--muted);padding:4px 10px;border-radius:99px;font-size:12.5px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+input[type=search],input[type=number],select{font:inherit;font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 7px;min-width:0;max-width:100%}
+input[type=number]{width:70px}
+label.f{display:grid;gap:3px;font-size:12px;color:var(--muted)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+/* demo */
+.demo{display:grid;grid-template-columns:370px minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:940px){.demo{grid-template-columns:minmax(0,1fr)}}
+.rail{padding:14px;display:grid;gap:14px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 96px);max-height:calc(100vh - 110px);overflow:auto}
+@media (max-width:940px){.rail{position:static;max-height:none}}
+.rail h3{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.member{border:1px solid var(--line);border-radius:6px;padding:8px;display:grid;gap:6px;background:var(--bg)}
+.member .mh{display:flex;justify-content:space-between;align-items:center}
+.member .mf{display:flex;flex-wrap:wrap;gap:6px;align-items:end}
+.x{border:none;background:none;color:var(--muted);font-size:12px;padding:2px 4px}
+.x:hover{color:var(--bad)}
+.check{display:flex;gap:7px;align-items:center;font-size:13px}
+.script{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}
+.out{display:grid;gap:14px;min-width:0}
+.summary{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;padding:14px 16px}
+.big{font-size:26px;font-weight:700;letter-spacing:-.01em}
+.lab{font-size:12px;color:var(--muted)}
+.change{padding:12px 16px;display:grid;gap:8px;border-color:var(--accent)}
+.change ul{margin:0;padding-left:18px;display:grid;gap:3px}
+.policy{padding:14px 16px;display:grid;gap:12px}
+.ph{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;justify-content:space-between}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (max-width:1100px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.cards{grid-template-columns:minmax(0,1fr)}}
+.card{border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:6px;align-content:start;background:var(--surface);text-align:left;color:var(--ink)}
+.card.sel{border:2px solid var(--accent);padding:9px}
+.card[disabled]{opacity:.6;cursor:not-allowed}
+.card .t{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.price{font-size:19px;font-weight:700}
+.card .why{font-size:12px;color:var(--muted)}
+.adv{display:grid;gap:6px}
+.adv div{font-size:13px;display:flex;gap:8px;align-items:baseline}
+.lines{display:grid;gap:6px}
+.line{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 10px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:7px 10px}
+.line .nm{font-size:13px;font-weight:500}
+.line .rs{grid-column:2/4;font-size:12px;color:var(--muted)}
+.line.na{background:var(--bg)}
+.pkg{border:1px solid var(--line);border-radius:6px;padding:8px 10px;display:grid;gap:4px}
+.pkg .ph2{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+details.trace>summary{cursor:pointer;padding:11px 16px;font-weight:600}
+details.trace>div{padding:0 16px 14px}
+.res-Fired{color:var(--accent)} .res-Pass{color:var(--good)} .res-Fail,.res-Gap{color:var(--bad)} .res-Advice{color:var(--gold)}
+.grid-uw td{text-align:center;font-size:12px}
+.c-stp{background:var(--good-soft);color:var(--good)} .c-tele{background:var(--accent-soft);color:var(--accent)} .c-ppmc{background:var(--gold-soft);color:var(--gold)} .c-gap{background:var(--bad-soft);color:var(--bad);font-weight:600}
+.av-B{color:var(--good);font-weight:600} .av-O{color:var(--accent)} .av-N{color:var(--muted)} .av-P{color:var(--gold);font-weight:600}
+.sev-High{color:var(--bad);font-weight:600} .sev-Medium{color:var(--gold);font-weight:600} .sev-Low{color:var(--muted);font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{padding:12px 14px}
+.tile .v{font-size:24px;font-weight:700}
+@media (prefers-reduced-motion:no-preference){.card,.chip,.btn{transition:border-color .15s,background .15s}}
+</style>
+
+<header class="top"><div class="wrap">
+  <div class="brand"><h1>Retail Health Indemnity</h1>
+  <span class="meta">Generic Indian retail health product · Individual and Family Floater · InsureMO product <span class="mono">RHI01</span> · product definition, review and live quote</span>
+  <span class="tag">Approved rates · confidential</span></div>
+  <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+</div></header>
+<main class="wrap" id="main"></main>
+
+<script>
+const D=/*__DATA__*/null;
+/* ================= helpers ================= */
+const L=1e5,CR=1e7,UNL=-1;
+const fmt=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const fmt2=n=>'₹'+n.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const siL=v=>v===UNL?'Unlimited':v>=CR?'₹'+(v/CR)+' Cr':'₹'+(v/L)+' L';
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=s=>parseFloat(String(s).replace(/,/g,''));
+const RT=k=>{const b=D.rateTables.find(b=>b.title.startsWith(k));return b?b.rows:[]};
+const kv=k=>Object.fromEntries(RT(k).slice(1).map(r=>[r[0],num(r[1])]));
+const tableKey=k=>{const i=D.rateTables.findIndex(b=>b.title.startsWith(k));return i};
+/* ================= approved rate tables ================= */
+const R={
+ burn:num(RT('SECTION A')[1][1]), exp:num(RT('SECTION A')[2][1]),
+ age:kv('SECTION B'), zone:kv('SECTION D'), room:kv('SECTION E'), imd:kv('SECTION F'), pp:kv('SECTION G'),
+ rein:kv('SECTION I'), loy:kv('SECTION J'), copay:kv('SECTION K'), term:kv('SECTION M'), bari:kv('SECTION N'),
+ si:Object.fromEntries(RT('SECTION C').slice(1).map(r=>[r[0]==='Unlimited SI'?UNL:num(r[0]),{y:num(r[1]),o:num(r[2])}])),
+ fam:(()=>{const rows=RT('SECTION H');const h=rows[0];return Object.fromEntries(rows.slice(1).map(r=>[r[0],Object.fromEntries(h.slice(1).map((c,i)=>[c,num(r[i+1])]))]))})(),
+ vd:(()=>{const rows=RT('SECTION L');const h=rows[0].slice(1).map(num);return Object.fromEntries(rows.slice(1).map(r=>[r[0]==='Unlimited SI'?UNL:num(r[0]),Object.fromEntries(h.map((c,i)=>[c,r[i+1]===undefined||r[i+1]===''?null:num(r[i+1])]))]))})(),
+ q:k=>kv(k), flat:k=>num(D.rateTables[tableKey(k)+2].title)
+};
+const SI_OPTS=[3,4,5,7.5,10,15,20,25,50,100,200].map(x=>x*L).concat([UNL]);
+const ageKey=a=>a<=35?'0-35':a<=40?'36-40':a<=45?'41-45':a<=50?'46-50':a<=55?'51-55':a<=60?'56-60':a<=79?String(a):'80-95';
+const famRow=a=>a<=35?'18-35':a<=40?'36-40':a<=45?'41-45':a<=50?'46-50':a<=55?'51-55':a<=60?'56-60':'61+';
+const REIN={'0':'without reinstatement benefit','1':'with 1 reinstatement','2':'with 2 reinstatement','U':'unlimited reinstatements'};
+/* ================= product vocabulary ================= */
+const COV=Object.fromEntries(D.coverages.map(c=>[c[1],{n:c[0],code:c[1],hasSI:c[2],logic:c[3],detail:c[4],basis:c[5],opt:c[6],def:c[7],remarks:c[9],prem:c[10]}]));
+D.benefits.forEach(b=>{COV[b[3]]={n:b[2],code:b[3],parent:b[1],hasSI:b[4],logic:b[5],detail:b[6],opt:b[7],def:b[8],remarks:b[9],prem:b[10],benefit:true}});
+const PLANS=D.planNames; // Classic, Young (<35), Prime (36-55), Senior (>55)
+const PM=Object.fromEntries(D.planMatrix.map(r=>[r[1],r.slice(2,6)]));
+const pkgOf=(code,pi)=>{const v=PM[code]?.[pi]||'';const m=v.match(/Package (\d)/);return m?+m[1]:0};
+const PKGS=pi=>{const o={};for(const c in PM){const k=pkgOf(c,pi);if(k)(o[k]=o[k]||[]).push(c)}return o};
+const NO_RATE={CICOV:'Critical illness rate table is empty',INFART:'Infertility / ART rate table is empty',CDMGMT:'Premium pending with insurer',HCKPLS:'Premium pending with insurer',SRCHKP:'Premium pending with insurer',SENCAR:'Premium pending with insurer',MENWEL:'Premium and sum insured pending with insurer',VISION:'Premium pending with insurer',OPDEXP:'OPD sum insured and sub-covers pending with insurer',SUBLIM:'Discount rate pending with insurer'};
+const CLASS_A={'2XSID1':'SI_2X',INIWPR:'Initial_WP',SIWPRO:'Spec_Illness_WP',PEDWPR:'PED_WP',CHRCAR:'Chronic_care',HR2HOS:'Hosp_2Hour',OPDEXP:'OPD_Exp',NOLIMT:'No_limit',CONSUM:'Consumable',MEDEQP:'DME',AIRAMB:'Air_Amb',CHDCAR:'Child_care_benefit',TRVSMT:'DomesticTravel',TRVHLD:'Travel_Pause',ADVSPT:'Adven_sports',SMFAML:'Family_starter',PREMLK:'Premium_lock',MONBCK:'Money_Back',GRACPD:'Grace_period',CANHOS:'Cancer_Hosp',SURMOM:'surrogate_mother',OOCYTE:'oocyte_Donor',WRLDWD:'Worldwide_cover'};
+const CLASS_B={MATERN:'Maternity',NBVACC:'Vaccination',HOSCSH:'Hospicash',DEPACC:'DAB',PACOV:'PA',INCPRO:'Income_Protect',GYMINJ:'Gym_Sports',CAREGV:'Caregiver_Exp',MOBLOS:'Mobility_loss',EMISHD:'EMI_ExpShield',CICOV:'Critical_illness',INFART:'Infertility_ART'};
+/* option lists for priced covers (from the code tables) */
+const OPTS={TRVSMT:[5000,10000,20000],SURMOM:[1,2,3,4,5].map(x=>x*L),OOCYTE:[1,2,3,4,5].map(x=>x*L),WRLDWD:['2 year','1 year','0 year'],PEDWPR:['24 months','12 months','9 month','6 month','0 day'],SIWPRO:['12 months','0 day'],INIWPR:['15 days','0 day'],
+ MATERN:['1lakh','2lakh','Step up SI'],NBVACC:[10000,20000,40000],PACOV:[10,20,30,40,50,60,70,80,90,100,150,200,250].map(x=>x*L),GYMINJ:[25000,50000],CAREGV:[25000,50000],MOBLOS:[25000,50000],EMISHD:[25000,50000],INCPRO:['10000|10','20000|10','25000|10','20000|20','40000|20','60000|20']};
+const OPTL=(c,o)=>c==='WRLDWD'?o.replace(' year','-year wait'):c==='MATERN'?({'1lakh':'Fixed ₹1 L','2lakh':'Fixed ₹2 L','Step up SI':'Step-up ₹25k→₹1 L'})[o]:c==='INCPRO'?('₹'+(+o.split('|')[0]).toLocaleString('en-IN')+' after '+o.split('|')[1]+' days'):typeof o==='number'?siL(o):o;
+/* ================= rating engine (Premium Calculation sheet, Sections C–H) ================= */
+function basePrem(age,si,col,S){
+ const sr=R.si[si];const siRel=age<=55?sr.y:sr.o;
+ return R.burn/(1-R.exp)*R.age[ageKey(age)]*(1+R.rein[REIN[S.rein]])*siRel*R.zone[S.zone]*R.room[S.room]*R.imd[S.imd]*R.pp[S.pp]
+  *R.fam[famRow(age)][col]*(1+R.loy[S.loy])*(1-R.copay[S.copay])*(1-(R.vd[si]?.[S.ded]??0));
+}
+function addonPrem(code,opt,ctx,S){ // per policy year
+ const loy=R.loy[S.loy],rein=R.rein[REIN[S.rein]];
+ if(CLASS_A[code]){const t=R.q(CLASS_A[code]);
+  let f;
+  if(code==='2XSID1') return ctx.si===UNL?0:ctx.base/(1+loy)*(t[String(ctx.si)]??0);
+  if(code==='WRLDWD'){const rows=RT('Worldwide_cover');const h=rows[0];const r=rows.find(x=>(x[0]==='Unlimited'?UNL:num(x[0]))===ctx.si);return r?ctx.base*num(r[h.indexOf(opt)]):0}
+  if(code==='PEDWPR'){const rows=RT('PED_WP');const h=rows[0];const r=rows.find(x=>x[0]===opt);const col=ctx.age<=35?'0-35':ctx.age<=55?'36-55':'55+';f=num(r[h.indexOf(col)])}
+  else if(code==='TRVSMT') f=t[({5000:'5K',10000:'10K',20000:'20K'})[opt]];
+  else if(code==='SURMOM'||code==='OOCYTE'||code==='INIWPR'||code==='SIWPRO') f=t[String(opt)];
+  else f=t['Yes'];
+  return ctx.base/((1+loy)*(1+rein))*(f||0);
+ }
+ if(code==='HOSCSH'||code==='DEPACC') return R.flat(CLASS_B[code]);
+ if(code==='MATERN'){const rows=RT(S.nb?'Maternity_NewBorn':'Maternity —');const h=rows[0];const r=rows.find(x=>x[0]===String(S.matWp));return num(r[h.indexOf(opt)])}
+ if(code==='NBVACC'){const rows=RT('Vaccination');const h=rows[0];const wp={0:'No waiting period',6:'6months waiting period',9:'9months waiting period',12:'1 year waiting period',24:'2 year waiting period',36:'3 year waiting period'}[S.matWp];const r=rows.find(x=>x[0]===wp);return num(r[h.indexOf(String(opt))])}
+ if(code==='PACOV'){const r=RT('PA —').find(x=>num(x[0])===opt);return r?num(r[1]):0}
+ if(code==='INCPRO'){const [a,dd]=opt.split('|');const r=RT('Income_Protect').find(x=>x[0]===a&&x[1]===dd);return r?num(r[3]):0}
+ if(['GYMINJ','CAREGV','MOBLOS','EMISHD'].includes(code)){const r=RT(CLASS_B[code]).find(x=>num(x[0])===opt);return r?num(r[2]):0}
+ return 0; // CICOV, INFART: empty tables; pending covers
+}
+/* defaults that depend on age and SI (rule tables ATR_086 and Coverage List LOYBON) */
+function effSel(S,age,si){return {...S,loy:S.loy==='AUTO'?(age<35?'100%-1000%':'100%-500%'):S.loy,room:S.room==='AUTO'?(si!==UNL&&si<=5*L?'1% of SI for normal; 2% for ICU':si===7.5*L?'Single private AC room':'No Restriction Upto delux'):S.room}}
+/* rate one policy: members [{age,rel,g,ped}], type IND|FF, si, selected covers {code:opt}, selectors S */
+function ratePolicy(P,S0){const S=S0;
+ const yrs=S.term, out={years:[],members:[]};
+ const units=P.type==='FF'?[{label:'Family',members:P.members,age:Math.max(...P.members.map(m=>m.age)),col:P.construct}]:P.members.map(m=>({label:m.nm,members:[m],age:m.age,col:'1A'}));
+ let gross=0;const unitRes=[];
+ for(const u0 of units){
+  const u=u0;const S=effSel(S0,u.age,P.si);
+  let ug=0;const yrRows=[];
+  for(let y=0;y<yrs;y++){
+   const age=u.age+y;const base=basePrem(age,P.si,u.col,S);
+   let add=0;const lines={};
+   for(const [code,opt] of Object.entries(P.covers)){
+    let n=1;
+    if(code==='PACOV') n=u.members.filter(m=>m.adult).length;
+    if(P.type==='IND'&&['MATERN','SURMOM','OOCYTE','NBVACC'].includes(code)&&!(u.members[0].g==='F'&&u.members[0].adult&&u.members[0].age<=45)) n=0;
+    if(P.type==='IND'&&code==='PACOV'&&!u.members[0].adult) n=0;
+    const v=addonPrem(code,opt,{base,si:P.si,age},{...S,nb:'NBBABY' in P.covers})*n;
+    lines[code]=v;add+=v;
+   }
+   const bari=base/(1+R.loy[S.loy])*R.bari[S.bari];
+   const annual=base+add-bari;ug+=annual;
+   yrRows.push({y:y+1,age,base,add,lines,bari,annual});
+  }
+  const ped=u.members.reduce((s,m)=>s+(m.pedLoad||0),0)/100;
+  unitRes.push({...u,yrRows,gross:ug,ped});gross+=ug;
+ }
+ // discounts (Section G) per unit
+ let pedLoad=0,capped=0,elig=0,multi=0,port=0;const disc=[];
+ for(const u of unitRes){
+  const g=u.gross,fy=u.yrRows[0].annual,items=[];
+  if(S.womanProposer) items.push(['Women proposer',.025*fy,'2.5% of first-year annual']);
+  const dau=u.members.some(m=>m.rel==='DAUGHTER'&&m.age<=10);if(dau) items.push(['Daughter first',.025*g,'2.5% of gross (daughter aged 10 or less)']);
+  if(S.gmc) items.push(['Corporate GMC holder',.05*fy,'5% of first-year annual']);
+  if(S.direct) items.push(['Direct discount',S.direct/100*g,S.direct+'% of gross']);
+  if(S.dilc) items.push(['In lieu of commission',S.dilc/100*g,S.dilc+'% of gross']);
+  if(S.nri) items.push(['NRI policyholder',.15*g,'15% of gross']);
+  if(u.members.filter(m=>m.adult).every(m=>m.age<40)&&u.members.every(m=>!m.pedLoad&&m.ped==='NONE')) items.push(['Early entry',.075*g,'7.5% of gross (adults under 40, no PED)']);
+  const sum=items.reduce((s,i)=>s+i[1],0),cap=.15*g,c=Math.min(cap,sum);
+  const m=(R.term[String(yrs)]||0)*g,p=S.business==='ROLL'?.10*g:0;
+  pedLoad+=u.ped*g;capped+=c;elig+=sum;multi+=m;port+=p;disc.push({u:u.label,items,sum,cap,c});
+ }
+ const totalDisc=capped+multi+port;
+ const bvp=gross+pedLoad-totalDisc;const gst=bvp*S.gst;
+ return {units:unitRes,gross,pedLoad,disc,elig,capped,multi,port,totalDisc,bvp,gst,total:bvp+gst,annual1:unitRes.reduce((s,u)=>s+u.yrRows[0].annual,0)};
+}
+
+/* ================= recommendation and eligibility rules for the NxSure scenario ================= */
+const REL={SELF:{n:'Self',grp:'FAM',adult:true},SPOUSE:{n:'Spouse',grp:'FAM',adult:true},SON:{n:'Son',grp:'FAM',adult:false,g:'M'},DAUGHTER:{n:'Daughter',grp:'FAM',adult:false,g:'F'},
+ FATHER:{n:'Father',grp:'PAR',adult:true,g:'M'},MOTHER:{n:'Mother',grp:'PAR',adult:true,g:'F'},FIL:{n:'Father-in-law',grp:'PIL',adult:true,g:'M'},MIL:{n:'Mother-in-law',grp:'PIL',adult:true,g:'F'}};
+const GROUPS=[['FAM','Family'],['PAR','Parents'],['PIL','Parents-in-law']];
+const PED={NONE:{n:'None',load:0,path:'none'},DM:{n:'Type 2 diabetes on tablets',load:10,path:'uw',chronic:true},HTN:{n:'Hypertension, controlled',load:10,path:'uw',chronic:true},THY:{n:'Hypothyroidism',load:5,path:'uw'},
+ HEART:{n:'Heart condition',load:0,path:'ppc'},INS:{n:'Diabetes on insulin',load:0,path:'mc'},CKD:{n:'Chronic kidney disease',load:0,path:'mc'}};
+const ZONES=['Zone1','Zone2','Zone3','Zone4','Zone5','Zone6','Zone7'];
+const planFor=age=>age<=35?1:age<=55?2:3; // proposed rule PLN-01
+const constructOf=ms=>{const a=ms.filter(m=>m.adult).length,c=ms.length-a;return a+'A'+(c?'+'+c+'C':'')};
+const CONSTRUCTS=['1A','2A','2A+1C','2A+2C','2A+3C','2A+4C','1A+1C','1A+2C','1A+3C','1A+4C'];
+function uwFor(m,si,nb){ // baseline medical rules; returns [outcome, rule, gapProposal]
+ const a=m.age,S=si===UNL?1e12:si;
+ if(PED[m.ped].path==='mc') return ['Not issuable','BR-RHI-084/091','Managed-care condition: standard issuance not permitted'];
+ if(PED[m.ped].path==='ppc') return ['Pre-policy check-up','BR-RHI-064','Heart condition: physical medical evaluation'];
+ if(m.bmi>40) return ['Not issuable','BR-RHI-094','BMI above 40: managed-care bucket'];
+ if(m.tob) return ['Refer to underwriter','BR-RHI-122','Lifestyle above the defined limits'];
+ if(m.ped!=='NONE') return ['Gap → refer','NEW-UW-01','No baseline rule for a declared, controlled PED. Proposed: Tele-MER + UW, PED loading '+PED[m.ped].load+'%'];
+ if(a<=50&&S<=CR) return ['Instant issue','BR-RHI-074',''];
+ if(a<=60&&S<=50*L) return ['Instant issue','BR-RHI-065',''];
+ if(a>=18&&a<=45&&S>3*CR) return ['Tele-MER','BR-RHI-127',''];
+ if(a>=46&&a<=55&&S>2*CR) return ['Tele-MER','BR-RHI-129',''];
+ if(a>=55&&a<=65&&S>CR) return ['Tele-MER','BR-RHI-131',''];
+ if(a>65&&S>CR) return ['Tele-MER','BR-RHI-133',''];
+ if(a>65&&S>=50*L) return ['Tele-MER','BR-RHI-132',''];
+ const prop=a<18?'Instant issue up to ₹1 Cr, Tele-MER above':a<=55?'Tele-MER':a<=65?'Tele-MER (makes BR-RHI-069 workable)':'Tele-MER, then pre-policy check-up';
+ return ['Gap → '+prop.split(',')[0],'NEW-UW-02','No baseline rule for age '+a+' at '+siL(si)+'. Proposed: '+prop];
+}
+function quote(S,o={}){
+ const T=[];const fire=(id,res,scope,d)=>T.push({id,res,scope,d});
+ const errors=[];
+ const ms=S.members.map(m=>{const r=REL[m.rel];return {...m,adult:r.adult,g:r.g||m.g,nm:r.n,grp:r.grp,pedLoad:PED[m.ped].load}});
+ // eligibility knock-outs
+ ms.forEach(m=>{
+  if(m.adult&&m.age<18){errors.push(m.nm+': adults must be 18 or older (BR-RHI-001).');m.out=true;fire('BR-RHI-001','Fail',m.nm,'Age '+m.age+' below 18')}
+  if(!m.adult&&m.age>35){errors.push(m.nm+': children cannot exceed 35 (BR-RHI-004).');m.out=true;fire('BR-RHI-004','Fail',m.nm,'Age '+m.age+' above 35')}
+  if(m.age>95-(S.term-1)){errors.push(m.nm+': age at the last policy year would pass 95, the end of the age table (NEW-ELG-01).');m.out=true;fire('NEW-ELG-01','Fail',m.nm,'Rating table ends at 95')}
+  if(PED[m.ped].path==='mc'){m.out=true;fire(m.ped==='INS'?'BR-RHI-084':'BR-RHI-091','Fail',m.nm,PED[m.ped].n+' → managed-care bucket; not quoted on this product')}
+ });
+ if(S.res==='NRI') fire('BR-RHI-100','Gap',m0(),'Conflict: BR-RHI-100 blocks non-residents, yet an NRI discount exists (issue I-11). Quoted with the NRI discount.');
+ const pols=[];
+ for(const [gk,gn] of GROUPS){
+  const mem=ms.filter(m=>m.grp===gk&&!m.out);if(!mem.length) continue;
+  fire('BR-RHI-145','Fired',gn,mem.map(m=>m.nm).join(', ')+' → own policy (nuclear family, parents and parents-in-law cannot share a floater)');
+  const eldest=Math.max(...mem.map(m=>m.age));
+  const construct=constructOf(mem);
+  let si=S.si;
+  if(gk!=='FAM'&&S.si<10*L&&mem.some(m=>m.age>=60)){si=10*L;fire('NEW-REC-04','Fired',gn,'Member aged 60+: sum insured lifted to ₹10 L minimum')}
+  // plan recommendation
+  const rp=planFor(eldest);fire('NEW-PLN-01','Fired',gn,'Eldest member '+eldest+' → '+PLANS[rp]+' plan; Classic offered as build-your-own');
+  const planSel=S.sel[gk]!=null?S.sel[gk]:rp;
+  // covers on selected plan: base covers + package covers (on unless package removed) + chosen add-ons
+  const pk=PKGS(planSel);
+  const P={key:gk,name:gn,members:mem,eldest,construct,si,plan:planSel,recPlan:rp};
+  const sugg=suggest(P,S,fire);
+  P.sugg=sugg;
+  const pkgRes=[];
+  for(const [k,codes] of Object.entries(pk)){
+   const removed=(S.pkgOff[gk]||{})[k];
+   const issues=[];codes.forEach(c=>{if(NO_RATE[c]) issues.push(COV[c].n+': '+NO_RATE[c]);const e=elig(c,P,S);if(e) issues.push(COV[c].n+': '+e)});
+   pkgRes.push({k,codes,removed,issues});
+  }
+  P.pkgs=pkgRes;
+  const covers={};
+  pkgRes.forEach(p=>{if(!p.removed) p.codes.forEach(c=>{if(!elig(c,P,S)&&!NO_RATE[c]) covers[c]=defOpt(c,P)})});
+  Object.entries(S.addons[gk]||{}).forEach(([c,o])=>{if(!elig(c,P,S)&&PM[c]&&PM[c][planSel]!=='NA') covers[c]=o});
+  if(si===UNL){delete covers['2XSID1'];delete covers.NOLIMT}
+  P.covers=covers;
+  // floater vs individual
+  const ff={...P,type:mem.length>1?'FF':'IND'},ind={...P,type:'IND'};
+  const rf=ratePolicy(ff,S),ri=mem.length>1?ratePolicy(ind,S):null;
+  const want=S.ptype[gk]||(mem.length>1?(gk!=='FAM'&&eldest>=60?'IND':'FF'):'IND');
+  P.type=mem.length>1?want:'IND';P.r=P.type==='FF'?rf:(ri||rf);P.alt=mem.length>1?(P.type==='FF'?ri:rf):null;
+  if(mem.length>1) fire('NEW-REC-03','Fired',gn,'Floater '+fmt(rf.total)+' vs individual '+fmt(ri.total)+(gk!=='FAM'&&eldest>=60?' → individual SI advised for senior parents (one claim cannot use up both covers)':' → floater advised'));
+  // plan cards: price each plan with its default packages
+  P.cards=PLANS.map((pn,pi)=>{
+   const okAge=pi===0||pi===rp;
+   const c2={};Object.entries(PKGS(pi)).forEach(([k,codes])=>codes.forEach(c=>{if(!elig(c,P,S)&&!NO_RATE[c]) c2[c]=defOpt(c,P)}));
+   const rr=ratePolicy({...P,plan:pi,covers:c2,type:P.type},S);
+   return {pi,pn,okAge,total:rr.total,pk:Object.keys(PKGS(pi)).length};
+  });
+  // UW
+  P.uw=mem.map(m=>{const u=uwFor(m,si,S.business==='NB');fire(u[1],u[0].startsWith('Gap')?'Gap':'Fired',m.nm,u[0]+(u[2]?': '+u[2]:''));return [m.nm,...u]});
+  pols.push(P);
+ }
+ const total=pols.reduce((s,p)=>s+p.r.total,0);
+ const advice=[];
+ if(S.term<3&&pols.length){const t3=pols.reduce((s,p)=>s+ratePolicy({...p},{...S,term:3}).total,0);advice.push(['NEW-REC-12','A 3-year term costs '+fmt(t3)+' in total (multi-year discount 6.5%), against '+fmt(total/S.term*3)+' for three single years at today\'s premium.'])}
+ if(S.budget&&total/S.term>S.budget&&!o.nb){
+  let fit=null;for(const d of [10000,25000,50000,100000,200000]){if(S.ded>=d) continue;if(pols.some(p=>R.vd[p.si]?.[d]==null)) continue;const q=quote({...S,ded:d},{nb:true});if(q.total/S.term<=S.budget){fit=[d,q.total/S.term];break}}
+  const msg=fit?'Annual premium '+fmt(total/S.term)+' is above the '+fmt(S.budget)+' budget. A voluntary deductible of '+fmt(fit[0])+' brings it to '+fmt(fit[1])+'.':'Annual premium '+fmt(total/S.term)+' is above the budget and no deductible closes the gap. Lower the sum insured or remove a package.';
+  advice.push(['NEW-REC-11',msg]);fire('NEW-REC-11','Advice','Basket',msg);
+ }
+ return {pols,total,T,errors,advice};
+ function m0(){return 'Proposer'}
+}
+function defOpt(c,P){if(c==='PACOV')return 10*L;if(c==='TRVSMT')return 10000;if(OPTS[c])return OPTS[c][0];return 'Yes'}
+function elig(c,P,S){ // returns reason if NOT eligible (baseline coverage rules, ATR)
+ const si=P.si,ms=P.members,fem=ms.some(m=>m.adult&&m.g==='F'&&m.age>=18&&m.age<=45&&(m.rel==='SELF'||m.rel==='SPOUSE'));
+ if(PM[c]&&PM[c][P.plan]==='NA') return 'not available on this plan';
+ if(c==='MATERN'){if(si!==UNL&&si<=5*L)return 'needs sum insured above ₹5 L (ATR_116)';if(!['1A','1A+1C','2A','2A+1C'].includes(P.construct))return 'only for 1A, 1A+1C, 2A, 2A+1C (ATR_203)';if(!fem)return 'needs a female self or spouse aged 18–45'}
+ if((c==='NBBABY'||c==='NBVACC'||c==='SURMOM'||c==='OOCYTE'||c==='INFART')&&!(S.addons[P.key]||{}).MATERN) return 'needs Maternity cover (ATR_118/120/211)';
+ if(c==='SURMOM'&&S.term<3) return 'needs a policy term of 3 years or more (ATR_104)';
+ if(c==='WRLDWD'&&si!==UNL&&si<25*L) return 'needs sum insured of ₹25 L or more (ATR_124)';
+ if(c==='PACOV'&&!(si===UNL||si>10*L)||c==='PACOV'&&S.income<=10*L) return 'needs base SI above ₹10 L and family income above ₹10 L (ATR_205)';
+ if(c==='CICOV'&&!ms.some(m=>m.age>=18)) return 'adults only (ATR_204)';
+ if(c==='HCKPLS'&&ms.some(m=>m.age>=60)) return 'members below 60 only (ATR_128)';
+ if(c==='SRCHKP'&&!ms.some(m=>m.age>=60)) return 'needs a member aged 60+ (ATR_129)';
+ if(c==='SMFAML'&&si!==UNL&&si<10*L) return 'needs sum insured of ₹10 L or more (ATR_161)';
+ if(c==='NOLIMT'&&si===UNL) return 'not with Unlimited sum insured (ATR_111)';
+ if(c==='2XSID1'&&si===UNL) return 'not with Unlimited sum insured (proposed NEW-ELG-03)';
+ if(c==='INIWPR'&&S.business!=='ROLL') return 'portability (rollover) only (ATR_207)';
+ if(c==='CDMGMT'&&!(S.addons[P.key]||{}).CHRCAR) return 'needs Chronic Care (ATR_115)';
+ return '';
+}
+function suggest(P,S,fire){
+ const s=[],ms=P.members,si=P.si;
+ const add=(id,c,why)=>{s.push({id,c,why});fire(id,'Fired',P.name,'Suggest '+COV[c].n+': '+why)};
+ if(S.needs.family&&P.key==='FAM') add('NEW-REC-05','MATERN','Planning a child; the waiting period starts at inception');
+ if(ms.some(m=>PED[m.ped].chronic)) add('NEW-REC-06','CHRCAR','Declared diabetes or hypertension; covers chronic-condition care from 30 days');
+ if(ms.some(m=>m.ped!=='NONE'&&PED[m.ped].path==='uw')) add('NEW-REC-06','PEDWPR','Declared PED; cuts the 36-month PED wait');
+ if(S.needs.travel) add('NEW-REC-07','WRLDWD','Travels abroad often');
+ if(S.zone==='Zone1') add('NEW-REC-08','CONSUM','Highest-cost zone: non-payable items are a larger share of the bill');
+ if(S.needs.ci||ms.some(m=>m.adult&&m.age>=40&&m.age<=65)) add('NEW-REC-09','CICOV',S.needs.ci?'Family history of critical illness':'Adult aged 40 or more');
+ if(P.key==='FAM'&&ms.some(m=>m.rel==='SELF'||m.rel==='SPOUSE')) add('NEW-REC-10','PACOV','Earning adult: lump sum for accidental death or disability');
+ if(ms.some(m=>m.age>=60)) add('NEW-REC-14','HOSCSH','Senior member: longer stays, daily cash for non-medical costs');
+ // adequacy
+ const z=+S.zone.slice(-1);let need=(z<=2?10:7.5)*L+(ms.length>=3?5*L:0)+(P.eldest>=56?10*L:0);
+ const sugSI=SI_OPTS.find(v=>v!==UNL&&v>=need)||need;
+ if(si!==UNL&&si<sugSI){P.siAdv='For '+S.zone+', '+ms.length+' member(s) and eldest age '+P.eldest+', we suggest at least '+siL(sugSI)+'.';fire('NEW-REC-04','Advice',P.name,'Suggested SI '+siL(sugSI))}
+ return s;
+}
+
+/* ================= demo state ================= */
+let uid=10;
+const mk=(rel,age,x={})=>({id:++uid,rel,age,g:rel==='SPOUSE'?'F':'M',ped:'NONE',bmi:24,tob:false,...x});
+const base=()=>({zone:'Zone2',imd:'MULTILINE',business:'NB',res:'RI',income:12*L,si:10*L,term:1,room:'AUTO',pp:'60-180',rein:'U',loy:'AUTO',copay:'0',ded:0,bari:'100% of SI',
+ matWp:24,gst:0,womanProposer:false,gmc:false,direct:0,dilc:0,nri:false,budget:0,needs:{family:false,travel:false,ci:false},members:[mk('SELF',34),mk('SPOUSE',32),mk('SON',4)],sel:{},addons:{},pkgOff:{},ptype:{}});
+let S=base(),prev=null,last='Starting quote: Self 34, Spouse 32, Son 4 in Zone 2, desired ₹10 L, 1 year.';
+const SCRIPT=[
+ ['1 · Young family',()=>{S=base();return 'Starting quote: Self 34, Spouse 32, Son 4 in Zone 2, desired ₹10 L, 1 year.'}],
+ ['2 · Add father, 63',()=>{if(!S.members.some(m=>m.rel==='FATHER'))S.members.push(mk('FATHER',63,{ped:'HTN'}));return 'Added Father, 63, controlled hypertension.'}],
+ ['3 · Add mother, 58',()=>{if(!S.members.some(m=>m.rel==='MOTHER'))S.members.push(mk('MOTHER',58,{g:'F'}));return 'Added Mother, 58.'}],
+ ['4 · Raise SI to ₹25 L',()=>{S.si=25*L;return 'Desired sum insured raised to ₹25 L.'}],
+ ['5 · Planning a child',()=>{S.needs.family=true;(S.addons.FAM=S.addons.FAM||{}).MATERN='Step up SI';return 'Customer is planning a child; maternity (step-up, 24-month wait) added on the family policy.'}],
+ ['6 · Budget ₹1,00,000',()=>{S.budget=100000;return 'Annual budget set to ₹1,00,000.'}]];
+/* ================= demo render ================= */
+const DEC=o=>o.startsWith('Instant')?'p-good':o.startsWith('Gap')||o.startsWith('Not')?'p-bad':'p-warn';
+const opt=(arr,cur,lab=x=>x)=>arr.map(v=>`<option value="${esc(v)}" ${String(v)===String(cur)?'selected':''}>${esc(lab(v))}</option>`).join('');
+function rail(){
+ const used=new Set(S.members.map(m=>m.rel));
+ const addable=Object.entries(REL).filter(([k,r])=>r.adult?!used.has(k):S.members.filter(m=>!REL[m.rel].adult).length<4);
+ return `<div class="panel rail" id="rail">
+ <div style="display:grid;gap:8px"><h3>Customer</h3>
+  <div class="row2"><label class="f">Rating zone (from PIN code)<select id="i-zone">${opt(ZONES,S.zone)}</select></label>
+  <label class="f">Channel (IMD)<select id="i-imd">${opt(Object.keys(R.imd),S.imd)}</select></label></div>
+  <div class="row2"><label class="f">Business type<select id="i-bus">${opt(['NB','ROLL'],S.business,v=>v==='NB'?'New business':'Portability (rollover)')}</select></label>
+  <label class="f">Residency<select id="i-res">${opt(['RI','NRI'],S.res,v=>v==='RI'?'Resident Indian':'NRI')}</select></label></div>
+  <label class="f">Annual family income (₹)<input type="number" id="i-income" step="100000" style="width:150px" value="${S.income}"></label>
+ </div>
+ <div style="display:grid;gap:8px"><h3>People to insure</h3>
+ ${S.members.map(m=>{const r=REL[m.rel];return `<div class="member" data-id="${m.id}"><div class="mh"><b>${r.n}</b><button class="x" data-act="rm">Remove</button></div><div class="mf">
+  <label class="f">Age<input type="number" data-k="age" id="a-${m.id}" min="0" max="99" value="${m.age}"></label>
+  ${!r.g?`<label class="f">Gender<select data-k="g" id="g-${m.id}">${opt(['M','F'],m.g,v=>v==='M'?'Male':'Female')}</select></label>`:''}
+  <label class="f">BMI<input type="number" data-k="bmi" id="b-${m.id}" step="0.5" value="${m.bmi}"></label>
+  ${r.adult?`<label class="check" style="font-size:12px"><input type="checkbox" data-k="tob" ${m.tob?'checked':''}> Smokes or drinks above limits</label>`:''}
+  <label class="f" style="flex-basis:100%">Pre-existing disease<select data-k="ped" id="p-${m.id}">${opt(Object.keys(PED),m.ped,v=>PED[v].n)}</select></label></div></div>`}).join('')}
+ <div class="toolbar"><select id="i-addrel" aria-label="Relationship to add">${addable.map(([k,r])=>`<option value="${k}">${r.n}</option>`).join('')}</select><button class="btn" id="b-add">Add person</button></div></div>
+ <div style="display:grid;gap:8px"><h3>Cover wanted</h3>
+  <div class="row2"><label class="f">Sum insured<select id="i-si">${opt(SI_OPTS,S.si,siL)}</select></label>
+  <label class="f">Policy term<select id="i-term">${opt([1,2,3,4,5],S.term,v=>v+' year'+(v>1?'s':'')+(R.term[v]?' (−'+(R.term[v]*100)+'%)':''))}</select></label></div>
+  <div class="row2"><label class="f">Room category<select id="i-room">${opt(['AUTO',...Object.keys(R.room)],S.room,v=>v==='AUTO'?'By sum insured (rule)':v)}</select></label>
+  <label class="f">Pre / post days<select id="i-pp">${opt(Object.keys(R.pp),S.pp)}</select></label></div>
+  <div class="row2"><label class="f">Restorations<select id="i-rein">${opt(Object.keys(REIN),S.rein,v=>({0:'None',1:'One',2:'Two',U:'Unlimited'})[v])}</select></label>
+  <label class="f">Loyalty bonus (yearly–max)<select id="i-loy">${opt(['AUTO',...Object.keys(R.loy)],S.loy,v=>v==='AUTO'?'Default by age':v)}</select></label></div>
+  <div class="row2"><label class="f">Voluntary co-pay<select id="i-copay">${opt(Object.keys(R.copay),S.copay,v=>+v?(v*100)+'% (−'+R.copay[v]*100+'%)':'None')}</select></label>
+  <label class="f">Voluntary deductible<select id="i-ded">${opt([0,10000,25000,50000,100000,200000,300000,400000,500000],S.ded,v=>v?fmt(v):'None')}</select></label></div>
+  <label class="f">Annual budget, optional (₹)<input type="number" id="i-budget" step="5000" style="width:150px" value="${S.budget||''}" placeholder="No budget"></label>
+ </div>
+ <div style="display:grid;gap:6px"><h3>Needs</h3>
+  <label class="check"><input type="checkbox" id="n-family" ${S.needs.family?'checked':''}> Planning a child</label>
+  ${S.needs.family?`<label class="f">Maternity waiting period<select id="i-matwp">${opt([0,6,9,12,24,36],S.matWp,v=>v?v+' months':'No waiting period')}</select></label>`:''}
+  <label class="check"><input type="checkbox" id="n-travel" ${S.needs.travel?'checked':''}> Travels abroad often</label>
+  <label class="check"><input type="checkbox" id="n-ci" ${S.needs.ci?'checked':''}> Family history of critical illness</label></div>
+ <div style="display:grid;gap:6px"><h3>Discounts and tax</h3>
+  <label class="check"><input type="checkbox" id="d-woman" ${S.womanProposer?'checked':''}> Woman proposer (2.5%)</label>
+  <label class="check"><input type="checkbox" id="d-gmc" ${S.gmc?'checked':''}> Holds a corporate GMC policy (5%)</label>
+  <label class="f">Premium tax<select id="i-gst">${opt([0,0.18],S.gst,v=>v?'18% GST (baseline design)':'GST exempt (individual health, from 22 Sep 2025)')}</select></label></div>
+ </div>`;
+}
+function diff(q){
+ if(!prev) return [];const out=[];const pm=Object.fromEntries(prev.pols.map(p=>[p.key,p]));
+ for(const p of q.pols){const o=pm[p.key];
+  if(!o){out.push(`New policy: <b>${p.name}</b> → ${PLANS[p.recPlan]} plan, ${p.type==='FF'?'floater':'individual'}, ${fmt(p.r.total)}.`);continue}
+  if(o.recPlan!==p.recPlan) out.push(`${p.name}: recommended plan ${PLANS[o.recPlan]} → <b>${PLANS[p.recPlan]}</b>.`);
+  if(o.construct!==p.construct) out.push(`${p.name}: family construct ${o.construct} → <b>${p.construct}</b> (family relativity changes).`);
+  if(Math.round(o.r.total)!==Math.round(p.r.total)){const d=p.r.total-o.r.total;out.push(`${p.name}: premium ${fmt(o.r.total)} → <b>${fmt(p.r.total)}</b> (${d>0?'+':'−'}${fmt(Math.abs(d))}).`)}
+  const os=new Set(o.sugg.map(s=>s.c)),ns=new Set(p.sugg.map(s=>s.c));
+  const a=[...ns].filter(c=>!os.has(c)),r=[...os].filter(c=>!ns.has(c));
+  if(a.length) out.push(`${p.name}: newly suggested ${a.map(c=>COV[c].n).join(', ')}.`);
+  if(r.length) out.push(`${p.name}: no longer suggested ${r.map(c=>COV[c].n).join(', ')}.`);
+ }
+ prev.pols.forEach(o=>{if(!q.pols.some(p=>p.key===o.key)) out.push('Policy removed: '+o.name+'.')});
+ const key=t=>t.id+'|'+t.scope+'|'+t.res;const b=new Set(prev.T.map(key));
+ const add=[...new Map(q.T.filter(t=>!b.has(key(t))&&t.res!=='Pass').map(t=>[t.id+t.scope,t])).values()];
+ if(add.length) out.push('Rules now firing: '+add.slice(0,10).map(t=>`<span class="rid ${t.id.startsWith('NEW')?'new':''}">${t.id}</span> ${esc(t.scope)}`).join(', '));
+ if(Math.round(prev.total)!==Math.round(q.total)) out.push(`Basket premium ${fmt(prev.total)} → <b>${fmt(q.total)}</b>.`);
+ return out;
+}
+function outHTML(q){
+ const d=diff(q);let h='';
+ if(q.errors.length) h+=`<div class="panel" style="padding:10px 14px;border-color:var(--bad)">${q.errors.map(esc).join('<br>')}</div>`;
+ h+=`<div class="panel summary"><div><div class="lab">Total premium, ${S.term} year${S.term>1?'s':''}, selected plans</div><div class="big num">${fmt(q.total)}</div></div>
+  <div><div class="lab">Per year</div><div class="num" style="font-size:18px;font-weight:600">${fmt(q.total/S.term)}</div></div>
+  <div><div class="lab">Policies</div><div style="font-size:18px;font-weight:600">${q.pols.length}</div></div>
+  <div class="muted" style="font-size:12px;flex-basis:100%">Approved rate tables. ${S.gst?'GST 18% (baseline design).':'GST exempt.'} Indicative until underwriting.</div></div>`;
+ h+=`<div class="panel change" aria-live="polite"><div><span class="pill p-rec">What changed</span> <span style="margin-left:6px">${esc(last)}</span></div>${d.length?`<ul>${d.map(x=>`<li>${x}</li>`).join('')}</ul>`:'<div class="muted" style="font-size:13px">First calculation. Change any input to see the effect.</div>'}</div>`;
+ if(q.advice.length) h+=`<div class="panel" style="padding:12px 16px"><div class="adv">${q.advice.map(a=>`<div><span class="rid new">${a[0]}</span><span>${esc(a[1])}</span></div>`).join('')}</div></div>`;
+ q.pols.forEach((p,i)=>{
+  const r=p.r;
+  h+=`<section class="panel policy"><div class="ph"><h3>Policy ${i+1} · ${p.name} · ${p.type==='FF'?'Family floater '+p.construct:'Individual'} · ${PLANS[p.plan]} plan · SI ${siL(p.si)}</h3><span class="muted" style="font-size:12.5px">${p.members.map(m=>m.nm+' '+m.age).join(', ')}</span></div>
+  <div class="cards">${p.cards.map(c=>{const st=!c.okAge?['Not for this age','p-bad']:c.pi===p.recPlan?['Recommended','p-rec']:['Alternative','p-alt'];
+   return `<button class="card ${c.pi===p.plan?'sel':''}" data-pol="${p.key}" data-plan="${c.pi}" ${c.okAge?'':'disabled'} aria-pressed="${c.pi===p.plan}">
+   <div class="t"><b>${c.pn}</b><span class="pill ${st[1]}">${st[0]}</span></div>
+   <div><span class="price num">${fmt(c.total)}</span> <span class="muted" style="font-size:12px">${S.term>1?S.term+' yrs':'a year'}</span></div>
+   <div class="why">${c.pk?c.pk+' preselected package'+(c.pk>1?'s':''):'No packages: build your own'}${c.pi===p.recPlan?' · <span class="rid new">NEW-PLN-01</span>':''}</div></button>`}).join('')}</div>
+  ${p.alt?`<div class="toolbar" style="font-size:13px"><span class="muted">Structure:</span> <button class="chip" data-ptype="${p.key}" data-v="FF" aria-pressed="${p.type==='FF'}">Floater ${fmt(p.type==='FF'?r.total:p.alt.total)}</button><button class="chip" data-ptype="${p.key}" data-v="IND" aria-pressed="${p.type==='IND'}">Individual SI ${fmt(p.type==='IND'?r.total:p.alt.total)}</button></div>`:''}
+  ${p.siAdv?`<div class="adv"><div><span class="rid new">NEW-REC-04</span><span>${esc(p.siAdv)}</span></div></div>`:''}
+  <div style="display:grid;gap:6px"><div style="font-weight:600;font-size:13px">Preselected packages on ${PLANS[p.plan]} <span class="muted" style="font-weight:400">(removable only as a whole package)</span></div>
+  ${p.pkgs.length?p.pkgs.map(k=>`<div class="pkg"><div class="ph2"><span><b>Package ${k.k}</b> · ${k.codes.map(c=>COV[c].n).join(', ')}</span>
+   <span class="toolbar">${k.issues.length?'<span class="pill p-bad">Cannot be fully priced</span>':'<span class="pill p-good">Priced</span>'}<label class="check" style="font-size:12px"><input type="checkbox" data-pkg="${p.key}" data-k="${k.k}" ${k.removed?'':'checked'}> Included</label></span></div>
+   ${k.issues.length?`<div class="muted" style="font-size:12px">${k.issues.map(esc).join(' · ')}</div>`:''}</div>`).join(''):'<div class="muted" style="font-size:13px">Classic has no preselected packages.</div>'}</div>
+  <div style="display:grid;gap:6px"><div style="font-weight:600;font-size:13px">Suggested covers</div><div class="lines">${p.sugg.map(s=>{const c=s.c,e=elig(c,p,S),nr=NO_RATE[c];const on=c in p.covers;
+   let price='';if(!e&&!nr){const t=ratePolicy({...p,type:p.type,covers:{...p.covers,[c]:p.covers[c]??((S.addons[p.key]||{})[c]??defOpt(c,p))}},S).total-ratePolicy({...p,covers:Object.fromEntries(Object.entries(p.covers).filter(([k])=>k!==c))},S).total;price='+'+fmt(t)}
+   const sel=OPTS[c]&&!e&&!nr?`<select data-opt="${c}" data-pol="${p.key}" aria-label="${esc(COV[c].n)} option">${opt(OPTS[c],(S.addons[p.key]||{})[c]??defOpt(c,p),v=>OPTL(c,v))}</select>`:'';
+   return `<div class="line ${e||nr?'na':''}">${e||nr?'<span></span>':`<input type="checkbox" data-add="${c}" data-pol="${p.key}" ${on?'checked':''} aria-label="${esc(COV[c].n)}">`}
+   <span class="nm">${COV[c].n}</span><span>${e?'<span class="pill p-alt">Not eligible</span>':nr?'<span class="pill p-bad">No approved rate</span>':`<b class="num">${price}</b>`}</span>
+   <div class="rs"><span class="rid new">${s.id}</span> ${esc(s.why)}.${e?' Not eligible: '+esc(e)+'.':''}${nr?' '+esc(nr)+'.':''} ${sel}</div></div>`}).join('')||'<div class="muted" style="font-size:13px">No suggestion for this profile.</div>'}</div></div>
+  <div style="display:grid;gap:4px"><div style="font-weight:600;font-size:13px">Underwriting pre-check (medical grid)</div>
+   ${p.uw.map(u=>`<div style="font-size:12.5px"><span class="pill ${DEC(u[1])}">${esc(u[1])}</span> ${esc(u[0])} · <span class="rid ${u[2].startsWith('NEW')?'new':''}">${u[2]}</span> ${esc(u[3])}</div>`).join('')}</div>
+  <details class="trace" style="border-top:1px solid var(--line)"><summary style="padding-inline:0">Premium build-up (approved rates)</summary><div style="padding-inline:0">${buildUp(p)}</div></details>
+  </section>`;
+ });
+ h+=`<details class="panel trace"><summary>Rule trace · ${q.T.length} results</summary><div><div class="tbl-wrap"><table><thead><tr><th>#</th><th>Rule</th><th>Result</th><th>Scope</th><th>Detail</th></tr></thead><tbody>${q.T.map((t,i)=>`<tr><td class="muted">${i+1}</td><td><span class="rid ${t.id.startsWith('NEW')?'new':''}">${t.id}</span></td><td class="res-${t.res}">${t.res}</td><td>${esc(t.scope)}</td><td>${esc(t.d)}</td></tr>`).join('')}</tbody></table></div><p class="muted" style="font-size:12px;margin-top:6px">Gold rule IDs (NEW-…) are rules this definition adds; blue IDs are baseline rules.</p></div></details>`;
+ return h;
+}
+function buildUp(p){
+ const r=p.r;let rows='';
+ r.units.forEach(u=>{u.yrRows.forEach(y=>{rows+=`<tr><td>${esc(u.label)} · year ${y.y}</td><td>age ${y.age}${p.type==='FF'?' (eldest), '+u.col:', 1A'}</td><td class="r num">${fmt2(y.base)}</td><td class="r num">${fmt2(y.add)}</td><td class="r num">${y.bari?'−'+fmt2(y.bari):'—'}</td><td class="r num">${fmt2(y.annual)}</td></tr>`})});
+ const addRows=Object.keys(p.covers).length?`<div class="muted" style="font-size:12px;margin-top:6px">Covers priced: ${Object.entries(r.units[0].yrRows[0].lines).map(([c,v])=>esc(COV[c].n)+' '+fmt(v)).join(' · ')} (year 1${p.type==='IND'?', first member':''})</div>`:'';
+ const d=r.disc.map(x=>x.items.map(i=>`<tr><td colspan="5">${esc(x.u)} · ${esc(i[0])} <span class="muted">${esc(i[2])}</span></td><td class="r num">−${fmt2(i[1])}</td></tr>`).join('')+(x.sum>x.cap?`<tr><td colspan="5" class="muted">${esc(x.u)} · 15% cap applies: eligible ${fmt2(x.sum)} limited to ${fmt2(x.cap)}</td><td></td></tr>`:'')).join('');
+ return `<div class="tbl-wrap"><table><thead><tr><th>Unit</th><th>Rating basis</th><th class="r">Base</th><th class="r">Covers</th><th class="r">Bariatric</th><th class="r">Annual</th></tr></thead><tbody>${rows}
+ <tr><td colspan="5"><b>Gross premium</b></td><td class="r num"><b>${fmt2(r.gross)}</b></td></tr>
+ <tr><td colspan="5">PED loading</td><td class="r num">+${fmt2(r.pedLoad)}</td></tr>${d}
+ <tr><td colspan="5">Multi-year discount (outside cap)</td><td class="r num">−${fmt2(r.multi)}</td></tr>${r.port?`<tr><td colspan="5">Porting discount (outside cap, 10% placeholder)</td><td class="r num">−${fmt2(r.port)}</td></tr>`:''}
+ <tr><td colspan="5">Before-tax premium</td><td class="r num">${fmt2(r.bvp)}</td></tr><tr><td colspan="5">GST ${S.gst*100}%</td><td class="r num">${fmt2(r.gst)}</td></tr>
+ <tr><td colspan="5"><b>Total premium</b></td><td class="r num"><b>${fmt(r.total)}</b></td></tr></tbody></table></div>${addRows}`;
+}
+function renderDemo(full){
+ const m=document.getElementById('main');
+ if(full||!document.getElementById('rail')) m.innerHTML=`<div class="script"><span class="lab">NxSure demo script:</span>${SCRIPT.map((s,i)=>`<button class="btn" data-step="${i}">${s[0]}</button>`).join('')}</div><div class="demo">${rail()}<div class="out" id="out"></div></div>`;
+ const q=quote(S);document.getElementById('out').innerHTML=outHTML(q);prev=q;
+}
+function change(t,full){last=t;renderDemo(full)}
+document.addEventListener('click',e=>{
+ if(!document.getElementById('rail')) return;
+ const st=e.target.closest('[data-step]');if(st){const d=SCRIPT[+st.dataset.step][1]();if(st.dataset.step==='0')prev=null;change(d,true);return}
+ const cd=e.target.closest('.card[data-plan]');if(cd&&!cd.disabled){S.sel[cd.dataset.pol]=+cd.dataset.plan;change('Customer chose the '+PLANS[+cd.dataset.plan]+' plan for the '+cd.dataset.pol.toLowerCase()+' policy.');return}
+ const pt=e.target.closest('[data-ptype]');if(pt){S.ptype[pt.dataset.ptype]=pt.dataset.v;change('Structure set to '+(pt.dataset.v==='FF'?'floater':'individual sum insured')+'.');return}
+ if(e.target.id==='b-add'){const rel=document.getElementById('i-addrel').value;if(!rel)return;const r=REL[rel];const age=r.adult?(r.grp==='FAM'?30:62):3;S.members.push(mk(rel,age,{g:r.g||'F'}));change('Added '+r.n+', '+age+'.',true);return}
+ const rm=e.target.closest('[data-act="rm"]');if(rm){const id=+rm.closest('.member').dataset.id;const mm=S.members.find(x=>x.id===id);S.members=S.members.filter(x=>x.id!==id);change('Removed '+REL[mm.rel].n+'.',true)}
+});
+document.addEventListener('input',e=>{
+ const el=e.target;if(!document.getElementById('rail')||!el.closest('#rail,#out'))return;
+ if(el.dataset.add){const a=S.addons[el.dataset.pol]=S.addons[el.dataset.pol]||{};if(el.checked)a[el.dataset.add]=defOpt(el.dataset.add,{});else delete a[el.dataset.add];change((el.checked?'Added ':'Removed ')+COV[el.dataset.add].n+'.');return}
+ if(el.dataset.opt){const a=S.addons[el.dataset.pol]=S.addons[el.dataset.pol]||{};const c=el.dataset.opt;const v=typeof OPTS[c][0]==='number'?+el.value:el.value;a[c]=v;change(COV[c].n+' option set to '+OPTL(c,v)+'.');return}
+ if(el.dataset.pkg){const o=S.pkgOff[el.dataset.pkg]=S.pkgOff[el.dataset.pkg]||{};o[el.dataset.k]=!el.checked;change('Package '+el.dataset.k+(el.checked?' included':' removed')+'.');return}
+ const mem=el.closest('.member');if(mem){const m=S.members.find(x=>x.id===+mem.dataset.id);const k=el.dataset.k;const r=REL[m.rel];
+  if(k==='age'||k==='bmi'){if(el.value==='')return;const o=m[k];m[k]=+el.value;change(r.n+' '+k+' '+o+' → '+el.value+'.')}
+  else if(k==='tob'){m.tob=el.checked;change(r.n+(el.checked?' declares':' no longer declares')+' smoking or drinking above limits.')}
+  else{m[k]=el.value;change(r.n+': '+(k==='ped'?'pre-existing disease set to '+PED[el.value].n:'gender set to '+(el.value==='F'?'female':'male'))+'.')}return}
+ const id=el.id,v=el.value;
+ const set={'i-zone':['zone',v,'Zone set to '+v],'i-imd':['imd',v,'Channel set to '+v],'i-bus':['business',v,'Business type set to '+(v==='NB'?'new business':'portability')],'i-res':['res',v,'Residency set to '+v],
+  'i-income':['income',+v,'Family income set to '+fmt(+v)],'i-si':['si',+v,'Sum insured set to '+siL(+v)],'i-term':['term',+v,'Term set to '+v+' year(s)'],'i-room':['room',v,'Room category set to '+v],'i-pp':['pp',v,'Pre/post days set to '+v],
+  'i-rein':['rein',v,'Restorations set to '+v],'i-loy':['loy',v,'Loyalty bonus option set to '+v],'i-copay':['copay',v,'Voluntary co-pay set to '+(+v*100)+'%'],'i-ded':['ded',+v,'Voluntary deductible set to '+(+v?fmt(+v):'none')],
+  'i-matwp':['matWp',+v,'Maternity waiting period set to '+v+' months'],'i-budget':['budget',+v||0,+v?'Budget set to '+fmt(+v):'Budget cleared'],'i-gst':['gst',+v,'Tax basis changed']}[id];
+ if(set){S[set[0]]=set[1];if(id==='i-res')S.nri=v==='NRI';change(set[2]+'.');return}
+ if(id.startsWith('n-')){const k={'n-family':'family','n-travel':'travel','n-ci':'ci'}[id];S.needs[k]=el.checked;change('Need "'+k+'" '+(el.checked?'ticked':'cleared')+'.',true);return}
+ if(id==='d-woman'){S.womanProposer=el.checked;change('Woman proposer discount '+(el.checked?'on':'off')+'.')}
+ if(id==='d-gmc'){S.gmc=el.checked;change('GMC holder discount '+(el.checked?'on':'off')+'.')}
+});
+
+/* ================= authored analysis (review of the baseline design) ================= */
+const ISSUES=/*__ISSUES__*/[];
+const NEWRULES=/*__NEWRULES__*/[];
+const INTEG=/*__INTEG__*/[];
+const IDENT=/*__IDENT__*/[];
+
+/* ================= definition tabs ================= */
+const TABS=[['quote','Live quote'],['review','Review summary'],['identity','Product identity'],['plans','Plans and packages'],['covers','Coverages and benefits'],['clauses','Clauses'],['fields','Data dictionary'],['codes','Code tables'],['rating','Rating'],['uw','Underwriting'],['rules','Business rules'],['endorse','Endorsements'],['integ','Integrations'],['issues','Issues and decisions']];
+const tbl=(h,rows)=>`<div class="tbl-wrap"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const tagC=t=>`<span class="pill ${t==='certain'?'p-good':t==='likely'?'p-warn':'p-bad'}">${t}</span>`;
+function vReview(){
+ const sev=s=>ISSUES.filter(i=>i[2]===s).length;
+ return `<div class="section"><h2>Review summary</h2><p class="lede">A generic Indian retail indemnity health product, defined for configuration on InsureMO. This page holds the full definition, a review of its baseline design and a working quote that runs on the approved rate tables.</p>
+ <div class="tiles">${[['Coverages',D.coverages.length],['Benefits',D.benefits.length],['Plans',PLANS.length],['Fields',D.fields.length],['Code tables',D.dataTables.filter(b=>b.rows.length).length],['Rules (baseline)',D.rules.length],['Rules added',NEWRULES.length],['Issues found',ISSUES.length]].map(t=>`<div class="panel tile"><div class="lab">${t[0]}</div><div class="v num">${t[1]}</div></div>`).join('')}</div></div>
+ <div class="section"><h2>Verdict</h2><div class="panel" style="padding:14px 18px;display:grid;gap:8px">
+ <p><b>Strong on structure, not yet ready to configure.</b> The rating chain, coverage register and endorsement design are detailed and mostly consistent. ${sev('High')} high-severity issues block a clean build: GST at 18% on a product that is now exempt, plans named by age with no age rule, packages that contain covers with no approved premium, a medical grid with gaps, conflicting zone and room-rent rules, an NRI rule that contradicts the NRI discount, and renewal-only benefits sold in an MVP without renewal.</p>
+ <p>Recommendation: close the ${sev('High')} high items in one workshop with the insurer's product, actuarial and underwriting leads before configuration starts; take the ${sev('Medium')} medium items into the configuration sprint backlog. Each issue on the Issues tab has a proposed decision.</p></div></div>
+ <div class="section"><h2>High-severity issues</h2>${tbl(['#','Area','Finding','Proposed decision'],ISSUES.filter(i=>i[2]==='High').map(i=>[`<span class="mono">${i[0]}</span>`,i[1],esc(i[3]),esc(i[5])]))}</div>
+ <div class="section"><h2>Rating check</h2>${ratingCheck()}</div>`;
+}
+function ratingCheck(){
+ const S0={...base(),zone:'Zone1',imd:'MULTILINE',room:'Single private AC room',pp:'60-180',rein:'U',loy:'20%-100%',copay:'0',ded:0,bari:'100% of SI',term:1};
+ const b=basePrem(30,10*L,'2A',S0);
+ const P={type:'FF',members:[{age:30,adult:true,rel:'SELF',ped:'NONE'},{age:28,adult:true,rel:'SPOUSE',ped:'NONE'}],construct:'2A',si:10*L,covers:{'2XSID1':'Yes',HR2HOS:'Yes',CONSUM:'Yes'}};
+ const a=ratePolicy(P,S0).units[0].yrRows[0].annual;
+ const ok1=Math.abs(b-11675.929254)<0.01,ok2=Math.abs(a-14917.102942)<0.01;
+ return `<p class="lede">The live quote runs the specified formulas on the approved tables. It reproduces the specification's worked examples to the paisa:</p>${tbl(['Specification worked example','Specified value','This engine','Result'],[['Floater 2A, eldest 30, SI ₹10 L, Zone1, single private AC, unlimited restoration, loyalty 20%–100%: base premium','₹11,675.93',fmt2(b),`<span class="pill ${ok1?'p-good':'p-bad'}">${ok1?'Match':'Differs'}</span>`],['Same, plus 2X SI, 2-hour hospitalisation and consumables: annual premium','₹14,917.10',fmt2(a),`<span class="pill ${ok2?'p-good':'p-bad'}">${ok2?'Match':'Differs'}</span>`]])}
+ <div class="note">The worked example itself breaks two product rules: it rates a ₹10 L policy on a single private AC room although ₹10 L and above is "no restriction up to Deluxe" (issue I-07), and it uses loyalty 20%–100% although the default for age 30 is 100%–1000% (issue I-09). The live quote uses the rule defaults.</div>`;
+}
+function vIdentity(){return `<div class="section"><h2>Product identity</h2><p class="lede">Generic definition. "Refined" values differ from the baseline design; see the Issues tab for the reason.</p><div class="panel kv">${IDENT.map(r=>`<div>${esc(r[0])}</div><div>${esc(r[1])}${r[2]?` <span class="pill p-warn">refined</span>`:''}</div>`).join('')}</div></div>`}
+function vPlans(){
+ const cell=v=>v==='Base Cover'?'<span class="av-B">Base</span>':v.startsWith('Mandatory')?`<span class="av-P">Pkg ${v.slice(-1)}</span>`:v==='Optional Cover'?'<span class="av-O">Optional</span>':'<span class="av-N">NA</span>';
+ return `<div class="section"><h2>Plans and packages</h2><p class="lede">A plan sets which covers are offered; it does not set the sum insured. "Pkg n" covers are preselected and can be removed only as a whole package. The baseline names three plans by age but has no rule enforcing it; proposed rule <span class="rid new">NEW-PLN-01</span> adds one (Young up to 35, Prime 36–55, Senior 56+, Classic any age). The names "&lt;35" and "36–55" leave age 35 in no plan.</p>
+ <div class="grid2">${PLANS.map((pn,pi)=>{const pk=PKGS(pi);return `<div class="panel" style="padding:12px;display:grid;gap:6px"><b>${pn}</b>${Object.keys(pk).length?Object.entries(pk).map(([k,c])=>{const bad=c.filter(x=>NO_RATE[x]);return `<div style="font-size:13px">Package ${k}: ${c.map(x=>COV[x].n).join(', ')} ${bad.length?`<span class="pill p-bad">no rate: ${bad.map(x=>COV[x].n).join(', ')}</span>`:'<span class="pill p-good">priced</span>'}</div>`}).join(''):'<div class="muted" style="font-size:13px">No packages; every add-on optional.</div>'}</div>`}).join('')}</div></div>
+ <div class="section"><h2>Plan cover relation</h2>${tbl(['Cover','Code',...PLANS],D.planMatrix.map(r=>[esc(r[0]),`<span class="mono">${r[1]}</span>`,...r.slice(2,6).map(cell)]))}</div>`;
+}
+function vCovers(){
+ const atr=c=>D.atr.filter(a=>a[3]===c).map(a=>`<span class="rid">${a[1]}</span> ${esc(a[4])}: ${esc(a[8]||a[7])}`).join('<br>');
+ const clm=c=>D.claimRules.filter(a=>a[3]===c).map(a=>`<span class="rid">${a[1]}</span> ${esc(a[8])}`).join('<br>');
+ const prem=c=>CLASS_A[c]?'A · % of base · '+CLASS_A[c]:CLASS_B[c]?'B · table · '+CLASS_B[c]:({LOYBON:'Base relativity · Section J',RESET:'Base relativity · Section I',ROOMOD:'Base relativity · Section E',PPHDAY:'Base relativity · Section G',VOLCOP:'Base discount · Section K',VOLDED:'Base discount · Section L',BARSUR:'Discount · Section N',SMSTEP:'Renewal discount · Section O',HOSPIN:'Base premium',NBBABY:'Priced inside Maternity'})[c]||'—';
+ const st=c=>NO_RATE[c]?`<span class="pill p-bad">${esc(NO_RATE[c])}</span>`:'<span class="pill p-good">ready</span>';
+ const rows=[...D.coverages.map(c=>c[1]),...D.benefits.map(b=>b[3])].map(c=>{const v=COV[c];return [`<span class="mono">${c}</span>`,esc(v.n)+(v.benefit?` <span class="muted">(benefit of ${esc(v.parent||'In-patient')})</span>`:''),esc(v.logic),esc(v.detail),esc(v.basis||''),prem(c),atr(c)||'—',clm(c)||'—',st(c)]});
+ return `<div class="section"><h2>Coverages and benefits</h2><p class="lede">${D.coverages.length} coverages and ${D.benefits.length} benefits in one register: sum insured logic, options, how the premium is set, configuration rules (ATR) and claim conditions (CLM, for the Claims module). Status flags covers that cannot be sold today because the premium or sum insured is missing.</p>${tbl(['Code','Cover','SI logic','SI detail and options','Floater basis','Premium','Configuration rules','Claim conditions','Status'],rows)}</div>`;
+}
+function vClauses(){
+ const add=[['CL-NEW-01','Customer Information Sheet','Policy','Mandatory','Issue the CIS with every policy and record the customer acknowledgement.'],['CL-NEW-02','Cashless turnaround','Policy','Mandatory','Cashless pre-authorisation decided within 1 hour; final authorisation within 3 hours of the discharge request.'],['CL-NEW-03','Senior citizen protection','Policy','Conditionally mandatory','Members aged 60+: dedicated grievance channel and premium increase limits as per IRDAI circulars.'],['CL-NEW-04','Policy pause (Travel Pause cover)','Policy','Optional','Cover paused for up to 30 days of overseas travel; expiry extended by the same days. Needs the Policy Pause endorsement.']];
+ return `<div class="section"><h2>Clauses</h2>${tbl(['#','Clause','Level','Mandatory','Related cover','Wording summary'],D.clauses.map(c=>[`<span class="mono">${c[0]}</span>`,esc(c[1]),esc(c[2]),esc(c[4]),esc(c[5]),esc(c[3])]))}</div>
+ <div class="section"><h2>Clauses to add</h2><p class="lede">Gaps against IRDAI's 2024 health master circular and against covers the product sells. [likely]</p>${tbl(['#','Clause','Level','Mandatory','Wording summary'],add.map(r=>[`<span class="rid new">${r[0]}</span>`,r[1],r[2],r[3],r[4]]))}</div>`;
+}
+function vFields(){
+ const secs=[...new Set(D.fields.map(f=>f[0]))];
+ return `<div class="section"><h2>Data dictionary</h2><p class="lede">${D.fields.length} fields by section. CM = conditionally mandatory.</p><div class="chips" id="dd-chips"><button class="chip" aria-pressed="true" data-s="">All</button>${secs.map(s=>`<button class="chip" aria-pressed="false" data-s="${esc(s)}">${esc(s)} (${D.fields.filter(f=>f[0]===s).length})</button>`).join('')}</div><div id="dd-t">${ddT('')}</div></div>
+ <div class="section"><h2>Medical questionnaire</h2><p class="lede">${D.questionnaire.filter(r=>r[3].startsWith('PED')).length} questionnaire items at insured-person level: 16 disease groups with named sub-conditions, follow-up questions and clinical values (HbA1c, blood pressure, cholesterol) that drive PED loading and referral.</p>${tbl(['Section','Group','Question','Widget','Table','Remarks'],D.questionnaire.filter(r=>r[3]).map(r=>[esc(r[0]),esc(r[2]),esc(r[3]),esc(r[4]),esc(r[7]),esc(r[9])]))}</div>`;
+}
+const ddT=s=>tbl(['Section','Level','Cover','Field','Widget','Type','Mandatory','Code table','Example','Remarks'],D.fields.filter(f=>!s||f[0]===s).map(f=>[esc(f[0]),esc(f[1]),esc(f[2]),'<b>'+esc(f[3])+'</b>',esc(f[4]),esc(f[5]),esc(f[6]),`<span class="mono">${esc(f[7])}</span>`,esc(f[8]),esc(f[9]+(f[10]&&f[10]!=='field'?' · '+f[10]:''))]));
+function vCodes(){
+ const blocks=[...D.dataTables,...D.questTables].filter(b=>b.rows.length>1&&b.rows[0][0]==='Id');
+ const masters=D.dataTables.filter(b=>!b.rows.length||b.rows[0][0]!=='Id').flatMap(b=>b.rows).filter(r=>r[1]);
+ return `<div class="section"><h2>Code tables</h2><p class="lede">${blocks.length} code tables with their values, plus large masters maintained outside the product.</p><div class="grid2">${blocks.map(b=>`<div class="panel" style="padding:10px;display:grid;gap:6px;align-content:start;min-width:0"><b class="mono">${esc(b.title)}</b><div class="tbl-wrap" style="max-height:220px;overflow:auto"><table><tbody>${b.rows.slice(1).map(r=>`<tr><td class="mono">${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table></div></div>`).join('')}</div></div>
+ ${masters.length?`<div class="section"><h2>External masters</h2>${tbl(['Master','Description'],masters.map(r=>[`<span class="mono">${esc(r[0])}</span>`,esc(r[1])]))}</div>`:''}`;
+}
+function vRating(){
+ const pc=D.premiumCalc.filter(b=>b.rows.length).map(b=>`<div style="display:grid;gap:6px"><b>${esc(b.title)}</b>${tbl(b.rows[0].length>2&&b.rows.length>1?b.rows[0].map(esc):['Item','Rule'],(b.rows[0].length>2&&b.rows.length>1?b.rows.slice(1):b.rows).map(r=>r.map(esc)))}</div>`).join('');
+ const rts=D.rateTables.filter(b=>b.rows.length).map(b=>`<div style="display:grid;gap:6px;align-content:start;min-width:0"><b class="mono">${esc(b.title)}</b>${tbl(b.rows[0].map(esc),b.rows.slice(1).map(r=>r.map(c=>/^\d+\.\d{4,}$/.test(c)?(+c).toFixed(4):esc(c))))}</div>`).join('');
+ return `<div class="section"><h2>Rating</h2><p class="lede">Base premium is multiplicative; add-ons are additive (Class A: % of base; Class B: table value); discounts sit on the gross premium with a 15% cap, multi-year and porting outside the cap; PED loading is added on gross. The live quote implements every step below.</p>${ratingCheck()}</div>
+ <div class="section"><h2>Calculation specification</h2>${pc}</div>
+ <div class="section"><h2>Approved rate tables</h2><div class="note">Confidential actuarial values. Share this page only within the engagement. Values shown to 4 decimals; the engine uses full precision.</div><div class="grid2">${rts}</div></div>`;
+}
+function vUW(){
+ const ages=[['Child 91 days–17',10],['18–45',40],['46–50',48],['51–55',53],['56–60',58],['61–65',63],['66+',70]];
+ const sis=[10*L,50*L,CR,2*CR,UNL];
+ const cell=(a,s)=>{const u=uwFor({age:a,ped:'NONE',bmi:24,tob:false},s,true);const c=u[0].startsWith('Instant')?'c-stp':u[0].startsWith('Gap')?'c-gap':u[0].startsWith('Tele')?'c-tele':'c-ppmc';return `<td class="${c}">${u[0].startsWith('Gap')?'Gap':esc(u[0])}<br><span class="mono" style="font-size:11px">${u[1]}</span></td>`};
+ const mc=D.rules.filter(r=>/Managed Care/i.test(r[2])||/Managed Care/i.test(r[4]));
+ return `<div class="section"><h2>Medical grid (new business, no PED)</h2><p class="lede">Each cell shows the baseline rule that decides the case. Red cells have no rule: the system cannot decide whether to issue, call for Tele-MER or a check-up. Rule <span class="rid new">NEW-UW-02</span> proposes the missing cells; the live quote shows the proposal.</p>
+ <div class="tbl-wrap"><table class="grid-uw"><thead><tr><th>Age</th>${sis.map(s=>`<th style="text-align:center">SI ${s===10*L?'₹3 L–₹25 L':siL(s)}</th>`).join('')}</tr></thead><tbody>${ages.map(a=>`<tr><td style="text-align:left">${a[0]}</td>${sis.map(s=>cell(a[1],s)).join('')}</tr>`).join('')}</tbody></table></div>
+ <div class="note">Also missing: any path for a declared, controlled PED (diabetes on tablets, controlled blood pressure). All STP rules require "no PED" and only heart and managed-care conditions have rules. Proposed: <span class="rid new">NEW-UW-01</span> Tele-MER plus underwriter decision with the PED loading grid (5%–100%).</div></div>
+ <div class="section"><h2>Managed-care conditions (not issuable on this product)</h2>${tbl(['Rule','Condition','Outcome','Team'],mc.map(r=>[`<span class="rid">${r[0]}</span>`,esc(r[3]),esc(r[4]),esc(r[8])]))}</div>`;
+}
+function vRules(){
+ const cats=[...new Set(D.rules.map(r=>r[11]||'other'))];
+ return `<div class="section"><h2>Business rules</h2><p class="lede">${D.rules.length} baseline rules and ${NEWRULES.length} proposed rules. Rules marked out of MVP scope are kept so the backlog is visible.</p><div class="toolbar"><div class="chips" id="r-chips"><button class="chip" aria-pressed="true" data-c="">All</button>${cats.map(c=>`<button class="chip" aria-pressed="false" data-c="${esc(c)}">${esc(c)}</button>`).join('')}<button class="chip" aria-pressed="false" data-c="NEW">Proposed</button></div><input type="search" id="r-q" placeholder="Search rules"></div><div id="r-t">${rT('','')}</div></div>`;
+}
+function rT(c,q){q=q.toLowerCase();
+ const rows=c==='NEW'?NEWRULES.map(r=>[`<span class="rid new">${r[0]}</span>`,esc(r[1]),esc(r[2]),esc(r[3]),'Proposed',esc(r[4])]):D.rules.filter(r=>!c||(r[11]||'other')===c).map(r=>[`<span class="rid">${r[0]}</span>`,esc(r[1]),esc(r[3]),esc(r[4]),esc(r[5])+' · '+esc(r[7]),esc(r[10])+(/out of mvp/i.test(r[10])?' <span class="pill p-warn">out of MVP</span>':'')]);
+ return tbl(['Rule','Function / name','Condition','Outcome','Type · trigger','Remarks'],rows.filter(r=>!q||r.join(' ').toLowerCase().includes(q)));}
+function vEndorse(){return `<div class="section"><h2>Endorsements</h2><p class="lede">Basic Information Endorsement (BIE) for data and member changes, plus Cancellation. Re-rating uses the same engine as new business; the delta is pro-rated by policy year.</p>${D.endorsement.filter(b=>b.rows.length).map(b=>`<div style="display:grid;gap:6px;margin-bottom:12px"><b>${esc(b.title)}</b>${tbl((b.rows[0].length>2?b.rows[0]:['Item','Rule']).map(esc),(b.rows[0].length>2?b.rows.slice(1):b.rows).map(r=>r.filter((x,i)=>i<9).map(esc)))}</div>`).join('')}</div>`}
+function vInteg(){return `<div class="section"><h2>External integrations</h2><p class="lede">The baseline design does not specify external interfaces. These are implied by its fields and rules; each needs a specification before build.</p>${tbl(['Interface','Direction','Used by','Data','MVP'],INTEG)}</div>`}
+function vIssues(){return `<div class="section"><h2>Issues and decisions</h2><p class="lede">${ISSUES.length} findings from reading the baseline design against itself and against Indian market and regulatory practice. Each has a proposed decision for the insurer to confirm. Confidence: certain = the documents contradict each other; likely = strong inference from regulation or market practice; guessing = assumption to confirm.</p>
+ <div class="chips" id="i-chips"><button class="chip" aria-pressed="true" data-v="">All</button>${['High','Medium','Low'].map(s=>`<button class="chip" aria-pressed="false" data-v="${s}">${s} (${ISSUES.filter(i=>i[2]===s).length})</button>`).join('')}</div><div id="i-t">${iT('')}</div></div>
+ <div class="section"><h2>Proposed rules</h2>${tbl(['Rule','Name','Condition','Outcome','Closes'],NEWRULES.map(r=>[`<span class="rid new">${r[0]}</span>`,esc(r[1]),esc(r[2]),esc(r[3]),esc(r[4])]))}</div>`}
+const iT=v=>tbl(['#','Area','Severity','Finding','Evidence','Proposed decision','Confidence'],ISSUES.filter(i=>!v||i[2]===v).map(i=>[`<span class="mono">${i[0]}</span>`,i[1],`<span class="sev-${i[2]}">${i[2]}</span>`,esc(i[3]),`<span class="muted">${esc(i[4])}</span>`,esc(i[5]),tagC(i[6])]));
+function route(){
+ const id=(location.hash||'#quote').slice(1);const tab=TABS.find(t=>t[0]===id)?id:'quote';
+ document.getElementById('tabs').innerHTML=TABS.map(t=>`<a href="#${t[0]}" ${t[0]===tab?'aria-current="page"':''}>${t[1]}</a>`).join('');
+ if(tab==='quote'){prev=null;renderDemo(true)}
+ else document.getElementById('main').innerHTML=({review:vReview,identity:vIdentity,plans:vPlans,covers:vCovers,clauses:vClauses,fields:vFields,codes:vCodes,rating:vRating,uw:vUW,rules:vRules,endorse:vEndorse,integ:vInteg,issues:vIssues})[tab]();
+ window.scrollTo(0,0);
+}
+document.addEventListener('click',e=>{
+ const a=e.target.closest('#dd-chips .chip');if(a){document.querySelectorAll('#dd-chips .chip').forEach(x=>x.setAttribute('aria-pressed',x===a));document.getElementById('dd-t').innerHTML=ddT(a.dataset.s)}
+ const b=e.target.closest('#r-chips .chip');if(b){document.querySelectorAll('#r-chips .chip').forEach(x=>x.setAttribute('aria-pressed',x===b));document.getElementById('r-t').innerHTML=rT(b.dataset.c,document.getElementById('r-q').value)}
+ const c=e.target.closest('#i-chips .chip');if(c){document.querySelectorAll('#i-chips .chip').forEach(x=>x.setAttribute('aria-pressed',x===c));document.getElementById('i-t').innerHTML=iT(c.dataset.v)}
+});
+document.addEventListener('input',e=>{if(e.target.id==='r-q'){const a=document.querySelector('#r-chips .chip[aria-pressed="true"]');document.getElementById('r-t').innerHTML=rT(a?a.dataset.c:'',e.target.value)}});
+window.addEventListener('hashchange',route);
+route();
+</script>
