@@ -11,6 +11,8 @@ Learning material for the InsureMO Easy Apps modules for business analysts, test
 | Reinsurance (XRI) | `reinsurance-learning-guide/` | `reinsurance-learning-guide/src/` (v2 template) | https://claude.ai/artifact/Q3LqqcJvLVLntmFCZATymY |
 | **Easy Apps (all four)** | `easyapps-learning-guide/` | `easyapps-learning-guide/src/` + `build/` | https://claude.ai/artifact/D4YUYkPsfJHucPw8yUpiW7 |
 
+- `.claude/skills/insuremo-product/`: InsureMO product knowledge from the 14-page client Demo Hub (Oct 2026): platform layers, Product Factory, EasyApps menus and sandbox records, XRI interfaces, AI strategy, 14 solution patterns, client stories, demo playbook, and vendor claims to validate. Use it for any product, solution, demo or RFP question. The raw demo HTML is not in the repo.
+- `.claude/skills/insuremo-estimation/`: method for estimating InsureMO RFPs (effort, timeline, resource loading, onshore/offshore cost, multi-currency price) with the Estimation Framework v2 workbook. The workbook is deliberately not in this repo because the repo is public; ask the user for the current master.
 - `.claude/skills/insuremo-learning-guide/`: the product-manager skill for the whole suite. SKILL.md has the rebuild command for every guide; `references/` has the data model, feature spec (definition of done), lessons learned, publishing rules and the combined-guide architecture (`easyapps-hub.md`).
 - Every shared page is private to the owner until shared from its Share menu. The Easy Apps page is currently set to "Anyone with the link".
 
