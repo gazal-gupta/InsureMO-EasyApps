@@ -94,6 +94,13 @@ Use this example to explain the mechanics only, never as a benchmark.
   - Migration runs to the end of UAT.
   - UAT, cutover and hypercare have fixed weeks.
   - A later release anchors on the previous release's build start, build finish, UAT end or go-live.
+- **Editable integrated plan.** The chart follows the proposal Gantt style: month boxes on top, a week row, one row per workstream with an icon, and a gates row with a legend. The parameters stay the source of truth:
+  - Dragging a bar, or using the ◀ ▶ week and month buttons, stores a start offset for that release.
+  - Dragging the right edge fixes the bar's length; the team size is then recalculated so the effort still fits.
+  - Dependent workstreams move with the bar.
+  - Unticking a workstream removes its effort, and a check warns if scope is still counted for it.
+  - Added workstreams (anchor, lag, team, weeks, role mix) flow into loading, cost and price.
+  - Weeks per month is an input on the Timeline tab.
 - **Roles** follow the proposal resource tables: project management IS5, architect IS4, business analysis IS3, dev lead IS3, development IS2, portal development IS2, SIT and test automation IS2, data migration IS2. PM and dev lead are fixed FTE across the whole programme. Grade rate factors multiply one generic offshore rate, with an onshore uplift and an onshore share.
 - **Subscription (pass-through).** Two models: product-count slabs, or base + per product–insurer (resident and non-resident rates). The page shows implementation plus N years of subscription.
 - **Five reference presets** mirror real proposal shapes (names withheld here because this repository is public):
