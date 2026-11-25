@@ -74,6 +74,14 @@ Use this example to explain the mechanics only, never as a benchmark.
 6. Is the margin after FX buffer and onshore share still above the minimum?
 7. Is any number marked [guessing] driving more than 10% of the total? If yes, send the question before pricing.
 
+## Interactive HTML estimator
+
+- Private shared page: https://claude.ai/artifact/5BZAPRMoxeAjos9Jo8a74b
+- It runs the same 12-step logic in the browser across nine tabs: Setup, Scope, Risks & assumptions, Effort, Plan & team, Cost & price, How it works, Parameters, Checks.
+- [certain] With the template inputs it matches the workbook exactly (verified 2026-11-25): 3,383 PD, 14.5 months, peak team 17.9 FTE, cost 439,836 USD, price 586,448 USD or 803,374 SGD.
+- Drafts save in the viewer's browser only. To keep or share an estimate, use Save / load: it copies the inputs as JSON, and pasting the JSON back reloads them.
+- The page is built from the workbook generator's data, so both use the same template. When the logic changes, change both and re-check that they give the same result.
+
 ## Changing the framework
 
 - Seeds change only through the framework owner. Log each change in Change_Log with date and reason.
