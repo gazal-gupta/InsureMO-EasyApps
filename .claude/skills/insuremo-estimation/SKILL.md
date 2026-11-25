@@ -74,13 +74,37 @@ Use this example to explain the mechanics only, never as a benchmark.
 6. Is the margin after FX buffer and onshore share still above the minimum?
 7. Is any number marked [guessing] driving more than 10% of the total? If yes, send the question before pricing.
 
-## Interactive HTML estimator
+## Interactive HTML estimator (v4, product implementation)
 
-- Private shared page: https://claude.ai/artifact/5BZAPRMoxeAjos9Jo8a74b
-- It runs the same 12-step logic in the browser across nine tabs: Setup, Scope, Risks & assumptions, Effort, Plan & team, Cost & price, How it works, Parameters, Checks.
-- [certain] With the template inputs it matches the workbook exactly (verified 2026-11-25): 3,383 PD, 14.5 months, peak team 17.9 FTE, cost 439,836 USD, price 586,448 USD or 803,374 SGD.
-- Drafts save in the viewer's browser only. To keep or share an estimate, use Save / load: it copies the inputs as JSON, and pasting the JSON back reloads them.
-- The page is built from the workbook generator's data, so both use the same template. When the logic changes, change both and re-check that they give the same result.
+- Private shared page: https://claude.ai/artifact/5BZAPRMoxeAjos9Jo8a74b. Version 4 supersedes the v2 workbook logic for product-implementation bids. The v2 workbook remains the model for full-core programmes.
+- **Platforms.** InsureMO (middle office for general and other lines) and Envoiq (health and TPA administration, white-labelled as InsureMO Health). Each platform has its own foundation and capability modules. Interfaces between the two platforms are counted as their own type, and a check fires when both platforms are in scope but no such interface is counted.
+- **Scope blocks:**
+  - releases (waves)
+  - platform and line foundations, with an S–XL ladder and baseline reuse × 0.65
+  - requirement-driven capability modules: requirements × (fit share × 0.3 + gap share × 3) PD
+  - insurance products, sized on a T-shirt ladder in the ratio 5.5 : 6.5 : 7.5 : 8.5, or from detailed counts; adjusted for build approach, for residency (non-resident × 0.5) and for insurer connections
+  - integrations: reused connector × 0.5, regulatory certification + 30 PD, cross-platform type
+  - portals: third-party built × 0.15
+  - reports and document templates
+  - data migration: by source, plus PD per mock run or dress rehearsal
+- **Timeline in weeks**, grouped into months of 4 weeks, as in the proposal Gantt charts:
+  - Workstreams start from an anchor plus a lag (lags can be negative, to overlap).
+  - Length = effort ÷ (team × 4.25 PD a week), unless the weeks are fixed.
+  - SIT runs alongside build and exits N weeks after the last build workstream.
+  - Migration runs to the end of UAT.
+  - UAT, cutover and hypercare have fixed weeks.
+  - A later release anchors on the previous release's build start, build finish, UAT end or go-live.
+- **Roles** follow the proposal resource tables: project management IS5, architect IS4, business analysis IS3, dev lead IS3, development IS2, portal development IS2, SIT and test automation IS2, data migration IS2. PM and dev lead are fixed FTE across the whole programme. Grade rate factors multiply one generic offshore rate, with an onshore uplift and an onshore share.
+- **Subscription (pass-through).** Two models: product-count slabs, or base + per product–insurer (resident and non-resident rates). The page shows implementation plus N years of subscription.
+- **Five reference presets** mirror real proposal shapes (names withheld here because this repository is public):
+  1. Greenfield general insurer, 6 products, one go-live in W18.
+  2. Aggressive case, 9 products in two waves (W21 and W29), about 124 PM, peak about 24 FTE.
+  3. Phased by line of business: Health live in M6, Commercial in M14.
+  4. Health core on Envoiq: requirement-driven, regulatory certification, three mocks per wave, go-live M8 and M16, 3-month hypercare.
+  5. Headless broker product engine: non-resident products, insurer ACORD link, live in W14, about 465 PD.
+
+  [certain] Each preset reproduces its proposal's gate weeks or months within one week, verified 2026-11-25.
+- Unit sizes and rates are template values for showing the logic. Calibrate them from delivery actuals before quoting.
 
 ## Changing the framework
 
